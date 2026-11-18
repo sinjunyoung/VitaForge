@@ -1,0 +1,81 @@
+﻿using Common.Localization;
+
+using System.IO.Compression;
+
+namespace Patch.Core.Formats.DCP.Services;
+
+public static class GdRomApplier
+{
+    public static async Task ApplyAsync(string? gdiPath, string? dcpPath, string outputDir, Action<double, string>? onProgress = null, Action<string>? onLog = null, CancellationToken ct = default)
+    {
+        onProgress?.Invoke(0.0, Loc.S.ProgressGdParsingMetadata);
+
+        var gdi = GdiFile.Parse(gdiPath);
+        Dictionary<string, byte[]> replacedFiles = [];
+
+        await PreparePatchedFilesAsync(gdi, dcpPath, replacedFiles, onProgress, onLog, ct);
+        await Task.Run(() => GdRomRebuilder.RebuildFull(gdi, replacedFiles, outputDir, (p, msg) => onProgress?.Invoke(0.20 + 0.80 * p, msg), onLog, ct), ct);
+        onProgress?.Invoke(1.0, Loc.S.ProgressGdPatchAllDone);
+    }
+
+    private static async Task PreparePatchedFilesAsync(GdiFile gdi, string? dcpPath, Dictionary<string, byte[]> replacedFiles, Action<double, string>? onProgress, Action<string>? onLog, CancellationToken ct)
+    {
+        using var sourceReader = new GdRomCompositeSectorReader(gdi);
+        var sourceFunc = sourceReader.AsFunc();
+        var pvdLba = sourceReader.PvdAbsoluteLba;
+        var root = Iso9660DirectoryReader.ReadTree(sourceFunc, pvdLba);
+        var byPath = Iso9660DirectoryReader.Flatten(root)
+            .ToDictionary(e => e.FullPath.Replace('/', '\\'), e => e, StringComparer.OrdinalIgnoreCase);
+        using var archive = ZipFile.OpenRead(dcpPath ?? throw new ArgumentNullException(nameof(dcpPath)));
+        var entries = archive.Entries.Where(e => !string.IsNullOrEmpty(e.Name)).ToList();
+        int entryDone = 0;
+
+        foreach (var entry in entries)
+        {
+            var relativePath = entry.FullName.Replace('/', '\\');
+
+            if (relativePath.StartsWith("bootsector\\", StringComparison.OrdinalIgnoreCase))
+                continue;
+
+            onProgress?.Invoke(0.05 * entryDone / entries.Count, Loc.S.ProgressGdExtractingDcp(entry.Name));
+
+            using var entryStream = entry.Open();
+            using var ms = new MemoryStream();
+
+            await entryStream.CopyToAsync(ms, ct);
+
+            replacedFiles[relativePath] = ms.ToArray();
+            entryDone++;
+        }
+
+        var xdeltaEntries = replacedFiles.Where(x => x.Key.EndsWith(".xdelta", StringComparison.OrdinalIgnoreCase)).ToList();
+        int xdeltaDone = 0;
+
+        onLog?.Invoke(Loc.S.LogXdeltaTargetsDetected(xdeltaEntries.Count));
+
+        foreach (var kv in xdeltaEntries)
+        {
+            var targetPath = kv.Key[..^".xdelta".Length];
+            var fileName = Path.GetFileName(targetPath);
+
+            if (!byPath.TryGetValue(targetPath, out var originalEntry))
+            {
+                onLog?.Invoke(Loc.S.LogDcpSourceMissing(targetPath));
+                throw new InvalidOperationException(Loc.S.ErrDcpSourceMissing(targetPath));
+            }
+
+            onProgress?.Invoke(0.05 + 0.15 * xdeltaDone / xdeltaEntries.Count, Loc.S.ProgressGdApplyingXdelta(fileName));
+
+            var originalData = Iso9660DirectoryReader.ReadFile(sourceFunc, originalEntry);
+            var patched = await Task.Run(() => Xdelta3.ApplyPatch(originalData, kv.Value, null, ct), ct);
+
+            onLog?.Invoke(Loc.S.LogXdeltaApplied(targetPath, originalData.Length.ToString("N0"), patched.Length.ToString("N0")));
+
+            replacedFiles[targetPath] = patched;
+
+            replacedFiles.Remove(kv.Key);
+
+            xdeltaDone++;
+        }
+    }
+}

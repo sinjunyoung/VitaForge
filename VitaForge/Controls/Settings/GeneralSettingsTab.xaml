@@ -1,0 +1,124 @@
+﻿<UserControl x:Class="VitaForge.Controls.Settings.GeneralSettingsTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="clr-namespace:Common.Localization;assembly=Common"
+             xmlns:converters="clr-namespace:VitaForge.Converters">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#2A2A2A" BorderBrush="#3F3F3F" BorderThickness="1" CornerRadius="6" Margin="0,0,0,6" Padding="10,5">
+            <Grid Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Width="24" Margin="0,0,10,0" Source="/Assets/Images/Language.png"/>
+                    <TextBlock Text="{Binding Path=Current.LabelLanguage, Source={x:Static l:Loc.Instance}}" Foreground="#888888" FontWeight="Bold" VerticalAlignment="Center"/>
+                </StackPanel>
+                <ComboBox Grid.Column="1" ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="36">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="Padding" Value="10,6"/>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Width="90">
+                                <Image Width="24" Height="24" Margin="0,0,12,0" Source="{Binding Code, Converter={StaticResource LanquageCodeToImageConverter}}" VerticalAlignment="Center" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" FontSize="12" Foreground="White"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </Grid>
+        </Border>
+
+        <ToggleButton Grid.Row="1" Style="{StaticResource SlideToggleStyle}" IsChecked="{Binding Topmost}" Margin="0,0,0,6">
+            <StackPanel Orientation="Horizontal">
+                <Image Width="24" Margin="0,0,10,0" Source="/Assets/Images/Pin.png"/>
+                <TextBlock Text="{Binding Path=Current.ToggleAlwaysOnTop, Source={x:Static l:Loc.Instance}}" Style="{StaticResource SettingTextStyle}"/>
+            </StackPanel>
+        </ToggleButton>
+
+        <ToggleButton Grid.Row="2" Style="{StaticResource SlideToggleStyle}" IsChecked="{Binding AutoCheckUpdate}" Margin="0,0,0,6">
+            <StackPanel Orientation="Horizontal">
+                <Image Width="24" Margin="0,0,10,0" Source="/Assets/Images/Loading.png"/>
+                <TextBlock Text="{Binding Path=Current.ToggleCheckUpdateOnStart, Source={x:Static l:Loc.Instance}}" Style="{StaticResource SettingTextStyle}"/>
+            </StackPanel>
+        </ToggleButton>
+
+        <ToggleButton x:Name="SoundToggle" Grid.Row="3" Style="{StaticResource SlideToggleStyle}" IsChecked="{Binding IsMuted, Converter={StaticResource InverseBool}}">
+            <StackPanel Orientation="Horizontal">
+                <Image Width="24" Margin="0,0,10,0" Source="/Assets/Images/Sound.png"/>
+                <TextBlock Text="{Binding Path=Current.ToggleSoundEffects, Source={x:Static l:Loc.Instance}}" Style="{StaticResource SettingTextStyle}"/>
+                <Grid Height="30" Margin="15,4,0,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="650"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Slider Grid.Column="0" x:Name="sliderSoundVolume" Style="{StaticResource SliderStyle}" Minimum="10" Maximum="100" Value="{Binding SoundVolume, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Grid.Column="1" Text="{Binding ElementName=sliderSoundVolume, Path=Value, StringFormat={}{0:F0}%}" Foreground="#DCDCDC" FontWeight="Bold" VerticalAlignment="Center" Width="45" TextAlignment="Center" Margin="10,0,0,0"/>
+                </Grid>
+            </StackPanel>
+        </ToggleButton>
+
+        <StackPanel Grid.Row="4" Visibility="{Binding IsMuted, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+            <Grid Margin="0,2,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Border Background="#12FFFFFF" BorderBrush="#30FFFFFF" BorderThickness="1" CornerRadius="6" Grid.Column="0" Height="36">
+                    <Grid>
+                        <TextBox Background="Transparent" BorderThickness="0" FontSize="11" Foreground="#DCDCDC" Padding="10,0" Text="{Binding CompleteSoundPath, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" AllowDrop="True" PreviewDragOver="SoundTextBox_PreviewDragOver" Drop="CompleteSoundTextBox_Drop"/>
+                        <TextBlock FontSize="11" Foreground="#50FFFFFF" IsHitTestVisible="False" Margin="10,0,0,0" Text="{Binding Path=Current.HintSoundComplete, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center" Visibility="{Binding CompleteSoundHintVisibility}"/>
+                    </Grid>
+                </Border>
+                <Button BorderThickness="1" Command="{Binding BrowseCompleteSoundCommand}" Grid.Column="1" Height="30" Margin="5,0,0,0" Padding="0" Style="{StaticResource GrayButton}" Width="30">
+                    <Image Height="20" RenderOptions.BitmapScalingMode="HighQuality" Source="/VitaForge.Core;component/Assets/Images/AddFolder.png" Width="20"/>
+                </Button>
+            </Grid>
+
+            <Grid Margin="0,2,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Border Background="#12FFFFFF" BorderBrush="#30FFFFFF" BorderThickness="1" CornerRadius="6" Grid.Column="0" Height="36">
+                    <Grid>
+                        <TextBox Background="Transparent" BorderThickness="0" FontSize="11" Foreground="#DCDCDC" Padding="10,0" Text="{Binding CancelSoundPath, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" AllowDrop="True" PreviewDragOver="SoundTextBox_PreviewDragOver" Drop="CancelSoundTextBox_Drop"/>
+                        <TextBlock FontSize="11" Foreground="#50FFFFFF" IsHitTestVisible="False" Margin="10,0,0,0" Text="{Binding Path=Current.HintSoundCancel, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center" Visibility="{Binding CancelSoundHintVisibility}"/>
+                    </Grid>
+                </Border>
+                <Button BorderThickness="1" Command="{Binding BrowseCancelSoundCommand}" Grid.Column="1" Height="30" Margin="5,0,0,0" Padding="0" Style="{StaticResource GrayButton}" Width="30">
+                    <Image Height="20" RenderOptions.BitmapScalingMode="HighQuality" Source="/VitaForge.Core;component/Assets/Images/AddFolder.png" Width="20"/>
+                </Button>
+            </Grid>
+
+            <Grid Margin="0,2,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Border Background="#12FFFFFF" BorderBrush="#30FFFFFF" BorderThickness="1" CornerRadius="6" Grid.Column="0" Height="36">
+                    <Grid>
+                        <TextBox Background="Transparent" BorderThickness="0" FontSize="11" Foreground="#DCDCDC" Padding="10,0" Text="{Binding ErrorSoundPath, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" AllowDrop="True" PreviewDragOver="SoundTextBox_PreviewDragOver" Drop="ErrorSoundTextBox_Drop"/>
+                        <TextBlock FontSize="11" Foreground="#50FFFFFF" IsHitTestVisible="False" Margin="10,0,0,0" Text="{Binding Path=Current.HintSoundError, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center" Visibility="{Binding ErrorSoundHintVisibility}"/>
+                    </Grid>
+                </Border>
+                <Button BorderThickness="1" Command="{Binding BrowseErrorSoundCommand}" Grid.Column="1" Height="30" Margin="5,0,0,0" Padding="0" Style="{StaticResource GrayButton}" Width="30">
+                    <Image Height="20" RenderOptions.BitmapScalingMode="HighQuality" Source="/VitaForge.Core;component/Assets/Images/AddFolder.png" Width="20"/>
+                </Button>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</UserControl>

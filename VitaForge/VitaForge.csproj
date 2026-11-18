@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <VersionPrefix>1.0.0.0</VersionPrefix>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>False</UseWindowsForms>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <AssemblyName>VitaForge</AssemblyName>
+    <RootNamespace>VitaForge</RootNamespace>
+    <TieredCompilationQuickJitForLoops>false</TieredCompilationQuickJitForLoops>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Authors>YameSoft</Authors>
+    <Copyright>Copyright © 2026 YameSoft</Copyright>
+    <PackageLicenseExpression>GPL-2.0</PackageLicenseExpression>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>NETSDK1206</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>NETSDK1206</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Assets\Images\**" />
+    <None Remove="Assets\Sounds\**" />
+    <Resource Include="Assets\Images\**\*.png" />
+    <Resource Include="Assets\Sounds\**\*.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Markdig" Version="1.6.0" />
+    <PackageReference Include="Markdig.Wpf" Version="0.5.0.1" />
+    <PackageReference Include="NAudio" Version="3.3.0" />
+    <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
+    <PackageReference Include="System.IO.Hashing" Version="11.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Patch\Patch.csproj" />
+    <ProjectReference Include="..\VitaForge.Core\VitaForge.Core.csproj" />
+    <ProjectReference Include="..\Vita\Vita.csproj" />
+  </ItemGroup>
+</Project>
