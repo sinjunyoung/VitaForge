@@ -48,7 +48,7 @@
                             <GridView>
                                 <GridViewColumn Width="Auto">
                                     <GridViewColumn.Header>
-                                        <Image Height="24" Margin="0,0,4,0" Source="/VitaForge.Core;component/Assets/Images/Categories.png" Width="24"/>
+                                        <Image Height="24" Margin="0,0,4,0" Source="/Assets/Images/Categories.png" Width="24"/>
                                     </GridViewColumn.Header>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
@@ -145,7 +145,7 @@
                                 <GridViewColumn Width="200">
                                     <GridViewColumn.Header>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <Image Source="/VitaForge.Core;component/Assets/Images/AddFile.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                                            <Image Source="/Assets/Images/AddFile.png" Width="24" Height="24" Margin="0,0,4,0"/>
                                             <TextBlock Text="{Binding Path=Current.HeaderFilePath, Source={x:Static l:Loc.Instance}}" Foreground="#BBBBBB" FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
                                         </StackPanel>
                                     </GridViewColumn.Header>

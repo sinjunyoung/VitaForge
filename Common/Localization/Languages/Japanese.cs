@@ -1517,4 +1517,18 @@ public sealed class Japanese : LocalizedStrings
     public override string WorkTypeConvert => "変換";
     public override string WorkTypeDecompress => "解凍";
     public override string WorkTypeRecompress => "再圧縮";
+
+    public override string TabDownload => "ダウンロード";
+    public override string HeaderTitleId => "タイトルID";
+    public override string HeaderRegion => "地域";
+    public override string ButtonSearch => "検索";
+    public override string HintSearchTitleId => "タイトルIDを検索...";
+    public override string LabelNpsResultSelected(object? arg0, object? arg1) => $"検索結果 {arg0}件 · 選択 {arg1}件";
+    public override string ErrNpsSelectItems => "ダウンロードする項目にチェックを入れてください。";
+    public override string ErrNpsTsvNotFound(object? arg0) => $"{arg0} が見つかりません。tsvファイルを実行ファイルと同じフォルダーに置いてください。";
+    public override string ErrNpsNoDownloadable => "選択した項目の中にダウンロードして変換できるものがありません。";
+    public override string LogNpsKeyMissingSkipped(object? arg0, object? arg1) => $"スキップ (ライセンスキーなし): {arg0} {arg1}";
+    public override string LogNpsHashMismatch(object? arg0) => $"{arg0} のSHA256が一致しません。ファイルが破損している可能性があります。";
+    public override string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2) => $"ダウンロード中 ({arg0}/{arg1}): {arg2}";
+    public override string LogNpsOlderUpdateSkipped(object? arg0, object? arg1) => $"スキップ (タイトルごとに最新のアップデートのみ使用): {arg0} {arg1}";
 }

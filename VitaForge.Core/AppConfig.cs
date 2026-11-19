@@ -46,6 +46,8 @@ public class OutputFoldersConfig : ViewModelBase
     public string? VitaOutputPath { get; set { SetProperty(ref field, value); } }
 
     public string? VitaConvertOutputPath { get; set { SetProperty(ref field, value); } }
+
+    public string? VitaDownloadOutputPath { get; set { SetProperty(ref field, value); } }
 }
 
 public class AppConfig : ViewModelBase

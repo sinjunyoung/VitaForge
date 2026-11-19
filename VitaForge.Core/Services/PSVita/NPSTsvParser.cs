@@ -1,5 +1,4 @@
-﻿using Common.Localization;
-using VitaForge.Core.Models.PSVita;
+﻿using VitaForge.Core.Models.PSVita;
 using System.IO;
 
 namespace VitaForge.Core.Services.PSVita
@@ -29,39 +28,14 @@ namespace VitaForge.Core.Services.PSVita
 
         private static void ParseTsvFile(string filePath, bool isDlc, Dictionary<string, NPSGroup> dictionary)
         {
-            using var reader = new StreamReader(filePath);
-            string? headerLine = reader.ReadLine();
-
-            if (string.IsNullOrWhiteSpace(headerLine))
-                return;
-
-            string[] headers = headerLine.Split('\t');
-            int titleIdIdx = Array.IndexOf(headers, "Title ID");
-            int zRifIdx = Array.IndexOf(headers, "zRIF");
-            int contentIdIdx = Array.IndexOf(headers, "Content ID");
-
-            if (titleIdIdx == -1 || zRifIdx == -1 || contentIdIdx == -1)
-                throw new Exception(Loc.S.ErrRequiredHeaderNotFound(filePath));
-
-            string? line;
-
-            while ((line = reader.ReadLine()) != null)
+            foreach (var row in NpsTsvReader.Read(filePath, "Title ID", "zRIF", "Content ID"))
             {
-                if (string.IsNullOrWhiteSpace(line))
-                    continue;
-
-                string[] parts = line.Split('\t');
-
-                if (parts.Length <= Math.Max(titleIdIdx, Math.Max(zRifIdx, contentIdIdx)))
-                    continue;
-
-                string titleId = parts[titleIdIdx].Trim();
-                string zRif = parts[zRifIdx].Trim();
-                string rawContentId = parts[contentIdIdx].Trim();
+                string titleId = row["Title ID"];
 
                 if (string.IsNullOrEmpty(titleId))
                     continue;
 
+                string rawContentId = row["Content ID"];
                 string contentId = rawContentId;
                 int lastHyphenIdx = rawContentId.LastIndexOf('-');
 
@@ -71,7 +45,7 @@ namespace VitaForge.Core.Services.PSVita
                 var item = new NPSItem
                 {
                     TitleId = titleId,
-                    ZRif = zRif,
+                    ZRif = row["zRIF"],
                     ContentId = contentId,
                     IsDlc = isDlc
                 };

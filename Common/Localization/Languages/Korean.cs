@@ -1517,4 +1517,18 @@ public sealed class Korean : LocalizedStrings
     public override string WorkTypeConvert => "변환";
     public override string WorkTypeDecompress => "해제";
     public override string WorkTypeRecompress => "재압축";
+
+    public override string TabDownload => "다운로드";
+    public override string HeaderTitleId => "타이틀 ID";
+    public override string HeaderRegion => "지역";
+    public override string ButtonSearch => "검색";
+    public override string HintSearchTitleId => "타이틀 ID 검색...";
+    public override string LabelNpsResultSelected(object? arg0, object? arg1) => $"검색 결과 {arg0}건 · 선택 {arg1}건";
+    public override string ErrNpsSelectItems => "다운로드할 항목을 체크하세요.";
+    public override string ErrNpsTsvNotFound(object? arg0) => $"{arg0} 파일을 찾을 수 없습니다. tsv 파일을 실행 파일과 같은 폴더에 두세요.";
+    public override string ErrNpsNoDownloadable => "선택한 항목 중 다운로드 후 변환할 수 있는 항목이 없습니다.";
+    public override string LogNpsKeyMissingSkipped(object? arg0, object? arg1) => $"건너뜀 (라이선스 키 없음): {arg0} {arg1}";
+    public override string LogNpsHashMismatch(object? arg0) => $"{arg0}의 SHA256이 tsv 값과 다릅니다. 파일이 손상되었을 수 있습니다.";
+    public override string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2) => $"다운로드 중 ({arg0}/{arg1}): {arg2}";
+    public override string LogNpsOlderUpdateSkipped(object? arg0, object? arg1) => $"건너뜀 (타이틀당 최신 업데이트 하나만 사용): {arg0} {arg1}";
 }

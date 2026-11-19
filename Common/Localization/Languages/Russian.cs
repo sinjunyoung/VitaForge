@@ -1517,4 +1517,18 @@ public sealed class Russian : LocalizedStrings
     public override string WorkTypeConvert => "Конвертация";
     public override string WorkTypeDecompress => "Распаковка";
     public override string WorkTypeRecompress => "Пересжатие";
+
+    public override string TabDownload => "Загрузка";
+    public override string HeaderTitleId => "ID тайтла";
+    public override string HeaderRegion => "Регион";
+    public override string ButtonSearch => "Поиск";
+    public override string HintSearchTitleId => "Поиск по ID тайтла...";
+    public override string LabelNpsResultSelected(object? arg0, object? arg1) => $"Найдено: {arg0} · выбрано: {arg1}";
+    public override string ErrNpsSelectItems => "Отметьте элементы для загрузки.";
+    public override string ErrNpsTsvNotFound(object? arg0) => $"Не найден файл {arg0}. Поместите tsv-файлы в папку с исполняемым файлом.";
+    public override string ErrNpsNoDownloadable => "Среди выбранных элементов нет тех, которые можно загрузить и преобразовать.";
+    public override string LogNpsKeyMissingSkipped(object? arg0, object? arg1) => $"Пропущено (нет ключа лицензии): {arg0} {arg1}";
+    public override string LogNpsHashMismatch(object? arg0) => $"SHA256 файла {arg0} не совпадает. Файл может быть поврежден.";
+    public override string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2) => $"Загрузка ({arg0}/{arg1}): {arg2}";
+    public override string LogNpsOlderUpdateSkipped(object? arg0, object? arg1) => $"Пропущено (используется только последнее обновление для тайтла): {arg0} {arg1}";
 }

@@ -1,6 +1,8 @@
 ﻿using Common.Localization;
+using Common.Services;
 using VitaForge.Core;
 using VitaForge.Core.Models;
+using VitaForge.Core.Services;
 using VitaForge.ViewModels;
 using System.ComponentModel;
 using System.Windows;
@@ -19,6 +21,7 @@ public partial class MainWindow : Window
         DataContext = ViewModel;
         InitializeComponent();
         Closing += MainWindow_Closing;
+        Loaded += MainWindow_Loaded;
 
         RestoreWindowState();
 
@@ -28,6 +31,36 @@ public partial class MainWindow : Window
             if (e.PropertyName == nameof(CommonConfig.Topmost))
                 Topmost = AppConfig.Instance.Common.Topmost;
         };
+    }
+
+    private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+    {
+        if (!AppConfig.Instance.Common.AutoCheckUpdate)
+            return;
+
+        try
+        {
+            var update = await VersionHelper.GetUpdateAsync();
+            if (update == null)
+                return;
+
+            var updateWindow = new UpdateWindow(update) { Owner = this };
+            if (updateWindow.ShowDialog() == true)
+            {
+                try
+                {
+                    (update.HtmlUrl ?? "https://github.com/sinjunyoung/VitaForge/releases/latest").OpenUrl();
+                }
+                catch (Exception ex)
+                {
+                    MessageBoxHelper.ShowError(Loc.S.ErrOpenDownloadPageFailed(ex.Message));
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBoxHelper.ShowError(Loc.S.ErrUpdateInfoCheckFailed(ex.Message));
+        }
     }
 
     private void RestoreWindowState()
@@ -129,4 +162,8 @@ public partial class MainWindow : Window
     }
 
     private void CloseButton_Click(object sender, RoutedEventArgs e) => SystemCommands.CloseWindow(this);
+
+    private void UrlButton_Click(object sender, RoutedEventArgs e) => "https://github.com/sinjunyoung/VitaForge/releases/latest".OpenUrl();
+
+    private void HelpButton_Click(object sender, RoutedEventArgs e) => (ViewModel.HelpPageKey != null ? "https://sinjunyoung.github.io/VitaForge/" + ViewModel.HelpPageKey : null)?.OpenUrl();
 }

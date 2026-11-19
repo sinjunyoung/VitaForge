@@ -1517,4 +1517,18 @@ public sealed class English : LocalizedStrings
     public override string WorkTypeConvert => "Conversion";
     public override string WorkTypeDecompress => "Decompression";
     public override string WorkTypeRecompress => "Recompression";
+
+    public override string TabDownload => "Download";
+    public override string HeaderTitleId => "Title ID";
+    public override string HeaderRegion => "Region";
+    public override string ButtonSearch => "Search";
+    public override string HintSearchTitleId => "Title ID...";
+    public override string LabelNpsResultSelected(object? arg0, object? arg1) => $"{arg0} results · {arg1} selected";
+    public override string ErrNpsSelectItems => "Check the items to download.";
+    public override string ErrNpsTsvNotFound(object? arg0) => $"Cannot find {arg0}. Place the tsv files next to the executable.";
+    public override string ErrNpsNoDownloadable => "None of the selected items can be downloaded and converted.";
+    public override string LogNpsKeyMissingSkipped(object? arg0, object? arg1) => $"Skipped (no license key): {arg0} {arg1}";
+    public override string LogNpsHashMismatch(object? arg0) => $"SHA256 mismatch for {arg0}. The file may be corrupted.";
+    public override string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2) => $"Downloading ({arg0}/{arg1}): {arg2}";
+    public override string LogNpsOlderUpdateSkipped(object? arg0, object? arg1) => $"Skipped older update (only the latest update per title is used): {arg0} {arg1}";
 }

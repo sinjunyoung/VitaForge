@@ -1517,4 +1517,18 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string WorkTypeConvert => "轉換";
     public override string WorkTypeDecompress => "解壓縮";
     public override string WorkTypeRecompress => "重新壓縮";
+
+    public override string TabDownload => "下載";
+    public override string HeaderTitleId => "標題 ID";
+    public override string HeaderRegion => "地區";
+    public override string ButtonSearch => "搜尋";
+    public override string HintSearchTitleId => "搜尋標題 ID...";
+    public override string LabelNpsResultSelected(object? arg0, object? arg1) => $"搜尋結果 {arg0} 項 · 已選 {arg1} 項";
+    public override string ErrNpsSelectItems => "請勾選要下載的項目。";
+    public override string ErrNpsTsvNotFound(object? arg0) => $"找不到 {arg0}。請將 tsv 檔案放在執行檔所在的資料夾中。";
+    public override string ErrNpsNoDownloadable => "所選項目中沒有可下載並轉換的項目。";
+    public override string LogNpsKeyMissingSkipped(object? arg0, object? arg1) => $"已略過 (無授權金鑰): {arg0} {arg1}";
+    public override string LogNpsHashMismatch(object? arg0) => $"{arg0} 的 SHA256 不符，檔案可能已損毀。";
+    public override string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2) => $"正在下載 ({arg0}/{arg1}): {arg2}";
+    public override string LogNpsOlderUpdateSkipped(object? arg0, object? arg1) => $"已略過 (每個標題僅使用最新更新): {arg0} {arg1}";
 }

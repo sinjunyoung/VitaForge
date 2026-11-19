@@ -1517,4 +1517,18 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string WorkTypeConvert => "转换";
     public override string WorkTypeDecompress => "解压";
     public override string WorkTypeRecompress => "重新压缩";
+
+    public override string TabDownload => "下载";
+    public override string HeaderTitleId => "标题 ID";
+    public override string HeaderRegion => "地区";
+    public override string ButtonSearch => "搜索";
+    public override string HintSearchTitleId => "搜索标题 ID...";
+    public override string LabelNpsResultSelected(object? arg0, object? arg1) => $"搜索结果 {arg0} 项 · 已选 {arg1} 项";
+    public override string ErrNpsSelectItems => "请勾选要下载的项目。";
+    public override string ErrNpsTsvNotFound(object? arg0) => $"找不到 {arg0}。请将 tsv 文件放在可执行文件所在的文件夹中。";
+    public override string ErrNpsNoDownloadable => "所选项目中没有可下载并转换的项目。";
+    public override string LogNpsKeyMissingSkipped(object? arg0, object? arg1) => $"已跳过 (无许可证密钥): {arg0} {arg1}";
+    public override string LogNpsHashMismatch(object? arg0) => $"{arg0} 的 SHA256 不匹配，文件可能已损坏。";
+    public override string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2) => $"正在下载 ({arg0}/{arg1}): {arg2}";
+    public override string LogNpsOlderUpdateSkipped(object? arg0, object? arg1) => $"已跳过 (每个标题仅使用最新更新): {arg0} {arg1}";
 }

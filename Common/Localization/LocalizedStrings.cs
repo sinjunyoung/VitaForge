@@ -1535,4 +1535,18 @@ public abstract class LocalizedStrings
         ItemStatus.Skipped => StatusSkipped,
         _ => string.Empty
     };
+
+    public abstract string TabDownload { get; }
+    public abstract string HeaderTitleId { get; }
+    public abstract string HeaderRegion { get; }
+    public abstract string ButtonSearch { get; }
+    public abstract string HintSearchTitleId { get; }
+    public abstract string LabelNpsResultSelected(object? arg0, object? arg1);
+    public abstract string ErrNpsSelectItems { get; }
+    public abstract string ErrNpsTsvNotFound(object? arg0);
+    public abstract string ErrNpsNoDownloadable { get; }
+    public abstract string LogNpsKeyMissingSkipped(object? arg0, object? arg1);
+    public abstract string LogNpsHashMismatch(object? arg0);
+    public abstract string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2);
+    public abstract string LogNpsOlderUpdateSkipped(object? arg0, object? arg1);
 }
