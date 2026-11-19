@@ -187,20 +187,11 @@ public partial class RepackTab : UserControl
         e.Handled = true;
     }
 
-    private async void BtnStart_Click(object sender, RoutedEventArgs e) => await RunAsync(BuildMode.FullProcess);
-
-    private async void BtnUnpack_Click(object sender, RoutedEventArgs e) => await RunAsync(BuildMode.UnpackOnly);
-
-    private async void BtnRebuild_Click(object sender, RoutedEventArgs e) => await RunAsync(BuildMode.RebuildOnly);
-
-    private async Task RunAsync(BuildMode mode)
+    private async void BtnStart_Click(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsLocked)
-        {
             ViewModel.Cancel();
-            return;
-        }
-
-        await ViewModel.StartAsync(mode);
+        else
+            await ViewModel.StartAsync();
     }
 }

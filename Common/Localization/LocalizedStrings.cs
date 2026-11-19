@@ -75,6 +75,7 @@ public abstract class LocalizedStrings
     public abstract string DescVitaKeyRequiredShared { get; }
     public abstract string DescVitaPatchMerge { get; }
     public abstract string DescVitaPkgKeyRequired { get; }
+    public abstract string DescVitaDecryptAll { get; }
     public abstract string DescWiiUAutoClassify { get; }
 
     // Detail
@@ -1098,6 +1099,7 @@ public abstract class LocalizedStrings
     public abstract string LogVitaConvertingNoNpDrm(object? arg0);
     public abstract string LogVitaCreatingPatch(object? arg0);
     public abstract string LogVitaDecryptFailed(object? arg0, object? arg1, object? arg2);
+    public abstract string LogVitaDecryptGroupOutput(object? arg0, object? arg1, object? arg2);
     public abstract string LogVitaFileListCheckFailed(object? arg0, object? arg1, object? arg2);
     public abstract string LogVitaFolderRepacking(object? arg0);
     public abstract string LogVitaItemProcessFailed(object? arg0, object? arg1, object? arg2);

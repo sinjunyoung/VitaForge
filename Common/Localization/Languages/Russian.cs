@@ -75,6 +75,7 @@ public sealed class Russian : LocalizedStrings
     public override string DescVitaKeyRequiredShared => "Требуется ключ (work.bin, *.rif/строка zRIF) (Patch может использовать ключ App)";
     public override string DescVitaPatchMerge => "Эмулятор: после расшифровки перезаписывает app/addcont / Консоль: добавляет rePatch/reAddcont";
     public override string DescVitaPkgKeyRequired => "Для pkg требуется ключ (work.bin, *.rif/строка zRIF)";
+    public override string DescVitaDecryptAll => "Расшифровывает все файлы и выводит структуру для эмулятора (app/addcont/license), объединяя игру и обновление";
     public override string DescWiiUAutoClassify => "Игра/обновление/DLC классифицируются автоматически по Title ID";
 
     // Detail
@@ -1098,6 +1099,7 @@ public sealed class Russian : LocalizedStrings
     public override string LogVitaConvertingNoNpDrm(object? arg0) => $"Конвертация в формат NoNpDrm ({arg0})...";
     public override string LogVitaCreatingPatch(object? arg0) => $"Создание патча для: {arg0}...";
     public override string LogVitaDecryptFailed(object? arg0, object? arg1, object? arg2) => $"[{arg0}] {arg1}: ошибка расшифровки - {arg2}";
+    public override string LogVitaDecryptGroupOutput(object? arg0, object? arg1, object? arg2) => $"[{arg0}] Расшифровано файлов: {arg1} -> {arg2}";
     public override string LogVitaFileListCheckFailed(object? arg0, object? arg1, object? arg2) => $"{arg0} {arg1}: не удалось проверить список файлов - {arg2}";
     public override string LogVitaFolderRepacking(object? arg0) => $"Перепаковка на основе папки для: {arg0}...";
     public override string LogVitaItemProcessFailed(object? arg0, object? arg1, object? arg2) => $"[{arg0}] {arg1}: ошибка обработки - {arg2}";

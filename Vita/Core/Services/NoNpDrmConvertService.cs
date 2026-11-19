@@ -1,4 +1,4 @@
-using Common.Localization;
+﻿using Common.Localization;
 using Common.Models;
 using Common.Services;
 using System.IO.Compression;
@@ -27,7 +27,7 @@ public static class NoNpDrmConvertService
         {
             ct.ThrowIfCancellationRequested();
 
-            string outputPath = output == PkgConvertOutput.Zip ? Utils.GetUniqueFilePath(Path.Combine(outputRoot, SanitizeFileName(group.TitleId) + ".zip")) : GetUniqueDirectoryPath(Path.Combine(outputRoot, SanitizeFileName(group.TitleId)));
+            string outputPath = PkgOutputPaths.Resolve(outputRoot, group.TitleId, output);
 
             try
             {
@@ -35,7 +35,7 @@ public static class NoNpDrmConvertService
             }
             catch
             {
-                DeleteQuietly(outputPath);
+                PkgOutputPaths.DeleteQuietly(outputPath);
                 throw;
             }
 
@@ -183,36 +183,5 @@ public static class NoNpDrmConvertService
     {
         var probe = entry.Probe!;
         return PatchShared.BuildEntryPath(PatchShared.GetRetailBaseFolder(probe.Category), probe.Category, group.TitleId, probe.ContentIdSuffix, relativePath);
-    }
-
-    private static string SanitizeFileName(string? name)
-    {
-        if (string.IsNullOrEmpty(name))
-            return string.Empty;
-
-        foreach (char c in Path.GetInvalidFileNameChars())
-            name = name.Replace(c, '_');
-
-        return name;
-    }
-
-    private static string GetUniqueDirectoryPath(string path)
-    {
-        while (Directory.Exists(path) || File.Exists(path))
-            path += "_";
-
-        return path;
-    }
-
-    private static void DeleteQuietly(string path)
-    {
-        try
-        {
-            if (File.Exists(path))
-                File.Delete(path);
-            else if (Directory.Exists(path))
-                Directory.Delete(path, true);
-        }
-        catch { }
     }
 }

@@ -75,6 +75,7 @@ public sealed class Korean : LocalizedStrings
     public override string DescVitaKeyRequiredShared => "키 (work.bin, *.rif/zRIF 문자열)가 필요합니다 (Patch는 App의 키를 공유할 수 있습니다)";
     public override string DescVitaPatchMerge => "에뮬레이터: 복호화 후 app/addcont 덮어씌우기 / 실기: rePatch/reAddcont 추가";
     public override string DescVitaPkgKeyRequired => "pkg의 경우 키 (work.bin, *.rif/zRIF 문자열)가 필요합니다";
+    public override string DescVitaDecryptAll => "모든 파일을 복호화해 에뮬레이터용 구조(app/addcont/license)로 출력합니다 (본편+업데이트 병합)";
     public override string DescWiiUAutoClassify => "본편/업데이트/DLC는 타이틀 ID로 자동 분류됩니다";
 
     // Detail
@@ -1098,6 +1099,7 @@ public sealed class Korean : LocalizedStrings
     public override string LogVitaConvertingNoNpDrm(object? arg0) => $"NoNpDrm 포맷({arg0})으로 변환 중...";
     public override string LogVitaCreatingPatch(object? arg0) => $"{arg0}용 패치 생성 중...";
     public override string LogVitaDecryptFailed(object? arg0, object? arg1, object? arg2) => $"[{arg0}] {arg1}: 복호화 실패 - {arg2}";
+    public override string LogVitaDecryptGroupOutput(object? arg0, object? arg1, object? arg2) => $"[{arg0}] 복호화 {arg1}개 파일 -> {arg2}";
     public override string LogVitaFileListCheckFailed(object? arg0, object? arg1, object? arg2) => $"{arg0} {arg1}: 파일 목록 확인 실패 - {arg2}";
     public override string LogVitaFolderRepacking(object? arg0) => $"{arg0}용 폴더 기반 리팩 중...";
     public override string LogVitaItemProcessFailed(object? arg0, object? arg1, object? arg2) => $"[{arg0}] {arg1}: 처리 실패 - {arg2}";

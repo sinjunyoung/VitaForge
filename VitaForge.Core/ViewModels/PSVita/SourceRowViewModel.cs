@@ -18,13 +18,10 @@ public class SourceRowViewModel : ViewModelBase
     public string? FileName => Kind switch
     {
         SourceKind.Pkg => System.IO.Path.GetFileName(Path),
-        SourceKind.Unpacked => TitleId,
         _ => $"{System.IO.Path.GetFileName(Path?.TrimEnd(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar))} :: {ItemSourcePath}"
     };
 
     public bool IsPkg => Kind == SourceKind.Pkg;
-
-    public bool IsUnpacked => Kind == SourceKind.Unpacked;
 
     public string? TitleId { get; }
 
@@ -93,17 +90,6 @@ public class SourceRowViewModel : ViewModelBase
         var result = PkgProbe.Probe(pkgPath);
         return new SourceRowViewModel(pkgPath, SourceKind.Pkg, null, result.TitleId, result.Category, result.ContentIdSuffix);
     }
-
-    public static SourceRowViewModel FromUnpacked(UnpackedTitle title) => new(title.FolderPath, SourceKind.Unpacked, null, title.TitleId, ContentCategory.App, null)
-    {
-        GameName = title.TitleName,
-        Category = title.Category,
-        ContentIdSuffix = title.ContentIdSuffix,
-        IconBytes = title.IconBytes,
-        SizeBytes = title.SizeBytes,
-        PatchPath = title.PatchPath ?? string.Empty,
-        IsLicenseEditable = false
-    };
 
     public static SourceRowViewModel FromZipItem(string containerPath, SourceItem item) => new(containerPath, SourceKind.ZipOrFolder, item.SourcePath, item.TitleId, item.Category, item.ContentIdSuffix);
 
@@ -284,16 +270,6 @@ public class SourceRowViewModel : ViewModelBase
 
         return $"{size:0.##} {units[unitIndex]}";
     }
-
-    public UnpackedTitle ToUnpackedTitle() => new()
-    {
-        TitleId = TitleId,
-        FolderPath = Path,
-        TitleName = GameName,
-        IconBytes = IconBytes,
-        SizeBytes = SizeBytes,
-        PatchPath = string.IsNullOrWhiteSpace(PatchPath) ? null : PatchPath
-    };
 
     public BatchSourceEntry ToBatchEntry() => Kind == SourceKind.Pkg
         ? new BatchSourceEntry

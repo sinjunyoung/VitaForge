@@ -75,6 +75,7 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string DescVitaKeyRequiredShared => "需要密钥 (work.bin, *.rif/zRIF 字符串) (Patch 可共用 App 的密钥)";
     public override string DescVitaPatchMerge => "模拟器: 解密后覆盖 app/addcont / 实机: 添加 rePatch/reAddcont";
     public override string DescVitaPkgKeyRequired => "pkg 需要密钥 (work.bin, *.rif/zRIF 字符串)";
+    public override string DescVitaDecryptAll => "解密所有文件并以模拟器结构(app/addcont/license)输出 (合并本体与更新)";
     public override string DescWiiUAutoClassify => "本体/更新/DLC 会按标题 ID 自动分类";
 
     // Detail
@@ -1098,6 +1099,7 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string LogVitaConvertingNoNpDrm(object? arg0) => $"正在转换为 NoNpDrm 格式 ({arg0})...";
     public override string LogVitaCreatingPatch(object? arg0) => $"正在为{arg0}生成补丁...";
     public override string LogVitaDecryptFailed(object? arg0, object? arg1, object? arg2) => $"[{arg0}] {arg1}: 解密失败 - {arg2}";
+    public override string LogVitaDecryptGroupOutput(object? arg0, object? arg1, object? arg2) => $"[{arg0}] 已解密 {arg1} 个文件 -> {arg2}";
     public override string LogVitaFileListCheckFailed(object? arg0, object? arg1, object? arg2) => $"{arg0} {arg1}: 检查文件列表失败 - {arg2}";
     public override string LogVitaFolderRepacking(object? arg0) => $"正在为{arg0}进行基于文件夹的重新打包...";
     public override string LogVitaItemProcessFailed(object? arg0, object? arg1, object? arg2) => $"[{arg0}] {arg1}: 处理失败 - {arg2}";

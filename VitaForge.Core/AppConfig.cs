@@ -47,6 +47,8 @@ public class OutputFoldersConfig : ViewModelBase
 
     public string? VitaConvertOutputPath { get; set { SetProperty(ref field, value); } }
 
+    public string? VitaDecryptOutputPath { get; set { SetProperty(ref field, value); } }
+
     public string? VitaDownloadOutputPath { get; set { SetProperty(ref field, value); } }
 }
 

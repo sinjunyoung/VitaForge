@@ -164,7 +164,13 @@
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <GridViewColumn Header="{Binding Path=Current.HeaderTitleId, Source={x:Static l:Loc.Instance}}" Width="110">
+                            <GridViewColumn Width="Auto">
+                                <GridViewColumn.Header>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Image Source="/Assets/Images/VitaCartridge.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                                        <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderTitleId, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock FontSize="12" Foreground="#E8E8F0" Text="{Binding TitleId}" VerticalAlignment="Center"/>
@@ -172,7 +178,10 @@
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <GridViewColumn Header="{Binding Path=Current.HeaderRegion, Source={x:Static l:Loc.Instance}}" Width="60">
+                            <GridViewColumn Width="60">
+                                <GridViewColumn.Header>
+                                    <Image Source="/VitaForge.Core;component/Assets/Images/world.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                                </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock FontSize="12" Foreground="#E8E8F0" Text="{Binding Region}" VerticalAlignment="Center"/>
@@ -180,7 +189,13 @@
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <GridViewColumn Header="{Binding Path=Current.LabelGameName, Source={x:Static l:Loc.Instance}}" Width="300">
+                            <GridViewColumn Width="300">
+                                <GridViewColumn.Header>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Image Source="/Assets/Images/VitaCartridge.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                                        <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="{Binding Path=Current.LabelGameName, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel VerticalAlignment="Center">
@@ -220,7 +235,7 @@
                                 <GridViewColumn.Header >
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <Image Source="/VitaForge.Core;component/Assets/Images/Version.png" Width="24" Height="24" Margin="0,0,4,0"/>
-                                        <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#E8E8F0" Text="{Binding Path=Current.HeaderVersion, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>                                        
+                                        <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderVersion, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>                                        
                                     </StackPanel>
                                 </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>

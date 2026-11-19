@@ -6,6 +6,8 @@ public class PSVitaMainViewModel : MultiToolTabViewModel
 {
     public RepackMainViewModel RepackVM { get; } = new();
 
+    public DecryptMainViewModel DecryptVM { get; } = new();
+
     public ConverterMainViewModel ConverterVM { get; } = new();
 
     public DownloadMainViewModel DownloadVM { get; } = new();
@@ -13,6 +15,7 @@ public class PSVitaMainViewModel : MultiToolTabViewModel
     public PSVitaMainViewModel()
     {
         Tools.Add(RepackVM);
+        Tools.Add(DecryptVM);
         Tools.Add(ConverterVM);
         Tools.Add(DownloadVM);
 

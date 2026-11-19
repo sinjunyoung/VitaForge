@@ -60,9 +60,6 @@ internal static class PatchShared
         {
             foreach (var entry in orderedEntries)
             {
-                if (entry.Kind == SourceKind.Unpacked)
-                    throw new NotSupportedException(Loc.S.ErrVitaUnpackedFolderRepackOnly(entry.Path));
-
                 if (entry.Kind == SourceKind.Pkg)
                 {
                     if (entry.Probe is null)

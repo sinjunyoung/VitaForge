@@ -75,6 +75,7 @@ public sealed class Spanish : LocalizedStrings
     public override string DescVitaKeyRequiredShared => "Se requiere una clave (work.bin, *.rif/cadena zRIF) (Patch puede compartir la clave de App)";
     public override string DescVitaPatchMerge => "Emulador: sobrescribe app/addcont tras descifrar / Consola: añade rePatch/reAddcont";
     public override string DescVitaPkgKeyRequired => "Para pkg se requiere una clave (work.bin, *.rif/cadena zRIF)";
+    public override string DescVitaDecryptAll => "Descifra todos los archivos y genera una estructura para emulador (app/addcont/license), combinando el juego base y la actualización";
     public override string DescWiiUAutoClassify => "El juego base, la actualización y los DLC se clasifican automáticamente por Title ID";
 
     // Detail
@@ -1098,6 +1099,7 @@ public sealed class Spanish : LocalizedStrings
     public override string LogVitaConvertingNoNpDrm(object? arg0) => $"Convirtiendo al formato NoNpDrm ({arg0})...";
     public override string LogVitaCreatingPatch(object? arg0) => $"Creando el parche para {arg0}...";
     public override string LogVitaDecryptFailed(object? arg0, object? arg1, object? arg2) => $"[{arg0}] {arg1}: Error de descifrado - {arg2}";
+    public override string LogVitaDecryptGroupOutput(object? arg0, object? arg1, object? arg2) => $"[{arg0}] {arg1} archivos descifrados -> {arg2}";
     public override string LogVitaFileListCheckFailed(object? arg0, object? arg1, object? arg2) => $"{arg0} {arg1}: Error al comprobar la lista de archivos - {arg2}";
     public override string LogVitaFolderRepacking(object? arg0) => $"Reempaquetado basado en carpetas para {arg0}...";
     public override string LogVitaItemProcessFailed(object? arg0, object? arg1, object? arg2) => $"[{arg0}] {arg1}: Error de procesamiento - {arg2}";

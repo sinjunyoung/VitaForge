@@ -75,6 +75,7 @@ public sealed class Japanese : LocalizedStrings
     public override string DescVitaKeyRequiredShared => "キー (work.bin, *.rif/zRIF文字列) が必要です (PatchはAppのキーを共有できます)";
     public override string DescVitaPatchMerge => "エミュレーター: 復号後にapp/addcontを上書き / 実機: rePatch/reAddcontを追加";
     public override string DescVitaPkgKeyRequired => "pkgの場合はキー (work.bin, *.rif/zRIF文字列) が必要です";
+    public override string DescVitaDecryptAll => "すべてのファイルを復号化し、エミュレータ向け構造(app/addcont/license)で出力します (本編+アップデート統合)";
     public override string DescWiiUAutoClassify => "本編/アップデート/DLCはタイトルIDで自動的に分類されます";
 
     // Detail
@@ -1098,6 +1099,7 @@ public sealed class Japanese : LocalizedStrings
     public override string LogVitaConvertingNoNpDrm(object? arg0) => $"NoNpDrm形式 ({arg0}) に変換中...";
     public override string LogVitaCreatingPatch(object? arg0) => $"{arg0}用のパッチを作成中...";
     public override string LogVitaDecryptFailed(object? arg0, object? arg1, object? arg2) => $"[{arg0}] {arg1}: 復号失敗 - {arg2}";
+    public override string LogVitaDecryptGroupOutput(object? arg0, object? arg1, object? arg2) => $"[{arg0}] {arg1}個のファイルを復号化 -> {arg2}";
     public override string LogVitaFileListCheckFailed(object? arg0, object? arg1, object? arg2) => $"{arg0} {arg1}: ファイル一覧の確認に失敗 - {arg2}";
     public override string LogVitaFolderRepacking(object? arg0) => $"{arg0}用のフォルダーベースリパック中...";
     public override string LogVitaItemProcessFailed(object? arg0, object? arg1, object? arg2) => $"[{arg0}] {arg1}: 処理失敗 - {arg2}";
