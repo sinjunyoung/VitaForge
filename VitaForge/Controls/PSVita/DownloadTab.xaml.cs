@@ -1,11 +1,11 @@
 ﻿using Common.Services;
-using VitaForge.ViewModels.PSVita;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using VitaForge.ViewModels.PSVita;
 
 namespace VitaForge.Controls.PSVita;
 
@@ -15,19 +15,20 @@ public partial class DownloadTab : UserControl
 
     public DownloadTab() => InitializeComponent();
 
-    private void LvCatalog_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    private void LvCatalog_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
         if (ViewModel == null || e.OriginalSource is not DependencyObject source)
             return;
 
         for (DependencyObject? current = source; current != null && current != LvCatalog; current = VisualTreeHelper.GetParent(current))
         {
-            if (current is ToggleButton or ScrollBar or GridViewColumnHeader)
+            if (current is ToggleButton or Button or ScrollBar or GridViewColumnHeader)
                 return;
 
             if (current is ListViewItem { DataContext: NpsRowViewModel row })
             {
                 ViewModel.ToggleExpand(row);
+                e.Handled = true;
                 return;
             }
         }
@@ -63,5 +64,13 @@ public partial class DownloadTab : UserControl
             ViewModel.Cancel();
         else
             await ViewModel.StartAsync();
+    }
+
+    private void BtnExpand_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is FrameworkElement { DataContext: NpsRowViewModel row })
+            ViewModel?.ToggleExpand(row);
+
+        e.Handled = true;
     }
 }

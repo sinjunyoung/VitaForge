@@ -12,6 +12,8 @@ public sealed class NpsCatalogItem
 
     public string OriginalName { get; init; } = string.Empty;
 
+    public IReadOnlyList<string> KoreanNames { get; set; } = [];
+
     public string Url { get; init; } = string.Empty;
 
     public string? ZRif { get; init; }
@@ -23,6 +25,8 @@ public sealed class NpsCatalogItem
     public long Size { get; init; }
 
     public string Sha256 { get; init; } = string.Empty;
+
+    public string KoreanName => KoreanNames.Count > 0 ? KoreanNames[0] : string.Empty;
 
     public bool HasKey => !string.IsNullOrWhiteSpace(ZRif);
 }

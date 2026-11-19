@@ -33,6 +33,11 @@
     <Resource Include="Assets\Sounds\**\*.mp3" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="PSV_NAMES_KO.tsv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Markdig" Version="1.6.0" />
     <PackageReference Include="Markdig.Wpf" Version="0.5.0.1" />
     <PackageReference Include="NAudio" Version="3.3.0" />

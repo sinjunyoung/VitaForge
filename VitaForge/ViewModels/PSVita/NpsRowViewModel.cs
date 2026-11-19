@@ -50,11 +50,13 @@ public class NpsRowViewModel(NpsCatalogItem item, NpsCatalogGame? game, bool isC
 
     public string Name => Item.Name;
 
+    public string KoreanName => Item.KoreanName;
+
+    public bool HasKoreanName => !string.IsNullOrEmpty(Item.KoreanName);
+
     public string Version => Item.Version;
 
     public string Size => Item.Size > 0 ? FileSize.FormatSize(Item.Size) : string.Empty;
-
-    public bool HasKey => Item.HasKey;
 
     public void RefreshChecked() => OnPropertyChanged(nameof(IsChecked));
 }

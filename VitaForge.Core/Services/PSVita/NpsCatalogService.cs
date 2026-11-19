@@ -9,6 +9,7 @@ public sealed class NpsCatalogService
     private const string GamesFileName = "PSV_GAMES.tsv";
     private const string UpdatesFileName = "PSV_UPDATES.tsv";
     private const string DlcsFileName = "PSV_DLCS.tsv";
+    private const string KoreanNamesFileName = "PSV_NAMES_KO.tsv";
 
     private static readonly Lazy<NpsCatalogService> _instance = new(() => new NpsCatalogService());
 
@@ -44,8 +45,9 @@ public sealed class NpsCatalogService
         if (!string.IsNullOrWhiteSpace(name))
         {
             string keyword = name.Trim();
+            string compactKeyword = Compact(keyword);
 
-            query = query.Where(g => g.Game.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase) || g.Game.OriginalName.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+            query = query.Where(g => MatchesName(g.Game, keyword, compactKeyword));
         }
 
         return [.. query];
@@ -68,6 +70,11 @@ public sealed class NpsCatalogService
 
         if (File.Exists(dlcsPath))
             AttachDlcs(dlcsPath, games);
+
+        string koreanNamesPath = Path.Combine(baseDir, KoreanNamesFileName);
+
+        if (File.Exists(koreanNamesPath))
+            AttachKoreanNames(koreanNamesPath, games);
 
         _games = [.. games.Values.OrderBy(g => g.Game.Name, StringComparer.OrdinalIgnoreCase).ThenBy(g => g.Game.TitleId, StringComparer.OrdinalIgnoreCase)];
         _byTitleId = games;
@@ -143,6 +150,44 @@ public sealed class NpsCatalogService
         foreach (var item in picked.Values.OrderBy(i => i.Name, StringComparer.OrdinalIgnoreCase).ThenBy(i => i.ContentId, StringComparer.OrdinalIgnoreCase))
             games[item.TitleId].Dlcs.Add(item);
     }
+
+    private static void AttachKoreanNames(string path, Dictionary<string, NpsCatalogGame> games)
+    {
+        foreach (var row in NpsTsvReader.Read(path, "Title ID", "Korean Name"))
+        {
+            if (!games.TryGetValue(row["Title ID"], out var game))
+                continue;
+
+            game.Game.KoreanNames = [.. row["Korean Name"].Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)];
+        }
+    }
+
+    private static bool MatchesName(NpsCatalogItem item, string keyword, string compactKeyword)
+    {
+        if (Contains(item.Name, keyword, compactKeyword) || Contains(item.OriginalName, keyword, compactKeyword))
+            return true;
+
+        foreach (string koreanName in item.KoreanNames)
+        {
+            if (Contains(koreanName, keyword, compactKeyword))
+                return true;
+        }
+
+        return false;
+    }
+
+    private static bool Contains(string source, string keyword, string compactKeyword)
+    {
+        if (string.IsNullOrEmpty(source))
+            return false;
+
+        if (source.Contains(keyword, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        return compactKeyword.Length > 0 && Compact(source).Contains(compactKeyword, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static string Compact(string value) => string.Concat(value.Where(char.IsLetterOrDigit));
 
     private static NpsCatalogItem? CreateItem(NpsTsvRow row, NpsEntryKind kind)
     {
