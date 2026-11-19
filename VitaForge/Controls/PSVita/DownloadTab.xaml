@@ -101,6 +101,9 @@
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Width="70">
+                                <GridViewColumn.Header>
+                                    <CheckBox Command="{Binding ToggleAllCheckedCommand}" HorizontalAlignment="Left" IsChecked="{Binding AllChecked, Mode=OneWay}" IsThreeState="True" Margin="16,0,0,0" ToolTip="{Binding Path=Current.ToolTipSelectAllToggle, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
+                                </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -166,10 +169,13 @@
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <GridViewColumn Header="{Binding Path=Current.HeaderSize, Source={x:Static l:Loc.Instance}}" Width="90">
+                            <GridViewColumn Width="Auto">
+                                <GridViewColumn.Header>
+                                    <Image Source="/Assets/Images/FileSizeBytes.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                                </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock FontSize="12" Foreground="#E8E8F0" HorizontalAlignment="Right" Text="{Binding Size}" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Size}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

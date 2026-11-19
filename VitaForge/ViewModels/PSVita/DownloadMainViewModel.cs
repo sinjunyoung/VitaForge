@@ -38,6 +38,19 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
 
     public string? SearchName { get; set { SetProperty(ref field, value); } }
 
+    public bool? AllChecked
+    {
+        get
+        {
+            if (Rows.Count == 0)
+                return false;
+
+            int checkedCount = Rows.Count(r => r.IsChecked);
+
+            return checkedCount == 0 ? false : checkedCount == Rows.Count ? true : null;
+        }
+    }
+
     public string ResultText => Loc.S.LabelNpsResultSelected(_resultCount, _checkedItems.Count);
 
     public string? OutputPath
@@ -62,6 +75,8 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
 
     public ICommand ClearCheckedCommand { get; }
 
+    public ICommand ToggleAllCheckedCommand { get; }
+
     public ICommand BrowseOutputCommand { get; }
 
     public DownloadMainViewModel()
@@ -70,6 +85,7 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
 
         SearchCommand = new RelayCommand(_ => Search(), _ => NpsCatalogService.Instance.IsLoaded);
         ClearCheckedCommand = new RelayCommand(_ => ClearChecked(), _ => _checkedItems.Count > 0);
+        ToggleAllCheckedCommand = new RelayCommand(_ => ToggleAllChecked(), _ => Rows.Count > 0);
         BrowseOutputCommand = new RelayCommand(_ => BrowseOutput());
         CancelCommand = new RelayCommand(_ => Cancel());
 
@@ -105,6 +121,7 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
         Rows = [.. results.Select(g => CreateRow(g.Game, g, isChild: false))];
 
         OnPropertyChanged(nameof(ResultText));
+        OnPropertyChanged(nameof(AllChecked));
     }
 
     private NpsRowViewModel CreateRow(NpsCatalogItem item, NpsCatalogGame? game, bool isChild) => new(item, game, isChild, _checkedItems.Contains, SetChecked);
@@ -117,6 +134,27 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
             _checkedItems.Remove(item);
 
         OnPropertyChanged(nameof(ResultText));
+        OnPropertyChanged(nameof(AllChecked));
+
+        CommandManager.InvalidateRequerySuggested();
+    }
+
+    private void ToggleAllChecked()
+    {
+        bool target = AllChecked != true;
+
+        foreach (var row in Rows)
+        {
+            if (target)
+                _checkedItems.Add(row.Item);
+            else
+                _checkedItems.Remove(row.Item);
+
+            row.RefreshChecked();
+        }
+
+        OnPropertyChanged(nameof(ResultText));
+        OnPropertyChanged(nameof(AllChecked));
 
         CommandManager.InvalidateRequerySuggested();
     }
@@ -129,6 +167,7 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
             row.RefreshChecked();
 
         OnPropertyChanged(nameof(ResultText));
+        OnPropertyChanged(nameof(AllChecked));
     }
 
     public void ToggleExpand(NpsRowViewModel row)
@@ -148,6 +187,8 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
 
             row.IsExpanded = false;
 
+            OnPropertyChanged(nameof(AllChecked));
+
             return;
         }
 
@@ -157,6 +198,8 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
             Rows.Insert(insertAt++, CreateRow(child, null, isChild: true));
 
         row.IsExpanded = true;
+
+        OnPropertyChanged(nameof(AllChecked));
     }
 
     private void BrowseOutput()
