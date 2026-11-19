@@ -21,7 +21,6 @@ public partial class MainWindow : Window
         DataContext = ViewModel;
         InitializeComponent();
         Closing += MainWindow_Closing;
-        Loaded += MainWindow_Loaded;
 
         RestoreWindowState();
 
@@ -31,36 +30,6 @@ public partial class MainWindow : Window
             if (e.PropertyName == nameof(CommonConfig.Topmost))
                 Topmost = AppConfig.Instance.Common.Topmost;
         };
-    }
-
-    private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
-    {
-        if (!AppConfig.Instance.Common.AutoCheckUpdate)
-            return;
-
-        try
-        {
-            var update = await VersionHelper.GetUpdateAsync();
-            if (update == null)
-                return;
-
-            var updateWindow = new UpdateWindow(update) { Owner = this };
-            if (updateWindow.ShowDialog() == true)
-            {
-                try
-                {
-                    (update.HtmlUrl ?? "https://github.com/sinjunyoung/VitaForge/releases/latest").OpenUrl();
-                }
-                catch (Exception ex)
-                {
-                    MessageBoxHelper.ShowError(Loc.S.ErrOpenDownloadPageFailed(ex.Message));
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            MessageBoxHelper.ShowError(Loc.S.ErrUpdateInfoCheckFailed(ex.Message));
-        }
     }
 
     private void RestoreWindowState()
