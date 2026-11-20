@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using VitaForge.Core.ViewModels.PSVita;
 using VitaForge.ViewModels.PSVita;
 
 namespace VitaForge.Controls.PSVita;

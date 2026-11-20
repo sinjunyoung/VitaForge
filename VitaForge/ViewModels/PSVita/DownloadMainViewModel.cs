@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Input;
 using Vita.Core.Models;
+using VitaForge.Core.ViewModels.PSVita;
 
 namespace VitaForge.ViewModels.PSVita;
 

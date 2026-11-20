@@ -1560,4 +1560,25 @@ public abstract class LocalizedStrings
     public abstract string LogNpsHashMismatch(object? arg0);
     public abstract string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2);
     public abstract string LogNpsOlderUpdateSkipped(object? arg0, object? arg1);
+
+    public virtual string ButtonLoadPatchCsv => "Load CSV";
+    public virtual string LabelInstallTarget => "Install to";
+    public virtual string RadioInstallVita3k => "Emulator (Vita3K)";
+    public virtual string RadioInstallDevice => "Device (SD card)";
+    public virtual string CheckIncludeDlc => "Include DLC";
+    public virtual string HintVita3kFolder => "Select the Vita3K folder (the one containing ux0)";
+    public virtual string HintDeviceRoot => "Select the SD card root";
+    public virtual string HeaderRequiredUpdate => "Required update";
+    public virtual string ToolTipOpenReleasePage => "Open release page";
+    public virtual string ErrPsvPatchInstallPathNotFound(object? arg0) => $"Install path not found: {arg0}";
+    public virtual string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"Patch list loaded: {arg0} entries ({arg1})";
+    public virtual string LogPsvPatchGameNotFound(object? arg0, object? arg1) => $"Skipped (game not found in catalog): {arg0} {arg1}";
+    public virtual string LogPsvPatchUpdateFallback(object? arg0, object? arg1, object? arg2) => $"Update {arg1} not found for {arg0}, using {arg2}";
+    public virtual string LogPsvPatchDownloadingPatch(object? arg0) => $"Downloading patch: {arg0}";
+    public virtual string LogPsvPatchNothingPatched(object? arg0) => $"No files were patched, install skipped: {arg0}";
+    public virtual string LogPsvPatchInstalled(object? arg0, object? arg1) => $"Installed: {arg0} → {arg1}";
+    public virtual string LogPsvPatchItemFailed(object? arg0, object? arg1) => $"Failed: {arg0} ({arg1})";
+    public virtual string ErrPsvPatchDriveBlocked => "Google Drive blocked the download (quota exceeded or no access).";
+    public virtual string ErrPsvPatchDriveEmptyFolder => "No files found in the Google Drive folder.";
+    public virtual string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"Google Drive file selected: {arg0} (of {arg1} candidates)";
 }

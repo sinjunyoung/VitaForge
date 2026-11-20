@@ -1,10 +1,9 @@
 ﻿using Common.Services;
 using VitaForge.Core.Models.PSVita;
-using VitaForge.Core.ViewModels;
 using System.Windows.Media;
 using Vita.Core.Models;
 
-namespace VitaForge.ViewModels.PSVita;
+namespace VitaForge.Core.ViewModels.PSVita;
 
 public class NpsRowViewModel(NpsCatalogItem item, NpsCatalogGame? game, bool isChild, Func<NpsCatalogItem, bool> isChecked, Action<NpsCatalogItem, bool> setChecked) : ViewModelBase
 {

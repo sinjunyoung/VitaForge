@@ -12,12 +12,15 @@ public class PSVitaMainViewModel : MultiToolTabViewModel
 
     public DownloadMainViewModel DownloadVM { get; } = new();
 
+    public PatchMainViewModel PatchVM { get; } = new();
+
     public PSVitaMainViewModel()
     {
         Tools.Add(RepackVM);
         Tools.Add(DecryptVM);
         Tools.Add(ConverterVM);
         Tools.Add(DownloadVM);
+        Tools.Add(PatchVM);
 
         InitializeMultiTools();
     }

@@ -1,4 +1,4 @@
-namespace VitaForge.ViewModels.PSVita;
+namespace VitaForge.Core.Models.PSVita;
 
 public sealed class PatchTargetNode(string name, string? fullPath)
 {

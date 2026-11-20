@@ -1,10 +1,10 @@
 using Common;
 using Common.Localization;
-using VitaForge.ViewModels.PSVita;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using Vita.Core.Models;
+using VitaForge.Core.Models.PSVita;
 
 namespace VitaForge.Views;
 

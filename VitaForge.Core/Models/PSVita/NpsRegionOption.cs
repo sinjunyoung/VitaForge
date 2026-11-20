@@ -1,6 +1,6 @@
 ﻿using Common.Localization;
 
-namespace VitaForge.ViewModels.PSVita;
+namespace VitaForge.Core.Models.PSVita;
 
 public sealed class NpsRegionOption(string? value)
 {

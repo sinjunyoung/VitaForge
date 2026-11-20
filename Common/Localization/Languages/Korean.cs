@@ -1542,4 +1542,25 @@ public sealed class Korean : LocalizedStrings
     public override string LogNpsHashMismatch(object? arg0) => $"{arg0}의 SHA256이 tsv 값과 다릅니다. 파일이 손상되었을 수 있습니다.";
     public override string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2) => $"다운로드 중 ({arg0}/{arg1}): {arg2}";
     public override string LogNpsOlderUpdateSkipped(object? arg0, object? arg1) => $"건너뜀 (타이틀당 최신 업데이트 하나만 사용): {arg0} {arg1}";
+
+    public override string ButtonLoadPatchCsv => "CSV 불러오기";
+    public override string LabelInstallTarget => "설치 대상";
+    public override string RadioInstallVita3k => "에뮬레이터 (Vita3K)";
+    public override string RadioInstallDevice => "실기 (SD 카드)";
+    public override string CheckIncludeDlc => "DLC 포함";
+    public override string HintVita3kFolder => "Vita3K 폴더를 선택하세요 (ux0가 있는 폴더)";
+    public override string HintDeviceRoot => "SD 카드 루트를 선택하세요";
+    public override string HeaderRequiredUpdate => "필요 업데이트";
+    public override string ToolTipOpenReleasePage => "배포 페이지 열기";
+    public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"설치 경로를 찾을 수 없습니다: {arg0}";
+    public override string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"패치 목록 로드: {arg0}건 ({arg1})";
+    public override string LogPsvPatchGameNotFound(object? arg0, object? arg1) => $"건너뜀 (카탈로그에 본편 없음): {arg0} {arg1}";
+    public override string LogPsvPatchUpdateFallback(object? arg0, object? arg1, object? arg2) => $"{arg0}의 업데이트 {arg1}을(를) 찾지 못해 {arg2}을(를) 사용합니다";
+    public override string LogPsvPatchDownloadingPatch(object? arg0) => $"패치 다운로드 중: {arg0}";
+    public override string LogPsvPatchNothingPatched(object? arg0) => $"패치된 파일이 없어 설치를 건너뜁니다: {arg0}";
+    public override string LogPsvPatchInstalled(object? arg0, object? arg1) => $"설치 완료: {arg0} → {arg1}";
+    public override string LogPsvPatchItemFailed(object? arg0, object? arg1) => $"실패: {arg0} ({arg1})";
+    public override string ErrPsvPatchDriveBlocked => "구글 드라이브가 다운로드를 막았습니다 (쿼터 초과 또는 접근 불가).";
+    public override string ErrPsvPatchDriveEmptyFolder => "구글 드라이브 폴더에서 파일을 찾지 못했습니다.";
+    public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"구글 드라이브 파일 선택: {arg0} (후보 {arg1}개 중)";
 }
