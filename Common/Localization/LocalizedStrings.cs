@@ -1305,6 +1305,7 @@ public abstract class LocalizedStrings
     public abstract string RadioConsoleRepatch { get; }
     public abstract string RadioEmulatorAppAddcont { get; }
     public abstract string RadioFolderPerTitleId { get; }
+    public abstract string RadioPkgDownloadOnly { get; }
     public abstract string RadioLowercase { get; }
     public abstract string RadioMergeAll { get; }
     public abstract string RadioMergeGroupByTitleId { get; }
@@ -1472,6 +1473,7 @@ public abstract class LocalizedStrings
     public abstract string ToolTipChangePatchFile { get; }
     public abstract string ToolTipChangePatchPackage { get; }
     public abstract string ToolTipClear { get; }
+    public abstract string ToolTipShowCheckedOnly { get; }
     public abstract string ToolTipCopyHash { get; }
     public abstract string ToolTipDragFolderToChangeDownload { get; }
     public abstract string ToolTipExpandCollapse { get; }

@@ -1305,6 +1305,7 @@ public sealed class Korean : LocalizedStrings
     public override string RadioConsoleRepatch => "실기 (rePatch, reAddcont)";
     public override string RadioEmulatorAppAddcont => "에뮬레이터 (app, addcont)";
     public override string RadioFolderPerTitleId => "폴더 (타이틀 ID별)";
+    public override string RadioPkgDownloadOnly => "PKG (다운로드만)";
     public override string RadioLowercase => "소문자";
     public override string RadioMergeAll => "전체";
     public override string RadioMergeGroupByTitleId => "타이틀 ID별 그룹핑 (기존 방식)";
@@ -1472,6 +1473,7 @@ public sealed class Korean : LocalizedStrings
     public override string ToolTipChangePatchFile => "다른 패치 파일로 변경";
     public override string ToolTipChangePatchPackage => "다른 패치 패키지로 변경";
     public override string ToolTipClear => "비우기";
+    public override string ToolTipShowCheckedOnly => "선택한 항목만 보기";
     public override string ToolTipCopyHash => "해시값 복사";
     public override string ToolTipDragFolderToChangeDownload => "폴더를 이곳에 드래그하여 다운로드 위치를 변경할 수 있습니다.";
     public override string ToolTipExpandCollapse => "펼치기/접기";

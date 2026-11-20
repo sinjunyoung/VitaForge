@@ -1305,6 +1305,7 @@ public sealed class French : LocalizedStrings
     public override string RadioConsoleRepatch => "Console (rePatch, reAddcont)";
     public override string RadioEmulatorAppAddcont => "Émulateur (app, addcont)";
     public override string RadioFolderPerTitleId => "Dossier (par Title ID)";
+    public override string RadioPkgDownloadOnly => "PKG (téléchargement uniquement)";
     public override string RadioLowercase => "Minuscules";
     public override string RadioMergeAll => "Tout";
     public override string RadioMergeGroupByTitleId => "Regrouper par Title ID (méthode actuelle)";
@@ -1472,6 +1473,7 @@ public sealed class French : LocalizedStrings
     public override string ToolTipChangePatchFile => "Passer à un autre fichier de patch";
     public override string ToolTipChangePatchPackage => "Passer à un autre paquet de patchs";
     public override string ToolTipClear => "Vider";
+    public override string ToolTipShowCheckedOnly => "Afficher uniquement les éléments cochés";
     public override string ToolTipCopyHash => "Copier le hash";
     public override string ToolTipDragFolderToChangeDownload => "Vous pouvez glisser un dossier ici pour modifier l’emplacement de téléchargement.";
     public override string ToolTipExpandCollapse => "Développer/Réduire";

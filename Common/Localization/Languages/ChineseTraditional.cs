@@ -1305,6 +1305,7 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string RadioConsoleRepatch => "實機 (rePatch, reAddcont)";
     public override string RadioEmulatorAppAddcont => "模擬器 (app, addcont)";
     public override string RadioFolderPerTitleId => "資料夾 (依標題 ID)";
+    public override string RadioPkgDownloadOnly => "PKG (僅下載)";
     public override string RadioLowercase => "小寫";
     public override string RadioMergeAll => "全部";
     public override string RadioMergeGroupByTitleId => "依標題 ID 分組 (原有方式)";
@@ -1472,6 +1473,7 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string ToolTipChangePatchFile => "變更為其他修補檔";
     public override string ToolTipChangePatchPackage => "變更為其他修補檔套件";
     public override string ToolTipClear => "清空";
+    public override string ToolTipShowCheckedOnly => "僅顯示已選項目";
     public override string ToolTipCopyHash => "複製雜湊值";
     public override string ToolTipDragFolderToChangeDownload => "將資料夾拖曳至此即可變更下載位置。";
     public override string ToolTipExpandCollapse => "展開/摺疊";

@@ -1305,6 +1305,7 @@ public sealed class Japanese : LocalizedStrings
     public override string RadioConsoleRepatch => "実機 (rePatch, reAddcont)";
     public override string RadioEmulatorAppAddcont => "エミュレーター (app, addcont)";
     public override string RadioFolderPerTitleId => "フォルダー (タイトルID別)";
+    public override string RadioPkgDownloadOnly => "PKG (ダウンロードのみ)";
     public override string RadioLowercase => "小文字";
     public override string RadioMergeAll => "すべて";
     public override string RadioMergeGroupByTitleId => "タイトルID別にグループ化 (従来方式)";
@@ -1472,6 +1473,7 @@ public sealed class Japanese : LocalizedStrings
     public override string ToolTipChangePatchFile => "別のパッチファイルに変更";
     public override string ToolTipChangePatchPackage => "別のパッチパッケージに変更";
     public override string ToolTipClear => "クリア";
+    public override string ToolTipShowCheckedOnly => "選択した項目のみ表示";
     public override string ToolTipCopyHash => "ハッシュ値をコピー";
     public override string ToolTipDragFolderToChangeDownload => "ここにフォルダーをドラッグしてダウンロード先を変更できます。";
     public override string ToolTipExpandCollapse => "展開/折りたたみ";

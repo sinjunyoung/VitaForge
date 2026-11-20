@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using Common.Localization;
+using Common.Models;
+using VitaForge.Core.Models.PSVita;
+using System.IO;
 using System.Net.Http;
 using System.Security.Cryptography;
 
@@ -9,6 +12,14 @@ public static class NpsDownloadService
     private const int BufferSize = 81920;
 
     private static readonly HttpClient Client = new() { Timeout = Timeout.InfiniteTimeSpan };
+
+    public static async Task DownloadVerifiedAsync(NpsCatalogItem item, string destinationPath, Action<long> onBytes, Action<string, LogLevel> log, CancellationToken ct)
+    {
+        string hash = await DownloadAsync(item.Url, destinationPath, onBytes, ct);
+
+        if (!string.IsNullOrEmpty(item.Sha256) && !hash.Equals(item.Sha256, StringComparison.OrdinalIgnoreCase))
+            log(Loc.S.LogNpsHashMismatch(item.Name), LogLevel.Error);
+    }
 
     public static async Task<string> DownloadAsync(string url, string destinationPath, Action<long> onBytes, CancellationToken ct)
     {

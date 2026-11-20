@@ -1305,6 +1305,7 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string RadioConsoleRepatch => "实机 (rePatch, reAddcont)";
     public override string RadioEmulatorAppAddcont => "模拟器 (app, addcont)";
     public override string RadioFolderPerTitleId => "文件夹 (按标题 ID)";
+    public override string RadioPkgDownloadOnly => "PKG (仅下载)";
     public override string RadioLowercase => "小写";
     public override string RadioMergeAll => "全部";
     public override string RadioMergeGroupByTitleId => "按标题 ID 分组 (原有方式)";
@@ -1472,6 +1473,7 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string ToolTipChangePatchFile => "更换为其他补丁文件";
     public override string ToolTipChangePatchPackage => "更换为其他补丁包";
     public override string ToolTipClear => "清空";
+    public override string ToolTipShowCheckedOnly => "仅显示已选项目";
     public override string ToolTipCopyHash => "复制哈希值";
     public override string ToolTipDragFolderToChangeDownload => "将文件夹拖到此处即可更改下载位置。";
     public override string ToolTipExpandCollapse => "展开/折叠";

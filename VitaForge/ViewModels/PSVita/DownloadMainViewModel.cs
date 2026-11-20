@@ -18,6 +18,7 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
 {
     private readonly Stopwatch _totalSw = new();
     private readonly HashSet<NpsCatalogItem> _checkedItems = [];
+    private List<NpsCatalogGame> _searchResults = [];
     private int _resultCount;
 
     public ObservableCollection<NpsRowViewModel> Rows { get; private set { SetProperty(ref field, value); } } = [];
@@ -71,6 +72,20 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
 
     public bool OutputFolder { get; set { SetProperty(ref field, value); } }
 
+    public bool OutputPkg { get; set { SetProperty(ref field, value); } }
+
+    public bool ShowCheckedOnly
+    {
+        get;
+        set
+        {
+            if (SetProperty(ref field, value))
+                RebuildRows();
+        }
+    }
+
+    public bool CanShowCheckedOnly => ShowCheckedOnly || _checkedItems.Count > 0;
+
     public ICommand SearchCommand { get; }
 
     public ICommand ClearCheckedCommand { get; }
@@ -114,14 +129,34 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
         if (!NpsCatalogService.Instance.IsLoaded)
             return;
 
-        var results = NpsCatalogService.Instance.Search(SearchTitleId, SelectedRegion?.Value, SearchName);
+        _searchResults = NpsCatalogService.Instance.Search(SearchTitleId, SelectedRegion?.Value, SearchName);
+        _resultCount = _searchResults.Count;
 
-        _resultCount = results.Count;
+        if (ShowCheckedOnly)
+            ShowCheckedOnly = false;
+        else
+            RebuildRows();
+    }
 
-        Rows = [.. results.Select(g => CreateRow(g.Game, g, isChild: false))];
+    private void RebuildRows()
+    {
+        Rows = ShowCheckedOnly ? [.. BuildCheckedRows()] : [.. _searchResults.Select(g => CreateRow(g.Game, g, isChild: false))];
 
+        NotifyCheckedChanged();
+    }
+
+    private IEnumerable<NpsRowViewModel> BuildCheckedRows() => _checkedItems
+        .OrderBy(i => i.TitleId, StringComparer.OrdinalIgnoreCase)
+        .ThenBy(i => i.Kind)
+        .Select(i => CreateRow(i, null, isChild: i.Kind != NpsEntryKind.Game));
+
+    private void NotifyCheckedChanged()
+    {
         OnPropertyChanged(nameof(ResultText));
         OnPropertyChanged(nameof(AllChecked));
+        OnPropertyChanged(nameof(CanShowCheckedOnly));
+
+        CommandManager.InvalidateRequerySuggested();
     }
 
     private NpsRowViewModel CreateRow(NpsCatalogItem item, NpsCatalogGame? game, bool isChild) => new(item, game, isChild, _checkedItems.Contains, SetChecked);
@@ -133,10 +168,7 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
         else
             _checkedItems.Remove(item);
 
-        OnPropertyChanged(nameof(ResultText));
-        OnPropertyChanged(nameof(AllChecked));
-
-        CommandManager.InvalidateRequerySuggested();
+        NotifyCheckedChanged();
     }
 
     private void ToggleAllChecked()
@@ -153,21 +185,23 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
             row.RefreshChecked();
         }
 
-        OnPropertyChanged(nameof(ResultText));
-        OnPropertyChanged(nameof(AllChecked));
-
-        CommandManager.InvalidateRequerySuggested();
+        NotifyCheckedChanged();
     }
 
     private void ClearChecked()
     {
         _checkedItems.Clear();
 
+        if (ShowCheckedOnly)
+        {
+            ShowCheckedOnly = false;
+            return;
+        }
+
         foreach (var row in Rows)
             row.RefreshChecked();
 
-        OnPropertyChanged(nameof(ResultText));
-        OnPropertyChanged(nameof(AllChecked));
+        NotifyCheckedChanged();
     }
 
     public void ToggleExpand(NpsRowViewModel row)
@@ -251,11 +285,22 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
     {
         try
         {
-            var output = OutputZip ? PkgConvertOutput.Zip : PkgConvertOutput.Folder;
+            List<string> outputs;
 
-            AppendLog(Loc.S.LogVitaConvertingNoNpDrm(OutputZip ? "zip" : Loc.S.LabelFolder), LogLevel.Highlight);
+            if (OutputPkg)
+            {
+                AppendLog(Loc.S.StatusDownloading, LogLevel.Highlight);
 
-            var outputs = await NpsDownloadConvertService.RunAsync([.. _checkedItems], OutputPath!, output, AppendLog, BuildProgressReporter(), ct);
+                outputs = await NpsPkgDownloadService.RunAsync([.. _checkedItems], OutputPath!, AppendLog, BuildProgressReporter(), ct);
+            }
+            else
+            {
+                var output = OutputZip ? PkgConvertOutput.Zip : PkgConvertOutput.Folder;
+
+                AppendLog(Loc.S.LogVitaConvertingNoNpDrm(OutputZip ? "zip" : Loc.S.LabelFolder), LogLevel.Highlight);
+
+                outputs = await NpsDownloadConvertService.RunAsync([.. _checkedItems], OutputPath!, output, AppendLog, BuildProgressReporter(), ct);
+            }
 
             AppendLog(Loc.S.LogVitaAllDoneTitles(outputs.Count, _totalSw.Elapsed.ToString("mm\\:ss")), LogLevel.Ok);
 

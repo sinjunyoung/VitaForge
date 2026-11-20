@@ -42,10 +42,7 @@ public static class NpsDownloadConvertService
 
                 log(Loc.S.LogNpsDownloadingItem(i + 1, plans.Count, plan.Item.Name), LogLevel.Info);
 
-                string hash = await NpsDownloadService.DownloadAsync(plan.Item.Url, pkgPath, reporter.AddProgress, ct);
-
-                if (!string.IsNullOrEmpty(plan.Item.Sha256) && !hash.Equals(plan.Item.Sha256, StringComparison.OrdinalIgnoreCase))
-                    log(Loc.S.LogNpsHashMismatch(plan.Item.Name), LogLevel.Error);
+                await NpsDownloadService.DownloadVerifiedAsync(plan.Item, pkgPath, reporter.AddProgress, log, ct);
 
                 var probe = await Task.Run(() => PkgProbe.Probe(pkgPath), ct);
 

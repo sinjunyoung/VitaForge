@@ -1305,6 +1305,7 @@ public sealed class Russian : LocalizedStrings
     public override string RadioConsoleRepatch => "Консоль (rePatch, reAddcont)";
     public override string RadioEmulatorAppAddcont => "Эмулятор (app, addcont)";
     public override string RadioFolderPerTitleId => "Папка (по Title ID)";
+    public override string RadioPkgDownloadOnly => "PKG (только загрузка)";
     public override string RadioLowercase => "Строчные";
     public override string RadioMergeAll => "Все";
     public override string RadioMergeGroupByTitleId => "Группировка по Title ID (прежний способ)";
@@ -1472,6 +1473,7 @@ public sealed class Russian : LocalizedStrings
     public override string ToolTipChangePatchFile => "Выбрать другой файл патча";
     public override string ToolTipChangePatchPackage => "Выбрать другой пакет патчей";
     public override string ToolTipClear => "Очистить";
+    public override string ToolTipShowCheckedOnly => "Показать только выбранные";
     public override string ToolTipCopyHash => "Копировать хеш";
     public override string ToolTipDragFolderToChangeDownload => "Перетащите папку сюда, чтобы изменить папку загрузки.";
     public override string ToolTipExpandCollapse => "Развернуть/Свернуть";
