@@ -1310,7 +1310,9 @@ public sealed class Russian : LocalizedStrings
     public override string RadioConsoleRepatch => "Консоль (rePatch, reAddcont)";
     public override string RadioEmulatorAppAddcont => "Эмулятор (app, addcont)";
     public override string RadioFolderPerTitleId => "Папка (по Title ID)";
-    public override string RadioPkgDownloadOnly => "PKG (только загрузка)";
+    public override string RadioOriginalPkg => "Исходный PKG";
+    public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm ZIP (по Title ID)";
+    public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm папка (по Title ID)";
     public override string RadioLowercase => "Строчные";
     public override string RadioMergeAll => "Все";
     public override string RadioMergeGroupByTitleId => "Группировка по Title ID (прежний способ)";
@@ -1429,7 +1431,7 @@ public sealed class Russian : LocalizedStrings
     public override string TabCreateCue => "Создание Cue";
     public override string TabDecrypt => "Расшифровка";
     public override string TabExtractCertsBin => "Извлечение certs.bin";
-    public override string TabFormatConvert => "Конвертация формата";
+    public override string TabNoNpDrmConvert => "Конвертация NoNpDrm";
     public override string TabGeneral => "Общие";
     public override string TabIgnoreVersion => "Игнорировать версию";
     public override string TabInstall => "Установка";

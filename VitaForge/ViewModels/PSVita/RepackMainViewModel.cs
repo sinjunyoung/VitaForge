@@ -24,6 +24,7 @@ public class RepackMainViewModel : ProgressToolTabViewModel
     private readonly Stopwatch _totalSw = new();
     private readonly SourceRowCollection _sources;
     private string? _pendingZipPath;
+    private readonly PatchTargetChoiceCache _choiceCache = new();
     private int _patchLogVersion;
 
     public ObservableCollection<SourceRowViewModel> SourceRows => _sources.Rows;
@@ -67,8 +68,16 @@ public class RepackMainViewModel : ProgressToolTabViewModel
         BrowseOutputCommand = new RelayCommand(_ => BrowseOutput());
         CancelCommand = new RelayCommand(_ => Cancel());
 
-        SourceRows.CollectionChanged += (_, _) => OnPropertyChanged(nameof(EntriesHintVisibility));
-        _sources.PatchPathChanged += path => _ = LogPatchInfoAsync(path);
+        SourceRows.CollectionChanged += (_, _) =>
+        {
+            _choiceCache.Clear();
+            OnPropertyChanged(nameof(EntriesHintVisibility));
+        };
+        _sources.PatchPathChanged += path =>
+        {
+            _choiceCache.Clear();
+            _ = LogPatchInfoAsync(path);
+        };
     }
 
     public void AddSourceFile(string path) => _sources.AddSourceFile(path);
@@ -181,6 +190,8 @@ public class RepackMainViewModel : ProgressToolTabViewModel
 
         _pendingZipPath = zipPath;
 
+        _choiceCache.Reset(PatchTargetChoiceCache.BuildFingerprint(entries.SelectMany(e => new[] { e.Path, e.PatchPath }).Append(patchPath)));
+
         if (merge)
         {
             AppendLog(Loc.S.LogVitaMergingGamePatch(label), LogLevel.Highlight);
@@ -201,8 +212,12 @@ public class RepackMainViewModel : ProgressToolTabViewModel
 
     private string? ResolvePatchTarget(PatchTargetRequest request)
     {
-        var dispatcher = Application.Current.Dispatcher;
-        string? selected = dispatcher.Invoke(() => PatchTargetPickerWindow.Pick(Application.Current.MainWindow, request));
+        if (!_choiceCache.TryGet(request, out string? selected))
+        {
+            selected = Application.Current.Dispatcher.Invoke(() => PatchTargetPickerWindow.Pick(Application.Current.MainWindow, request));
+
+            _choiceCache.Set(request, selected);
+        }
 
         if (selected == null)
             AppendLog(Loc.S.LogVitaPatchTargetSkipped(request.PatchFileName), LogLevel.Info);

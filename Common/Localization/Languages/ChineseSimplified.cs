@@ -1310,7 +1310,9 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string RadioConsoleRepatch => "实机 (rePatch, reAddcont)";
     public override string RadioEmulatorAppAddcont => "模拟器 (app, addcont)";
     public override string RadioFolderPerTitleId => "文件夹 (按标题 ID)";
-    public override string RadioPkgDownloadOnly => "PKG (仅下载)";
+    public override string RadioOriginalPkg => "原始 PKG";
+    public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm ZIP (按标题 ID)";
+    public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm 文件夹 (按标题 ID)";
     public override string RadioLowercase => "小写";
     public override string RadioMergeAll => "全部";
     public override string RadioMergeGroupByTitleId => "按标题 ID 分组 (原有方式)";
@@ -1429,7 +1431,7 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string TabCreateCue => "生成 Cue";
     public override string TabDecrypt => "解密";
     public override string TabExtractCertsBin => "提取 certs.bin";
-    public override string TabFormatConvert => "格式转换";
+    public override string TabNoNpDrmConvert => "NoNpDrm 转换";
     public override string TabGeneral => "常规";
     public override string TabIgnoreVersion => "忽略版本";
     public override string TabInstall => "安装";

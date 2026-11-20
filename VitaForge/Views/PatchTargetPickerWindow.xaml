@@ -23,6 +23,11 @@
 
         <Border Grid.Row="1" Background="#252526" BorderBrush="#3E3E42" BorderThickness="1" CornerRadius="6" Padding="4">
             <TreeView x:Name="TargetTree" Background="Transparent" BorderThickness="0" Foreground="White" SelectedItemChanged="TargetTree_SelectedItemChanged" MouseDoubleClick="TargetTree_MouseDoubleClick" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling">
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="TreeViewItem">
+                        <Setter Property="Foreground" Value="#E6E6E6"/>
+                    </Style>
+                </TreeView.ItemContainerStyle>
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal">

@@ -1310,7 +1310,9 @@ public sealed class Japanese : LocalizedStrings
     public override string RadioConsoleRepatch => "実機 (rePatch, reAddcont)";
     public override string RadioEmulatorAppAddcont => "エミュレーター (app, addcont)";
     public override string RadioFolderPerTitleId => "フォルダー (タイトルID別)";
-    public override string RadioPkgDownloadOnly => "PKG (ダウンロードのみ)";
+    public override string RadioOriginalPkg => "元のPKG";
+    public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm ZIP (タイトルID別)";
+    public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm フォルダー (タイトルID別)";
     public override string RadioLowercase => "小文字";
     public override string RadioMergeAll => "すべて";
     public override string RadioMergeGroupByTitleId => "タイトルID別にグループ化 (従来方式)";
@@ -1429,7 +1431,7 @@ public sealed class Japanese : LocalizedStrings
     public override string TabCreateCue => "Cue作成";
     public override string TabDecrypt => "復号";
     public override string TabExtractCertsBin => "certs.bin抽出";
-    public override string TabFormatConvert => "フォーマット変換";
+    public override string TabNoNpDrmConvert => "NoNpDrm変換";
     public override string TabGeneral => "一般";
     public override string TabIgnoreVersion => "バージョン無視";
     public override string TabInstall => "インストール";

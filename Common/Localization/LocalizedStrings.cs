@@ -1310,7 +1310,9 @@ public abstract class LocalizedStrings
     public abstract string RadioConsoleRepatch { get; }
     public abstract string RadioEmulatorAppAddcont { get; }
     public abstract string RadioFolderPerTitleId { get; }
-    public abstract string RadioPkgDownloadOnly { get; }
+    public abstract string RadioOriginalPkg { get; }
+    public abstract string RadioNoNpDrmZipPerTitleId { get; }
+    public abstract string RadioNoNpDrmFolderPerTitleId { get; }
     public abstract string RadioLowercase { get; }
     public abstract string RadioMergeAll { get; }
     public abstract string RadioMergeGroupByTitleId { get; }
@@ -1429,7 +1431,7 @@ public abstract class LocalizedStrings
     public abstract string TabCreateCue { get; }
     public abstract string TabDecrypt { get; }
     public abstract string TabExtractCertsBin { get; }
-    public abstract string TabFormatConvert { get; }
+    public abstract string TabNoNpDrmConvert { get; }
     public abstract string TabGeneral { get; }
     public abstract string TabIgnoreVersion { get; }
     public abstract string TabInstall { get; }

@@ -1310,7 +1310,9 @@ public sealed class Korean : LocalizedStrings
     public override string RadioConsoleRepatch => "실기 (rePatch, reAddcont)";
     public override string RadioEmulatorAppAddcont => "에뮬레이터 (app, addcont)";
     public override string RadioFolderPerTitleId => "폴더 (타이틀 ID별)";
-    public override string RadioPkgDownloadOnly => "PKG (다운로드만)";
+    public override string RadioOriginalPkg => "원본 PKG";
+    public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm ZIP (타이틀 ID별)";
+    public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm 폴더 (타이틀 ID별)";
     public override string RadioLowercase => "소문자";
     public override string RadioMergeAll => "전체";
     public override string RadioMergeGroupByTitleId => "타이틀 ID별 그룹핑 (기존 방식)";
@@ -1429,7 +1431,7 @@ public sealed class Korean : LocalizedStrings
     public override string TabCreateCue => "Cue 생성";
     public override string TabDecrypt => "복호화";
     public override string TabExtractCertsBin => "certs.bin 추출";
-    public override string TabFormatConvert => "포맷 변환";
+    public override string TabNoNpDrmConvert => "NoNpDrm 변환";
     public override string TabGeneral => "일반";
     public override string TabIgnoreVersion => "버전 무시";
     public override string TabInstall => "설치";

@@ -1310,7 +1310,9 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string RadioConsoleRepatch => "實機 (rePatch, reAddcont)";
     public override string RadioEmulatorAppAddcont => "模擬器 (app, addcont)";
     public override string RadioFolderPerTitleId => "資料夾 (依標題 ID)";
-    public override string RadioPkgDownloadOnly => "PKG (僅下載)";
+    public override string RadioOriginalPkg => "原始 PKG";
+    public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm ZIP (依標題 ID)";
+    public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm 資料夾 (依標題 ID)";
     public override string RadioLowercase => "小寫";
     public override string RadioMergeAll => "全部";
     public override string RadioMergeGroupByTitleId => "依標題 ID 分組 (原有方式)";
@@ -1429,7 +1431,7 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string TabCreateCue => "產生 Cue";
     public override string TabDecrypt => "解密";
     public override string TabExtractCertsBin => "提取 certs.bin";
-    public override string TabFormatConvert => "格式轉換";
+    public override string TabNoNpDrmConvert => "NoNpDrm 轉換";
     public override string TabGeneral => "一般";
     public override string TabIgnoreVersion => "忽略版本";
     public override string TabInstall => "安裝";

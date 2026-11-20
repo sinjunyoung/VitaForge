@@ -1310,7 +1310,9 @@ public sealed class French : LocalizedStrings
     public override string RadioConsoleRepatch => "Console (rePatch, reAddcont)";
     public override string RadioEmulatorAppAddcont => "Émulateur (app, addcont)";
     public override string RadioFolderPerTitleId => "Dossier (par Title ID)";
-    public override string RadioPkgDownloadOnly => "PKG (téléchargement uniquement)";
+    public override string RadioOriginalPkg => "PKG d'origine";
+    public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm ZIP (par Title ID)";
+    public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm dossier (par Title ID)";
     public override string RadioLowercase => "Minuscules";
     public override string RadioMergeAll => "Tout";
     public override string RadioMergeGroupByTitleId => "Regrouper par Title ID (méthode actuelle)";
@@ -1429,7 +1431,7 @@ public sealed class French : LocalizedStrings
     public override string TabCreateCue => "Créer un Cue";
     public override string TabDecrypt => "Déchiffrement";
     public override string TabExtractCertsBin => "Extraire certs.bin";
-    public override string TabFormatConvert => "Conversion de format";
+    public override string TabNoNpDrmConvert => "Conversion NoNpDrm";
     public override string TabGeneral => "Général";
     public override string TabIgnoreVersion => "Ignorer la version";
     public override string TabInstall => "Installation";
