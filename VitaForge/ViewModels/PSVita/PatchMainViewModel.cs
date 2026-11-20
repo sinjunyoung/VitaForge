@@ -249,6 +249,9 @@ public class PatchMainViewModel : ProgressToolTabViewModel
             AppendLog(Loc.S.LogVitaAllDoneTitles(installed, _totalSw.Elapsed.ToString("mm\\:ss")), LogLevel.Ok);
             ClearChecked();
 
+            if (options.Target == OutputTarget.Emu && installed > 0)
+                Vita3kLauncher.Launch(options.InstallRoot, AppendLog);
+
             await SoundPlayer.PlayCompleteAsync();
         }
         catch (OperationCanceledException)

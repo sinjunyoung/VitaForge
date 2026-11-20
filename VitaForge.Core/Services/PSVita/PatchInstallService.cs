@@ -15,6 +15,7 @@ public static class PatchInstallService
     public static async Task<int> RunAsync(IReadOnlyList<PatchCatalogItem> items, PatchInstallOptions options, PatchTargetResolver? resolver, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct)
     {
         int installed = 0;
+        string destination = ResolveDestination(options, log);
 
         foreach (var item in items)
         {
@@ -31,7 +32,7 @@ public static class PatchInstallService
 
             try
             {
-                if (await InstallOneAsync(plan, options, workDir, resolver, log, progress, ct))
+                if (await InstallOneAsync(plan, options, workDir, destination, resolver, log, progress, ct))
                     installed++;
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
@@ -49,7 +50,7 @@ public static class PatchInstallService
         return installed;
     }
 
-    private static async Task<bool> InstallOneAsync(PatchInstallPlan plan, PatchInstallOptions options, string workDir, PatchTargetResolver? resolver, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct)
+    private static async Task<bool> InstallOneAsync(PatchInstallPlan plan, PatchInstallOptions options, string workDir, string destination, PatchTargetResolver? resolver, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct)
     {
         var reporter = new ProgressReporter(Loc.S.StatusDownloading, string.Empty, Math.Max(1, plan.TotalSize), progress);
 
@@ -109,8 +110,6 @@ public static class PatchInstallService
             return false;
         }
 
-        string destination = options.Target == OutputTarget.Emu ? Path.Combine(options.InstallRoot, "ux0") : options.InstallRoot;
-
         log(Loc.S.StatusInstalling, LogLevel.Highlight);
 
         await ZipInstaller.ExtractAsync(zipPath, destination, progress, ct);
@@ -118,6 +117,18 @@ public static class PatchInstallService
         log(Loc.S.LogPsvPatchInstalled(plan.Patch.Name, destination), LogLevel.Ok);
 
         return true;
+    }
+
+    private static string ResolveDestination(PatchInstallOptions options, Action<string, LogLevel> log)
+    {
+        if (options.Target != OutputTarget.Emu)
+            return options.InstallRoot;
+
+        var info = Vita3kLocator.Resolve(options.InstallRoot);
+
+        log(Loc.S.LogPsvPatchVita3kPrefPath(info.PrefPath), LogLevel.Info);
+
+        return Path.Combine(info.PrefPath, "ux0");
     }
 
     private static void LogPatchArchiveContents(string patchPath, Action<string, LogLevel> log)

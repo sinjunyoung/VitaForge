@@ -109,7 +109,10 @@
                             <GridViewColumn Width="44">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button BorderThickness="1" Click="BtnReleaseLink_Click" Content="↗" Height="22" Padding="0" Style="{StaticResource GrayButton}" ToolTip="{Binding Path=Current.ToolTipOpenReleasePage, Source={x:Static l:Loc.Instance}}" Visibility="{Binding HasReleaseLink, Converter={StaticResource BooleanToVisibilityConverter}}" Width="28"/>
+                                        <Button BorderThickness="1" Click="BtnReleaseLink_Click" Height="22" Padding="0" Width="28" 
+                                                Style="{StaticResource GrayButton}" ToolTip="{Binding Path=Current.ToolTipOpenReleasePage, Source={x:Static l:Loc.Instance}}" Visibility="{Binding HasReleaseLink, Converter={StaticResource BooleanToVisibilityConverter}}" >
+                                            <Image Source="/Assets/Images/Link.png" Width="12" Height="12" />
+                                        </Button>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

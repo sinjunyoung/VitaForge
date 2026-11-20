@@ -1564,4 +1564,7 @@ public sealed class Korean : LocalizedStrings
     public override string ErrPsvPatchDriveEmptyFolder => "구글 드라이브 폴더에서 파일을 찾지 못했습니다.";
     public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"구글 드라이브 파일 선택: {arg0} (후보 {arg1}개 중)";
     public override string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"패치 파일 내용: {arg0}개 파일 (앞부분: {arg1})";
+    public override string LogPsvPatchVita3kPrefPath(object? arg0) => $"Vita3K 데이터 폴더: {arg0}";
+    public override string LogPsvPatchVita3kLaunch(object? arg0) => $"Vita3K 실행: {arg0}";
+    public override string LogPsvPatchVita3kExeMissing(object? arg0) => $"Vita3K.exe를 찾을 수 없습니다: {arg0}";
 }

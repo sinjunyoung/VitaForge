@@ -1566,7 +1566,7 @@ public abstract class LocalizedStrings
     public virtual string RadioInstallVita3k => "Emulator (Vita3K)";
     public virtual string RadioInstallDevice => "Device (SD card)";
     public virtual string CheckIncludeDlc => "Include DLC";
-    public virtual string HintVita3kFolder => "Select the Vita3K folder (the one containing ux0)";
+    public virtual string HintVita3kFolder => "Select the Vita3K folder (containing Vita3K.exe and config.yml)";
     public virtual string HintDeviceRoot => "Select the SD card root";
     public virtual string HeaderRequiredUpdate => "Required update";
     public virtual string ToolTipOpenReleasePage => "Open release page";
@@ -1582,4 +1582,7 @@ public abstract class LocalizedStrings
     public virtual string ErrPsvPatchDriveEmptyFolder => "No files found in the Google Drive folder.";
     public virtual string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"Google Drive file selected: {arg0} (of {arg1} candidates)";
     public virtual string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"Patch archive contains {arg0} files: {arg1}";
+    public virtual string LogPsvPatchVita3kPrefPath(object? arg0) => $"Vita3K data folder: {arg0}";
+    public virtual string LogPsvPatchVita3kLaunch(object? arg0) => $"Launching Vita3K: {arg0}";
+    public virtual string LogPsvPatchVita3kExeMissing(object? arg0) => $"Vita3K.exe not found: {arg0}";
 }
