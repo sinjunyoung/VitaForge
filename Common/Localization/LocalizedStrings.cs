@@ -1581,4 +1581,5 @@ public abstract class LocalizedStrings
     public virtual string ErrPsvPatchDriveBlocked => "Google Drive blocked the download (quota exceeded or no access).";
     public virtual string ErrPsvPatchDriveEmptyFolder => "No files found in the Google Drive folder.";
     public virtual string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"Google Drive file selected: {arg0} (of {arg1} candidates)";
+    public virtual string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"Patch archive contains {arg0} files: {arg1}";
 }

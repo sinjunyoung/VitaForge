@@ -1563,4 +1563,5 @@ public sealed class Korean : LocalizedStrings
     public override string ErrPsvPatchDriveBlocked => "구글 드라이브가 다운로드를 막았습니다 (쿼터 초과 또는 접근 불가).";
     public override string ErrPsvPatchDriveEmptyFolder => "구글 드라이브 폴더에서 파일을 찾지 못했습니다.";
     public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"구글 드라이브 파일 선택: {arg0} (후보 {arg1}개 중)";
+    public override string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"패치 파일 내용: {arg0}개 파일 (앞부분: {arg1})";
 }

@@ -95,11 +95,15 @@ public static class PatchInstallService
 
         var result = await Task.Run(() => PatchOutputBuilder.BuildMergedFromEntriesAsync(entries, patchPath, zipPath, options.Target, log, progress, resolver, ct), ct);
 
+        log(Loc.S.LogVitaRepackDone(label, result.TotalFiles, result.PatchedSuccessfully, result.PatchCandidates, zipPath), LogLevel.Info);
+
         foreach (var entry in entries)
             DeleteFileQuietly(entry.Path);
 
-        if (result.PatchCandidates > 0 && result.PatchedSuccessfully == 0)
+        if (result.PatchedSuccessfully == 0)
         {
+            LogPatchArchiveContents(patchPath, log);
+
             log(Loc.S.LogPsvPatchNothingPatched(plan.Patch.Name), LogLevel.Error);
 
             return false;
@@ -114,6 +118,22 @@ public static class PatchInstallService
         log(Loc.S.LogPsvPatchInstalled(plan.Patch.Name, destination), LogLevel.Ok);
 
         return true;
+    }
+
+    private static void LogPatchArchiveContents(string patchPath, Action<string, LogLevel> log)
+    {
+        try
+        {
+            using var accessor = SourceAccessorFactory.Open(patchPath);
+
+            var files = accessor.EnumerateAllFiles().ToList();
+
+            log(Loc.S.LogPsvPatchArchiveContents(files.Count, string.Join(", ", files.Take(12))), LogLevel.Info);
+        }
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        {
+            log(Loc.S.LogError(ex.Message), LogLevel.Error);
+        }
     }
 
     private static void DeleteFileQuietly(string path)

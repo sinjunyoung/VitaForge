@@ -445,7 +445,7 @@ internal static class PatchShared
 
     internal static PatchPlan BuildPlan(PatchContext patchCtx, ContentCategory category, string titleId, string? contentIdSuffix, OutputTarget target, IReadOnlyCollection<string> relativePaths, PatchTargetResolver? targetResolver = null)
     {
-        var patchIndex = BuildPatchIndex(patchCtx, category, titleId, contentIdSuffix, target);
+        var patchIndex = PatchWrapperStripper.Strip(BuildPatchIndex(patchCtx, category, titleId, contentIdSuffix, target), relativePaths);
         var plan = PatchPlan.Build(patchIndex, relativePaths, StringComparer.OrdinalIgnoreCase);
 
         if (targetResolver == null || plan.UnmatchedPatches.Count == 0)
