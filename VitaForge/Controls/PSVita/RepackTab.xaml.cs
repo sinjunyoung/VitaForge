@@ -1,5 +1,4 @@
 ﻿using Common.Localization;
-using Common.Models;
 using Common.Services;
 using Ookii.Dialogs.Wpf;
 using VitaForge.Core.ViewModels.PSVita;
@@ -150,8 +149,7 @@ public partial class RepackTab : UserControl
     {
         var selected = ViewModel?.SelectedRow;
 
-        if (selected != null)
-            selected.PatchPath = string.Empty;
+        selected?.PatchPath = string.Empty;
     }
 
     private void TxtOutputPath_PreviewDragOver(object sender, DragEventArgs e)
@@ -179,8 +177,7 @@ public partial class RepackTab : UserControl
                 string? folderPath = Directory.Exists(droppedPath) ? droppedPath : Path.GetDirectoryName(droppedPath);
 
                 if (!string.IsNullOrEmpty(folderPath) && Directory.Exists(folderPath))
-                    if (ViewModel != null)
-                        ViewModel.OutputPath = folderPath;
+                    ViewModel?.OutputPath = folderPath;
             }
         }
 

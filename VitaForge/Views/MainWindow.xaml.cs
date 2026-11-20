@@ -2,7 +2,6 @@
 using Common.Services;
 using VitaForge.Core;
 using VitaForge.Core.Models;
-using VitaForge.Core.Services;
 using VitaForge.ViewModels;
 using System.ComponentModel;
 using System.Windows;

@@ -12,5 +12,7 @@ public interface ISourceAccessor : IDisposable
 
     byte[] ReadAllBytes(string relativePath);
 
+    void CopyTo(string relativePath, Stream destination, Action<long>? onProgress = null);
+
     long GetFileSize(string relativePath);
 }

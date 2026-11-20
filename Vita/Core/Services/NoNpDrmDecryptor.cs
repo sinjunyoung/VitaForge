@@ -31,29 +31,49 @@ public static class NoNpDrmDecryptor
         string srcRel = Combine(titleRelPath, relativePath);
         byte[] data = accessor.ReadAllBytes(srcRel);
 
-        if (!entry.Type.IsEncrypted())
+        if (!entry.Type.IsEncrypted() || unicvEntry.NSectors == 0 || data.Length == 0)
             return data;
 
-        if (unicvEntry.NSectors > 0 && data.Length > 0)
-        {
-            var f00d = new F00DEmulator();
-
-            if (unicvEntry.HasDbSeed)
-            {
-                var cipher = new PfsGameDataCipher(f00d, klicensee, unicvEntry.DbSeed, (int)unicvEntry.FileSectorSize);
-
-                cipher.DecryptRange(0, data);
-            }
-            else if (unicvEntry.TableMagic == "SCEIFTBL")
-            {
-                byte[] tweakEncKey = PfsLegacyKeyDerivation.ComputeTweakEncKey(filesSalt, (uint)unicvEntry.PageNumber);
-                var cipher = PfsGameDataCipher.FromPrecomputedTweakKey(f00d, klicensee, tweakEncKey, (int)unicvEntry.FileSectorSize);
-
-                cipher.DecryptRange(0, data);
-            }
-        }
+        CreateCipher(klicensee, unicvEntry, filesSalt)?.DecryptRange(0, data);
 
         return data;
+    }
+
+    public static void DecryptEntryTo(ISourceAccessor accessor, string titleRelPath, byte[] klicensee, PfsFlatEntry entry, PfsUnicvEntry unicvEntry, uint filesSalt, Stream destination, Action<long>? onProgress = null)
+    {
+        string relativePath = entry.RelativePath ?? entry.Name;
+        string srcRel = Combine(titleRelPath, relativePath);
+        long sourceSize = accessor.GetFileSize(srcRel);
+        var scaler = new ProgressScaler(sourceSize, entry.Size, onProgress);
+        PfsGameDataCipher? cipher = entry.Type.IsEncrypted() && unicvEntry.NSectors > 0 && sourceSize > 0 ? CreateCipher(klicensee, unicvEntry, filesSalt) : null;
+
+        if (cipher is null)
+            accessor.CopyTo(srcRel, destination, scaler.Report);
+        else
+        {
+            var decryptStream = new PfsDecryptWriteStream(destination, cipher, (int)unicvEntry.FileSectorSize);
+
+            accessor.CopyTo(srcRel, decryptStream, scaler.Report);
+            decryptStream.Finish();
+        }
+
+        scaler.Complete();
+    }
+
+    private static PfsGameDataCipher? CreateCipher(byte[] klicensee, PfsUnicvEntry unicvEntry, uint filesSalt)
+    {
+        var f00d = new F00DEmulator();
+
+        if (unicvEntry.HasDbSeed)
+            return new PfsGameDataCipher(f00d, klicensee, unicvEntry.DbSeed, (int)unicvEntry.FileSectorSize);
+
+        if (unicvEntry.TableMagic == "SCEIFTBL")
+        {
+            byte[] tweakEncKey = PfsLegacyKeyDerivation.ComputeTweakEncKey(filesSalt, (uint)unicvEntry.PageNumber);
+            return PfsGameDataCipher.FromPrecomputedTweakKey(f00d, klicensee, tweakEncKey, (int)unicvEntry.FileSectorSize);
+        }
+
+        return null;
     }
 
     private static string Combine(string basePath, string relative) => string.IsNullOrEmpty(basePath) ? relative : $"{basePath.TrimEnd('/')}/{PatchShared.NormalizePath(relative)}";

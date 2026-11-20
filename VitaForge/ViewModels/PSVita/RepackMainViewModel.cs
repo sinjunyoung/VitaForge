@@ -196,7 +196,7 @@ public class RepackMainViewModel : ProgressToolTabViewModel
         {
             AppendLog(Loc.S.LogVitaMergingGamePatch(label), LogLevel.Highlight);
 
-            var result = await Task.Run(() => PatchOutputBuilder.BuildMergedFromEntriesAsync(entries, patchPath, zipPath, target, AppendLog, progress, ct, ResolvePatchTarget), ct);
+            var result = await Task.Run(() => PatchOutputBuilder.BuildMergedFromEntriesAsync(entries, patchPath, zipPath, target, AppendLog, progress, ResolvePatchTarget, ct), ct);
 
             AppendLog(Loc.S.LogVitaRepackDone(label, result.TotalFiles, result.PatchedSuccessfully, result.PatchCandidates, zipPath), LogLevel.Ok);
         }

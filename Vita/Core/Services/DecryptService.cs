@@ -13,7 +13,11 @@ public static class DecryptService
     private static async Task<List<string>> DecryptCoreAsync(List<SourceItem> items, string outputRoot, PkgConvertOutput output, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct)
     {
         var groups = PatchShared.BuildBaseGroups(items, log, ct);
-        long totalBytes = groups.Sum(g => g.Index.Values.Sum(e => (long)e.FileEntry.Size));
+        long totalBytes = groups.Sum(g =>
+        {
+            static long selector(PatchAppEntry e) => (long)e.FileEntry.Size;
+            return g.Index.Values.Sum(selector);
+        });
         var reporter = new ProgressReporter(Loc.S.StatusDecrypting, string.Empty, totalBytes, progress);
         var outputs = new List<string>();
 
@@ -61,23 +65,28 @@ public static class DecryptService
 
                 var fileEntry = appEntry.FileEntry;
                 var owner = appEntry.Owner;
-                byte[] data;
+                string entryPath = PatchShared.BuildEntryPath(PatchShared.GetBasePrefix(group.Category), group.Category, group.TitleId, group.ContentIdSuffix, relativePath);
+                long reported = 0;
 
                 try
                 {
-                    data = NoNpDrmDecryptor.DecryptEntry(owner.Item.Accessor!, owner.Item.SourcePath, owner.License.Klicensee, fileEntry, owner.Table.UnicvEntries[appEntry.EntryIndex], owner.Table.FilesSalt);
+                    await using var stream = sink.Open(entryPath);
+
+                    NoNpDrmDecryptor.DecryptEntryTo(owner.Item.Accessor!, owner.Item.SourcePath, owner.License.Klicensee, fileEntry, owner.Table.UnicvEntries[appEntry.EntryIndex], owner.Table.FilesSalt, stream, delta =>
+                    {
+                        ct.ThrowIfCancellationRequested();
+
+                        reported += delta;
+
+                        reporter.AddProgress(delta);
+                    });
                 }
                 catch (Exception ex) when (ex is not OperationCanceledException)
                 {
                     log(Loc.S.LogVitaDecryptFailed(group.Category, relativePath, ex.Message), LogLevel.Error);
-                    reporter.AddProgress(fileEntry.Size);
+                    reporter.AddProgress(fileEntry.Size - reported);
                     continue;
                 }
-
-                string entryPath = PatchShared.BuildEntryPath(PatchShared.GetBasePrefix(group.Category), group.Category, group.TitleId, group.ContentIdSuffix, relativePath);
-
-                await using (var stream = sink.Open(entryPath))
-                    await PatchShared.WriteStreamWithProgressAsync(stream, data, fileEntry.Size, reporter, ct);
 
                 count++;
             }

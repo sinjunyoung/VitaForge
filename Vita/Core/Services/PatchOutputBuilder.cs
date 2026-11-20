@@ -8,10 +8,10 @@ namespace Vita.Core.Services;
 
 public static class PatchOutputBuilder
 {
-    public static Task<MergeResult> BuildMergedFromEntriesAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, CancellationToken ct = default, PatchTargetResolver? targetResolver = null)
-        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, outputZipPath, target, log, progress, ct, targetResolver));
+    public static Task<MergeResult> BuildMergedFromEntriesAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, PatchTargetResolver? targetResolver = null, CancellationToken ct = default)
+        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, outputZipPath, target, log, progress, targetResolver, ct));
 
-    private static async Task<MergeResult> BuildCoreAsync(List<SourceItem> items, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct, PatchTargetResolver? targetResolver)
+    private static async Task<MergeResult> BuildCoreAsync(List<SourceItem> items, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, PatchTargetResolver? targetResolver, CancellationToken ct)
     {
         var patchContexts = new Dictionary<string, PatchContext>(StringComparer.OrdinalIgnoreCase);
 
@@ -85,24 +85,16 @@ public static class PatchOutputBuilder
                     {
                         ct.ThrowIfCancellationRequested();
 
-                        byte[]? outputBytes = targetByPath.TryGetValue(relativePath, out var patchTarget) ? await PatchAsync(group, patchTarget) : null;
-
-                        if (outputBytes is null)
-                        {
-                            try
-                            {
-                                outputBytes = NoNpDrmDecryptor.DecryptEntry(appEntry.Owner.Item.Accessor!, appEntry.Owner.Item.SourcePath, appEntry.Owner.License.Klicensee, appEntry.FileEntry, appEntry.Owner.Table.UnicvEntries[appEntry.EntryIndex], appEntry.Owner.Table.FilesSalt);
-                            }
-                            catch (Exception ex)
-                            {
-                                log(Loc.S.LogVitaDecryptFailed(group.Category, relativePath, ex.Message), LogLevel.Error);
-                                continue;
-                            }
-                        }
-
+                        byte[]? patchedBytes = targetByPath.TryGetValue(relativePath, out var patchTarget) ? await PatchAsync(group, patchTarget) : null;
                         string entryPath = PatchShared.BuildEntryPath(PatchShared.GetBasePrefix(group.Category), group, relativePath);
 
-                        await WriteZipEntryAsync(zip, writtenEntries, entryPath, outputBytes, appEntry.FileEntry.Size, reporter, ct);
+                        if (patchedBytes is not null)
+                        {
+                            await WriteZipEntryAsync(zip, writtenEntries, entryPath, patchedBytes, appEntry.FileEntry.Size, reporter, ct);
+                            continue;
+                        }
+
+                        WriteDecryptedEntry(zip, writtenEntries, entryPath, group, relativePath, appEntry, reporter, log, ct);
                     }
                 }
                 else
@@ -113,7 +105,7 @@ public static class PatchOutputBuilder
                         {
                             ct.ThrowIfCancellationRequested();
 
-                            if (!await WriteOwnedFileAsync(zip, writtenEntries, owner, group, relativePath, size, reporter, log, ct))
+                            if (!WriteOwnedFile(zip, writtenEntries, owner, group, relativePath, size, reporter, log, ct))
                                 continue;
 
                             if (!targetByPath.TryGetValue(relativePath, out var patchTarget))
@@ -160,24 +152,68 @@ public static class PatchOutputBuilder
         return ownedTotal + group.Targets.Sum(t => t.EstimatedSize);
     }
 
-    private static async Task<bool> WriteOwnedFileAsync(ZipArchive zip, HashSet<string> writtenEntries, OwnerContext owner, MergeGroup group, string relativePath, long size, ProgressReporter reporter, Action<string, LogLevel> log, CancellationToken ct)
+    private static void WriteDecryptedEntry(ZipArchive zip, HashSet<string> writtenEntries, string entryPath, MergeGroup group, string relativePath, PatchAppEntry appEntry, ProgressReporter reporter, Action<string, LogLevel> log, CancellationToken ct)
     {
-        string srcRel = $"{owner.Item.SourcePath}/{relativePath}";
-        byte[] rawBytes;
+        if (!writtenEntries.Add(entryPath))
+            return;
+
+        var owner = appEntry.Owner;
+        long reported = 0;
 
         try
         {
-            rawBytes = owner.Item.Accessor!.ReadAllBytes(srcRel);
-        }
-        catch (Exception ex)
-        {
-            log(Loc.S.LogVitaSourceReadFailed(owner.Item.Category, relativePath, ex.Message), LogLevel.Error);
-            return false;
-        }
+            using var entryStream = zip.CreateEntry(entryPath, CompressionLevel.NoCompression).Open();
 
+            NoNpDrmDecryptor.DecryptEntryTo(owner.Item.Accessor!, owner.Item.SourcePath, owner.License.Klicensee, appEntry.FileEntry, owner.Table.UnicvEntries[appEntry.EntryIndex], owner.Table.FilesSalt, entryStream, delta =>
+            {
+                ct.ThrowIfCancellationRequested();
+
+                reported += delta;
+
+                reporter.AddProgress(delta);
+            });
+        }
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        {
+            writtenEntries.Remove(entryPath);
+
+            log(Loc.S.LogVitaDecryptFailed(group.Category, relativePath, ex.Message), LogLevel.Error);
+            reporter.AddProgress(appEntry.FileEntry.Size - reported);
+        }
+    }
+
+    private static bool WriteOwnedFile(ZipArchive zip, HashSet<string> writtenEntries, OwnerContext owner, MergeGroup group, string relativePath, long size, ProgressReporter reporter, Action<string, LogLevel> log, CancellationToken ct)
+    {
         string baseEntryPath = PatchShared.BuildEntryPath(PatchShared.GetRetailBaseFolder(owner.Item.Category), group, relativePath);
 
-        await WriteZipEntryAsync(zip, writtenEntries, baseEntryPath, rawBytes, size, reporter, ct);
+        if (!writtenEntries.Add(baseEntryPath))
+            return true;
+
+        string srcRel = $"{owner.Item.SourcePath}/{relativePath}";
+        long reported = 0;
+
+        try
+        {
+            using var entryStream = zip.CreateEntry(baseEntryPath, CompressionLevel.NoCompression).Open();
+
+            SourceStreamCopier.CopyScaled(owner.Item.Accessor!, srcRel, entryStream, size, delta =>
+            {
+                ct.ThrowIfCancellationRequested();
+
+                reported += delta;
+
+                reporter.AddProgress(delta);
+            });
+        }
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        {
+            writtenEntries.Remove(baseEntryPath);
+
+            log(Loc.S.LogVitaSourceReadFailed(owner.Item.Category, relativePath, ex.Message), LogLevel.Error);
+            reporter.AddProgress(size - reported);
+
+            return false;
+        }
 
         return true;
     }

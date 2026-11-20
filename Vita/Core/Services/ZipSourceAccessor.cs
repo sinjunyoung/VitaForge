@@ -80,6 +80,16 @@ public sealed class ZipSourceAccessor : ISourceAccessor
         return data;
     }
 
+    public void CopyTo(string relativePath, Stream destination, Action<long>? onProgress = null)
+    {
+        if (!_entries.TryGetValue(Normalize(relativePath), out var entry))
+            throw new FileNotFoundException(relativePath);
+
+        using var source = entry.Open();
+
+        SourceStreamCopier.Copy(source, destination, onProgress);
+    }
+
     public long GetFileSize(string relativePath)
     {
         if (!_entries.TryGetValue(Normalize(relativePath), out var entry))
