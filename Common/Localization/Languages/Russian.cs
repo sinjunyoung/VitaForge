@@ -35,6 +35,11 @@ public sealed class Russian : LocalizedStrings
     public override string ButtonRepackFolderBased => "Перепаковка (по папке)";
     public override string ButtonReset => "Сбросить";
     public override string ButtonSelect => "Выбрать";
+    public override string TitlePatchTargetPicker => "Выбор целевого файла патча";
+    public override string ButtonSkip => "Пропустить";
+    public override string MsgPatchTargetNotFound(object? arg0) => $"Не найден целевой файл для патча '{arg0}'. Выберите файл, к которому его применить.";
+    public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"Цель патча выбрана вручную: {arg0} -> {arg1}";
+    public override string LogVitaPatchTargetSkipped(object? arg0) => $"Выбор цели патча пропущен: {arg0}";
     public override string ButtonSelectFile => "Выбрать файл";
     public override string ButtonSettings => "Настройки";
     public override string ButtonStart => "Начать";

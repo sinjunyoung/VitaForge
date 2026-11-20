@@ -7,6 +7,7 @@ using VitaForge.Core.Services.Patch;
 using VitaForge.Core.Services.PSVita;
 using VitaForge.Core.UI.Command;
 using VitaForge.Core.ViewModels.PSVita;
+using VitaForge.Views;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -184,7 +185,7 @@ public class RepackMainViewModel : ProgressToolTabViewModel
         {
             AppendLog(Loc.S.LogVitaMergingGamePatch(label), LogLevel.Highlight);
 
-            var result = await Task.Run(() => PatchOutputBuilder.BuildMergedFromEntriesAsync(entries, patchPath, zipPath, target, AppendLog, progress, ct), ct);
+            var result = await Task.Run(() => PatchOutputBuilder.BuildMergedFromEntriesAsync(entries, patchPath, zipPath, target, AppendLog, progress, ct, ResolvePatchTarget), ct);
 
             AppendLog(Loc.S.LogVitaRepackDone(label, result.TotalFiles, result.PatchedSuccessfully, result.PatchCandidates, zipPath), LogLevel.Ok);
         }
@@ -192,10 +193,23 @@ public class RepackMainViewModel : ProgressToolTabViewModel
         {
             AppendLog(Loc.S.LogVitaCreatingPatch(label), LogLevel.Highlight);
 
-            var result = await Task.Run(() => PatchOnlyBuilder.BuildFromEntriesAsync(entries, patchPath, zipPath, target, AppendLog, progress, ct), ct);
+            var result = await Task.Run(() => PatchOnlyBuilder.BuildFromEntriesAsync(entries, patchPath, zipPath, target, AppendLog, progress, ct, ResolvePatchTarget), ct);
 
             AppendLog(Loc.S.LogVitaPatchOnlyDone(label, result.MatchedCandidates, result.PatchedSuccessfully, zipPath), LogLevel.Ok);
         }
+    }
+
+    private string? ResolvePatchTarget(PatchTargetRequest request)
+    {
+        var dispatcher = Application.Current.Dispatcher;
+        string? selected = dispatcher.Invoke(() => PatchTargetPickerWindow.Pick(Application.Current.MainWindow, request));
+
+        if (selected == null)
+            AppendLog(Loc.S.LogVitaPatchTargetSkipped(request.PatchFileName), LogLevel.Info);
+        else
+            AppendLog(Loc.S.LogVitaPatchTargetSelected(request.PatchFileName, selected), LogLevel.Ok);
+
+        return selected;
     }
 
     private bool Validate(out string error)

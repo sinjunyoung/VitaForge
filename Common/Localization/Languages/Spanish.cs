@@ -35,6 +35,11 @@ public sealed class Spanish : LocalizedStrings
     public override string ButtonRepackFolderBased => "Reempaquetar (por carpeta)";
     public override string ButtonReset => "Restablecer";
     public override string ButtonSelect => "Seleccionar";
+    public override string TitlePatchTargetPicker => "Seleccionar archivo de destino del parche";
+    public override string ButtonSkip => "Omitir";
+    public override string MsgPatchTargetNotFound(object? arg0) => $"No se encontró un archivo de destino para el parche '{arg0}'. Seleccione el archivo al que aplicarlo.";
+    public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"Destino del parche definido manualmente: {arg0} -> {arg1}";
+    public override string LogVitaPatchTargetSkipped(object? arg0) => $"Selección de destino del parche omitida: {arg0}";
     public override string ButtonSelectFile => "Seleccionar archivo";
     public override string ButtonSettings => "Configuración";
     public override string ButtonStart => "Iniciar";

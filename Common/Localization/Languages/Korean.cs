@@ -35,6 +35,11 @@ public sealed class Korean : LocalizedStrings
     public override string ButtonRepackFolderBased => "리팩 (폴더 기반)";
     public override string ButtonReset => "초기화";
     public override string ButtonSelect => "선택";
+    public override string TitlePatchTargetPicker => "패치 대상 파일 선택";
+    public override string ButtonSkip => "건너뛰기";
+    public override string MsgPatchTargetNotFound(object? arg0) => $"패치 파일 '{arg0}'에 해당하는 대상 파일을 찾을 수 없습니다. 적용할 파일을 직접 선택하세요.";
+    public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"패치 대상 수동 지정: {arg0} -> {arg1}";
+    public override string LogVitaPatchTargetSkipped(object? arg0) => $"패치 대상 선택 건너뜀: {arg0}";
     public override string ButtonSelectFile => "파일 선택";
     public override string ButtonSettings => "설정";
     public override string ButtonStart => "시작";

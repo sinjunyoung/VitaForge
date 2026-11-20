@@ -35,6 +35,11 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string ButtonRepackFolderBased => "重新打包 (以資料夾為基礎)";
     public override string ButtonReset => "重設";
     public override string ButtonSelect => "選擇";
+    public override string TitlePatchTargetPicker => "選擇修補目標檔案";
+    public override string ButtonSkip => "略過";
+    public override string MsgPatchTargetNotFound(object? arg0) => $"找不到修補 '{arg0}' 對應的目標檔案。請手動選擇要套用的檔案。";
+    public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"手動指定修補目標: {arg0} -> {arg1}";
+    public override string LogVitaPatchTargetSkipped(object? arg0) => $"已略過修補目標選擇: {arg0}";
     public override string ButtonSelectFile => "選擇檔案";
     public override string ButtonSettings => "設定";
     public override string ButtonStart => "開始";

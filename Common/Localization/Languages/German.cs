@@ -35,6 +35,11 @@ public sealed class German : LocalizedStrings
     public override string ButtonRepackFolderBased => "Repack (ordnerbasiert)";
     public override string ButtonReset => "Zurücksetzen";
     public override string ButtonSelect => "Auswählen";
+    public override string TitlePatchTargetPicker => "Patch-Zieldatei auswählen";
+    public override string ButtonSkip => "Überspringen";
+    public override string MsgPatchTargetNotFound(object? arg0) => $"Für den Patch '{arg0}' wurde keine Zieldatei gefunden. Wählen Sie die Datei aus, auf die er angewendet werden soll.";
+    public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"Patch-Ziel manuell festgelegt: {arg0} -> {arg1}";
+    public override string LogVitaPatchTargetSkipped(object? arg0) => $"Patch-Zielauswahl übersprungen: {arg0}";
     public override string ButtonSelectFile => "Datei auswählen";
     public override string ButtonSettings => "Einstellungen";
     public override string ButtonStart => "Starten";

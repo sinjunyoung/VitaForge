@@ -41,6 +41,9 @@ public static class NpsPkgDownloadService
                 await NpsDownloadService.DownloadVerifiedAsync(item, partPath, reporter.AddProgress, log, ct);
 
                 File.Move(partPath, finalPath);
+
+                if (item.HasKey)
+                    File.WriteAllText(Path.ChangeExtension(finalPath, ".zrif"), item.ZRif!.Trim());
             }
             catch
             {

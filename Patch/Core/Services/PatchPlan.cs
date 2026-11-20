@@ -11,6 +11,7 @@ public sealed class PatchPlan
     private readonly Dictionary<string, PatchFileRef> _overwrites;
     private readonly Dictionary<string, PatchFileRef> _unmatchedOverwrites;
     private readonly Dictionary<string, List<PlannedPatch>> _patches;
+    private readonly List<UnmatchedPatch> _unmatchedPatches = [];
 
     private PatchPlan(StringComparer comparer)
     {
@@ -31,6 +32,8 @@ public sealed class PatchPlan
 
     public IReadOnlyDictionary<string, PatchFileRef> UnmatchedOverwrites => _unmatchedOverwrites;
 
+    public IReadOnlyList<UnmatchedPatch> UnmatchedPatches => _unmatchedPatches;
+
     public IEnumerable<string> PatchedPaths => _patches.Keys;
 
     public bool TryGetOverwrite(string path, [NotNullWhen(true)] out PatchFileRef? file) => _overwrites.TryGetValue(path, out file);
@@ -39,7 +42,7 @@ public sealed class PatchPlan
 
     public IReadOnlyList<PlannedPatch> GetPatches(string path) => _patches.TryGetValue(path, out var list) ? list : [];
 
-    public static PatchPlan Build(PatchFileIndex index, IEnumerable<string> targetPaths, StringComparer? comparer = null)
+    public static PatchPlan Build(PatchFileIndex index, IEnumerable<string> targetPaths, StringComparer? comparer = null, IReadOnlyDictionary<string, string>? manualTargets = null)
     {
         comparer ??= StringComparer.Ordinal;
 
@@ -67,6 +70,7 @@ public sealed class PatchPlan
         }
 
         var exactKeys = new HashSet<string>(comparer);
+        var handled = new HashSet<PatchFileEntry>();
 
         foreach (var (entry, key) in binaryEntries)
         {
@@ -74,6 +78,7 @@ public sealed class PatchPlan
                 continue;
 
             plan._patches[key] = [new PlannedPatch(entry.File, true)];
+            handled.Add(entry);
         }
 
         foreach (var (entry, _) in binaryEntries)
@@ -93,6 +98,25 @@ public sealed class PatchPlan
 
                 list.Add(new PlannedPatch(entry.File, false));
             }
+
+            handled.Add(entry);
+        }
+
+        foreach (var (entry, key) in binaryEntries)
+        {
+            if (entry.BaseName.Length == 0 || entry.RelativeDir == PatchFileIndex.LooseOnlyDir || handled.Contains(entry) || targetSet.Contains(key))
+                continue;
+
+            if (manualTargets != null && manualTargets.TryGetValue(key, out string? manualTarget) && targetSet.Contains(manualTarget) && !plan._overwrites.ContainsKey(manualTarget))
+            {
+                if (!plan._patches.TryGetValue(manualTarget, out var manualList))
+                    plan._patches[manualTarget] = manualList = [];
+
+                manualList.Add(new PlannedPatch(entry.File, true));
+                continue;
+            }
+
+            plan._unmatchedPatches.Add(new UnmatchedPatch(entry, key));
         }
 
         return plan;

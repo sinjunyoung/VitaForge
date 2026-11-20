@@ -35,6 +35,11 @@ public sealed class Japanese : LocalizedStrings
     public override string ButtonRepackFolderBased => "リパック (フォルダー基準)";
     public override string ButtonReset => "リセット";
     public override string ButtonSelect => "選択";
+    public override string TitlePatchTargetPicker => "パッチ対象ファイルの選択";
+    public override string ButtonSkip => "スキップ";
+    public override string MsgPatchTargetNotFound(object? arg0) => $"パッチ '{arg0}' の対象ファイルが見つかりません。適用するファイルを選択してください。";
+    public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"パッチ対象を手動指定: {arg0} -> {arg1}";
+    public override string LogVitaPatchTargetSkipped(object? arg0) => $"パッチ対象の選択をスキップ: {arg0}";
     public override string ButtonSelectFile => "ファイルを選択";
     public override string ButtonSettings => "設定";
     public override string ButtonStart => "開始";

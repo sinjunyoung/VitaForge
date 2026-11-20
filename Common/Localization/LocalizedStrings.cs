@@ -35,6 +35,11 @@ public abstract class LocalizedStrings
     public abstract string ButtonRepackFolderBased { get; }
     public abstract string ButtonReset { get; }
     public abstract string ButtonSelect { get; }
+    public abstract string TitlePatchTargetPicker { get; }
+    public abstract string ButtonSkip { get; }
+    public abstract string MsgPatchTargetNotFound(object? arg0);
+    public abstract string LogVitaPatchTargetSelected(object? arg0, object? arg1);
+    public abstract string LogVitaPatchTargetSkipped(object? arg0);
     public abstract string ButtonSelectFile { get; }
     public abstract string ButtonSettings { get; }
     public abstract string ButtonStart { get; }

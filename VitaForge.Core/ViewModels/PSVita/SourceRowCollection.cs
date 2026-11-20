@@ -149,16 +149,17 @@ public sealed class SourceRowCollection
 
             if (!string.IsNullOrEmpty(dir))
             {
-                string txtPath = System.IO.Path.Combine(dir, System.IO.Path.GetFileNameWithoutExtension(pkgPath) + ".txt");
+                string baseName = System.IO.Path.GetFileNameWithoutExtension(pkgPath);
+                string? licensePath = new[] { ".zrif", ".txt" }.Select(ext => System.IO.Path.Combine(dir, baseName + ext)).FirstOrDefault(File.Exists);
 
-                if (File.Exists(txtPath))
+                if (licensePath != null)
                 {
                     try
                     {
-                        string txtContent = File.ReadAllText(txtPath).Trim();
+                        string licenseText = File.ReadAllText(licensePath).Trim();
 
-                        if (!string.IsNullOrEmpty(txtContent))
-                            row.License = txtContent;
+                        if (!string.IsNullOrEmpty(licenseText))
+                            row.License = licenseText;
                     }
                     catch { }
                 }

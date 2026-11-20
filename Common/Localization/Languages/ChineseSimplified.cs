@@ -35,6 +35,11 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string ButtonRepackFolderBased => "重新打包 (基于文件夹)";
     public override string ButtonReset => "重置";
     public override string ButtonSelect => "选择";
+    public override string TitlePatchTargetPicker => "选择补丁目标文件";
+    public override string ButtonSkip => "跳过";
+    public override string MsgPatchTargetNotFound(object? arg0) => $"找不到补丁 '{arg0}' 对应的目标文件。请手动选择要应用的文件。";
+    public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"手动指定补丁目标: {arg0} -> {arg1}";
+    public override string LogVitaPatchTargetSkipped(object? arg0) => $"已跳过补丁目标选择: {arg0}";
     public override string ButtonSelectFile => "选择文件";
     public override string ButtonSettings => "设置";
     public override string ButtonStart => "开始";
