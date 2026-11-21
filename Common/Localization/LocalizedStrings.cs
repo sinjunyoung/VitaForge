@@ -1591,4 +1591,5 @@ public abstract class LocalizedStrings
     public virtual string HintPatchOutputFolder => "Select the folder to save the zip archives";
     public virtual string LogPsvPatchArchived(object? arg0, object? arg1) => $"Archive created: {arg0} → {arg1}";
     public virtual string LogPsvPatchCsvNotFound(object? arg0) => $"PSV_PATCH.csv not found. Place it next to the executable: {arg0}";
+    public virtual string ErrPsvPatchMegaFailed(object? arg0) => $"MEGA download failed (code: {arg0}).";
 }

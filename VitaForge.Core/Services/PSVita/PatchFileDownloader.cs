@@ -12,7 +12,9 @@ public static class PatchFileDownloader
     private enum ArchiveKind
     {
         Unknown,
+
         Zip,
+
         SevenZip
     }
 
@@ -29,6 +31,10 @@ public static class PatchFileDownloader
         else if (GoogleDriveLink.TryGetFileId(url, out string fileId))
         {
             await GoogleDriveDownloader.DownloadAsync(fileId, rawPath, _ => { }, ct);
+        }
+        else if (MegaLink.TryParse(url, out var megaLink))
+        {
+            await MegaDownloader.DownloadAsync(megaLink, rawPath, _ => { }, ct);
         }
         else
         {

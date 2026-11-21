@@ -1573,4 +1573,5 @@ public sealed class Korean : LocalizedStrings
     public override string HintPatchOutputFolder => "아카이브(zip)를 저장할 폴더를 선택하세요";
     public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"아카이브 생성: {arg0} → {arg1}";
     public override string LogPsvPatchCsvNotFound(object? arg0) => $"PSV_PATCH.csv를 찾을 수 없습니다. 실행 파일 옆에 두세요: {arg0}";
+    public override string ErrPsvPatchMegaFailed(object? arg0) => $"MEGA 다운로드에 실패했습니다 (코드: {arg0}).";
 }
