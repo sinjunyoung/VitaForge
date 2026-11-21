@@ -20,6 +20,7 @@
   <ItemGroup>
     <PackageReference Include="Darnelix.Webp" Version="1.2.0" />
     <PackageReference Include="NAudio" Version="3.3.0" />
+	<PackageReference Include="HtmlAgilityPack" Version="1.13.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
