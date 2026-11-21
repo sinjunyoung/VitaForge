@@ -14,8 +14,13 @@ public static class PatchInstallService
 
     public static async Task<int> RunAsync(IReadOnlyList<PatchCatalogItem> items, PatchInstallOptions options, PatchTargetResolver? resolver, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct)
     {
-        int installed = 0;
-        string destination = ResolveDestination(options, log);
+        int succeeded = 0;
+        string? destination = null;
+
+        if (options.Mode == PatchOutputMode.Install)
+            destination = ResolveDestination(options, log);
+        else
+            Directory.CreateDirectory(options.TargetPath);
 
         foreach (var item in items)
         {
@@ -33,7 +38,7 @@ public static class PatchInstallService
             try
             {
                 if (await InstallOneAsync(plan, options, workDir, destination, resolver, log, progress, ct))
-                    installed++;
+                    succeeded++;
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
@@ -47,10 +52,10 @@ public static class PatchInstallService
 
         DeleteIfEmpty(WorkRoot);
 
-        return installed;
+        return succeeded;
     }
 
-    private static async Task<bool> InstallOneAsync(PatchInstallPlan plan, PatchInstallOptions options, string workDir, string destination, PatchTargetResolver? resolver, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct)
+    private static async Task<bool> InstallOneAsync(PatchInstallPlan plan, PatchInstallOptions options, string workDir, string? destination, PatchTargetResolver? resolver, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct)
     {
         var reporter = new ProgressReporter(Loc.S.StatusDownloading, string.Empty, Math.Max(1, plan.TotalSize), progress);
 
@@ -90,13 +95,28 @@ public static class PatchInstallService
         reporter.ForceReport();
 
         string label = options.Target == OutputTarget.Emu ? Loc.S.LabelOutputEmu : Loc.S.LabelOutputRetail;
-        string zipPath = Path.Combine(workDir, "build.zip");
+        bool archive = options.Mode == PatchOutputMode.Archive;
+        string outputPath = archive ? Utils.GetUniqueFilePath(Path.Combine(options.TargetPath, BuildArchiveName(plan, label))) : Path.Combine(workDir, "out");
 
         log(Loc.S.LogVitaMergingGamePatch(label), LogLevel.Highlight);
 
-        var result = await Task.Run(() => PatchOutputBuilder.BuildMergedFromEntriesAsync(entries, patchPath, zipPath, options.Target, log, progress, resolver, ct), ct);
+        MergeResult result;
 
-        log(Loc.S.LogVitaRepackDone(label, result.TotalFiles, result.PatchedSuccessfully, result.PatchCandidates, zipPath), LogLevel.Info);
+        try
+        {
+            result = archive
+                ? await Task.Run(() => PatchOutputBuilder.BuildMergedFromEntriesAsync(entries, patchPath, outputPath, options.Target, log, progress, resolver, ct), ct)
+                : await Task.Run(() => PatchOutputBuilder.BuildMergedToFolderAsync(entries, patchPath, outputPath, options.Target, log, progress, resolver, ct), ct);
+        }
+        catch
+        {
+            if (archive)
+                DeleteFileQuietly(outputPath);
+
+            throw;
+        }
+
+        log(Loc.S.LogVitaRepackDone(label, result.TotalFiles, result.PatchedSuccessfully, result.PatchCandidates, outputPath), LogLevel.Info);
 
         foreach (var entry in entries)
             DeleteFileQuietly(entry.Path);
@@ -107,24 +127,45 @@ public static class PatchInstallService
 
             log(Loc.S.LogPsvPatchNothingPatched(plan.Patch.Name), LogLevel.Error);
 
+            if (archive)
+                DeleteFileQuietly(outputPath);
+
             return false;
+        }
+
+        if (archive)
+        {
+            log(Loc.S.LogPsvPatchArchived(plan.Patch.Name, outputPath), LogLevel.Ok);
+
+            return true;
         }
 
         log(Loc.S.StatusInstalling, LogLevel.Highlight);
 
-        await ZipInstaller.ExtractAsync(zipPath, destination, progress, ct);
+        await FolderInstaller.MergeAsync(outputPath, destination!, progress, ct);
 
         log(Loc.S.LogPsvPatchInstalled(plan.Patch.Name, destination), LogLevel.Ok);
 
         return true;
     }
 
+    private static string BuildArchiveName(PatchInstallPlan plan, string label)
+    {
+        string version = string.IsNullOrWhiteSpace(plan.Patch.Version) ? string.Empty : $"_{plan.Patch.Version}";
+        string name = $"{plan.Patch.TitleId}_{label}{version}.zip";
+
+        foreach (char c in Path.GetInvalidFileNameChars())
+            name = name.Replace(c, '_');
+
+        return name;
+    }
+
     private static string ResolveDestination(PatchInstallOptions options, Action<string, LogLevel> log)
     {
         if (options.Target != OutputTarget.Emu)
-            return options.InstallRoot;
+            return options.TargetPath;
 
-        var info = Vita3kLocator.Resolve(options.InstallRoot);
+        var info = Vita3kLocator.Resolve(options.TargetPath);
 
         log(Loc.S.LogPsvPatchVita3kPrefPath(info.PrefPath), LogLevel.Info);
 
@@ -147,7 +188,7 @@ public static class PatchInstallService
         }
     }
 
-    private static void DeleteFileQuietly(string path)
+    private static void DeleteFileQuietly(string? path)
     {
         try
         {

@@ -9,8 +9,8 @@
              d:DesignHeight="640" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -18,20 +18,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" IsEnabled="{Binding IsIdle}" Margin="5,0,5,5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Border Background="#12FFFFFF" BorderBrush="#30FFFFFF" BorderThickness="1" CornerRadius="6" Grid.Column="0" Height="36">
-                <TextBox Background="Transparent" BorderThickness="0" FontSize="11" Foreground="#DCDCDC" IsReadOnly="True" Padding="10,0" Text="{Binding CsvPath, Mode=OneWay}" VerticalContentAlignment="Center"/>
-            </Border>
-            <Button BorderThickness="1" Command="{Binding BrowseCsvCommand}" Grid.Column="1" Height="36" Margin="5,0,0,0" Padding="14,0" Style="{StaticResource GrayButton}">
-                <TextBlock Text="{Binding Path=Current.ButtonLoadPatchCsv, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
-            </Button>
-        </Grid>
-
-        <Border Background="#12FFFFFF" BorderBrush="#30FFFFFF" BorderThickness="1" CornerRadius="8" Grid.Row="1" IsEnabled="{Binding IsIdle}" Margin="5,0,5,5">
+        <Border Background="#12FFFFFF" BorderBrush="#30FFFFFF" BorderThickness="1" CornerRadius="8" Grid.Row="0" IsEnabled="{Binding IsIdle}" Margin="5,0,5,5">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -46,47 +33,58 @@
                                 </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <CheckBox Style="{StaticResource SplitCheckBoxStyle}" IsChecked="{Binding IsChecked, Mode=TwoWay}" IsThreeState="False" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <CheckBox Style="{StaticResource SplitCheckBoxStyle}" IsChecked="{Binding IsChecked, Mode=TwoWay}" IsThreeState="False" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsSelectable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <GridViewColumn Width="110">
+                            <GridViewColumn Width="Auto">
                                 <GridViewColumn.Header>
-                                    <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderTitleId, Source={x:Static l:Loc.Instance}}"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Image Source="/Assets/Images/VitaCartridge.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                                        <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="ID" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                 </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock FontSize="12" Foreground="#8888A8" Text="{Binding TitleId}" VerticalAlignment="Center"/>
+                                        <TextBlock FontSize="12" Foreground="#E8E8F0" Text="{Binding TitleId}" VerticalAlignment="Center"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <GridViewColumn Width="60">
+                            <GridViewColumn Width="56">
                                 <GridViewColumn.Header>
-                                    <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderRegion, Source={x:Static l:Loc.Instance}}"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Image Source="/VitaForge.Core;component/Assets/Images/world.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                                    </StackPanel>
                                 </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock FontSize="12" Foreground="#8888A8" Text="{Binding Region}" VerticalAlignment="Center"/>
+                                        <TextBlock FontSize="12" Foreground="#E8E8F0" Text="{Binding Region}" VerticalAlignment="Center"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <GridViewColumn Width="300">
+                            <GridViewColumn Width="Auto">
                                 <GridViewColumn.Header>
-                                    <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderTitle, Source={x:Static l:Loc.Instance}}"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Image Source="/Assets/Images/VitaCartridge.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                                        <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderTitle, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                 </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock FontSize="13" FontWeight="SemiBold" Foreground="#E8E8F0" Text="{Binding Name}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                        <TextBlock FontSize="13" FontWeight="SemiBold" Foreground="#E8E8F0" Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}" VerticalAlignment="Center"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <GridViewColumn Width="90">
+                            <GridViewColumn Width="Auto">
                                 <GridViewColumn.Header>
-                                    <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderVersion, Source={x:Static l:Loc.Instance}}"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Image Source="/Assets/Images/Patch.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                                        <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderVersion, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                 </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
@@ -95,9 +93,12 @@
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <GridViewColumn Width="110">
+                            <GridViewColumn Width="Auto">
                                 <GridViewColumn.Header>
-                                    <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderRequiredUpdate, Source={x:Static l:Loc.Instance}}"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Image Source="/VitaForge.Core;component/Assets/Images/Version.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                                        <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderRequiredUpdate, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                 </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
@@ -106,12 +107,30 @@
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <GridViewColumn Width="44">
+                            <GridViewColumn Width="Auto">
+                                <GridViewColumn.Header>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Image Source="/Assets/Images/Categories.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                                    </StackPanel>
+                                </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button BorderThickness="1" Click="BtnReleaseLink_Click" Height="22" Padding="0" Width="28" 
-                                                Style="{StaticResource GrayButton}" ToolTip="{Binding Path=Current.ToolTipOpenReleasePage, Source={x:Static l:Loc.Instance}}" Visibility="{Binding HasReleaseLink, Converter={StaticResource BooleanToVisibilityConverter}}" >
-                                            <Image Source="/Assets/Images/Link.png" Width="12" Height="12" />
+                                        <Border Background="{Binding PatchTypeBadgeColor}" CornerRadius="4" HorizontalAlignment="Center" Padding="10,3">
+                                            <TextBlock FontSize="11" FontWeight="SemiBold" Foreground="White" Text="{Binding PatchType}"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Width="44">
+                                <GridViewColumn.Header>
+                                    <Image Source="/Assets/Images/Link.png" Width="24" Height="24"/>
+                                </GridViewColumn.Header>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button BorderThickness="1" Click="BtnReleaseLink_Click" Height="22" Padding="0" Width="28"
+                                                Style="{StaticResource GrayButton}" ToolTip="{Binding Path=Current.ToolTipOpenReleasePage, Source={x:Static l:Loc.Instance}}" Visibility="{Binding HasReleaseLink, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <Image Source="/Assets/Images/Link.png" Width="12" Height="12"/>
                                         </Button>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
@@ -128,7 +147,13 @@
             </Grid>
         </Border>
 
-        <TextBlock FontSize="11" Foreground="#A0A0A0" Grid.Row="2" HorizontalAlignment="Right" Margin="5,0,10,5" Text="{Binding ResultText}"/>
+        <TextBlock FontSize="11" Foreground="#A0A0A0" Grid.Row="1" HorizontalAlignment="Right" Margin="5,0,10,5" Text="{Binding ResultText}"/>
+
+        <StackPanel Grid.Row="2" Margin="5,0,5,5" Orientation="Horizontal">
+            <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="White" Margin="0,0,10,0" Text="{Binding Path=Current.LabelPatchMode, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
+            <RadioButton Content="{Binding Path=Current.RadioModeInstall, Source={x:Static l:Loc.Instance}}" FontSize="12" Foreground="White" GroupName="VitaPatchModeGroup" IsChecked="{Binding ModeInstall}" IsEnabled="{Binding IsIdle}" Margin="0,0,15,0" VerticalAlignment="Center"/>
+            <RadioButton Content="{Binding Path=Current.RadioModeArchive, Source={x:Static l:Loc.Instance}}" FontSize="12" Foreground="White" GroupName="VitaPatchModeGroup" IsChecked="{Binding ModeArchive}" IsEnabled="{Binding IsIdle}" Margin="0,0,15,0" VerticalAlignment="Center"/>
+        </StackPanel>
 
         <StackPanel Grid.Row="3" Margin="5,0,5,5" Orientation="Horizontal">
             <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="White" Margin="0,0,10,0" Text="{Binding Path=Current.LabelInstallTarget, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
@@ -145,13 +170,14 @@
             </Grid.ColumnDefinitions>
             <Border Background="#12FFFFFF" BorderBrush="#30FFFFFF" BorderThickness="1" CornerRadius="6" Grid.Column="0" Height="36">
                 <Grid>
-                    <TextBox Background="Transparent" BorderThickness="0" FontSize="11" Foreground="#DCDCDC" IsEnabled="{Binding IsIdle}" Padding="10,0" Text="{Binding InstallPath, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"
-                             AllowDrop="True" PreviewDragOver="TxtInstallPath_PreviewDragOver" Drop="TxtInstallPath_Drop"/>
+                    <TextBox Background="Transparent" BorderThickness="0" FontSize="11" Foreground="#DCDCDC" IsEnabled="{Binding IsIdle}" Padding="10,0" Text="{Binding TargetPath, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"
+                             AllowDrop="True" PreviewDragOver="TxtTargetPath_PreviewDragOver" Drop="TxtTargetPath_Drop"/>
                     <TextBlock FontSize="11" Foreground="#50FFFFFF" IsHitTestVisible="False" Margin="10,0,0,0" Text="{Binding Path=Current.HintVita3kFolder, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center" Visibility="{Binding EmuHintVisibility}"/>
                     <TextBlock FontSize="11" Foreground="#50FFFFFF" IsHitTestVisible="False" Margin="10,0,0,0" Text="{Binding Path=Current.HintDeviceRoot, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center" Visibility="{Binding DeviceHintVisibility}"/>
+                    <TextBlock FontSize="11" Foreground="#50FFFFFF" IsHitTestVisible="False" Margin="10,0,0,0" Text="{Binding Path=Current.HintPatchOutputFolder, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center" Visibility="{Binding OutputHintVisibility}"/>
                 </Grid>
             </Border>
-            <Button BorderThickness="1" Command="{Binding BrowseInstallCommand}" Grid.Column="1" Height="30" IsEnabled="{Binding IsIdle}" Margin="5,0,0,0" Padding="0" Style="{StaticResource GrayButton}" Width="30">
+            <Button BorderThickness="1" Command="{Binding BrowseTargetCommand}" Grid.Column="1" Height="30" IsEnabled="{Binding IsIdle}" Margin="5,0,0,0" Padding="0" Style="{StaticResource GrayButton}" Width="30">
                 <Image Height="30" RenderOptions.BitmapScalingMode="HighQuality" Source="/VitaForge.Core;component/Assets/Images/AddFolder.png" Width="30"/>
             </Button>
         </Grid>

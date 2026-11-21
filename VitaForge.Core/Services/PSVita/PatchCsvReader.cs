@@ -19,25 +19,26 @@ public static class PatchCsvReader
             return items;
 
         var header = rows[0].Select(h => h.Trim()).ToList();
-        int titleId = IndexOf(header, "Title ID");
+        int titleId = IndexOf(header, "Title ID", "TitleId");
         int region = IndexOf(header, "Region");
         int name = IndexOf(header, "Name");
-        int version = IndexOf(header, "Version");
-        int requiredUpdate = IndexOf(header, "Required Update VERSION", "Required FW VERSION");
+        int version = IndexOf(header, "Version", "Ver");
+        int requiredUpdate = IndexOf(header, "Required Update VERSION", "Required FW VERSION", "Update Ver", "Update Version");
         int user = IndexOf(header, "User");
-        int releaseLink = IndexOf(header, "release link");
-        int directLink = IndexOf(header, "direct link");
-        int lastModified = IndexOf(header, "Last Modification Date");
+        int releaseLink = IndexOf(header, "Release Link");
+        int directLink = IndexOf(header, "Direct Link", "Patch Link");
+        int lastModified = IndexOf(header, "Last Modification Date", "Date");
+        int patchType = IndexOf(header, "PatchType", "Patch Type", "Type");
 
         foreach (var row in rows.Skip(1))
         {
             string id = Get(row, titleId).ToUpperInvariant();
-            string link = Get(row, directLink);
+            string type = Get(row, patchType);
 
-            if (id.Length == 0 || link.Length == 0)
+            if (id.Length == 0)
                 continue;
 
-            items.Add(new PatchCatalogItem
+            var item = new PatchCatalogItem
             {
                 TitleId = id,
                 Region = Get(row, region),
@@ -46,9 +47,12 @@ public static class PatchCsvReader
                 RequiredUpdateVersion = Get(row, requiredUpdate),
                 User = Get(row, user),
                 ReleaseLink = Get(row, releaseLink),
-                DirectLink = link,
-                LastModified = Get(row, lastModified)
-            });
+                DirectLink = Get(row, directLink),
+                LastModified = Get(row, lastModified),
+                PatchType = type.Length == 0 ? PatchCatalogItem.DirectType : type
+            };
+
+            items.Add(item);
         }
 
         return items;
@@ -58,7 +62,8 @@ public static class PatchCsvReader
     {
         foreach (string name in names)
         {
-            int index = header.FindIndex(h => h.Equals(name, StringComparison.OrdinalIgnoreCase));
+            string key = Normalize(name);
+            int index = header.FindIndex(h => Normalize(h) == key);
 
             if (index >= 0)
                 return index;
@@ -66,6 +71,8 @@ public static class PatchCsvReader
 
         return -1;
     }
+
+    private static string Normalize(string value) => new([.. value.Where(char.IsLetterOrDigit).Select(char.ToLowerInvariant)]);
 
     private static string Get(List<string> row, int index) => index >= 0 && index < row.Count ? row[index].Trim() : string.Empty;
 

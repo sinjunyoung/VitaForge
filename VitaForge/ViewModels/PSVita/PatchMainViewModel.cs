@@ -19,30 +19,47 @@ namespace VitaForge.ViewModels.PSVita;
 
 public class PatchMainViewModel : ProgressToolTabViewModel
 {
-    private static readonly string DefaultCsvPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PSV_PATCH.csv");
+    private static readonly string CsvPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PSV_PATCH.csv");
 
     private readonly Stopwatch _totalSw = new();
     private string? _emuRoot;
     private string? _deviceRoot;
+    private string? _outputPath;
 
     public ObservableCollection<PatchRowViewModel> Rows { get; } = [];
-
-    public string CsvPath { get; private set { SetProperty(ref field, value); } } = string.Empty;
 
     public bool? AllChecked
     {
         get
         {
-            if (Rows.Count == 0)
+            var selectable = Rows.Where(r => r.IsSelectable).ToList();
+
+            if (selectable.Count == 0)
                 return false;
 
-            int checkedCount = Rows.Count(r => r.IsChecked);
+            int checkedCount = selectable.Count(r => r.IsChecked);
 
-            return checkedCount == 0 ? false : checkedCount == Rows.Count ? true : null;
+            return checkedCount == 0 ? false : checkedCount == selectable.Count ? true : null;
         }
     }
 
-    public string ResultText => Loc.S.LabelNpsResultSelected(Rows.Count, Rows.Count(r => r.IsChecked));
+    public string ResultText => Loc.S.LabelNpsResultSelected(Rows.Count(r => r.IsSelectable), Rows.Count(r => r.IsChecked));
+
+    public bool ModeInstall
+    {
+        get;
+        set
+        {
+            if (SetProperty(ref field, value))
+                NotifyTargetChanged();
+        }
+    } = true;
+
+    public bool ModeArchive
+    {
+        get => !ModeInstall;
+        set => ModeInstall = !value;
+    }
 
     public bool InstallEmu
     {
@@ -62,12 +79,17 @@ public class PatchMainViewModel : ProgressToolTabViewModel
 
     public bool IncludeDlc { get; set { SetProperty(ref field, value); } } = true;
 
-    public string? InstallPath
+    public string? TargetPath
     {
-        get => InstallEmu ? _emuRoot : _deviceRoot;
+        get => !ModeInstall ? _outputPath : InstallEmu ? _emuRoot : _deviceRoot;
         set
         {
-            if (InstallEmu)
+            if (!ModeInstall)
+            {
+                _outputPath = value;
+                AppConfig.Instance.OutputFolders.VitaPatchOutputPath = value;
+            }
+            else if (InstallEmu)
             {
                 _emuRoot = value;
                 AppConfig.Instance.OutputFolders.VitaPatchEmuRootPath = value;
@@ -81,34 +103,34 @@ public class PatchMainViewModel : ProgressToolTabViewModel
             OnPropertyChanged();
             OnPropertyChanged(nameof(EmuHintVisibility));
             OnPropertyChanged(nameof(DeviceHintVisibility));
+            OnPropertyChanged(nameof(OutputHintVisibility));
         }
     }
 
-    public Visibility EmuHintVisibility => InstallEmu && string.IsNullOrWhiteSpace(InstallPath) ? Visibility.Visible : Visibility.Collapsed;
+    public Visibility EmuHintVisibility => ModeInstall && InstallEmu && string.IsNullOrWhiteSpace(TargetPath) ? Visibility.Visible : Visibility.Collapsed;
 
-    public Visibility DeviceHintVisibility => !InstallEmu && string.IsNullOrWhiteSpace(InstallPath) ? Visibility.Visible : Visibility.Collapsed;
+    public Visibility DeviceHintVisibility => ModeInstall && !InstallEmu && string.IsNullOrWhiteSpace(TargetPath) ? Visibility.Visible : Visibility.Collapsed;
 
-    public ICommand BrowseCsvCommand { get; }
+    public Visibility OutputHintVisibility => !ModeInstall && string.IsNullOrWhiteSpace(TargetPath) ? Visibility.Visible : Visibility.Collapsed;
 
     public ICommand ClearCheckedCommand { get; }
 
     public ICommand ToggleAllCheckedCommand { get; }
 
-    public ICommand BrowseInstallCommand { get; }
+    public ICommand BrowseTargetCommand { get; }
 
     public PatchMainViewModel()
     {
         _emuRoot = AppConfig.Instance.OutputFolders.VitaPatchEmuRootPath;
         _deviceRoot = AppConfig.Instance.OutputFolders.VitaPatchDeviceRootPath;
+        _outputPath = string.IsNullOrWhiteSpace(AppConfig.Instance.OutputFolders.VitaPatchOutputPath) ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "output") : AppConfig.Instance.OutputFolders.VitaPatchOutputPath;
 
-        BrowseCsvCommand = new RelayCommand(_ => BrowseCsv());
         ClearCheckedCommand = new RelayCommand(_ => ClearChecked(), _ => Rows.Any(r => r.IsChecked));
-        ToggleAllCheckedCommand = new RelayCommand(_ => ToggleAllChecked(), _ => Rows.Count > 0);
-        BrowseInstallCommand = new RelayCommand(_ => BrowseInstall());
+        ToggleAllCheckedCommand = new RelayCommand(_ => ToggleAllChecked(), _ => Rows.Any(r => r.IsSelectable));
+        BrowseTargetCommand = new RelayCommand(_ => BrowseTarget());
         CancelCommand = new RelayCommand(_ => Cancel());
 
-        if (File.Exists(DefaultCsvPath))
-            LoadCsv(DefaultCsvPath);
+        LoadCsv();
     }
 
     public static void OpenReleaseLink(PatchRowViewModel row)
@@ -121,10 +143,12 @@ public class PatchMainViewModel : ProgressToolTabViewModel
 
     private void NotifyTargetChanged()
     {
+        OnPropertyChanged(nameof(ModeArchive));
         OnPropertyChanged(nameof(InstallDevice));
-        OnPropertyChanged(nameof(InstallPath));
+        OnPropertyChanged(nameof(TargetPath));
         OnPropertyChanged(nameof(EmuHintVisibility));
         OnPropertyChanged(nameof(DeviceHintVisibility));
+        OnPropertyChanged(nameof(OutputHintVisibility));
     }
 
     private void NotifyCheckedChanged()
@@ -134,32 +158,22 @@ public class PatchMainViewModel : ProgressToolTabViewModel
         CommandManager.InvalidateRequerySuggested();
     }
 
-    private void BrowseCsv()
+    private void LoadCsv()
     {
-        var dlg = new Microsoft.Win32.OpenFileDialog
+        if (!File.Exists(CsvPath))
         {
-            Filter = "CSV (*.csv)|*.csv",
-            InitialDirectory = AppDomain.CurrentDomain.BaseDirectory
-        };
+            AppendLog(Loc.S.LogPsvPatchCsvNotFound(CsvPath), LogLevel.Error);
+            return;
+        }
 
-        if (dlg.ShowDialog() == true)
-            LoadCsv(dlg.FileName);
-    }
-
-    private void LoadCsv(string path)
-    {
         try
         {
-            var items = PatchCsvReader.Read(path);
-
-            Rows.Clear();
+            var items = PatchCsvReader.Read(CsvPath);
 
             foreach (var item in items)
                 Rows.Add(new PatchRowViewModel(item, NotifyCheckedChanged));
 
-            CsvPath = path;
-
-            AppendLog(Loc.S.LogPsvPatchCsvLoaded(items.Count, path), LogLevel.Info);
+            AppendLog(Loc.S.LogPsvPatchCsvLoaded(items.Count, CsvPath), LogLevel.Info);
 
             NotifyCheckedChanged();
         }
@@ -173,7 +187,7 @@ public class PatchMainViewModel : ProgressToolTabViewModel
     {
         bool target = AllChecked != true;
 
-        foreach (var row in Rows)
+        foreach (var row in Rows.Where(r => r.IsSelectable))
             row.IsChecked = target;
     }
 
@@ -183,16 +197,16 @@ public class PatchMainViewModel : ProgressToolTabViewModel
             row.IsChecked = false;
     }
 
-    private void BrowseInstall()
+    private void BrowseTarget()
     {
         var dlg = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog
         {
-            Description = InstallEmu ? Loc.S.HintVita3kFolder : Loc.S.HintDeviceRoot,
+            Description = !ModeInstall ? Loc.S.HintPatchOutputFolder : InstallEmu ? Loc.S.HintVita3kFolder : Loc.S.HintDeviceRoot,
             UseDescriptionForTitle = true
         };
 
         if (dlg.ShowDialog() == true)
-            InstallPath = dlg.SelectedPath;
+            TargetPath = dlg.SelectedPath;
     }
 
     public async Task StartAsync()
@@ -206,20 +220,20 @@ public class PatchMainViewModel : ProgressToolTabViewModel
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(InstallPath))
-            BrowseInstall();
+        if (string.IsNullOrWhiteSpace(TargetPath))
+            BrowseTarget();
 
-        if (string.IsNullOrWhiteSpace(InstallPath))
+        if (string.IsNullOrWhiteSpace(TargetPath))
             return;
 
-        if (!Directory.Exists(InstallPath))
+        if (ModeInstall && !Directory.Exists(TargetPath))
         {
-            AppendLog(Loc.S.ErrPsvPatchInstallPathNotFound(InstallPath), LogLevel.Error);
+            AppendLog(Loc.S.ErrPsvPatchInstallPathNotFound(TargetPath), LogLevel.Error);
             await SoundPlayer.PlayErrorAsync();
             return;
         }
 
-        var options = new PatchInstallOptions(InstallEmu ? OutputTarget.Emu : OutputTarget.Retail, InstallPath, IncludeDlc);
+        var options = new PatchInstallOptions(InstallEmu ? OutputTarget.Emu : OutputTarget.Retail, ModeInstall ? PatchOutputMode.Install : PatchOutputMode.Archive, TargetPath, IncludeDlc);
 
         _totalSw.Restart();
 
@@ -244,13 +258,15 @@ public class PatchMainViewModel : ProgressToolTabViewModel
         {
             await NpsCatalogService.Instance.LoadAsync();
 
-            int installed = await PatchInstallService.RunAsync(items, options, ResolvePatchTarget, AppendLog, BuildProgressReporter(), ct);
+            int succeeded = await PatchInstallService.RunAsync(items, options, ResolvePatchTarget, AppendLog, BuildProgressReporter(), ct);
 
-            AppendLog(Loc.S.LogVitaAllDoneTitles(installed, _totalSw.Elapsed.ToString("mm\\:ss")), LogLevel.Ok);
+            AppendLog(Loc.S.LogVitaAllDoneTitles(succeeded, _totalSw.Elapsed.ToString("mm\\:ss")), LogLevel.Ok);
             ClearChecked();
 
-            if (options.Target == OutputTarget.Emu && installed > 0)
-                Vita3kLauncher.Launch(options.InstallRoot, AppendLog);
+            if (succeeded > 0 && options.Mode == PatchOutputMode.Archive)
+                options.TargetPath.OpenFolder();
+            else if (succeeded > 0 && options.Target == OutputTarget.Emu)
+                Vita3kLauncher.Launch(options.TargetPath, AppendLog);
 
             await SoundPlayer.PlayCompleteAsync();
         }

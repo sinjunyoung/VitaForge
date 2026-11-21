@@ -575,6 +575,19 @@ internal static class PatchShared
         es.Write(license.Data);
     }
 
+    public static void WriteLicenseEntry(IDecryptSink sink, HashSet<string> writtenEntries, OwnerContext owner)
+    {
+        if (BuildLicenseEntry(owner) is not { } license)
+            return;
+
+        if (!writtenEntries.Add(license.EntryPath))
+            return;
+
+        using var stream = sink.Open(license.EntryPath);
+
+        stream.Write(license.Data);
+    }
+
     public static string GetPatchedPrefix(ContentCategory? category, OutputTarget target) => (category, target) switch
     {
         (ContentCategory.App, OutputTarget.Emu) => "app",

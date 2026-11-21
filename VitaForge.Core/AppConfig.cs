@@ -54,6 +54,8 @@ public class OutputFoldersConfig : ViewModelBase
     public string? VitaPatchEmuRootPath { get; set { SetProperty(ref field, value); } }
 
     public string? VitaPatchDeviceRootPath { get; set { SetProperty(ref field, value); } }
+
+    public string? VitaPatchOutputPath { get; set { SetProperty(ref field, value); } }
 }
 
 public class AppConfig : ViewModelBase

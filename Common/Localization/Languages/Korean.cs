@@ -1544,13 +1544,13 @@ public sealed class Korean : LocalizedStrings
     public override string LogNpsOlderUpdateSkipped(object? arg0, object? arg1) => $"건너뜀 (타이틀당 최신 업데이트 하나만 사용): {arg0} {arg1}";
 
     public override string ButtonLoadPatchCsv => "CSV 불러오기";
-    public override string LabelInstallTarget => "설치 대상";
+    public override string LabelInstallTarget => "대상";
     public override string RadioInstallVita3k => "에뮬레이터 (Vita3K)";
     public override string RadioInstallDevice => "실기 (SD 카드)";
     public override string CheckIncludeDlc => "DLC 포함";
     public override string HintVita3kFolder => "Vita3K 폴더를 선택하세요 (ux0가 있는 폴더)";
     public override string HintDeviceRoot => "SD 카드 루트를 선택하세요";
-    public override string HeaderRequiredUpdate => "필요 업데이트";
+    public override string HeaderRequiredUpdate => "필요 버전";
     public override string ToolTipOpenReleasePage => "배포 페이지 열기";
     public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"설치 경로를 찾을 수 없습니다: {arg0}";
     public override string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"패치 목록 로드: {arg0}건 ({arg1})";
@@ -1567,4 +1567,10 @@ public sealed class Korean : LocalizedStrings
     public override string LogPsvPatchVita3kPrefPath(object? arg0) => $"Vita3K 데이터 폴더: {arg0}";
     public override string LogPsvPatchVita3kLaunch(object? arg0) => $"Vita3K 실행: {arg0}";
     public override string LogPsvPatchVita3kExeMissing(object? arg0) => $"Vita3K.exe를 찾을 수 없습니다: {arg0}";
+    public override string LabelPatchMode => "방식";
+    public override string RadioModeInstall => "설치";
+    public override string RadioModeArchive => "아카이브";
+    public override string HintPatchOutputFolder => "아카이브(zip)를 저장할 폴더를 선택하세요";
+    public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"아카이브 생성: {arg0} → {arg1}";
+    public override string LogPsvPatchCsvNotFound(object? arg0) => $"PSV_PATCH.csv를 찾을 수 없습니다. 실행 파일 옆에 두세요: {arg0}";
 }

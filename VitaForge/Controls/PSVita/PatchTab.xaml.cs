@@ -12,7 +12,7 @@ public partial class PatchTab : UserControl
 
     public PatchTab() => InitializeComponent();
 
-    private void TxtInstallPath_PreviewDragOver(object sender, DragEventArgs e)
+    private void TxtTargetPath_PreviewDragOver(object sender, DragEventArgs e)
     {
         if (e.Data.GetDataPresent(DataFormats.FileDrop) && e.Data.GetData(DataFormats.FileDrop) is string[] paths && paths.Length > 0 && Directory.Exists(paths[0]))
             e.Effects = DragDropEffects.Copy;
@@ -22,10 +22,10 @@ public partial class PatchTab : UserControl
         e.Handled = true;
     }
 
-    private void TxtInstallPath_Drop(object sender, DragEventArgs e)
+    private void TxtTargetPath_Drop(object sender, DragEventArgs e)
     {
         if (e.Data.GetDataPresent(DataFormats.FileDrop) && e.Data.GetData(DataFormats.FileDrop) is string[] paths && paths.Length > 0 && Directory.Exists(paths[0]) && ViewModel != null)
-            ViewModel.InstallPath = paths[0];
+            ViewModel.TargetPath = paths[0];
 
         e.Handled = true;
     }

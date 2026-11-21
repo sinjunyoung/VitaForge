@@ -11,10 +11,12 @@ public class PatchRowViewModel(PatchCatalogItem item, Action onCheckedChanged) :
         get;
         set
         {
-            if (SetProperty(ref field, value))
+            if (SetProperty(ref field, value && IsSelectable))
                 onCheckedChanged();
         }
     }
+
+    public bool IsSelectable => Item.IsSelectable;
 
     public string TitleId => Item.TitleId;
 
@@ -25,6 +27,10 @@ public class PatchRowViewModel(PatchCatalogItem item, Action onCheckedChanged) :
     public string Version => Item.Version;
 
     public string RequiredUpdate => Item.RequiredUpdateVersion;
+
+    public string PatchType => Item.PatchType;
+
+    public string PatchTypeBadgeColor => Item.IsDirect ? "#2E7D32" : "#8A5A00";
 
     public bool HasReleaseLink => !string.IsNullOrWhiteSpace(Item.ReleaseLink);
 }
