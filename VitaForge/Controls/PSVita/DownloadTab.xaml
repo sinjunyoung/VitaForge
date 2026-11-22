@@ -243,7 +243,7 @@
                                 <GridViewColumn.Header >
                                     <GridViewColumnHeader Tag="Version">
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                            <Image Source="/VitaForge.Core;component/Assets/Images/Version.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                                            <Image Source="/Assets/Images/Version.png" Width="24" Height="24" Margin="0,0,4,0"/>
                                             <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderVersion, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
                                         </StackPanel>
                                     </GridViewColumnHeader>

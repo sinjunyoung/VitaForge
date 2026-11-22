@@ -1,4 +1,4 @@
-﻿@echo off
+@echo off
 cd /d %~dp0VitaForge
 echo Building VitaForge Windows...
 dotnet publish VitaForge.csproj -c Release -r win-x64 --self-contained false -p:PublishSelfContained=false -p:Platform=x64
