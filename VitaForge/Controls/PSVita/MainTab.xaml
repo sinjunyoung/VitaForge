@@ -12,6 +12,24 @@
             <TabItem IsEnabled="{Binding IsIdle}">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Source="/Assets/Images/Patch.png" Width="20" Height="20" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Path=Current.HeaderPatch, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <local:PatchTab DataContext="{Binding PatchVM}"/>
+            </TabItem>
+            <TabItem IsEnabled="{Binding IsIdle}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Source="/Assets/Images/DownLoad.png" Width="20" Height="20" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Path=Current.TabDownload, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <local:DownloadTab DataContext="{Binding DownloadVM}"/>
+            </TabItem>
+            <TabItem IsEnabled="{Binding IsIdle}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Image Source="/Assets/Images/Package.png" Width="20" Height="20" Margin="0,0,6,0" VerticalAlignment="Center"/>
                         <TextBlock Text="{Binding Path=Current.TabRepack, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
                     </StackPanel>
@@ -35,25 +53,7 @@
                     </StackPanel>
                 </TabItem.Header>
                 <local:ConverterTab DataContext="{Binding ConverterVM}"/>
-            </TabItem>
-            <TabItem IsEnabled="{Binding IsIdle}">
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Image Source="/Assets/Images/DownLoad.png" Width="20" Height="20" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="{Binding Path=Current.TabDownload, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <local:DownloadTab DataContext="{Binding DownloadVM}"/>
-            </TabItem>
-            <TabItem IsEnabled="{Binding IsIdle}">
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Image Source="/Assets/Images/Patch.png" Width="20" Height="20" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="{Binding Path=Current.HeaderPatch, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <local:PatchTab DataContext="{Binding PatchVM}"/>
-            </TabItem>
+            </TabItem>                       
         </TabControl>
     </Grid>
 </UserControl>
