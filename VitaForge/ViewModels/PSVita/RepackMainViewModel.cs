@@ -9,7 +9,6 @@ using VitaForge.Core.UI.Command;
 using VitaForge.Core.ViewModels.PSVita;
 using VitaForge.Views;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
@@ -210,21 +209,18 @@ public class RepackMainViewModel : ProgressToolTabViewModel
         }
     }
 
-    private string? ResolvePatchTarget(PatchTargetRequest request)
+    private IReadOnlyList<string?> ResolvePatchTarget(PatchTargetRequest request)
     {
-        if (!_choiceCache.TryGet(request, out string? selected))
+        if (!_choiceCache.TryGet(request, out var selections))
         {
-            selected = Application.Current.Dispatcher.Invoke(() => PatchTargetPickerWindow.Pick(Application.Current.MainWindow, request));
+            selections = Application.Current.Dispatcher.Invoke(() => PatchTargetPickerWindow.Pick(Application.Current.MainWindow, request));
 
-            _choiceCache.Set(request, selected);
+            _choiceCache.Set(request, selections);
         }
 
-        if (selected == null)
-            AppendLog(Loc.S.LogVitaPatchTargetSkipped(request.PatchFileName), LogLevel.Info);
-        else
-            AppendLog(Loc.S.LogVitaPatchTargetSelected(request.PatchFileName, selected), LogLevel.Ok);
+        PatchTargetLogger.Log(request, selections, AppendLog);
 
-        return selected;
+        return selections;
     }
 
     private bool Validate(out string error)

@@ -1,3 +1,3 @@
-namespace Vita.Core.Models;
+﻿namespace Vita.Core.Models;
 
-public sealed record PatchTargetRequest(string TitleId, ContentCategory Category, string? ContentIdSuffix, string PatchFileName, IReadOnlyList<string> CandidatePaths);
+public sealed record PatchTargetRequest(string TitleId, ContentCategory Category, string? ContentIdSuffix, IReadOnlyList<string> PatchFileNames, IReadOnlyList<string> CandidatePaths);

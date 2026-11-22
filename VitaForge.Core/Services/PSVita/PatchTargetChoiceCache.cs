@@ -5,7 +5,7 @@ namespace VitaForge.Core.Services.PSVita;
 
 public sealed class PatchTargetChoiceCache
 {
-    private readonly Dictionary<string, string?> _choices = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, IReadOnlyList<string?>> _choices = new(StringComparer.OrdinalIgnoreCase);
     private string _fingerprint = string.Empty;
 
     public void Clear()
@@ -23,15 +23,21 @@ public sealed class PatchTargetChoiceCache
         _fingerprint = fingerprint;
     }
 
-    public bool TryGet(PatchTargetRequest request, out string? selected)
+    public bool TryGet(PatchTargetRequest request, out IReadOnlyList<string?> selections)
     {
-        if (!_choices.TryGetValue(KeyOf(request), out selected))
-            return false;
+        if (_choices.TryGetValue(KeyOf(request), out var cached) && cached.All(s => s == null || request.CandidatePaths.Contains(s, StringComparer.OrdinalIgnoreCase)))
+        {
+            selections = cached;
 
-        return selected == null || request.CandidatePaths.Contains(selected, StringComparer.OrdinalIgnoreCase);
+            return true;
+        }
+
+        selections = [];
+
+        return false;
     }
 
-    public void Set(PatchTargetRequest request, string? selected) => _choices[KeyOf(request)] = selected;
+    public void Set(PatchTargetRequest request, IReadOnlyList<string?> selections) => _choices[KeyOf(request)] = selections;
 
     public static string BuildFingerprint(IEnumerable<string?> paths)
     {
@@ -45,7 +51,7 @@ public sealed class PatchTargetChoiceCache
         return string.Join("\n", parts);
     }
 
-    private static string KeyOf(PatchTargetRequest request) => $"{request.TitleId}|{request.Category}|{request.ContentIdSuffix}|{request.PatchFileName}";
+    private static string KeyOf(PatchTargetRequest request) => $"{request.TitleId}|{request.Category}|{request.ContentIdSuffix}|{string.Join("|", request.PatchFileNames)}";
 
     private static string Describe(string path)
     {

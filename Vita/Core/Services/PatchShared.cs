@@ -455,13 +455,15 @@ internal static class PatchShared
 
         var manualTargets = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         var candidatePaths = relativePaths.Order(StringComparer.OrdinalIgnoreCase).ToList();
+        var unmatchedPatches = plan.UnmatchedPatches;
+        var selections = targetResolver(new PatchTargetRequest(titleId, category, contentIdSuffix, [.. unmatchedPatches.Select(u => u.Entry.File.DisplayName)], candidatePaths));
 
-        foreach (var unmatched in plan.UnmatchedPatches)
+        for (int i = 0; i < unmatchedPatches.Count && i < selections.Count; i++)
         {
-            string selected = targetResolver(new PatchTargetRequest(titleId, category, contentIdSuffix, unmatched.Entry.File.DisplayName, candidatePaths)) ?? string.Empty;
+            string? selected = selections[i];
 
-            if (selected.Length > 0)
-                manualTargets[unmatched.Key] = selected;
+            if (!string.IsNullOrEmpty(selected))
+                manualTargets[unmatchedPatches[i].Key] = selected;
         }
 
         return manualTargets.Count == 0 ? plan : PatchPlan.Build(patchIndex, relativePaths, StringComparer.OrdinalIgnoreCase, manualTargets);

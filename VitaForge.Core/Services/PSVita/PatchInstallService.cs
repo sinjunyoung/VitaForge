@@ -116,7 +116,7 @@ public static class PatchInstallService
             if (archive)
                 DeleteFileQuietly(outputPath);
             else
-                tracker!.Rollback();
+                InstallRollback.Run(tracker!, log);
 
             throw;
         }
@@ -135,7 +135,7 @@ public static class PatchInstallService
             if (archive)
                 DeleteFileQuietly(outputPath);
             else
-                tracker!.Rollback();
+                InstallRollback.Run(tracker!, log);
 
             return false;
         }

@@ -28,27 +28,38 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string ButtonGdiBasis => "GDI 基準";
     public override string ButtonInstall => "安裝";
     public override string ButtonLater => "稍後";
+    public override string ButtonLink => "關聯";
     public override string ButtonLoadGameList => "載入遊戲清單";
+    public override string ButtonLoadPatchCsv => "載入 CSV";
     public override string ButtonOk => "確定";
     public override string ButtonRecoverTitleDb => "還原 title.db";
     public override string ButtonRemoveSelected => "刪除選取";
     public override string ButtonRepackFolderBased => "重新打包 (以資料夾為基礎)";
     public override string ButtonReset => "重設";
+    public override string ButtonSearch => "搜尋";
     public override string ButtonSelect => "選擇";
-    public override string TitlePatchTargetPicker => "選擇修補目標檔案";
-    public override string ButtonSkip => "略過";
-    public override string MsgPatchTargetNotFound(object? arg0) => $"找不到修補 '{arg0}' 對應的目標檔案。請手動選擇要套用的檔案。";
-    public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"手動指定修補目標: {arg0} -> {arg1}";
-    public override string LogVitaPatchTargetSkipped(object? arg0) => $"已略過修補目標選擇: {arg0}";
     public override string ButtonSelectFile => "選擇檔案";
     public override string ButtonSettings => "設定";
+    public override string ButtonSkip => "略過";
     public override string ButtonStart => "開始";
+    public override string ButtonUnlink => "取消關聯";
     public override string ButtonUnpack => "解包";
     public override string ButtonUnpackAndRepackFull => "解包 + 重新打包 (Full)";
     public override string ButtonUnpackAndRepackStreaming => "解包 + 重新打包 (以串流為基礎)";
+    public override string HintPatchTargetLink => "在左側樹狀圖選取目標檔案，然後按兩下右側項目或按「關聯」。";
+    public override string LabelPatchTargetCandidates => "候選目標檔案";
+    public override string LabelPatchTargetNone => "未指定";
+    public override string LabelPatchTargetUnmatched => "無目標的修補檔";
+    public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"手動指定修補目標: {arg0} -> {arg1}";
+    public override string LogVitaPatchTargetSkipped(object? arg0) => $"已略過修補目標選擇: {arg0}";
+    public override string LogVitaRollbackDeleted(object? arg0) => $"安裝失敗: 已刪除 {arg0} 個已寫入的檔案";
+    public override string MsgPatchTargetNotFound(object? arg0) => $"找不到修補 '{arg0}' 對應的目標檔案。請手動選擇要套用的檔案。";
+    public override string MsgPatchTargetsNotFound(object? arg0) => $"找不到 {arg0} 個修補檔對應的目標檔案。";
+    public override string TitlePatchTargetPicker => "選擇修補目標檔案";
 
     // Check
     public override string CheckExtraOption => "額外選項 (cmd 0x0B)";
+    public override string CheckIncludeDlc => "包含 DLC";
     public override string CheckVideoFreezeFix => "影片當機修正 (cmd 0x00)";
 
     // Description
@@ -76,11 +87,11 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string DescTistoryEnterUrl => "請輸入 Tistory 網址並按下分析按鈕";
     public override string DescTistoryFindAttachments => "尋找附件連結並加入清單";
     public override string DescVitaAutoClassify => "App/Patch/AddCont 會自動分類";
+    public override string DescVitaDecryptAll => "解密所有檔案並以模擬器結構(app/addcont/license)輸出 (合併本體與更新)";
     public override string DescVitaGroupToNoNpDrm => "相同標題 ID 的 App/Patch/AddCont 會合併並轉換為 NoNpDrm 格式";
     public override string DescVitaKeyRequiredShared => "需要金鑰 (work.bin, *.rif/zRIF 字串) (Patch 可共用 App 的金鑰)";
     public override string DescVitaPatchMerge => "模擬器: 解密後覆寫 app/addcont / 實機: 新增 rePatch/reAddcont";
     public override string DescVitaPkgKeyRequired => "pkg 需要金鑰 (work.bin, *.rif/zRIF 字串)";
-    public override string DescVitaDecryptAll => "解密所有檔案並以模擬器結構(app/addcont/license)輸出 (合併本體與更新)";
     public override string DescWiiUAutoClassify => "本體/更新/DLC 會依標題 ID 自動分類";
 
     // Detail
@@ -382,6 +393,9 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string ErrNotGcOrWiiDisc => "不是 GameCube 或 Wii 光碟映像檔。";
     public override string ErrNotRiivolutionXml => "不是 Riivolution XML。";
     public override string ErrNotWiiDisc => "不是 Wii 光碟。";
+    public override string ErrNpsNoDownloadable => "所選項目中沒有可下載並轉換的項目。";
+    public override string ErrNpsSelectItems => "請勾選要下載的項目。";
+    public override string ErrNpsTsvNotFound(object? arg0) => $"找不到 {arg0}。請將 tsv 檔案放在執行檔所在的資料夾中。";
     public override string ErrNsoSegmentLz4Failed(object? arg0, object? arg1) => $"區段 {arg0} LZ4 壓縮失敗 (encodedLen={arg1})";
     public override string ErrNspHasNoFiles => "NSP 中沒有寫入任何檔案。";
     public override string ErrOnlyBinaryFileType(object? arg0, object? arg1) => $"不支援 BINARY 以外的 FILE 類型 ({arg0}): {arg1}";
@@ -426,6 +440,11 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string ErrPpfSourceTooShortBlockcheck => "來源檔案太短，無法執行 blockcheck。";
     public override string ErrProgramRomfsNotFound => "找不到程式 romfs。";
     public override string ErrPs1GamesOnly => "僅支援 PS1 遊戲。";
+    public override string ErrPsvPatchDriveBlocked => "Google 雲端硬碟封鎖了下載（超出配額或無法存取）。";
+    public override string ErrPsvPatchDriveEmptyFolder => "在 Google 雲端硬碟資料夾中找不到檔案。";
+    public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"找不到安裝路徑: {arg0}";
+    public override string ErrPsvPatchMegaFailed(object? arg0) => $"MEGA 下載失敗（代碼: {arg0}）。";
+    public override string ErrPsvPatchTistoryNoAttachment(object? arg0) => $"在 Tistory 頁面中找不到附件: {arg0}";
     public override string ErrRawContentAbnormallyLarge(object? arg0, object? arg1) => $"內容 {arg0}.app 為 raw 類型但異常龐大 ({arg1} 位元組) — 雜湊樹類型可能判斷有誤。";
     public override string ErrReadFailedDetail(object? arg0, object? arg1, object? arg2, object? arg3, object? arg4, object? arg5) => $"讀取 '{arg0}' 失敗 (clusterIndex={arg1}, offsetField={arg2}, byteOffset={arg3}, size={arg4}): {arg5}";
     public override string ErrRecompressedExceedsTitleBlock(object? arg0, object? arg1) => $"重新壓縮結果超出標題區塊: {arg0} > {arg1}";
@@ -654,12 +673,16 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string HeaderOutput => "輸出";
     public override string HeaderPatch => "修補檔";
     public override string HeaderProductCode => "產品代碼";
+    public override string HeaderRegion => "地區";
+    public override string HeaderRequiredUpdate => "所需版本";
     public override string HeaderResult => "結果";
     public override string HeaderSize => "大小";
     public override string HeaderTitle => "標題";
+    public override string HeaderTitleId => "標題 ID";
     public override string HeaderVersion => "版本";
 
     // Hint
+    public override string HintDeviceRoot => "請選擇 SD 卡根目錄";
     public override string HintDragOrClickPatch3ds => "請拖入或點擊選擇修補檔資料夾或 zip/7z 檔案";
     public override string HintDragOrClickPatchFile => "請拖入或點擊選擇修補檔案";
     public override string HintDragOrClickPatchFolderIpsZip => "請拖入或點擊選擇修補檔資料夾或 IPS/ZIP";
@@ -685,13 +708,16 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string HintDropVitaPkg => "請將 PS Vita PKG 檔案/資料夾拖放到此處";
     public override string HintDropWiiUFiles => "請將 WUP/Loadiine 資料夾、wud/wux/wua 檔案拖放到此處";
     public override string HintKeyFileEmptyUsesExeFolder(object? arg0) => $"留空則使用 exe 資料夾中的 {arg0}";
+    public override string HintPatchOutputFolder => "請選擇儲存 zip 壓縮檔的資料夾";
     public override string HintRepackReplaceRule => "本體/更新會自動取代，DLC 會持續新增";
     public override string HintSearchGame => "搜尋遊戲...";
+    public override string HintSearchTitleId => "搜尋標題 ID...";
     public override string HintSelectOutput => "請選擇輸出資料夾";
     public override string HintSoundCancel => "取消 (請拖放 .mp3, .wav 檔案)";
     public override string HintSoundComplete => "完成 (請拖放 .mp3, .wav 檔案)";
     public override string HintSoundError => "錯誤 (請拖放 .mp3, .wav 檔案)";
     public override string HintSplitExpandRule => "整合 ROM 可透過 + 按鈕展開，選擇本體/更新/DLC 進行拆分";
+    public override string HintVita3kFolder => "請選擇 Vita3K 資料夾（包含 Vita3K.exe 和 config.yml）";
 
     // Label
     public override string LabelActual => "實際";
@@ -731,6 +757,7 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string LabelGameId => "遊戲 ID";
     public override string LabelGameName => "遊戲名稱";
     public override string LabelGeneral => "一般";
+    public override string LabelInstallTarget => "安裝位置";
     public override string LabelKeyFileFoundInExe => "在 exe 資料夾中找到";
     public override string LabelKeyFileMissingUsingExe => "指定的檔案不存在，正在使用 exe 資料夾中的檔案";
     public override string LabelKeyFileNone => "沒有檔案";
@@ -752,6 +779,7 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string LabelNoteCemuArchive => "(Cemu 封存檔)";
     public override string LabelNoteDiscImage => "(光碟映像檔)";
     public override string LabelNoteFolder => "(資料夾)";
+    public override string LabelNpsResultSelected(object? arg0, object? arg1) => $"搜尋結果 {arg0} 項 · 已選 {arg1} 項";
     public override string LabelNspTitleId => "NSP 標題 ID";
     public override string LabelOptions => "選項:";
     public override string LabelOther => "其他";
@@ -762,6 +790,7 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string LabelOutputRetail => "實機";
     public override string LabelPatch => "修補檔";
     public override string LabelPatchInfo => "修補檔資訊";
+    public override string LabelPatchMode => "方式";
     public override string LabelPatchNumber(object? arg0) => $"修補檔 {arg0}";
     public override string LabelPbpPacking => "PBP 打包";
     public override string LabelPkgCount(object? arg0) => $"{arg0} 個 PKG";
@@ -969,6 +998,10 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string LogNoTitleInfoItems => "沒有包含標題資訊的項目。";
     public override string LogNotFoundInHdi(object? arg0) => $"在 HDI 中找不到: {arg0}";
     public override string LogNotInDisc(object? arg0) => $"光碟中不存在: {arg0}";
+    public override string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2) => $"正在下載 ({arg0}/{arg1}): {arg2}";
+    public override string LogNpsHashMismatch(object? arg0) => $"{arg0} 的 SHA256 不符，檔案可能已損毀。";
+    public override string LogNpsKeyMissingSkipped(object? arg0, object? arg1) => $"已略過 (無授權金鑰): {arg0} {arg1}";
+    public override string LogNpsOlderUpdateSkipped(object? arg0, object? arg1) => $"已略過 (每個標題僅使用最新更新): {arg0} {arg1}";
     public override string LogOutputFile(object? arg0) => $"輸出: {arg0}";
     public override string LogOutputPath(object? arg0) => $"輸出路徑: {arg0}";
     public override string LogOutputPathAndFormat(object? arg0, object? arg1) => $"輸出路徑: {arg0} (格式: {arg1})";
@@ -1014,6 +1047,23 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string LogProcessStart => "開始";
     public override string LogProgramBuildDone(object? arg0, object? arg1) => $"程式建置完成: {arg0} ({arg1})";
     public override string LogProgramBuildStart(object? arg0) => $"開始建置程式 (IdOffset={arg0})";
+    public override string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"修補壓縮檔包含 {arg0} 個檔案: {arg1}";
+    public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"已建立封存: {arg0} → {arg1}";
+    public override string LogPsvPatchConsoleOnly(object? arg0) => $"僅限實機，已略過: {arg0}。請使用實機選項。";
+    public override string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"已載入修補檔清單: {arg0} 項 ({arg1})";
+    public override string LogPsvPatchCsvNotFound(object? arg0) => $"找不到 PSV_PATCH.csv。請將其放在執行檔旁邊: {arg0}";
+    public override string LogPsvPatchDownloadingPatch(object? arg0) => $"正在下載修補檔: {arg0}";
+    public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"已選擇 Google 雲端硬碟檔案: {arg0}（共 {arg1} 個候選）";
+    public override string LogPsvPatchEmulatorOnly(object? arg0) => $"僅限模擬器，已略過: {arg0}。請使用模擬器選項。";
+    public override string LogPsvPatchGameNotFound(object? arg0, object? arg1) => $"已略過（目錄中找不到遊戲）: {arg0} {arg1}";
+    public override string LogPsvPatchInstalled(object? arg0, object? arg1) => $"安裝完成: {arg0} → {arg1}";
+    public override string LogPsvPatchItemFailed(object? arg0, object? arg1) => $"失敗: {arg0} ({arg1})";
+    public override string LogPsvPatchNothingPatched(object? arg0) => $"沒有檔案被修補，已略過安裝: {arg0}";
+    public override string LogPsvPatchTistoryAttachment(object? arg0) => $"Tistory 附件: {arg0}";
+    public override string LogPsvPatchUpdateFallback(object? arg0, object? arg1, object? arg2) => $"找不到 {arg0} 的更新 {arg1}，改用 {arg2}";
+    public override string LogPsvPatchVita3kExeMissing(object? arg0) => $"找不到 Vita3K.exe: {arg0}";
+    public override string LogPsvPatchVita3kLaunch(object? arg0) => $"啟動 Vita3K: {arg0}";
+    public override string LogPsvPatchVita3kPrefPath(object? arg0) => $"Vita3K 資料目錄: {arg0}";
     public override string LogRecoveryCancelled => "還原已取消。";
     public override string LogRecoveryRegistered(object? arg0) => $"還原完成: 已登錄 {arg0} 個";
     public override string LogRecoverySkipped(object? arg0) => $"有 {arg0} 個無法讀取，已被排除。請查看上方記錄。";
@@ -1310,12 +1360,16 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string RadioConsoleRepatch => "實機 (rePatch, reAddcont)";
     public override string RadioEmulatorAppAddcont => "模擬器 (app, addcont)";
     public override string RadioFolderPerTitleId => "資料夾 (依標題 ID)";
-    public override string RadioOriginalPkg => "原始 PKG";
-    public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm ZIP (依標題 ID)";
-    public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm 資料夾 (依標題 ID)";
+    public override string RadioInstallDevice => "實機 (SD 卡)";
+    public override string RadioInstallVita3k => "模擬器 (Vita3K)";
     public override string RadioLowercase => "小寫";
     public override string RadioMergeAll => "全部";
     public override string RadioMergeGroupByTitleId => "依標題 ID 分組 (原有方式)";
+    public override string RadioModeArchive => "封存";
+    public override string RadioModeInstall => "安裝";
+    public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm 資料夾 (依標題 ID)";
+    public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm ZIP (依標題 ID)";
+    public override string RadioOriginalPkg => "原始 PKG";
     public override string RadioOutputGameId => "實機 (標題 ID/EBOOT.PBP)";
     public override string RadioOutputNormal(object? arg0) => $"一般 (標題名稱.{arg0})";
     public override string RadioQuality30s => "30 秒 (132k)";
@@ -1430,8 +1484,8 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string TabConvert => "轉換";
     public override string TabCreateCue => "產生 Cue";
     public override string TabDecrypt => "解密";
+    public override string TabDownload => "下載";
     public override string TabExtractCertsBin => "提取 certs.bin";
-    public override string TabNoNpDrmConvert => "NoNpDrm 轉換";
     public override string TabGeneral => "一般";
     public override string TabIgnoreVersion => "忽略版本";
     public override string TabInstall => "安裝";
@@ -1440,6 +1494,7 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string TabKeyFile => "金鑰檔案";
     public override string TabLz4Compression => "Lz4 壓縮";
     public override string TabMerge => "合併";
+    public override string TabNoNpDrmConvert => "NoNpDrm 轉換";
     public override string TabPatch => "修補檔";
     public override string TabPbpPacking => "PBP 打包";
     public override string TabPbpUnpack => "PBP 解包";
@@ -1480,7 +1535,6 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string ToolTipChangePatchFile => "變更為其他修補檔";
     public override string ToolTipChangePatchPackage => "變更為其他修補檔套件";
     public override string ToolTipClear => "清空";
-    public override string ToolTipShowCheckedOnly => "僅顯示已選項目";
     public override string ToolTipCopyHash => "複製雜湊值";
     public override string ToolTipDragFolderToChangeDownload => "將資料夾拖曳至此即可變更下載位置。";
     public override string ToolTipExpandCollapse => "展開/摺疊";
@@ -1494,6 +1548,7 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string ToolTipMovableSedGuide => "1. 執行 GodMode9 (START + POWER)\n2. 選擇 SYSNAND CTRNAND → private → movable.sed\n3. 執行最下方的 Copy to 0:/gm9/out";
     public override string ToolTipOpenGithubReleases => "開啟 GitHub 發行頁面";
     public override string ToolTipOpenHelp => "開啟說明頁面";
+    public override string ToolTipOpenReleasePage => "開啟發佈頁面";
     public override string ToolTipOpenWorkSpace => "開啟輸出資料夾";
     public override string ToolTipPlayPause => "播放/暫停";
     public override string ToolTipPublisherMax63 => "發行商 (最多 63 個字元)";
@@ -1503,6 +1558,7 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string ToolTipRomFsLz4 => "RomFS Lz4 壓縮 (重新打包時套用)。本體與更新會合併為一個，因此勾選其中任一個即會壓縮。";
     public override string ToolTipSelectAllToggle => "全選/取消全選";
     public override string ToolTipSelectFile => "選擇檔案";
+    public override string ToolTipShowCheckedOnly => "僅顯示已選項目";
     public override string ToolTipTistoryUrlInput => "每行輸入一個 Tistory 文章網址 (可輸入多個，按 Ctrl+Enter 開始分析)";
     public override string ToolTipTitleIdInput => "16 位十六進位數字 (例如: 0100000000010000)。留空則保留原始標題 ID。";
     public override string ToolTipValidateCompress => "壓縮後執行額外驗證";
@@ -1528,18 +1584,4 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string WorkTypeConvert => "轉換";
     public override string WorkTypeDecompress => "解壓縮";
     public override string WorkTypeRecompress => "重新壓縮";
-
-    public override string TabDownload => "下載";
-    public override string HeaderTitleId => "標題 ID";
-    public override string HeaderRegion => "地區";
-    public override string ButtonSearch => "搜尋";
-    public override string HintSearchTitleId => "搜尋標題 ID...";
-    public override string LabelNpsResultSelected(object? arg0, object? arg1) => $"搜尋結果 {arg0} 項 · 已選 {arg1} 項";
-    public override string ErrNpsSelectItems => "請勾選要下載的項目。";
-    public override string ErrNpsTsvNotFound(object? arg0) => $"找不到 {arg0}。請將 tsv 檔案放在執行檔所在的資料夾中。";
-    public override string ErrNpsNoDownloadable => "所選項目中沒有可下載並轉換的項目。";
-    public override string LogNpsKeyMissingSkipped(object? arg0, object? arg1) => $"已略過 (無授權金鑰): {arg0} {arg1}";
-    public override string LogNpsHashMismatch(object? arg0) => $"{arg0} 的 SHA256 不符，檔案可能已損毀。";
-    public override string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2) => $"正在下載 ({arg0}/{arg1}): {arg2}";
-    public override string LogNpsOlderUpdateSkipped(object? arg0, object? arg1) => $"已略過 (每個標題僅使用最新更新): {arg0} {arg1}";
 }

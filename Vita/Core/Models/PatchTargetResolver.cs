@@ -1,3 +1,3 @@
-namespace Vita.Core.Models;
+﻿namespace Vita.Core.Models;
 
-public delegate string? PatchTargetResolver(PatchTargetRequest request);
+public delegate IReadOnlyList<string?> PatchTargetResolver(PatchTargetRequest request);

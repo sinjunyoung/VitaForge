@@ -3,11 +3,35 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:l="clr-namespace:Common.Localization;assembly=Common"
         Title="{Binding Path=Current.TitlePatchTargetPicker, Source={x:Static l:Loc.Instance}}"
-        Height="620" Width="640"
-        MinHeight="400" MinWidth="460"
+        Height="660" Width="960"
+        MinHeight="460" MinWidth="720"
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False"
         Background="#1E1E1E" Foreground="White">
+    <Window.Resources>
+        <Style x:Key="LinkListItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="Margin" Value="0,0,0,2"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="Bd" Background="Transparent" CornerRadius="4" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#2A2D2E"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#094771"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -19,31 +43,92 @@
         <StackPanel Grid.Row="0" Margin="0,0,0,12">
             <TextBlock x:Name="HeaderText" FontSize="15" FontWeight="SemiBold" TextWrapping="Wrap"/>
             <TextBlock x:Name="SubText" Foreground="#AAAAAA" FontSize="12" Margin="0,6,0,0" TextWrapping="Wrap"/>
+            <TextBlock x:Name="HintText" Foreground="#4DA6FF" FontSize="12" Margin="0,6,0,0" TextWrapping="Wrap"/>
         </StackPanel>
 
-        <Border Grid.Row="1" Background="#252526" BorderBrush="#3E3E42" BorderThickness="1" CornerRadius="6" Padding="4">
-            <TreeView x:Name="TargetTree" Background="Transparent" BorderThickness="0" Foreground="White" SelectedItemChanged="TargetTree_SelectedItemChanged" MouseDoubleClick="TargetTree_MouseDoubleClick" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling">
-                <TreeView.ItemContainerStyle>
-                    <Style TargetType="TreeViewItem">
-                        <Setter Property="Foreground" Value="#E6E6E6"/>
-                    </Style>
-                </TreeView.ItemContainerStyle>
-                <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Glyph}" Margin="0,0,6,0"/>
-                            <TextBlock Text="{Binding Name}"/>
-                        </StackPanel>
-                    </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
-            </TreeView>
-        </Border>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" MinWidth="240"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="2*" MinWidth="240"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" FontSize="12" FontWeight="SemiBold" Foreground="#DDDDDD" Margin="2,0,0,6" Text="{Binding Path=Current.LabelPatchTargetCandidates, Source={x:Static l:Loc.Instance}}"/>
+                <Border Grid.Row="1" Background="#252526" BorderBrush="#3E3E42" BorderThickness="1" CornerRadius="6" Padding="4">
+                    <TreeView x:Name="TargetTree" Background="Transparent" BorderThickness="0" Foreground="White" SelectedItemChanged="TargetTree_SelectedItemChanged" MouseDoubleClick="TargetTree_MouseDoubleClick" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling">
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="TreeViewItem">
+                                <Setter Property="Foreground" Value="#E6E6E6"/>
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Glyph}" Margin="0,0,6,0"/>
+                                    <TextBlock Text="{Binding Name}"/>
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                </Border>
+            </Grid>
+
+            <GridSplitter Grid.Column="1" Width="10" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="Transparent" ShowsPreview="False"/>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" FontSize="12" FontWeight="SemiBold" Foreground="#DDDDDD" Margin="2,0,0,6" Text="{Binding Path=Current.LabelPatchTargetUnmatched, Source={x:Static l:Loc.Instance}}"/>
+                <Border Grid.Row="1" Background="#252526" BorderBrush="#3E3E42" BorderThickness="1" CornerRadius="6" Padding="4">
+                    <ListBox x:Name="PatchList" Background="Transparent" BorderThickness="0" Foreground="White" ItemContainerStyle="{StaticResource LinkListItemStyle}" SelectionChanged="PatchList_SelectionChanged" MouseDoubleClick="PatchList_MouseDoubleClick" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="22"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding StatusGlyph}" VerticalAlignment="Top" Foreground="#4DA6FF"/>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="{Binding PatchFileName}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding PatchFileName}"/>
+                                        <TextBlock Text="{Binding TargetText}" FontSize="11" Margin="0,2,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding TargetText}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="#888888"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsLinked}" Value="True">
+                                                            <Setter Property="Foreground" Value="#4DA6FF"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Border>
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0">
+                    <Button x:Name="UnlinkButton" Style="{StaticResource GrayButton}" Content="{Binding Path=Current.ButtonUnlink, Source={x:Static l:Loc.Instance}}" MinWidth="90" Height="30" Margin="0,0,8,0" Padding="10,0" IsEnabled="False" Click="UnlinkButton_Click"/>
+                    <Button x:Name="LinkButton" Style="{StaticResource GrayButton}" Content="{Binding Path=Current.ButtonLink, Source={x:Static l:Loc.Instance}}" MinWidth="90" Height="30" Padding="10,0" IsEnabled="False" Click="LinkButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
 
         <TextBlock x:Name="SelectedText" Grid.Row="2" Foreground="#4DA6FF" FontSize="12" Margin="0,10,0,0" TextTrimming="CharacterEllipsis"/>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,14,0,0">
             <Button Style="{StaticResource GrayButton}" Content="{Binding Path=Current.ButtonSkip, Source={x:Static l:Loc.Instance}}" Width="90" Height="34" Margin="0,0,8,0" IsCancel="True"/>
-            <Button x:Name="SelectButton" Style="{StaticResource GrayButton}" Content="{Binding Path=Current.ButtonSelect, Source={x:Static l:Loc.Instance}}" Width="90" Height="34" IsDefault="True" IsEnabled="False" Click="SelectButton_Click"/>
+            <Button x:Name="ApplyButton" Style="{StaticResource GrayButton}" Content="{Binding Path=Current.ButtonOk, Source={x:Static l:Loc.Instance}}" Width="90" Height="34" IsDefault="True" IsEnabled="False" Click="ApplyButton_Click"/>
         </StackPanel>
     </Grid>
 </Window>

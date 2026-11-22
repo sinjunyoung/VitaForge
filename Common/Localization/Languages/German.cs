@@ -28,27 +28,38 @@ public sealed class German : LocalizedStrings
     public override string ButtonGdiBasis => "GDI-Basis";
     public override string ButtonInstall => "Installieren";
     public override string ButtonLater => "Später";
+    public override string ButtonLink => "Verknüpfen";
     public override string ButtonLoadGameList => "Spieleliste laden";
+    public override string ButtonLoadPatchCsv => "CSV laden";
     public override string ButtonOk => "OK";
     public override string ButtonRecoverTitleDb => "title.db wiederherstellen";
     public override string ButtonRemoveSelected => "Auswahl löschen";
     public override string ButtonRepackFolderBased => "Repack (ordnerbasiert)";
     public override string ButtonReset => "Zurücksetzen";
+    public override string ButtonSearch => "Suchen";
     public override string ButtonSelect => "Auswählen";
-    public override string TitlePatchTargetPicker => "Patch-Zieldatei auswählen";
-    public override string ButtonSkip => "Überspringen";
-    public override string MsgPatchTargetNotFound(object? arg0) => $"Für den Patch '{arg0}' wurde keine Zieldatei gefunden. Wählen Sie die Datei aus, auf die er angewendet werden soll.";
-    public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"Patch-Ziel manuell festgelegt: {arg0} -> {arg1}";
-    public override string LogVitaPatchTargetSkipped(object? arg0) => $"Patch-Zielauswahl übersprungen: {arg0}";
     public override string ButtonSelectFile => "Datei auswählen";
     public override string ButtonSettings => "Einstellungen";
+    public override string ButtonSkip => "Überspringen";
     public override string ButtonStart => "Starten";
+    public override string ButtonUnlink => "Verknüpfung aufheben";
     public override string ButtonUnpack => "Entpacken";
     public override string ButtonUnpackAndRepackFull => "Entpacken + Repack (Full)";
     public override string ButtonUnpackAndRepackStreaming => "Entpacken + Repack (streamingbasiert)";
+    public override string HintPatchTargetLink => "Wählen Sie links im Baum eine Zieldatei aus und doppelklicken Sie dann rechts auf einen Eintrag oder klicken Sie auf Verknüpfen.";
+    public override string LabelPatchTargetCandidates => "Mögliche Zieldateien";
+    public override string LabelPatchTargetNone => "Nicht zugewiesen";
+    public override string LabelPatchTargetUnmatched => "Patch-Dateien ohne Ziel";
+    public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"Patch-Ziel manuell festgelegt: {arg0} -> {arg1}";
+    public override string LogVitaPatchTargetSkipped(object? arg0) => $"Patch-Zielauswahl übersprungen: {arg0}";
+    public override string LogVitaRollbackDeleted(object? arg0) => $"Installation fehlgeschlagen: {arg0} geschriebene Datei(en) gelöscht";
+    public override string MsgPatchTargetNotFound(object? arg0) => $"Für den Patch '{arg0}' wurde keine Zieldatei gefunden. Wählen Sie die Datei aus, auf die er angewendet werden soll.";
+    public override string MsgPatchTargetsNotFound(object? arg0) => $"Für {arg0} Patch-Datei(en) wurde keine Zieldatei gefunden.";
+    public override string TitlePatchTargetPicker => "Patch-Zieldatei auswählen";
 
     // Check
     public override string CheckExtraOption => "Zusatzoption (cmd 0x0B)";
+    public override string CheckIncludeDlc => "DLC einbeziehen";
     public override string CheckVideoFreezeFix => "Video-Freeze-Fix (cmd 0x00)";
 
     // Description
@@ -76,11 +87,11 @@ public sealed class German : LocalizedStrings
     public override string DescTistoryEnterUrl => "Tistory-URL eingeben und auf „Analysieren“ klicken";
     public override string DescTistoryFindAttachments => "Sucht Anhang-Links und fügt sie der Liste hinzu";
     public override string DescVitaAutoClassify => "App/Patch/AddCont werden automatisch klassifiziert";
+    public override string DescVitaDecryptAll => "Entschlüsselt alle Dateien und gibt eine Emulator-Struktur (app/addcont/license) aus, wobei Spiel und Update zusammengeführt werden";
     public override string DescVitaGroupToNoNpDrm => "App/Patch/AddCont mit derselben Title-ID werden zusammengefasst und ins NoNpDrm-Format konvertiert";
     public override string DescVitaKeyRequiredShared => "Ein Schlüssel (work.bin, *.rif/zRIF-Zeichenfolge) ist erforderlich (Patch kann den Schlüssel der App mitnutzen)";
     public override string DescVitaPatchMerge => "Emulator: nach dem Entschlüsseln app/addcont überschreiben / Konsole: rePatch/reAddcont hinzufügen";
     public override string DescVitaPkgKeyRequired => "Für pkg ist ein Schlüssel (work.bin, *.rif/zRIF-Zeichenfolge) erforderlich";
-    public override string DescVitaDecryptAll => "Entschlüsselt alle Dateien und gibt eine Emulator-Struktur (app/addcont/license) aus, wobei Spiel und Update zusammengeführt werden";
     public override string DescWiiUAutoClassify => "Hauptspiel/Update/DLC werden automatisch anhand der Title-ID klassifiziert";
 
     // Detail
@@ -382,6 +393,9 @@ public sealed class German : LocalizedStrings
     public override string ErrNotGcOrWiiDisc => "Dies ist kein GameCube- oder Wii-Disc-Image.";
     public override string ErrNotRiivolutionXml => "Dies ist keine Riivolution-XML.";
     public override string ErrNotWiiDisc => "Dies ist keine Wii-Disc.";
+    public override string ErrNpsNoDownloadable => "Keines der ausgewählten Elemente kann heruntergeladen und konvertiert werden.";
+    public override string ErrNpsSelectItems => "Wählen Sie die herunterzuladenden Elemente aus.";
+    public override string ErrNpsTsvNotFound(object? arg0) => $"{arg0} wurde nicht gefunden. Legen Sie die tsv-Dateien in den Ordner der ausführbaren Datei.";
     public override string ErrNsoSegmentLz4Failed(object? arg0, object? arg1) => $"LZ4-Komprimierung von Segment {arg0} fehlgeschlagen (encodedLen={arg1})";
     public override string ErrNspHasNoFiles => "In die NSP wurden keine Dateien geschrieben.";
     public override string ErrOnlyBinaryFileType(object? arg0, object? arg1) => $"Andere FILE-Typen als BINARY werden nicht unterstützt ({arg0}): {arg1}";
@@ -426,6 +440,11 @@ public sealed class German : LocalizedStrings
     public override string ErrPpfSourceTooShortBlockcheck => "Die Quelldatei ist zu kurz, um den Blockcheck durchzuführen.";
     public override string ErrProgramRomfsNotFound => "Das Programm-romfs wurde nicht gefunden.";
     public override string ErrPs1GamesOnly => "Es werden nur PS1-Spiele unterstützt.";
+    public override string ErrPsvPatchDriveBlocked => "Google Drive hat den Download blockiert (Kontingent überschritten oder kein Zugriff).";
+    public override string ErrPsvPatchDriveEmptyFolder => "Im Google-Drive-Ordner wurden keine Dateien gefunden.";
+    public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"Installationspfad nicht gefunden: {arg0}";
+    public override string ErrPsvPatchMegaFailed(object? arg0) => $"MEGA-Download fehlgeschlagen (Code: {arg0}).";
+    public override string ErrPsvPatchTistoryNoAttachment(object? arg0) => $"Auf der Tistory-Seite wurde kein Anhang gefunden: {arg0}";
     public override string ErrRawContentAbnormallyLarge(object? arg0, object? arg1) => $"Inhalt {arg0}.app ist vom Typ raw, aber ungewöhnlich groß ({arg1} Bytes) — der Hash-Baum-Typ wurde möglicherweise falsch erkannt.";
     public override string ErrReadFailedDetail(object? arg0, object? arg1, object? arg2, object? arg3, object? arg4, object? arg5) => $"Lesen von '{arg0}' fehlgeschlagen (clusterIndex={arg1}, offsetField={arg2}, byteOffset={arg3}, size={arg4}): {arg5}";
     public override string ErrRecompressedExceedsTitleBlock(object? arg0, object? arg1) => $"Das neu komprimierte Ergebnis überschreitet den Titelblock: {arg0} > {arg1}";
@@ -654,12 +673,16 @@ public sealed class German : LocalizedStrings
     public override string HeaderOutput => "Ausgabe";
     public override string HeaderPatch => "Patch";
     public override string HeaderProductCode => "Produktcode";
+    public override string HeaderRegion => "Region";
+    public override string HeaderRequiredUpdate => "Benötigte Version";
     public override string HeaderResult => "Ergebnis";
     public override string HeaderSize => "Größe";
     public override string HeaderTitle => "Titel";
+    public override string HeaderTitleId => "Titel-ID";
     public override string HeaderVersion => "Version";
 
     // Hint
+    public override string HintDeviceRoot => "Wurzelverzeichnis der SD-Karte auswählen";
     public override string HintDragOrClickPatch3ds => "Patch-Ordner oder zip/7z-Datei ziehen oder anklicken";
     public override string HintDragOrClickPatchFile => "Patch-Datei hierher ziehen oder klicken";
     public override string HintDragOrClickPatchFolderIpsZip => "Patch-Ordner oder IPS/ZIP hierher ziehen oder klicken";
@@ -685,13 +708,16 @@ public sealed class German : LocalizedStrings
     public override string HintDropVitaPkg => "PS-Vita-PKG-Dateien/-Ordner hierher ziehen und ablegen";
     public override string HintDropWiiUFiles => "WUP/Loadiine-Ordner oder wud/wux/wua-Dateien hierher ziehen und ablegen";
     public override string HintKeyFileEmptyUsesExeFolder(object? arg0) => $"Leer lassen, um {arg0} im exe-Ordner zu verwenden";
+    public override string HintPatchOutputFolder => "Ordner zum Speichern der ZIP-Archive auswählen";
     public override string HintRepackReplaceRule => "Hauptspiel/Update werden automatisch ersetzt, DLC wird hinzugefügt";
     public override string HintSearchGame => "Spiele suchen...";
+    public override string HintSearchTitleId => "Titel-ID suchen...";
     public override string HintSelectOutput => "Wählen Sie den Ausgabeordner aus";
     public override string HintSoundCancel => "Abbrechen (.mp3- oder .wav-Datei hierher ziehen und ablegen)";
     public override string HintSoundComplete => "Fertig (.mp3- oder .wav-Datei hierher ziehen und ablegen)";
     public override string HintSoundError => "Fehler (.mp3- oder .wav-Datei hierher ziehen und ablegen)";
     public override string HintSplitExpandRule => "Kombinierte ROMs mit der +-Taste aufklappen, um Hauptspiel/Update/DLC zum Aufteilen auszuwählen";
+    public override string HintVita3kFolder => "Vita3K-Ordner auswählen (enthält Vita3K.exe und config.yml)";
 
     // Label
     public override string LabelActual => "Tatsächlich";
@@ -731,6 +757,7 @@ public sealed class German : LocalizedStrings
     public override string LabelGameId => "Spiel-ID";
     public override string LabelGameName => "Spielname";
     public override string LabelGeneral => "Allgemein";
+    public override string LabelInstallTarget => "Ziel";
     public override string LabelKeyFileFoundInExe => "Im exe-Ordner gefunden";
     public override string LabelKeyFileMissingUsingExe => "Die angegebene Datei existiert nicht; die Datei im exe-Ordner wird verwendet";
     public override string LabelKeyFileNone => "Keine Datei";
@@ -752,6 +779,7 @@ public sealed class German : LocalizedStrings
     public override string LabelNoteCemuArchive => "(Cemu-Archiv)";
     public override string LabelNoteDiscImage => "(Disc-Image)";
     public override string LabelNoteFolder => "(Ordner)";
+    public override string LabelNpsResultSelected(object? arg0, object? arg1) => $"{arg0} Ergebnisse · {arg1} ausgewählt";
     public override string LabelNspTitleId => "NSP-Title-ID";
     public override string LabelOptions => "Optionen:";
     public override string LabelOther => "Sonstiges";
@@ -762,6 +790,7 @@ public sealed class German : LocalizedStrings
     public override string LabelOutputRetail => "Konsole";
     public override string LabelPatch => "Patch";
     public override string LabelPatchInfo => "Patch-Informationen";
+    public override string LabelPatchMode => "Modus";
     public override string LabelPatchNumber(object? arg0) => $"Patch {arg0}";
     public override string LabelPbpPacking => "PBP-Packen";
     public override string LabelPkgCount(object? arg0) => $"{arg0} PKG-Dateien";
@@ -969,6 +998,10 @@ public sealed class German : LocalizedStrings
     public override string LogNoTitleInfoItems => "Es gibt keine Einträge mit Titelinformationen.";
     public override string LogNotFoundInHdi(object? arg0) => $"In der HDI nicht gefunden: {arg0}";
     public override string LogNotInDisc(object? arg0) => $"Nicht auf der Disc: {arg0}";
+    public override string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2) => $"Download ({arg0}/{arg1}): {arg2}";
+    public override string LogNpsHashMismatch(object? arg0) => $"SHA256 von {arg0} stimmt nicht überein. Die Datei ist möglicherweise beschädigt.";
+    public override string LogNpsKeyMissingSkipped(object? arg0, object? arg1) => $"Übersprungen (kein Lizenzschlüssel): {arg0} {arg1}";
+    public override string LogNpsOlderUpdateSkipped(object? arg0, object? arg1) => $"Übersprungen (pro Titel wird nur das neueste Update verwendet): {arg0} {arg1}";
     public override string LogOutputFile(object? arg0) => $"Ausgabe: {arg0}";
     public override string LogOutputPath(object? arg0) => $"Ausgabepfad: {arg0}";
     public override string LogOutputPathAndFormat(object? arg0, object? arg1) => $"Ausgabepfad: {arg0} (Format: {arg1})";
@@ -1014,6 +1047,23 @@ public sealed class German : LocalizedStrings
     public override string LogProcessStart => "Start";
     public override string LogProgramBuildDone(object? arg0, object? arg1) => $"Programmerstellung abgeschlossen: {arg0} ({arg1})";
     public override string LogProgramBuildStart(object? arg0) => $"Programmerstellung gestartet (IdOffset={arg0})";
+    public override string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"Das Patch-Archiv enthält {arg0} Dateien: {arg1}";
+    public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"Archiv erstellt: {arg0} → {arg1}";
+    public override string LogPsvPatchConsoleOnly(object? arg0) => $"Nur für Konsole, übersprungen: {arg0}. Bitte die Konsolen-Option verwenden.";
+    public override string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"Patch-Liste geladen: {arg0} Einträge ({arg1})";
+    public override string LogPsvPatchCsvNotFound(object? arg0) => $"PSV_PATCH.csv nicht gefunden. Legen Sie die Datei neben die ausführbare Datei: {arg0}";
+    public override string LogPsvPatchDownloadingPatch(object? arg0) => $"Patch wird heruntergeladen: {arg0}";
+    public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"Google-Drive-Datei ausgewählt: {arg0} (von {arg1} Kandidaten)";
+    public override string LogPsvPatchEmulatorOnly(object? arg0) => $"Nur für Emulator, übersprungen: {arg0}. Bitte die Emulator-Option verwenden.";
+    public override string LogPsvPatchGameNotFound(object? arg0, object? arg1) => $"Übersprungen (Spiel nicht im Katalog gefunden): {arg0} {arg1}";
+    public override string LogPsvPatchInstalled(object? arg0, object? arg1) => $"Installiert: {arg0} → {arg1}";
+    public override string LogPsvPatchItemFailed(object? arg0, object? arg1) => $"Fehlgeschlagen: {arg0} ({arg1})";
+    public override string LogPsvPatchNothingPatched(object? arg0) => $"Keine Dateien gepatcht, Installation übersprungen: {arg0}";
+    public override string LogPsvPatchTistoryAttachment(object? arg0) => $"Tistory-Anhang: {arg0}";
+    public override string LogPsvPatchUpdateFallback(object? arg0, object? arg1, object? arg2) => $"Update {arg1} für {arg0} nicht gefunden, verwende {arg2}";
+    public override string LogPsvPatchVita3kExeMissing(object? arg0) => $"Vita3K.exe nicht gefunden: {arg0}";
+    public override string LogPsvPatchVita3kLaunch(object? arg0) => $"Vita3K wird gestartet: {arg0}";
+    public override string LogPsvPatchVita3kPrefPath(object? arg0) => $"Vita3K-Datenordner: {arg0}";
     public override string LogRecoveryCancelled => "Die Wiederherstellung wurde abgebrochen.";
     public override string LogRecoveryRegistered(object? arg0) => $"Wiederherstellung abgeschlossen: {arg0} registriert";
     public override string LogRecoverySkipped(object? arg0) => $"{arg0} konnten nicht gelesen werden und wurden übersprungen. Siehe Protokoll oben.";
@@ -1310,12 +1360,16 @@ public sealed class German : LocalizedStrings
     public override string RadioConsoleRepatch => "Konsole (rePatch, reAddcont)";
     public override string RadioEmulatorAppAddcont => "Emulator (app, addcont)";
     public override string RadioFolderPerTitleId => "Ordner (pro Title-ID)";
-    public override string RadioOriginalPkg => "Original-PKG";
-    public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm-ZIP (pro Title-ID)";
-    public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm-Ordner (pro Title-ID)";
+    public override string RadioInstallDevice => "Konsole (SD-Karte)";
+    public override string RadioInstallVita3k => "Emulator (Vita3K)";
     public override string RadioLowercase => "Kleinbuchstaben";
     public override string RadioMergeAll => "Alle";
     public override string RadioMergeGroupByTitleId => "Nach Title-ID gruppieren (bisherige Methode)";
+    public override string RadioModeArchive => "Archiv";
+    public override string RadioModeInstall => "Installation";
+    public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm-Ordner (pro Title-ID)";
+    public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm-ZIP (pro Title-ID)";
+    public override string RadioOriginalPkg => "Original-PKG";
     public override string RadioOutputGameId => "Konsole (Title-ID/EBOOT.PBP)";
     public override string RadioOutputNormal(object? arg0) => $"Normal (Titelname.{arg0})";
     public override string RadioQuality30s => "30 Sek. (132k)";
@@ -1430,8 +1484,8 @@ public sealed class German : LocalizedStrings
     public override string TabConvert => "Konvertieren";
     public override string TabCreateCue => "Cue erstellen";
     public override string TabDecrypt => "Entschlüsseln";
+    public override string TabDownload => "Download";
     public override string TabExtractCertsBin => "certs.bin extrahieren";
-    public override string TabNoNpDrmConvert => "NoNpDrm-Konvertierung";
     public override string TabGeneral => "Allgemein";
     public override string TabIgnoreVersion => "Version ignorieren";
     public override string TabInstall => "Installation";
@@ -1440,6 +1494,7 @@ public sealed class German : LocalizedStrings
     public override string TabKeyFile => "Schlüsseldatei";
     public override string TabLz4Compression => "Lz4-Komprimierung";
     public override string TabMerge => "Zusammenführen";
+    public override string TabNoNpDrmConvert => "NoNpDrm-Konvertierung";
     public override string TabPatch => "Patch";
     public override string TabPbpPacking => "PBP-Packen";
     public override string TabPbpUnpack => "PBP-Entpacken";
@@ -1480,7 +1535,6 @@ public sealed class German : LocalizedStrings
     public override string ToolTipChangePatchFile => "Andere Patch-Datei wählen";
     public override string ToolTipChangePatchPackage => "Anderes Patch-Paket wählen";
     public override string ToolTipClear => "Leeren";
-    public override string ToolTipShowCheckedOnly => "Nur ausgewählte Elemente anzeigen";
     public override string ToolTipCopyHash => "Hash-Wert kopieren";
     public override string ToolTipDragFolderToChangeDownload => "Sie können einen Ordner hierher ziehen, um den Downloadort zu ändern.";
     public override string ToolTipExpandCollapse => "Aufklappen/Zuklappen";
@@ -1494,6 +1548,7 @@ public sealed class German : LocalizedStrings
     public override string ToolTipMovableSedGuide => "1. GodMode9 starten (START + POWER)\n2. SYSNAND CTRNAND → private → movable.sed auswählen\n3. Ganz unten Copy to 0:/gm9/out ausführen";
     public override string ToolTipOpenGithubReleases => "Öffnet die GitHub-Releases-Seite";
     public override string ToolTipOpenHelp => "Öffnet die Hilfeseite";
+    public override string ToolTipOpenReleasePage => "Release-Seite öffnen";
     public override string ToolTipOpenWorkSpace => "Ausgabeordner öffnen";
     public override string ToolTipPlayPause => "Wiedergabe/Pause";
     public override string ToolTipPublisherMax63 => "Publisher (max. 63 Zeichen)";
@@ -1503,6 +1558,7 @@ public sealed class German : LocalizedStrings
     public override string ToolTipRomFsLz4 => "RomFS-Lz4-Komprimierung (beim Repack angewendet). Hauptspiel und Update werden zusammengeführt, daher wird komprimiert, sobald eines von beiden angehakt ist.";
     public override string ToolTipSelectAllToggle => "Alle aus-/abwählen";
     public override string ToolTipSelectFile => "Datei auswählen";
+    public override string ToolTipShowCheckedOnly => "Nur ausgewählte Elemente anzeigen";
     public override string ToolTipTistoryUrlInput => "Pro Zeile eine Tistory-Beitrags-URL eingeben (mehrere möglich, Strg+Eingabe startet die Analyse)";
     public override string ToolTipTitleIdInput => "16-stellige Hexadezimalzahl (z. B. 0100000000010000). Leer lassen, um die ursprüngliche Title-ID beizubehalten.";
     public override string ToolTipValidateCompress => "Führt nach der Komprimierung eine zusätzliche Validierung durch";
@@ -1528,18 +1584,4 @@ public sealed class German : LocalizedStrings
     public override string WorkTypeConvert => "Konvertierung";
     public override string WorkTypeDecompress => "Entpacken";
     public override string WorkTypeRecompress => "Neukomprimierung";
-
-    public override string TabDownload => "Download";
-    public override string HeaderTitleId => "Titel-ID";
-    public override string HeaderRegion => "Region";
-    public override string ButtonSearch => "Suchen";
-    public override string HintSearchTitleId => "Titel-ID suchen...";
-    public override string LabelNpsResultSelected(object? arg0, object? arg1) => $"{arg0} Ergebnisse · {arg1} ausgewählt";
-    public override string ErrNpsSelectItems => "Wählen Sie die herunterzuladenden Elemente aus.";
-    public override string ErrNpsTsvNotFound(object? arg0) => $"{arg0} wurde nicht gefunden. Legen Sie die tsv-Dateien in den Ordner der ausführbaren Datei.";
-    public override string ErrNpsNoDownloadable => "Keines der ausgewählten Elemente kann heruntergeladen und konvertiert werden.";
-    public override string LogNpsKeyMissingSkipped(object? arg0, object? arg1) => $"Übersprungen (kein Lizenzschlüssel): {arg0} {arg1}";
-    public override string LogNpsHashMismatch(object? arg0) => $"SHA256 von {arg0} stimmt nicht überein. Die Datei ist möglicherweise beschädigt.";
-    public override string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2) => $"Download ({arg0}/{arg1}): {arg2}";
-    public override string LogNpsOlderUpdateSkipped(object? arg0, object? arg1) => $"Übersprungen (pro Titel wird nur das neueste Update verwendet): {arg0} {arg1}";
 }

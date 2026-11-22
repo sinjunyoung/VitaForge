@@ -28,27 +28,38 @@ public sealed class Japanese : LocalizedStrings
     public override string ButtonGdiBasis => "GDI基準";
     public override string ButtonInstall => "インストール";
     public override string ButtonLater => "後で";
+    public override string ButtonLink => "関連付け";
     public override string ButtonLoadGameList => "ゲーム一覧を読み込む";
+    public override string ButtonLoadPatchCsv => "CSVを読み込む";
     public override string ButtonOk => "OK";
     public override string ButtonRecoverTitleDb => "title.dbを復旧";
     public override string ButtonRemoveSelected => "選択削除";
     public override string ButtonRepackFolderBased => "リパック (フォルダー基準)";
     public override string ButtonReset => "リセット";
+    public override string ButtonSearch => "検索";
     public override string ButtonSelect => "選択";
-    public override string TitlePatchTargetPicker => "パッチ対象ファイルの選択";
-    public override string ButtonSkip => "スキップ";
-    public override string MsgPatchTargetNotFound(object? arg0) => $"パッチ '{arg0}' の対象ファイルが見つかりません。適用するファイルを選択してください。";
-    public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"パッチ対象を手動指定: {arg0} -> {arg1}";
-    public override string LogVitaPatchTargetSkipped(object? arg0) => $"パッチ対象の選択をスキップ: {arg0}";
     public override string ButtonSelectFile => "ファイルを選択";
     public override string ButtonSettings => "設定";
+    public override string ButtonSkip => "スキップ";
     public override string ButtonStart => "開始";
+    public override string ButtonUnlink => "関連付け解除";
     public override string ButtonUnpack => "アンパック";
     public override string ButtonUnpackAndRepackFull => "アンパック + リパック (Full)";
     public override string ButtonUnpackAndRepackStreaming => "アンパック + リパック (ストリーミング基準)";
+    public override string HintPatchTargetLink => "左のツリーで対象ファイルを選択し、右の項目をダブルクリックするか［関連付け］を押してください。";
+    public override string LabelPatchTargetCandidates => "対象ファイル候補";
+    public override string LabelPatchTargetNone => "未指定";
+    public override string LabelPatchTargetUnmatched => "対象のないパッチファイル";
+    public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"パッチ対象を手動指定: {arg0} -> {arg1}";
+    public override string LogVitaPatchTargetSkipped(object? arg0) => $"パッチ対象の選択をスキップ: {arg0}";
+    public override string LogVitaRollbackDeleted(object? arg0) => $"インストール失敗: 書き込み済みのファイル {arg0} 個を削除しました";
+    public override string MsgPatchTargetNotFound(object? arg0) => $"パッチ '{arg0}' の対象ファイルが見つかりません。適用するファイルを選択してください。";
+    public override string MsgPatchTargetsNotFound(object? arg0) => $"{arg0} 個のパッチファイルに対応する対象ファイルが見つかりません。";
+    public override string TitlePatchTargetPicker => "パッチ対象ファイルの選択";
 
     // Check
     public override string CheckExtraOption => "追加オプション (cmd 0x0B)";
+    public override string CheckIncludeDlc => "DLCを含める";
     public override string CheckVideoFreezeFix => "動画フリーズ修正 (cmd 0x00)";
 
     // Description
@@ -76,11 +87,11 @@ public sealed class Japanese : LocalizedStrings
     public override string DescTistoryEnterUrl => "Tistory URLを入力して解析ボタンを押してください";
     public override string DescTistoryFindAttachments => "添付ファイルのリンクを探して一覧に追加します";
     public override string DescVitaAutoClassify => "App/Patch/AddContは自動的に分類されます";
+    public override string DescVitaDecryptAll => "すべてのファイルを復号化し、エミュレータ向け構造(app/addcont/license)で出力します (本編+アップデート統合)";
     public override string DescVitaGroupToNoNpDrm => "同じタイトルIDのApp/Patch/AddContは1つにまとめられ、NoNpDrmフォーマットに変換されます";
     public override string DescVitaKeyRequiredShared => "キー (work.bin, *.rif/zRIF文字列) が必要です (PatchはAppのキーを共有できます)";
     public override string DescVitaPatchMerge => "エミュレーター: 復号後にapp/addcontを上書き / 実機: rePatch/reAddcontを追加";
     public override string DescVitaPkgKeyRequired => "pkgの場合はキー (work.bin, *.rif/zRIF文字列) が必要です";
-    public override string DescVitaDecryptAll => "すべてのファイルを復号化し、エミュレータ向け構造(app/addcont/license)で出力します (本編+アップデート統合)";
     public override string DescWiiUAutoClassify => "本編/アップデート/DLCはタイトルIDで自動的に分類されます";
 
     // Detail
@@ -382,6 +393,9 @@ public sealed class Japanese : LocalizedStrings
     public override string ErrNotGcOrWiiDisc => "GameCubeまたはWiiのディスクイメージではありません。";
     public override string ErrNotRiivolutionXml => "Riivolution XMLではありません。";
     public override string ErrNotWiiDisc => "Wiiディスクではありません。";
+    public override string ErrNpsNoDownloadable => "選択した項目の中にダウンロードして変換できるものがありません。";
+    public override string ErrNpsSelectItems => "ダウンロードする項目にチェックを入れてください。";
+    public override string ErrNpsTsvNotFound(object? arg0) => $"{arg0} が見つかりません。tsvファイルを実行ファイルと同じフォルダーに置いてください。";
     public override string ErrNsoSegmentLz4Failed(object? arg0, object? arg1) => $"セグメント {arg0} のLZ4圧縮に失敗 (encodedLen={arg1})";
     public override string ErrNspHasNoFiles => "NSPに書き込まれたファイルがありません。";
     public override string ErrOnlyBinaryFileType(object? arg0, object? arg1) => $"BINARY以外のFILE形式は対応していません ({arg0}): {arg1}";
@@ -426,6 +440,11 @@ public sealed class Japanese : LocalizedStrings
     public override string ErrPpfSourceTooShortBlockcheck => "ソースファイルが短すぎるため、blockcheckを実行できません。";
     public override string ErrProgramRomfsNotFound => "プログラムのromfsが見つかりません。";
     public override string ErrPs1GamesOnly => "PS1ゲームのみ対応しています。";
+    public override string ErrPsvPatchDriveBlocked => "Google ドライブがダウンロードをブロックしました (クォータ超過またはアクセス不可)。";
+    public override string ErrPsvPatchDriveEmptyFolder => "Google ドライブのフォルダーにファイルが見つかりません。";
+    public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"インストール先が見つかりません: {arg0}";
+    public override string ErrPsvPatchMegaFailed(object? arg0) => $"MEGA のダウンロードに失敗しました (コード: {arg0})。";
+    public override string ErrPsvPatchTistoryNoAttachment(object? arg0) => $"Tistory のページに添付ファイルが見つかりません: {arg0}";
     public override string ErrRawContentAbnormallyLarge(object? arg0, object? arg1) => $"コンテンツ {arg0}.app はrawタイプなのに異常に大きいです ({arg1} bytes) — ハッシュツリータイプの判定が誤っている可能性があります。";
     public override string ErrReadFailedDetail(object? arg0, object? arg1, object? arg2, object? arg3, object? arg4, object? arg5) => $"'{arg0}'の読み込みに失敗 (clusterIndex={arg1}, offsetField={arg2}, byteOffset={arg3}, size={arg4}): {arg5}";
     public override string ErrRecompressedExceedsTitleBlock(object? arg0, object? arg1) => $"再圧縮結果がタイトルブロックを超えています: {arg0} > {arg1}";
@@ -654,12 +673,16 @@ public sealed class Japanese : LocalizedStrings
     public override string HeaderOutput => "出力";
     public override string HeaderPatch => "パッチ";
     public override string HeaderProductCode => "製品コード";
+    public override string HeaderRegion => "地域";
+    public override string HeaderRequiredUpdate => "必要バージョン";
     public override string HeaderResult => "結果";
     public override string HeaderSize => "サイズ";
     public override string HeaderTitle => "タイトル";
+    public override string HeaderTitleId => "タイトルID";
     public override string HeaderVersion => "バージョン";
 
     // Hint
+    public override string HintDeviceRoot => "SDカードのルートを選択してください";
     public override string HintDragOrClickPatch3ds => "パッチフォルダーまたはzip/7zファイルをドラッグするかクリックしてください";
     public override string HintDragOrClickPatchFile => "パッチファイルをドラッグするかクリックしてください";
     public override string HintDragOrClickPatchFolderIpsZip => "パッチフォルダーまたはIPS/ZIPをドラッグするかクリックしてください";
@@ -685,13 +708,16 @@ public sealed class Japanese : LocalizedStrings
     public override string HintDropVitaPkg => "PS Vita PKGファイル/フォルダーをここにドラッグ&ドロップしてください";
     public override string HintDropWiiUFiles => "WUP/Loadiineフォルダー、wud/wux/wuaファイルをここにドラッグ&ドロップしてください";
     public override string HintKeyFileEmptyUsesExeFolder(object? arg0) => $"空の場合はexeフォルダーの{arg0}を使用します";
+    public override string HintPatchOutputFolder => "ZIPアーカイブの保存先フォルダーを選択してください";
     public override string HintRepackReplaceRule => "本編/アップデートは自動的に置き換えられ、DLCは追加されます";
     public override string HintSearchGame => "ゲームを検索...";
+    public override string HintSearchTitleId => "タイトルIDを検索...";
     public override string HintSelectOutput => "出力フォルダーを選択してください";
     public override string HintSoundCancel => "キャンセル (.mp3, .wav ファイルをドラッグ&ドロップしてください)";
     public override string HintSoundComplete => "完了 (.mp3, .wav ファイルをドラッグ&ドロップしてください)";
     public override string HintSoundError => "エラー (.mp3, .wav ファイルをドラッグ&ドロップしてください)";
     public override string HintSplitExpandRule => "統合ROMは+ボタンで展開して、本編/アップデート/DLCを選んで分割できます";
+    public override string HintVita3kFolder => "Vita3Kフォルダーを選択してください (Vita3K.exe と config.yml があるフォルダー)";
 
     // Label
     public override string LabelActual => "実際";
@@ -731,6 +757,7 @@ public sealed class Japanese : LocalizedStrings
     public override string LabelGameId => "ゲームID";
     public override string LabelGameName => "ゲーム名";
     public override string LabelGeneral => "一般";
+    public override string LabelInstallTarget => "インストール先";
     public override string LabelKeyFileFoundInExe => "exeフォルダーで見つかりました";
     public override string LabelKeyFileMissingUsingExe => "指定したファイルがないため、exeフォルダーのファイルを使用中";
     public override string LabelKeyFileNone => "ファイルなし";
@@ -752,6 +779,7 @@ public sealed class Japanese : LocalizedStrings
     public override string LabelNoteCemuArchive => "(Cemuアーカイブ)";
     public override string LabelNoteDiscImage => "(ディスクイメージ)";
     public override string LabelNoteFolder => "(フォルダー)";
+    public override string LabelNpsResultSelected(object? arg0, object? arg1) => $"検索結果 {arg0}件 · 選択 {arg1}件";
     public override string LabelNspTitleId => "NSPタイトルID";
     public override string LabelOptions => "オプション:";
     public override string LabelOther => "その他";
@@ -762,6 +790,7 @@ public sealed class Japanese : LocalizedStrings
     public override string LabelOutputRetail => "実機";
     public override string LabelPatch => "パッチ";
     public override string LabelPatchInfo => "パッチ情報";
+    public override string LabelPatchMode => "方式";
     public override string LabelPatchNumber(object? arg0) => $"パッチ {arg0}";
     public override string LabelPbpPacking => "PBPパッキング";
     public override string LabelPkgCount(object? arg0) => $"PKG {arg0}個";
@@ -969,6 +998,10 @@ public sealed class Japanese : LocalizedStrings
     public override string LogNoTitleInfoItems => "タイトル情報のある項目がありません。";
     public override string LogNotFoundInHdi(object? arg0) => $"HDI内に見つかりません: {arg0}";
     public override string LogNotInDisc(object? arg0) => $"ディスクにありません: {arg0}";
+    public override string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2) => $"ダウンロード中 ({arg0}/{arg1}): {arg2}";
+    public override string LogNpsHashMismatch(object? arg0) => $"{arg0} のSHA256が一致しません。ファイルが破損している可能性があります。";
+    public override string LogNpsKeyMissingSkipped(object? arg0, object? arg1) => $"スキップ (ライセンスキーなし): {arg0} {arg1}";
+    public override string LogNpsOlderUpdateSkipped(object? arg0, object? arg1) => $"スキップ (タイトルごとに最新のアップデートのみ使用): {arg0} {arg1}";
     public override string LogOutputFile(object? arg0) => $"出力: {arg0}";
     public override string LogOutputPath(object? arg0) => $"出力パス: {arg0}";
     public override string LogOutputPathAndFormat(object? arg0, object? arg1) => $"出力パス: {arg0} (形式: {arg1})";
@@ -1014,6 +1047,23 @@ public sealed class Japanese : LocalizedStrings
     public override string LogProcessStart => "開始";
     public override string LogProgramBuildDone(object? arg0, object? arg1) => $"プログラムのビルド完了: {arg0} ({arg1})";
     public override string LogProgramBuildStart(object? arg0) => $"プログラムのビルドを開始 (IdOffset={arg0})";
+    public override string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"パッチアーカイブの内容: {arg0} 個のファイル ({arg1})";
+    public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"アーカイブを作成: {arg0} → {arg1}";
+    public override string LogPsvPatchConsoleOnly(object? arg0) => $"実機専用のためスキップしました: {arg0}。実機用で進めてください。";
+    public override string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"パッチ一覧を読み込みました: {arg0} 件 ({arg1})";
+    public override string LogPsvPatchCsvNotFound(object? arg0) => $"PSV_PATCH.csv が見つかりません。実行ファイルの隣に置いてください: {arg0}";
+    public override string LogPsvPatchDownloadingPatch(object? arg0) => $"パッチをダウンロード中: {arg0}";
+    public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"Google ドライブのファイルを選択: {arg0} (候補 {arg1} 件中)";
+    public override string LogPsvPatchEmulatorOnly(object? arg0) => $"エミュレーター専用のためスキップしました: {arg0}。エミュレーター用で進めてください。";
+    public override string LogPsvPatchGameNotFound(object? arg0, object? arg1) => $"スキップ (カタログにゲームが見つかりません): {arg0} {arg1}";
+    public override string LogPsvPatchInstalled(object? arg0, object? arg1) => $"インストール完了: {arg0} → {arg1}";
+    public override string LogPsvPatchItemFailed(object? arg0, object? arg1) => $"失敗: {arg0} ({arg1})";
+    public override string LogPsvPatchNothingPatched(object? arg0) => $"パッチされたファイルがないため、インストールをスキップします: {arg0}";
+    public override string LogPsvPatchTistoryAttachment(object? arg0) => $"Tistory の添付ファイル: {arg0}";
+    public override string LogPsvPatchUpdateFallback(object? arg0, object? arg1, object? arg2) => $"{arg0} のアップデート {arg1} が見つからないため {arg2} を使用します";
+    public override string LogPsvPatchVita3kExeMissing(object? arg0) => $"Vita3K.exe が見つかりません: {arg0}";
+    public override string LogPsvPatchVita3kLaunch(object? arg0) => $"Vita3K を起動: {arg0}";
+    public override string LogPsvPatchVita3kPrefPath(object? arg0) => $"Vita3K データフォルダー: {arg0}";
     public override string LogRecoveryCancelled => "復旧がキャンセルされました。";
     public override string LogRecoveryRegistered(object? arg0) => $"復旧完了: {arg0}件を登録";
     public override string LogRecoverySkipped(object? arg0) => $"{arg0}件は読み取れず除外されました。上のログを確認してください。";
@@ -1310,12 +1360,16 @@ public sealed class Japanese : LocalizedStrings
     public override string RadioConsoleRepatch => "実機 (rePatch, reAddcont)";
     public override string RadioEmulatorAppAddcont => "エミュレーター (app, addcont)";
     public override string RadioFolderPerTitleId => "フォルダー (タイトルID別)";
-    public override string RadioOriginalPkg => "元のPKG";
-    public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm ZIP (タイトルID別)";
-    public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm フォルダー (タイトルID別)";
+    public override string RadioInstallDevice => "実機 (SDカード)";
+    public override string RadioInstallVita3k => "エミュレーター (Vita3K)";
     public override string RadioLowercase => "小文字";
     public override string RadioMergeAll => "すべて";
     public override string RadioMergeGroupByTitleId => "タイトルID別にグループ化 (従来方式)";
+    public override string RadioModeArchive => "アーカイブ";
+    public override string RadioModeInstall => "インストール";
+    public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm フォルダー (タイトルID別)";
+    public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm ZIP (タイトルID別)";
+    public override string RadioOriginalPkg => "元のPKG";
     public override string RadioOutputGameId => "実機 (タイトルID/EBOOT.PBP)";
     public override string RadioOutputNormal(object? arg0) => $"通常 (タイトル名.{arg0})";
     public override string RadioQuality30s => "30秒 (132k)";
@@ -1430,8 +1484,8 @@ public sealed class Japanese : LocalizedStrings
     public override string TabConvert => "変換";
     public override string TabCreateCue => "Cue作成";
     public override string TabDecrypt => "復号";
+    public override string TabDownload => "ダウンロード";
     public override string TabExtractCertsBin => "certs.bin抽出";
-    public override string TabNoNpDrmConvert => "NoNpDrm変換";
     public override string TabGeneral => "一般";
     public override string TabIgnoreVersion => "バージョン無視";
     public override string TabInstall => "インストール";
@@ -1440,6 +1494,7 @@ public sealed class Japanese : LocalizedStrings
     public override string TabKeyFile => "キーファイル";
     public override string TabLz4Compression => "Lz4圧縮";
     public override string TabMerge => "マージ";
+    public override string TabNoNpDrmConvert => "NoNpDrm変換";
     public override string TabPatch => "パッチ";
     public override string TabPbpPacking => "PBPパッキング";
     public override string TabPbpUnpack => "PBPアンパック";
@@ -1480,7 +1535,6 @@ public sealed class Japanese : LocalizedStrings
     public override string ToolTipChangePatchFile => "別のパッチファイルに変更";
     public override string ToolTipChangePatchPackage => "別のパッチパッケージに変更";
     public override string ToolTipClear => "クリア";
-    public override string ToolTipShowCheckedOnly => "選択した項目のみ表示";
     public override string ToolTipCopyHash => "ハッシュ値をコピー";
     public override string ToolTipDragFolderToChangeDownload => "ここにフォルダーをドラッグしてダウンロード先を変更できます。";
     public override string ToolTipExpandCollapse => "展開/折りたたみ";
@@ -1494,6 +1548,7 @@ public sealed class Japanese : LocalizedStrings
     public override string ToolTipMovableSedGuide => "1. GodMode9を実行 (START + POWER)\n2. SYSNAND CTRNAND → private → movable.sed を選択\n3. 一番下の Copy to 0:/gm9/out を実行";
     public override string ToolTipOpenGithubReleases => "GitHubのリリースページを開きます";
     public override string ToolTipOpenHelp => "ヘルプページを開きます";
+    public override string ToolTipOpenReleasePage => "リリースページを開く";
     public override string ToolTipOpenWorkSpace => "出力フォルダーを開く";
     public override string ToolTipPlayPause => "再生/一時停止";
     public override string ToolTipPublisherMax63 => "パブリッシャー (最大63文字)";
@@ -1503,6 +1558,7 @@ public sealed class Japanese : LocalizedStrings
     public override string ToolTipRomFsLz4 => "RomFS Lz4圧縮 (リパック時に適用)。本編とアップデートは1つに統合されるため、どちらか一方にチェックを入れると圧縮されます。";
     public override string ToolTipSelectAllToggle => "すべて選択/解除";
     public override string ToolTipSelectFile => "ファイルを選択";
+    public override string ToolTipShowCheckedOnly => "選択した項目のみ表示";
     public override string ToolTipTistoryUrlInput => "Tistoryの投稿URLを1行に1つずつ入力してください (複数入力可、Ctrl+Enterで解析を実行)";
     public override string ToolTipTitleIdInput => "16桁の16進数 (例: 0100000000010000)。空欄の場合は元のタイトルIDを維持します。";
     public override string ToolTipValidateCompress => "圧縮後に追加の検証を実行します";
@@ -1528,18 +1584,4 @@ public sealed class Japanese : LocalizedStrings
     public override string WorkTypeConvert => "変換";
     public override string WorkTypeDecompress => "解凍";
     public override string WorkTypeRecompress => "再圧縮";
-
-    public override string TabDownload => "ダウンロード";
-    public override string HeaderTitleId => "タイトルID";
-    public override string HeaderRegion => "地域";
-    public override string ButtonSearch => "検索";
-    public override string HintSearchTitleId => "タイトルIDを検索...";
-    public override string LabelNpsResultSelected(object? arg0, object? arg1) => $"検索結果 {arg0}件 · 選択 {arg1}件";
-    public override string ErrNpsSelectItems => "ダウンロードする項目にチェックを入れてください。";
-    public override string ErrNpsTsvNotFound(object? arg0) => $"{arg0} が見つかりません。tsvファイルを実行ファイルと同じフォルダーに置いてください。";
-    public override string ErrNpsNoDownloadable => "選択した項目の中にダウンロードして変換できるものがありません。";
-    public override string LogNpsKeyMissingSkipped(object? arg0, object? arg1) => $"スキップ (ライセンスキーなし): {arg0} {arg1}";
-    public override string LogNpsHashMismatch(object? arg0) => $"{arg0} のSHA256が一致しません。ファイルが破損している可能性があります。";
-    public override string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2) => $"ダウンロード中 ({arg0}/{arg1}): {arg2}";
-    public override string LogNpsOlderUpdateSkipped(object? arg0, object? arg1) => $"スキップ (タイトルごとに最新のアップデートのみ使用): {arg0} {arg1}";
 }

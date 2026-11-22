@@ -28,27 +28,38 @@ public abstract class LocalizedStrings
     public abstract string ButtonGdiBasis { get; }
     public abstract string ButtonInstall { get; }
     public abstract string ButtonLater { get; }
+    public abstract string ButtonLink { get; }
     public abstract string ButtonLoadGameList { get; }
+    public abstract string ButtonLoadPatchCsv { get; }
     public abstract string ButtonOk { get; }
     public abstract string ButtonRecoverTitleDb { get; }
     public abstract string ButtonRemoveSelected { get; }
     public abstract string ButtonRepackFolderBased { get; }
     public abstract string ButtonReset { get; }
+    public abstract string ButtonSearch { get; }
     public abstract string ButtonSelect { get; }
-    public abstract string TitlePatchTargetPicker { get; }
-    public abstract string ButtonSkip { get; }
-    public abstract string MsgPatchTargetNotFound(object? arg0);
-    public abstract string LogVitaPatchTargetSelected(object? arg0, object? arg1);
-    public abstract string LogVitaPatchTargetSkipped(object? arg0);
     public abstract string ButtonSelectFile { get; }
     public abstract string ButtonSettings { get; }
+    public abstract string ButtonSkip { get; }
     public abstract string ButtonStart { get; }
+    public abstract string ButtonUnlink { get; }
     public abstract string ButtonUnpack { get; }
     public abstract string ButtonUnpackAndRepackFull { get; }
     public abstract string ButtonUnpackAndRepackStreaming { get; }
+    public abstract string HintPatchTargetLink { get; }
+    public abstract string LabelPatchTargetCandidates { get; }
+    public abstract string LabelPatchTargetNone { get; }
+    public abstract string LabelPatchTargetUnmatched { get; }
+    public abstract string LogVitaPatchTargetSelected(object? arg0, object? arg1);
+    public abstract string LogVitaPatchTargetSkipped(object? arg0);
+    public abstract string LogVitaRollbackDeleted(object? arg0);
+    public abstract string MsgPatchTargetNotFound(object? arg0);
+    public abstract string MsgPatchTargetsNotFound(object? arg0);
+    public abstract string TitlePatchTargetPicker { get; }
 
     // Check
     public abstract string CheckExtraOption { get; }
+    public abstract string CheckIncludeDlc { get; }
     public abstract string CheckVideoFreezeFix { get; }
 
     // Description
@@ -76,11 +87,11 @@ public abstract class LocalizedStrings
     public abstract string DescTistoryEnterUrl { get; }
     public abstract string DescTistoryFindAttachments { get; }
     public abstract string DescVitaAutoClassify { get; }
+    public abstract string DescVitaDecryptAll { get; }
     public abstract string DescVitaGroupToNoNpDrm { get; }
     public abstract string DescVitaKeyRequiredShared { get; }
     public abstract string DescVitaPatchMerge { get; }
     public abstract string DescVitaPkgKeyRequired { get; }
-    public abstract string DescVitaDecryptAll { get; }
     public abstract string DescWiiUAutoClassify { get; }
 
     // Detail
@@ -382,6 +393,9 @@ public abstract class LocalizedStrings
     public abstract string ErrNotGcOrWiiDisc { get; }
     public abstract string ErrNotRiivolutionXml { get; }
     public abstract string ErrNotWiiDisc { get; }
+    public abstract string ErrNpsNoDownloadable { get; }
+    public abstract string ErrNpsSelectItems { get; }
+    public abstract string ErrNpsTsvNotFound(object? arg0);
     public abstract string ErrNsoSegmentLz4Failed(object? arg0, object? arg1);
     public abstract string ErrNspHasNoFiles { get; }
     public abstract string ErrOnlyBinaryFileType(object? arg0, object? arg1);
@@ -426,6 +440,11 @@ public abstract class LocalizedStrings
     public abstract string ErrPpfSourceTooShortBlockcheck { get; }
     public abstract string ErrProgramRomfsNotFound { get; }
     public abstract string ErrPs1GamesOnly { get; }
+    public abstract string ErrPsvPatchDriveBlocked { get; }
+    public abstract string ErrPsvPatchDriveEmptyFolder { get; }
+    public abstract string ErrPsvPatchInstallPathNotFound(object? arg0);
+    public abstract string ErrPsvPatchMegaFailed(object? arg0);
+    public abstract string ErrPsvPatchTistoryNoAttachment(object? arg0);
     public abstract string ErrRawContentAbnormallyLarge(object? arg0, object? arg1);
     public abstract string ErrReadFailedDetail(object? arg0, object? arg1, object? arg2, object? arg3, object? arg4, object? arg5);
     public abstract string ErrRecompressedExceedsTitleBlock(object? arg0, object? arg1);
@@ -654,12 +673,16 @@ public abstract class LocalizedStrings
     public abstract string HeaderOutput { get; }
     public abstract string HeaderPatch { get; }
     public abstract string HeaderProductCode { get; }
+    public abstract string HeaderRegion { get; }
+    public abstract string HeaderRequiredUpdate { get; }
     public abstract string HeaderResult { get; }
     public abstract string HeaderSize { get; }
     public abstract string HeaderTitle { get; }
+    public abstract string HeaderTitleId { get; }
     public abstract string HeaderVersion { get; }
 
     // Hint
+    public abstract string HintDeviceRoot { get; }
     public abstract string HintDragOrClickPatch3ds { get; }
     public abstract string HintDragOrClickPatchFile { get; }
     public abstract string HintDragOrClickPatchFolderIpsZip { get; }
@@ -685,13 +708,16 @@ public abstract class LocalizedStrings
     public abstract string HintDropVitaPkg { get; }
     public abstract string HintDropWiiUFiles { get; }
     public abstract string HintKeyFileEmptyUsesExeFolder(object? arg0);
+    public abstract string HintPatchOutputFolder { get; }
     public abstract string HintRepackReplaceRule { get; }
     public abstract string HintSearchGame { get; }
+    public abstract string HintSearchTitleId { get; }
     public abstract string HintSelectOutput { get; }
     public abstract string HintSoundCancel { get; }
     public abstract string HintSoundComplete { get; }
     public abstract string HintSoundError { get; }
     public abstract string HintSplitExpandRule { get; }
+    public abstract string HintVita3kFolder { get; }
 
     // Label
     public abstract string LabelActual { get; }
@@ -731,6 +757,7 @@ public abstract class LocalizedStrings
     public abstract string LabelGameId { get; }
     public abstract string LabelGameName { get; }
     public abstract string LabelGeneral { get; }
+    public abstract string LabelInstallTarget { get; }
     public abstract string LabelKeyFileFoundInExe { get; }
     public abstract string LabelKeyFileMissingUsingExe { get; }
     public abstract string LabelKeyFileNone { get; }
@@ -752,6 +779,7 @@ public abstract class LocalizedStrings
     public abstract string LabelNoteCemuArchive { get; }
     public abstract string LabelNoteDiscImage { get; }
     public abstract string LabelNoteFolder { get; }
+    public abstract string LabelNpsResultSelected(object? arg0, object? arg1);
     public abstract string LabelNspTitleId { get; }
     public abstract string LabelOptions { get; }
     public abstract string LabelOther { get; }
@@ -762,6 +790,7 @@ public abstract class LocalizedStrings
     public abstract string LabelOutputRetail { get; }
     public abstract string LabelPatch { get; }
     public abstract string LabelPatchInfo { get; }
+    public abstract string LabelPatchMode { get; }
     public abstract string LabelPatchNumber(object? arg0);
     public abstract string LabelPbpPacking { get; }
     public abstract string LabelPkgCount(object? arg0);
@@ -969,6 +998,10 @@ public abstract class LocalizedStrings
     public abstract string LogNoTitleInfoItems { get; }
     public abstract string LogNotFoundInHdi(object? arg0);
     public abstract string LogNotInDisc(object? arg0);
+    public abstract string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2);
+    public abstract string LogNpsHashMismatch(object? arg0);
+    public abstract string LogNpsKeyMissingSkipped(object? arg0, object? arg1);
+    public abstract string LogNpsOlderUpdateSkipped(object? arg0, object? arg1);
     public abstract string LogOutputFile(object? arg0);
     public abstract string LogOutputPath(object? arg0);
     public abstract string LogOutputPathAndFormat(object? arg0, object? arg1);
@@ -1014,6 +1047,23 @@ public abstract class LocalizedStrings
     public abstract string LogProcessStart { get; }
     public abstract string LogProgramBuildDone(object? arg0, object? arg1);
     public abstract string LogProgramBuildStart(object? arg0);
+    public abstract string LogPsvPatchArchiveContents(object? arg0, object? arg1);
+    public abstract string LogPsvPatchArchived(object? arg0, object? arg1);
+    public abstract string LogPsvPatchConsoleOnly(object? arg0);
+    public abstract string LogPsvPatchCsvLoaded(object? arg0, object? arg1);
+    public abstract string LogPsvPatchCsvNotFound(object? arg0);
+    public abstract string LogPsvPatchDownloadingPatch(object? arg0);
+    public abstract string LogPsvPatchDriveFilePicked(object? arg0, object? arg1);
+    public abstract string LogPsvPatchEmulatorOnly(object? arg0);
+    public abstract string LogPsvPatchGameNotFound(object? arg0, object? arg1);
+    public abstract string LogPsvPatchInstalled(object? arg0, object? arg1);
+    public abstract string LogPsvPatchItemFailed(object? arg0, object? arg1);
+    public abstract string LogPsvPatchNothingPatched(object? arg0);
+    public abstract string LogPsvPatchTistoryAttachment(object? arg0);
+    public abstract string LogPsvPatchUpdateFallback(object? arg0, object? arg1, object? arg2);
+    public abstract string LogPsvPatchVita3kExeMissing(object? arg0);
+    public abstract string LogPsvPatchVita3kLaunch(object? arg0);
+    public abstract string LogPsvPatchVita3kPrefPath(object? arg0);
     public abstract string LogRecoveryCancelled { get; }
     public abstract string LogRecoveryRegistered(object? arg0);
     public abstract string LogRecoverySkipped(object? arg0);
@@ -1310,12 +1360,16 @@ public abstract class LocalizedStrings
     public abstract string RadioConsoleRepatch { get; }
     public abstract string RadioEmulatorAppAddcont { get; }
     public abstract string RadioFolderPerTitleId { get; }
-    public abstract string RadioOriginalPkg { get; }
-    public abstract string RadioNoNpDrmZipPerTitleId { get; }
-    public abstract string RadioNoNpDrmFolderPerTitleId { get; }
+    public abstract string RadioInstallDevice { get; }
+    public abstract string RadioInstallVita3k { get; }
     public abstract string RadioLowercase { get; }
     public abstract string RadioMergeAll { get; }
     public abstract string RadioMergeGroupByTitleId { get; }
+    public abstract string RadioModeArchive { get; }
+    public abstract string RadioModeInstall { get; }
+    public abstract string RadioNoNpDrmFolderPerTitleId { get; }
+    public abstract string RadioNoNpDrmZipPerTitleId { get; }
+    public abstract string RadioOriginalPkg { get; }
     public abstract string RadioOutputGameId { get; }
     public abstract string RadioOutputNormal(object? arg0);
     public abstract string RadioQuality30s { get; }
@@ -1430,8 +1484,8 @@ public abstract class LocalizedStrings
     public abstract string TabConvert { get; }
     public abstract string TabCreateCue { get; }
     public abstract string TabDecrypt { get; }
+    public abstract string TabDownload { get; }
     public abstract string TabExtractCertsBin { get; }
-    public abstract string TabNoNpDrmConvert { get; }
     public abstract string TabGeneral { get; }
     public abstract string TabIgnoreVersion { get; }
     public abstract string TabInstall { get; }
@@ -1440,6 +1494,7 @@ public abstract class LocalizedStrings
     public abstract string TabKeyFile { get; }
     public abstract string TabLz4Compression { get; }
     public abstract string TabMerge { get; }
+    public abstract string TabNoNpDrmConvert { get; }
     public abstract string TabPatch { get; }
     public abstract string TabPbpPacking { get; }
     public abstract string TabPbpUnpack { get; }
@@ -1480,7 +1535,6 @@ public abstract class LocalizedStrings
     public abstract string ToolTipChangePatchFile { get; }
     public abstract string ToolTipChangePatchPackage { get; }
     public abstract string ToolTipClear { get; }
-    public abstract string ToolTipShowCheckedOnly { get; }
     public abstract string ToolTipCopyHash { get; }
     public abstract string ToolTipDragFolderToChangeDownload { get; }
     public abstract string ToolTipExpandCollapse { get; }
@@ -1494,6 +1548,7 @@ public abstract class LocalizedStrings
     public abstract string ToolTipMovableSedGuide { get; }
     public abstract string ToolTipOpenGithubReleases { get; }
     public abstract string ToolTipOpenHelp { get; }
+    public abstract string ToolTipOpenReleasePage { get; }
     public abstract string ToolTipOpenWorkSpace { get; }
     public abstract string ToolTipPlayPause { get; }
     public abstract string ToolTipPublisherMax63 { get; }
@@ -1503,6 +1558,7 @@ public abstract class LocalizedStrings
     public abstract string ToolTipRomFsLz4 { get; }
     public abstract string ToolTipSelectAllToggle { get; }
     public abstract string ToolTipSelectFile { get; }
+    public abstract string ToolTipShowCheckedOnly { get; }
     public abstract string ToolTipTistoryUrlInput { get; }
     public abstract string ToolTipTitleIdInput { get; }
     public abstract string ToolTipValidateCompress { get; }
@@ -1546,54 +1602,4 @@ public abstract class LocalizedStrings
         ItemStatus.Skipped => StatusSkipped,
         _ => string.Empty
     };
-
-    public abstract string TabDownload { get; }
-    public abstract string HeaderTitleId { get; }
-    public abstract string HeaderRegion { get; }
-    public abstract string ButtonSearch { get; }
-    public abstract string HintSearchTitleId { get; }
-    public abstract string LabelNpsResultSelected(object? arg0, object? arg1);
-    public abstract string ErrNpsSelectItems { get; }
-    public abstract string ErrNpsTsvNotFound(object? arg0);
-    public abstract string ErrNpsNoDownloadable { get; }
-    public abstract string LogNpsKeyMissingSkipped(object? arg0, object? arg1);
-    public abstract string LogNpsHashMismatch(object? arg0);
-    public abstract string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2);
-    public abstract string LogNpsOlderUpdateSkipped(object? arg0, object? arg1);
-
-    public virtual string ButtonLoadPatchCsv => "Load CSV";
-    public virtual string LabelInstallTarget => "Target";
-    public virtual string RadioInstallVita3k => "Emulator (Vita3K)";
-    public virtual string RadioInstallDevice => "Device (SD card)";
-    public virtual string CheckIncludeDlc => "Include DLC";
-    public virtual string HintVita3kFolder => "Select the Vita3K folder (containing Vita3K.exe and config.yml)";
-    public virtual string HintDeviceRoot => "Select the SD card root";
-    public virtual string HeaderRequiredUpdate => "Required Ver";
-    public virtual string ToolTipOpenReleasePage => "Open release page";
-    public virtual string ErrPsvPatchInstallPathNotFound(object? arg0) => $"Install path not found: {arg0}";
-    public virtual string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"Patch list loaded: {arg0} entries ({arg1})";
-    public virtual string LogPsvPatchGameNotFound(object? arg0, object? arg1) => $"Skipped (game not found in catalog): {arg0} {arg1}";
-    public virtual string LogPsvPatchUpdateFallback(object? arg0, object? arg1, object? arg2) => $"Update {arg1} not found for {arg0}, using {arg2}";
-    public virtual string LogPsvPatchDownloadingPatch(object? arg0) => $"Downloading patch: {arg0}";
-    public virtual string LogPsvPatchNothingPatched(object? arg0) => $"No files were patched, install skipped: {arg0}";
-    public virtual string LogPsvPatchInstalled(object? arg0, object? arg1) => $"Installed: {arg0} → {arg1}";
-    public virtual string LogPsvPatchItemFailed(object? arg0, object? arg1) => $"Failed: {arg0} ({arg1})";
-    public virtual string ErrPsvPatchDriveBlocked => "Google Drive blocked the download (quota exceeded or no access).";
-    public virtual string ErrPsvPatchDriveEmptyFolder => "No files found in the Google Drive folder.";
-    public virtual string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"Google Drive file selected: {arg0} (of {arg1} candidates)";
-    public virtual string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"Patch archive contains {arg0} files: {arg1}";
-    public virtual string LogPsvPatchVita3kPrefPath(object? arg0) => $"Vita3K data folder: {arg0}";
-    public virtual string LogPsvPatchVita3kLaunch(object? arg0) => $"Launching Vita3K: {arg0}";
-    public virtual string LogPsvPatchVita3kExeMissing(object? arg0) => $"Vita3K.exe not found: {arg0}";
-    public virtual string LabelPatchMode => "Mode";
-    public virtual string RadioModeInstall => "Install";
-    public virtual string RadioModeArchive => "Archive";
-    public virtual string HintPatchOutputFolder => "Select the folder to save the zip archives";
-    public virtual string LogPsvPatchArchived(object? arg0, object? arg1) => $"Archive created: {arg0} → {arg1}";
-    public virtual string LogPsvPatchCsvNotFound(object? arg0) => $"PSV_PATCH.csv not found. Place it next to the executable: {arg0}";
-    public virtual string ErrPsvPatchMegaFailed(object? arg0) => $"MEGA download failed (code: {arg0}).";
-    public virtual string ErrPsvPatchTistoryNoAttachment(object? arg0) => $"No attachment found on the Tistory page: {arg0}";
-    public virtual string LogPsvPatchTistoryAttachment(object? arg0) => $"Tistory attachment: {arg0}";
-    public virtual string LogPsvPatchConsoleOnly(object? arg0) => $"Console only, skipped: {arg0}. Please proceed with the console option.";
-    public virtual string LogPsvPatchEmulatorOnly(object? arg0) => $"Emulator only, skipped: {arg0}. Please proceed with the emulator option.";
 }

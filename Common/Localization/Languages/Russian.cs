@@ -28,27 +28,38 @@ public sealed class Russian : LocalizedStrings
     public override string ButtonGdiBasis => "Основа GDI";
     public override string ButtonInstall => "Установить";
     public override string ButtonLater => "Позже";
+    public override string ButtonLink => "Связать";
     public override string ButtonLoadGameList => "Загрузить список игр";
+    public override string ButtonLoadPatchCsv => "Загрузить CSV";
     public override string ButtonOk => "ОК";
     public override string ButtonRecoverTitleDb => "Восстановить title.db";
     public override string ButtonRemoveSelected => "Удалить выбранное";
     public override string ButtonRepackFolderBased => "Перепаковка (по папке)";
     public override string ButtonReset => "Сбросить";
+    public override string ButtonSearch => "Поиск";
     public override string ButtonSelect => "Выбрать";
-    public override string TitlePatchTargetPicker => "Выбор целевого файла патча";
-    public override string ButtonSkip => "Пропустить";
-    public override string MsgPatchTargetNotFound(object? arg0) => $"Не найден целевой файл для патча '{arg0}'. Выберите файл, к которому его применить.";
-    public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"Цель патча выбрана вручную: {arg0} -> {arg1}";
-    public override string LogVitaPatchTargetSkipped(object? arg0) => $"Выбор цели патча пропущен: {arg0}";
     public override string ButtonSelectFile => "Выбрать файл";
     public override string ButtonSettings => "Настройки";
+    public override string ButtonSkip => "Пропустить";
     public override string ButtonStart => "Начать";
+    public override string ButtonUnlink => "Отвязать";
     public override string ButtonUnpack => "Распаковка";
     public override string ButtonUnpackAndRepackFull => "Распаковка + перепаковка (Full)";
     public override string ButtonUnpackAndRepackStreaming => "Распаковка + перепаковка (потоковая)";
+    public override string HintPatchTargetLink => "Выберите целевой файл в дереве слева, затем дважды щёлкните элемент справа или нажмите «Связать».";
+    public override string LabelPatchTargetCandidates => "Кандидаты целевых файлов";
+    public override string LabelPatchTargetNone => "Не задано";
+    public override string LabelPatchTargetUnmatched => "Патч-файлы без цели";
+    public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"Цель патча выбрана вручную: {arg0} -> {arg1}";
+    public override string LogVitaPatchTargetSkipped(object? arg0) => $"Выбор цели патча пропущен: {arg0}";
+    public override string LogVitaRollbackDeleted(object? arg0) => $"Установка не удалась: удалено записанных файлов: {arg0}";
+    public override string MsgPatchTargetNotFound(object? arg0) => $"Не найден целевой файл для патча '{arg0}'. Выберите файл, к которому его применить.";
+    public override string MsgPatchTargetsNotFound(object? arg0) => $"Не найдены целевые файлы для патч-файлов (количество: {arg0}).";
+    public override string TitlePatchTargetPicker => "Выбор целевого файла патча";
 
     // Check
     public override string CheckExtraOption => "Дополнительная опция (cmd 0x0B)";
+    public override string CheckIncludeDlc => "Включить DLC";
     public override string CheckVideoFreezeFix => "Исправление зависания видео (cmd 0x00)";
 
     // Description
@@ -76,11 +87,11 @@ public sealed class Russian : LocalizedStrings
     public override string DescTistoryEnterUrl => "Введите ссылку Tistory и нажмите «Анализ»";
     public override string DescTistoryFindAttachments => "Находит ссылки на вложения и добавляет их в список";
     public override string DescVitaAutoClassify => "App/Patch/AddCont классифицируются автоматически";
+    public override string DescVitaDecryptAll => "Расшифровывает все файлы и выводит структуру для эмулятора (app/addcont/license), объединяя игру и обновление";
     public override string DescVitaGroupToNoNpDrm => "App/Patch/AddCont с одинаковым Title ID объединяются и преобразуются в формат NoNpDrm";
     public override string DescVitaKeyRequiredShared => "Требуется ключ (work.bin, *.rif/строка zRIF) (Patch может использовать ключ App)";
     public override string DescVitaPatchMerge => "Эмулятор: после расшифровки перезаписывает app/addcont / Консоль: добавляет rePatch/reAddcont";
     public override string DescVitaPkgKeyRequired => "Для pkg требуется ключ (work.bin, *.rif/строка zRIF)";
-    public override string DescVitaDecryptAll => "Расшифровывает все файлы и выводит структуру для эмулятора (app/addcont/license), объединяя игру и обновление";
     public override string DescWiiUAutoClassify => "Игра/обновление/DLC классифицируются автоматически по Title ID";
 
     // Detail
@@ -382,6 +393,9 @@ public sealed class Russian : LocalizedStrings
     public override string ErrNotGcOrWiiDisc => "Это не образ диска GameCube или Wii.";
     public override string ErrNotRiivolutionXml => "Это не XML Riivolution.";
     public override string ErrNotWiiDisc => "Это не диск Wii.";
+    public override string ErrNpsNoDownloadable => "Среди выбранных элементов нет тех, которые можно загрузить и преобразовать.";
+    public override string ErrNpsSelectItems => "Отметьте элементы для загрузки.";
+    public override string ErrNpsTsvNotFound(object? arg0) => $"Не найден файл {arg0}. Поместите tsv-файлы в папку с исполняемым файлом.";
     public override string ErrNsoSegmentLz4Failed(object? arg0, object? arg1) => $"Не удалось выполнить сжатие LZ4 сегмента {arg0} (encodedLen={arg1})";
     public override string ErrNspHasNoFiles => "В NSP не записано ни одного файла.";
     public override string ErrOnlyBinaryFileType(object? arg0, object? arg1) => $"Типы FILE, кроме BINARY, не поддерживаются ({arg0}): {arg1}";
@@ -426,6 +440,11 @@ public sealed class Russian : LocalizedStrings
     public override string ErrPpfSourceTooShortBlockcheck => "Исходный файл слишком короткий для выполнения blockcheck.";
     public override string ErrProgramRomfsNotFound => "romfs программы не найден.";
     public override string ErrPs1GamesOnly => "Поддерживаются только игры PS1.";
+    public override string ErrPsvPatchDriveBlocked => "Google Диск заблокировал загрузку (превышена квота или нет доступа).";
+    public override string ErrPsvPatchDriveEmptyFolder => "В папке Google Диска файлы не найдены.";
+    public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"Путь установки не найден: {arg0}";
+    public override string ErrPsvPatchMegaFailed(object? arg0) => $"Не удалось загрузить с MEGA (код: {arg0}).";
+    public override string ErrPsvPatchTistoryNoAttachment(object? arg0) => $"На странице Tistory вложение не найдено: {arg0}";
     public override string ErrRawContentAbnormallyLarge(object? arg0, object? arg1) => $"Контент {arg0}.app имеет тип raw, но аномально велик ({arg1} байт) — тип хеш-дерева мог быть определён неверно.";
     public override string ErrReadFailedDetail(object? arg0, object? arg1, object? arg2, object? arg3, object? arg4, object? arg5) => $"Не удалось прочитать '{arg0}' (clusterIndex={arg1}, offsetField={arg2}, byteOffset={arg3}, size={arg4}): {arg5}";
     public override string ErrRecompressedExceedsTitleBlock(object? arg0, object? arg1) => $"Результат повторного сжатия превышает блок названия: {arg0} > {arg1}";
@@ -654,12 +673,16 @@ public sealed class Russian : LocalizedStrings
     public override string HeaderOutput => "Вывод";
     public override string HeaderPatch => "Патч";
     public override string HeaderProductCode => "Код продукта";
+    public override string HeaderRegion => "Регион";
+    public override string HeaderRequiredUpdate => "Нужная версия";
     public override string HeaderResult => "Результат";
     public override string HeaderSize => "Размер";
     public override string HeaderTitle => "Название";
+    public override string HeaderTitleId => "ID тайтла";
     public override string HeaderVersion => "Версия";
 
     // Hint
+    public override string HintDeviceRoot => "Выберите корень SD-карты";
     public override string HintDragOrClickPatch3ds => "Перетащите или щёлкните, чтобы выбрать папку патча или файл zip/7z";
     public override string HintDragOrClickPatchFile => "Перетащите файл патча или нажмите";
     public override string HintDragOrClickPatchFolderIpsZip => "Перетащите папку патча или IPS/ZIP либо нажмите";
@@ -685,13 +708,16 @@ public sealed class Russian : LocalizedStrings
     public override string HintDropVitaPkg => "Перетащите файлы/папки PKG для PS Vita сюда";
     public override string HintDropWiiUFiles => "Перетащите папки WUP/Loadiine или файлы wud/wux/wua сюда";
     public override string HintKeyFileEmptyUsesExeFolder(object? arg0) => $"Оставьте пустым, чтобы использовать {arg0} из папки exe";
+    public override string HintPatchOutputFolder => "Выберите папку для сохранения zip-архивов";
     public override string HintRepackReplaceRule => "Игра и обновление заменяются автоматически, DLC добавляются";
     public override string HintSearchGame => "Поиск игр...";
+    public override string HintSearchTitleId => "Поиск по ID тайтла...";
     public override string HintSelectOutput => "Выберите папку вывода";
     public override string HintSoundCancel => "Отмена (перетащите файл .mp3 или .wav)";
     public override string HintSoundComplete => "Завершение (перетащите файл .mp3 или .wav)";
     public override string HintSoundError => "Ошибка (перетащите файл .mp3 или .wav)";
     public override string HintSplitExpandRule => "Разверните объединённый ROM кнопкой +, чтобы выбрать игру, обновление или DLC для разделения";
+    public override string HintVita3kFolder => "Выберите папку Vita3K (с Vita3K.exe и config.yml)";
 
     // Label
     public override string LabelActual => "Фактически";
@@ -731,6 +757,7 @@ public sealed class Russian : LocalizedStrings
     public override string LabelGameId => "ID игры";
     public override string LabelGameName => "Название игры";
     public override string LabelGeneral => "Общие";
+    public override string LabelInstallTarget => "Назначение";
     public override string LabelKeyFileFoundInExe => "Найден в папке exe";
     public override string LabelKeyFileMissingUsingExe => "Указанный файл не существует; используется файл из папки exe";
     public override string LabelKeyFileNone => "Нет файла";
@@ -752,6 +779,7 @@ public sealed class Russian : LocalizedStrings
     public override string LabelNoteCemuArchive => "(архив Cemu)";
     public override string LabelNoteDiscImage => "(образ диска)";
     public override string LabelNoteFolder => "(папка)";
+    public override string LabelNpsResultSelected(object? arg0, object? arg1) => $"Найдено: {arg0} · выбрано: {arg1}";
     public override string LabelNspTitleId => "Title ID NSP";
     public override string LabelOptions => "Параметры:";
     public override string LabelOther => "Другое";
@@ -762,6 +790,7 @@ public sealed class Russian : LocalizedStrings
     public override string LabelOutputRetail => "Консоль";
     public override string LabelPatch => "Патч";
     public override string LabelPatchInfo => "Информация о патче";
+    public override string LabelPatchMode => "Режим";
     public override string LabelPatchNumber(object? arg0) => $"Патч {arg0}";
     public override string LabelPbpPacking => "Упаковка PBP";
     public override string LabelPkgCount(object? arg0) => $"PKG: {arg0}";
@@ -969,6 +998,10 @@ public sealed class Russian : LocalizedStrings
     public override string LogNoTitleInfoItems => "Нет элементов со сведениями о названии.";
     public override string LogNotFoundInHdi(object? arg0) => $"Не найдено в HDI: {arg0}";
     public override string LogNotInDisc(object? arg0) => $"Нет на диске: {arg0}";
+    public override string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2) => $"Загрузка ({arg0}/{arg1}): {arg2}";
+    public override string LogNpsHashMismatch(object? arg0) => $"SHA256 файла {arg0} не совпадает. Файл может быть поврежден.";
+    public override string LogNpsKeyMissingSkipped(object? arg0, object? arg1) => $"Пропущено (нет ключа лицензии): {arg0} {arg1}";
+    public override string LogNpsOlderUpdateSkipped(object? arg0, object? arg1) => $"Пропущено (используется только последнее обновление для тайтла): {arg0} {arg1}";
     public override string LogOutputFile(object? arg0) => $"Вывод: {arg0}";
     public override string LogOutputPath(object? arg0) => $"Путь вывода: {arg0}";
     public override string LogOutputPathAndFormat(object? arg0, object? arg1) => $"Путь вывода: {arg0} (формат: {arg1})";
@@ -1014,6 +1047,23 @@ public sealed class Russian : LocalizedStrings
     public override string LogProcessStart => "Начало";
     public override string LogProgramBuildDone(object? arg0, object? arg1) => $"Сборка программы завершена: {arg0} ({arg1})";
     public override string LogProgramBuildStart(object? arg0) => $"Начало сборки программы (IdOffset={arg0})";
+    public override string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"В архиве патча файлов: {arg0} ({arg1})";
+    public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"Архив создан: {arg0} → {arg1}";
+    public override string LogPsvPatchConsoleOnly(object? arg0) => $"Только для консоли, пропущено: {arg0}. Используйте вариант для консоли.";
+    public override string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"Загружен список патчей: {arg0} записей ({arg1})";
+    public override string LogPsvPatchCsvNotFound(object? arg0) => $"PSV_PATCH.csv не найден. Поместите его рядом с исполняемым файлом: {arg0}";
+    public override string LogPsvPatchDownloadingPatch(object? arg0) => $"Загрузка патча: {arg0}";
+    public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"Выбран файл Google Диска: {arg0} (из {arg1} кандидатов)";
+    public override string LogPsvPatchEmulatorOnly(object? arg0) => $"Только для эмулятора, пропущено: {arg0}. Используйте вариант для эмулятора.";
+    public override string LogPsvPatchGameNotFound(object? arg0, object? arg1) => $"Пропущено (игра не найдена в каталоге): {arg0} {arg1}";
+    public override string LogPsvPatchInstalled(object? arg0, object? arg1) => $"Установлено: {arg0} → {arg1}";
+    public override string LogPsvPatchItemFailed(object? arg0, object? arg1) => $"Ошибка: {arg0} ({arg1})";
+    public override string LogPsvPatchNothingPatched(object? arg0) => $"Ни один файл не был пропатчен, установка пропущена: {arg0}";
+    public override string LogPsvPatchTistoryAttachment(object? arg0) => $"Вложение Tistory: {arg0}";
+    public override string LogPsvPatchUpdateFallback(object? arg0, object? arg1, object? arg2) => $"Обновление {arg1} для {arg0} не найдено, используется {arg2}";
+    public override string LogPsvPatchVita3kExeMissing(object? arg0) => $"Vita3K.exe не найден: {arg0}";
+    public override string LogPsvPatchVita3kLaunch(object? arg0) => $"Запуск Vita3K: {arg0}";
+    public override string LogPsvPatchVita3kPrefPath(object? arg0) => $"Папка данных Vita3K: {arg0}";
     public override string LogRecoveryCancelled => "Восстановление отменено.";
     public override string LogRecoveryRegistered(object? arg0) => $"Восстановление завершено: зарегистрировано {arg0}";
     public override string LogRecoverySkipped(object? arg0) => $"Не удалось прочитать {arg0}, они пропущены. Проверьте журнал выше.";
@@ -1310,12 +1360,16 @@ public sealed class Russian : LocalizedStrings
     public override string RadioConsoleRepatch => "Консоль (rePatch, reAddcont)";
     public override string RadioEmulatorAppAddcont => "Эмулятор (app, addcont)";
     public override string RadioFolderPerTitleId => "Папка (по Title ID)";
-    public override string RadioOriginalPkg => "Исходный PKG";
-    public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm ZIP (по Title ID)";
-    public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm папка (по Title ID)";
+    public override string RadioInstallDevice => "Консоль (SD-карта)";
+    public override string RadioInstallVita3k => "Эмулятор (Vita3K)";
     public override string RadioLowercase => "Строчные";
     public override string RadioMergeAll => "Все";
     public override string RadioMergeGroupByTitleId => "Группировка по Title ID (прежний способ)";
+    public override string RadioModeArchive => "Архив";
+    public override string RadioModeInstall => "Установка";
+    public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm папка (по Title ID)";
+    public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm ZIP (по Title ID)";
+    public override string RadioOriginalPkg => "Исходный PKG";
     public override string RadioOutputGameId => "Консоль (Title ID/EBOOT.PBP)";
     public override string RadioOutputNormal(object? arg0) => $"Обычный (название.{arg0})";
     public override string RadioQuality30s => "30 с (132k)";
@@ -1430,8 +1484,8 @@ public sealed class Russian : LocalizedStrings
     public override string TabConvert => "Конвертация";
     public override string TabCreateCue => "Создание Cue";
     public override string TabDecrypt => "Расшифровка";
+    public override string TabDownload => "Загрузка";
     public override string TabExtractCertsBin => "Извлечение certs.bin";
-    public override string TabNoNpDrmConvert => "Конвертация NoNpDrm";
     public override string TabGeneral => "Общие";
     public override string TabIgnoreVersion => "Игнорировать версию";
     public override string TabInstall => "Установка";
@@ -1440,6 +1494,7 @@ public sealed class Russian : LocalizedStrings
     public override string TabKeyFile => "Файл ключей";
     public override string TabLz4Compression => "Сжатие Lz4";
     public override string TabMerge => "Объединение";
+    public override string TabNoNpDrmConvert => "Конвертация NoNpDrm";
     public override string TabPatch => "Патч";
     public override string TabPbpPacking => "Упаковка PBP";
     public override string TabPbpUnpack => "Распаковка PBP";
@@ -1480,7 +1535,6 @@ public sealed class Russian : LocalizedStrings
     public override string ToolTipChangePatchFile => "Выбрать другой файл патча";
     public override string ToolTipChangePatchPackage => "Выбрать другой пакет патчей";
     public override string ToolTipClear => "Очистить";
-    public override string ToolTipShowCheckedOnly => "Показать только выбранные";
     public override string ToolTipCopyHash => "Копировать хеш";
     public override string ToolTipDragFolderToChangeDownload => "Перетащите папку сюда, чтобы изменить папку загрузки.";
     public override string ToolTipExpandCollapse => "Развернуть/Свернуть";
@@ -1494,6 +1548,7 @@ public sealed class Russian : LocalizedStrings
     public override string ToolTipMovableSedGuide => "1. Запустите GodMode9 (START + POWER)\n2. Выберите SYSNAND CTRNAND → private → movable.sed\n3. Выполните Copy to 0:/gm9/out в самом низу";
     public override string ToolTipOpenGithubReleases => "Открывает страницу релизов на GitHub";
     public override string ToolTipOpenHelp => "Открывает страницу справки";
+    public override string ToolTipOpenReleasePage => "Открыть страницу релиза";
     public override string ToolTipOpenWorkSpace => "Открыть папку вывода";
     public override string ToolTipPlayPause => "Воспроизведение/Пауза";
     public override string ToolTipPublisherMax63 => "Издатель (макс. 63 символа)";
@@ -1503,6 +1558,7 @@ public sealed class Russian : LocalizedStrings
     public override string ToolTipRomFsLz4 => "Сжатие RomFS в Lz4 (применяется при перепаковке). Игра и обновление объединяются в одно, поэтому сжатие включается, если отмечено любое из них.";
     public override string ToolTipSelectAllToggle => "Выбрать/снять выбор со всех";
     public override string ToolTipSelectFile => "Выбрать файл";
+    public override string ToolTipShowCheckedOnly => "Показать только выбранные";
     public override string ToolTipTistoryUrlInput => "Вводите по одной ссылке на запись Tistory в строке (можно несколько, Ctrl+Enter запускает анализ)";
     public override string ToolTipTitleIdInput => "16-значное шестнадцатеричное число (например: 0100000000010000). Оставьте пустым, чтобы сохранить исходный Title ID.";
     public override string ToolTipValidateCompress => "Выполняет дополнительную проверку после сжатия";
@@ -1528,18 +1584,4 @@ public sealed class Russian : LocalizedStrings
     public override string WorkTypeConvert => "Конвертация";
     public override string WorkTypeDecompress => "Распаковка";
     public override string WorkTypeRecompress => "Пересжатие";
-
-    public override string TabDownload => "Загрузка";
-    public override string HeaderTitleId => "ID тайтла";
-    public override string HeaderRegion => "Регион";
-    public override string ButtonSearch => "Поиск";
-    public override string HintSearchTitleId => "Поиск по ID тайтла...";
-    public override string LabelNpsResultSelected(object? arg0, object? arg1) => $"Найдено: {arg0} · выбрано: {arg1}";
-    public override string ErrNpsSelectItems => "Отметьте элементы для загрузки.";
-    public override string ErrNpsTsvNotFound(object? arg0) => $"Не найден файл {arg0}. Поместите tsv-файлы в папку с исполняемым файлом.";
-    public override string ErrNpsNoDownloadable => "Среди выбранных элементов нет тех, которые можно загрузить и преобразовать.";
-    public override string LogNpsKeyMissingSkipped(object? arg0, object? arg1) => $"Пропущено (нет ключа лицензии): {arg0} {arg1}";
-    public override string LogNpsHashMismatch(object? arg0) => $"SHA256 файла {arg0} не совпадает. Файл может быть поврежден.";
-    public override string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2) => $"Загрузка ({arg0}/{arg1}): {arg2}";
-    public override string LogNpsOlderUpdateSkipped(object? arg0, object? arg1) => $"Пропущено (используется только последнее обновление для тайтла): {arg0} {arg1}";
 }

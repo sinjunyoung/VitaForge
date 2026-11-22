@@ -19,8 +19,7 @@ public static class NpsDownloadInstallService
         }
         catch
         {
-            tracker.Rollback();
-
+            InstallRollback.Run(tracker, log);
             throw;
         }
         finally

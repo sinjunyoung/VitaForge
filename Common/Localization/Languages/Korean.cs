@@ -28,27 +28,38 @@ public sealed class Korean : LocalizedStrings
     public override string ButtonGdiBasis => "GDI 기준";
     public override string ButtonInstall => "설치";
     public override string ButtonLater => "나중에";
+    public override string ButtonLink => "연결";
     public override string ButtonLoadGameList => "게임목록 불러오기";
+    public override string ButtonLoadPatchCsv => "CSV 불러오기";
     public override string ButtonOk => "확인";
     public override string ButtonRecoverTitleDb => "title.db 복구";
     public override string ButtonRemoveSelected => "선택 삭제";
     public override string ButtonRepackFolderBased => "리팩 (폴더 기반)";
     public override string ButtonReset => "초기화";
+    public override string ButtonSearch => "검색";
     public override string ButtonSelect => "선택";
-    public override string TitlePatchTargetPicker => "패치 대상 파일 선택";
-    public override string ButtonSkip => "건너뛰기";
-    public override string MsgPatchTargetNotFound(object? arg0) => $"패치 파일 '{arg0}'에 해당하는 대상 파일을 찾을 수 없습니다. 적용할 파일을 직접 선택하세요.";
-    public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"패치 대상 수동 지정: {arg0} -> {arg1}";
-    public override string LogVitaPatchTargetSkipped(object? arg0) => $"패치 대상 선택 건너뜀: {arg0}";
     public override string ButtonSelectFile => "파일 선택";
     public override string ButtonSettings => "설정";
+    public override string ButtonSkip => "건너뛰기";
     public override string ButtonStart => "시작";
+    public override string ButtonUnlink => "연결 해제";
     public override string ButtonUnpack => "언팩";
     public override string ButtonUnpackAndRepackFull => "언팩 + 리팩 (Full)";
     public override string ButtonUnpackAndRepackStreaming => "언팩 + 리팩 (스트리밍 기반)";
+    public override string HintPatchTargetLink => "왼쪽 트리에서 대상 파일을 선택한 뒤 오른쪽 항목을 더블클릭하거나 [연결]을 누르세요.";
+    public override string LabelPatchTargetCandidates => "대상 파일 후보";
+    public override string LabelPatchTargetNone => "미지정";
+    public override string LabelPatchTargetUnmatched => "대상 없는 패치 파일";
+    public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"패치 대상 수동 지정: {arg0} -> {arg1}";
+    public override string LogVitaPatchTargetSkipped(object? arg0) => $"패치 대상 선택 건너뜀: {arg0}";
+    public override string LogVitaRollbackDeleted(object? arg0) => $"설치 실패: 쓰던 파일 {arg0}개를 삭제했습니다";
+    public override string MsgPatchTargetNotFound(object? arg0) => $"패치 파일 '{arg0}'에 해당하는 대상 파일을 찾을 수 없습니다. 적용할 파일을 직접 선택하세요.";
+    public override string MsgPatchTargetsNotFound(object? arg0) => $"패치 파일 {arg0}개에 해당하는 대상 파일을 찾을 수 없습니다.";
+    public override string TitlePatchTargetPicker => "패치 대상 파일 선택";
 
     // Check
     public override string CheckExtraOption => "추가 옵션 (cmd 0x0B)";
+    public override string CheckIncludeDlc => "DLC 포함";
     public override string CheckVideoFreezeFix => "동영상 프리징 픽스 (cmd 0x00)";
 
     // Description
@@ -76,11 +87,11 @@ public sealed class Korean : LocalizedStrings
     public override string DescTistoryEnterUrl => "티스토리 URL을 입력하고 분석 버튼을 누르세요";
     public override string DescTistoryFindAttachments => "첨부파일 링크를 찾아 목록에 추가합니다";
     public override string DescVitaAutoClassify => "App/Patch/AddCont는 자동으로 분류됩니다";
+    public override string DescVitaDecryptAll => "모든 파일을 복호화해 에뮬레이터용 구조(app/addcont/license)로 출력합니다 (본편+업데이트 병합)";
     public override string DescVitaGroupToNoNpDrm => "같은 타이틀 ID의 App/Patch/AddCont는 하나로 묶여 NoNpDrm 포맷으로 변환됩니다";
     public override string DescVitaKeyRequiredShared => "키 (work.bin, *.rif/zRIF 문자열)가 필요합니다 (Patch는 App의 키를 공유할 수 있습니다)";
     public override string DescVitaPatchMerge => "에뮬레이터: 복호화 후 app/addcont 덮어씌우기 / 실기: rePatch/reAddcont 추가";
     public override string DescVitaPkgKeyRequired => "pkg의 경우 키 (work.bin, *.rif/zRIF 문자열)가 필요합니다";
-    public override string DescVitaDecryptAll => "모든 파일을 복호화해 에뮬레이터용 구조(app/addcont/license)로 출력합니다 (본편+업데이트 병합)";
     public override string DescWiiUAutoClassify => "본편/업데이트/DLC는 타이틀 ID로 자동 분류됩니다";
 
     // Detail
@@ -382,6 +393,9 @@ public sealed class Korean : LocalizedStrings
     public override string ErrNotGcOrWiiDisc => "GameCube 또는 Wii 디스크 이미지가 아닙니다.";
     public override string ErrNotRiivolutionXml => "Riivolution XML이 아닙니다.";
     public override string ErrNotWiiDisc => "Wii 디스크가 아닙니다.";
+    public override string ErrNpsNoDownloadable => "선택한 항목 중 다운로드 후 변환할 수 있는 항목이 없습니다.";
+    public override string ErrNpsSelectItems => "다운로드할 항목을 체크하세요.";
+    public override string ErrNpsTsvNotFound(object? arg0) => $"{arg0} 파일을 찾을 수 없습니다. tsv 파일을 실행 파일과 같은 폴더에 두세요.";
     public override string ErrNsoSegmentLz4Failed(object? arg0, object? arg1) => $"세그먼트 {arg0} LZ4 압축 실패 (encodedLen={arg1})";
     public override string ErrNspHasNoFiles => "NSP에 기록된 파일이 없습니다.";
     public override string ErrOnlyBinaryFileType(object? arg0, object? arg1) => $"BINARY 이외의 FILE 형식은 지원하지 않습니다 ({arg0}): {arg1}";
@@ -426,6 +440,11 @@ public sealed class Korean : LocalizedStrings
     public override string ErrPpfSourceTooShortBlockcheck => "소스 파일이 너무 짧아 blockcheck를 수행할 수 없습니다.";
     public override string ErrProgramRomfsNotFound => "프로그램 romfs를 찾을 수 없습니다.";
     public override string ErrPs1GamesOnly => "PS1 게임만 지원합니다.";
+    public override string ErrPsvPatchDriveBlocked => "구글 드라이브가 다운로드를 막았습니다 (쿼터 초과 또는 접근 불가).";
+    public override string ErrPsvPatchDriveEmptyFolder => "구글 드라이브 폴더에서 파일을 찾지 못했습니다.";
+    public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"설치 경로를 찾을 수 없습니다: {arg0}";
+    public override string ErrPsvPatchMegaFailed(object? arg0) => $"MEGA 다운로드에 실패했습니다 (코드: {arg0}).";
+    public override string ErrPsvPatchTistoryNoAttachment(object? arg0) => $"티스토리 글에서 첨부파일을 찾지 못했습니다: {arg0}";
     public override string ErrRawContentAbnormallyLarge(object? arg0, object? arg1) => $"콘텐츠 {arg0}.app가 raw 타입인데 비정상적으로 큽니다 ({arg1} bytes) — 해시트리 타입 판별이 잘못됐을 수 있습니다.";
     public override string ErrReadFailedDetail(object? arg0, object? arg1, object? arg2, object? arg3, object? arg4, object? arg5) => $"'{arg0}' 읽기 실패 (clusterIndex={arg1}, offsetField={arg2}, byteOffset={arg3}, size={arg4}): {arg5}";
     public override string ErrRecompressedExceedsTitleBlock(object? arg0, object? arg1) => $"재압축 결과가 타이틀 블록을 초과합니다: {arg0} > {arg1}";
@@ -654,12 +673,16 @@ public sealed class Korean : LocalizedStrings
     public override string HeaderOutput => "출력";
     public override string HeaderPatch => "패치";
     public override string HeaderProductCode => "제품 코드";
+    public override string HeaderRegion => "지역";
+    public override string HeaderRequiredUpdate => "필요 버전";
     public override string HeaderResult => "결과";
     public override string HeaderSize => "용량";
     public override string HeaderTitle => "타이틀";
+    public override string HeaderTitleId => "타이틀 ID";
     public override string HeaderVersion => "버전";
 
     // Hint
+    public override string HintDeviceRoot => "SD 카드 루트를 선택하세요";
     public override string HintDragOrClickPatch3ds => "패치 폴더 또는 zip/7z 파일을 드래그하거나 클릭하세요";
     public override string HintDragOrClickPatchFile => "패치 파일을 드래그하거나 클릭하세요";
     public override string HintDragOrClickPatchFolderIpsZip => "패치 폴더 또는 IPS/ZIP를 드래그하거나 클릭하세요";
@@ -685,13 +708,16 @@ public sealed class Korean : LocalizedStrings
     public override string HintDropVitaPkg => "PS Vita PKG 파일/폴더를 여기에 드래그&드롭하세요";
     public override string HintDropWiiUFiles => "WUP/Loadiine 폴더, wud/wux/wua 파일을 여기에 드래그&드롭하세요";
     public override string HintKeyFileEmptyUsesExeFolder(object? arg0) => $"비워두면 exe 폴더의 {arg0}을(를) 사용합니다";
+    public override string HintPatchOutputFolder => "아카이브(zip)를 저장할 폴더를 선택하세요";
     public override string HintRepackReplaceRule => "본편/업데이트는 자동 교체, DLC는 계속 추가됩니다";
     public override string HintSearchGame => "게임 검색...";
+    public override string HintSearchTitleId => "타이틀 ID 검색...";
     public override string HintSelectOutput => "출력 폴더를 선택하세요";
     public override string HintSoundCancel => "취소 (.mp3, .wav 파일을 드래그&드롭하세요)";
     public override string HintSoundComplete => "완료 (.mp3, .wav 파일을 드래그&드롭하세요)";
     public override string HintSoundError => "에러 (.mp3, .wav 파일을 드래그&드롭하세요)";
     public override string HintSplitExpandRule => "통합롬은 + 버튼으로 펼쳐서 본편/업데이트/DLC를 골라 분리할 수 있습니다";
+    public override string HintVita3kFolder => "Vita3K 폴더를 선택하세요 (ux0가 있는 폴더)";
 
     // Label
     public override string LabelActual => "실제";
@@ -731,6 +757,7 @@ public sealed class Korean : LocalizedStrings
     public override string LabelGameId => "게임 ID";
     public override string LabelGameName => "게임명";
     public override string LabelGeneral => "일반";
+    public override string LabelInstallTarget => "대상";
     public override string LabelKeyFileFoundInExe => "exe 폴더에서 찾음";
     public override string LabelKeyFileMissingUsingExe => "지정한 파일이 없어 exe 폴더의 파일 사용 중";
     public override string LabelKeyFileNone => "파일 없음";
@@ -752,6 +779,7 @@ public sealed class Korean : LocalizedStrings
     public override string LabelNoteCemuArchive => "(Cemu 아카이브)";
     public override string LabelNoteDiscImage => "(디스크 이미지)";
     public override string LabelNoteFolder => "(폴더)";
+    public override string LabelNpsResultSelected(object? arg0, object? arg1) => $"검색 결과 {arg0}건 · 선택 {arg1}건";
     public override string LabelNspTitleId => "NSP 타이틀 ID";
     public override string LabelOptions => "옵션:";
     public override string LabelOther => "기타";
@@ -762,6 +790,7 @@ public sealed class Korean : LocalizedStrings
     public override string LabelOutputRetail => "실기";
     public override string LabelPatch => "패치";
     public override string LabelPatchInfo => "패치 정보";
+    public override string LabelPatchMode => "방식";
     public override string LabelPatchNumber(object? arg0) => $"패치 {arg0}";
     public override string LabelPbpPacking => "PBP 패킹";
     public override string LabelPkgCount(object? arg0) => $"PKG {arg0}개";
@@ -969,6 +998,10 @@ public sealed class Korean : LocalizedStrings
     public override string LogNoTitleInfoItems => "타이틀 정보가 있는 항목이 없습니다.";
     public override string LogNotFoundInHdi(object? arg0) => $"HDI 안에서 찾을 수 없음: {arg0}";
     public override string LogNotInDisc(object? arg0) => $"디스크에 없음: {arg0}";
+    public override string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2) => $"다운로드 중 ({arg0}/{arg1}): {arg2}";
+    public override string LogNpsHashMismatch(object? arg0) => $"{arg0}의 SHA256이 tsv 값과 다릅니다. 파일이 손상되었을 수 있습니다.";
+    public override string LogNpsKeyMissingSkipped(object? arg0, object? arg1) => $"건너뜀 (라이선스 키 없음): {arg0} {arg1}";
+    public override string LogNpsOlderUpdateSkipped(object? arg0, object? arg1) => $"건너뜀 (타이틀당 최신 업데이트 하나만 사용): {arg0} {arg1}";
     public override string LogOutputFile(object? arg0) => $"출력: {arg0}";
     public override string LogOutputPath(object? arg0) => $"출력 경로: {arg0}";
     public override string LogOutputPathAndFormat(object? arg0, object? arg1) => $"출력 경로: {arg0} (형식: {arg1})";
@@ -1014,6 +1047,23 @@ public sealed class Korean : LocalizedStrings
     public override string LogProcessStart => "시작";
     public override string LogProgramBuildDone(object? arg0, object? arg1) => $"프로그램 빌드 완료: {arg0} ({arg1})";
     public override string LogProgramBuildStart(object? arg0) => $"프로그램 빌드 시작 (IdOffset={arg0})";
+    public override string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"패치 파일 내용: {arg0}개 파일 (앞부분: {arg1})";
+    public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"아카이브 생성: {arg0} → {arg1}";
+    public override string LogPsvPatchConsoleOnly(object? arg0) => $"실기전용입니다, 실기용으로 진행하세요: {arg0}";
+    public override string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"패치 목록 로드: {arg0}건 ({arg1})";
+    public override string LogPsvPatchCsvNotFound(object? arg0) => $"PSV_PATCH.csv를 찾을 수 없습니다. 실행 파일 옆에 두세요: {arg0}";
+    public override string LogPsvPatchDownloadingPatch(object? arg0) => $"패치 다운로드 중: {arg0}";
+    public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"구글 드라이브 파일 선택: {arg0} (후보 {arg1}개 중)";
+    public override string LogPsvPatchEmulatorOnly(object? arg0) => $"에뮬전용입니다, 에뮬용으로 진행하세요: {arg0}";
+    public override string LogPsvPatchGameNotFound(object? arg0, object? arg1) => $"건너뜀 (카탈로그에 본편 없음): {arg0} {arg1}";
+    public override string LogPsvPatchInstalled(object? arg0, object? arg1) => $"설치 완료: {arg0} → {arg1}";
+    public override string LogPsvPatchItemFailed(object? arg0, object? arg1) => $"실패: {arg0} ({arg1})";
+    public override string LogPsvPatchNothingPatched(object? arg0) => $"패치된 파일이 없어 설치를 건너뜁니다: {arg0}";
+    public override string LogPsvPatchTistoryAttachment(object? arg0) => $"티스토리 첨부파일: {arg0}";
+    public override string LogPsvPatchUpdateFallback(object? arg0, object? arg1, object? arg2) => $"{arg0}의 업데이트 {arg1}을(를) 찾지 못해 {arg2}을(를) 사용합니다";
+    public override string LogPsvPatchVita3kExeMissing(object? arg0) => $"Vita3K.exe를 찾을 수 없습니다: {arg0}";
+    public override string LogPsvPatchVita3kLaunch(object? arg0) => $"Vita3K 실행: {arg0}";
+    public override string LogPsvPatchVita3kPrefPath(object? arg0) => $"Vita3K 데이터 폴더: {arg0}";
     public override string LogRecoveryCancelled => "복구가 취소되었습니다.";
     public override string LogRecoveryRegistered(object? arg0) => $"복구 완료: {arg0}개 등록";
     public override string LogRecoverySkipped(object? arg0) => $"{arg0}개는 읽을 수 없어 제외되었습니다. 위 로그를 확인하세요.";
@@ -1310,12 +1360,16 @@ public sealed class Korean : LocalizedStrings
     public override string RadioConsoleRepatch => "실기 (rePatch, reAddcont)";
     public override string RadioEmulatorAppAddcont => "에뮬레이터 (app, addcont)";
     public override string RadioFolderPerTitleId => "폴더 (타이틀 ID별)";
-    public override string RadioOriginalPkg => "원본 PKG";
-    public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm ZIP (타이틀 ID별)";
-    public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm 폴더 (타이틀 ID별)";
+    public override string RadioInstallDevice => "실기 (SD 카드)";
+    public override string RadioInstallVita3k => "에뮬레이터 (Vita3K)";
     public override string RadioLowercase => "소문자";
     public override string RadioMergeAll => "전체";
     public override string RadioMergeGroupByTitleId => "타이틀 ID별 그룹핑 (기존 방식)";
+    public override string RadioModeArchive => "아카이브";
+    public override string RadioModeInstall => "설치";
+    public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm 폴더 (타이틀 ID별)";
+    public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm ZIP (타이틀 ID별)";
+    public override string RadioOriginalPkg => "원본 PKG";
     public override string RadioOutputGameId => "실기 (타이틀 ID/EBOOT.PBP)";
     public override string RadioOutputNormal(object? arg0) => $"일반 (타이틀명.{arg0})";
     public override string RadioQuality30s => "30초 (132k)";
@@ -1430,8 +1484,8 @@ public sealed class Korean : LocalizedStrings
     public override string TabConvert => "변환";
     public override string TabCreateCue => "Cue 생성";
     public override string TabDecrypt => "복호화";
+    public override string TabDownload => "다운로드";
     public override string TabExtractCertsBin => "certs.bin 추출";
-    public override string TabNoNpDrmConvert => "NoNpDrm 변환";
     public override string TabGeneral => "일반";
     public override string TabIgnoreVersion => "버전 무시";
     public override string TabInstall => "설치";
@@ -1440,6 +1494,7 @@ public sealed class Korean : LocalizedStrings
     public override string TabKeyFile => "키 파일";
     public override string TabLz4Compression => "Lz4 압축";
     public override string TabMerge => "병합";
+    public override string TabNoNpDrmConvert => "NoNpDrm 변환";
     public override string TabPatch => "패치";
     public override string TabPbpPacking => "PBP 패킹";
     public override string TabPbpUnpack => "PBP 언팩";
@@ -1480,7 +1535,6 @@ public sealed class Korean : LocalizedStrings
     public override string ToolTipChangePatchFile => "다른 패치 파일로 변경";
     public override string ToolTipChangePatchPackage => "다른 패치 패키지로 변경";
     public override string ToolTipClear => "비우기";
-    public override string ToolTipShowCheckedOnly => "선택한 항목만 보기";
     public override string ToolTipCopyHash => "해시값 복사";
     public override string ToolTipDragFolderToChangeDownload => "폴더를 이곳에 드래그하여 다운로드 위치를 변경할 수 있습니다.";
     public override string ToolTipExpandCollapse => "펼치기/접기";
@@ -1494,6 +1548,7 @@ public sealed class Korean : LocalizedStrings
     public override string ToolTipMovableSedGuide => "1. GodMode9 실행 (START + POWER)\n2. SYSNAND CTRNAND → private → movable.sed 선택\n3. 가장 하단 Copy to 0:/gm9/out 실행";
     public override string ToolTipOpenGithubReleases => "깃허브 릴리즈 페이지를 엽니다";
     public override string ToolTipOpenHelp => "도움말 페이지를 엽니다";
+    public override string ToolTipOpenReleasePage => "배포 페이지 열기";
     public override string ToolTipOpenWorkSpace => "출력 폴더 열기";
     public override string ToolTipPlayPause => "재생/일시정지";
     public override string ToolTipPublisherMax63 => "배급사 (최대 63자)";
@@ -1503,6 +1558,7 @@ public sealed class Korean : LocalizedStrings
     public override string ToolTipRomFsLz4 => "RomFS Lz4 압축 (리팩 시 적용). 본편과 업데이트는 하나로 합쳐지므로 둘 중 하나라도 체크하면 압축됩니다.";
     public override string ToolTipSelectAllToggle => "전체 선택/해제";
     public override string ToolTipSelectFile => "파일 선택";
+    public override string ToolTipShowCheckedOnly => "선택한 항목만 보기";
     public override string ToolTipTistoryUrlInput => "티스토리 게시글 URL을 한 줄에 하나씩 입력하세요 (여러 개 입력 가능, Ctrl+Enter로 분석 실행)";
     public override string ToolTipTitleIdInput => "16자리 16진수 (예: 0100000000010000). 비워두면 원본 타이틀 ID 유지.";
     public override string ToolTipValidateCompress => "압축 후 추가 유효성 검사를 실행합니다";
@@ -1528,54 +1584,4 @@ public sealed class Korean : LocalizedStrings
     public override string WorkTypeConvert => "변환";
     public override string WorkTypeDecompress => "해제";
     public override string WorkTypeRecompress => "재압축";
-
-    public override string TabDownload => "다운로드";
-    public override string HeaderTitleId => "타이틀 ID";
-    public override string HeaderRegion => "지역";
-    public override string ButtonSearch => "검색";
-    public override string HintSearchTitleId => "타이틀 ID 검색...";
-    public override string LabelNpsResultSelected(object? arg0, object? arg1) => $"검색 결과 {arg0}건 · 선택 {arg1}건";
-    public override string ErrNpsSelectItems => "다운로드할 항목을 체크하세요.";
-    public override string ErrNpsTsvNotFound(object? arg0) => $"{arg0} 파일을 찾을 수 없습니다. tsv 파일을 실행 파일과 같은 폴더에 두세요.";
-    public override string ErrNpsNoDownloadable => "선택한 항목 중 다운로드 후 변환할 수 있는 항목이 없습니다.";
-    public override string LogNpsKeyMissingSkipped(object? arg0, object? arg1) => $"건너뜀 (라이선스 키 없음): {arg0} {arg1}";
-    public override string LogNpsHashMismatch(object? arg0) => $"{arg0}의 SHA256이 tsv 값과 다릅니다. 파일이 손상되었을 수 있습니다.";
-    public override string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2) => $"다운로드 중 ({arg0}/{arg1}): {arg2}";
-    public override string LogNpsOlderUpdateSkipped(object? arg0, object? arg1) => $"건너뜀 (타이틀당 최신 업데이트 하나만 사용): {arg0} {arg1}";
-
-    public override string ButtonLoadPatchCsv => "CSV 불러오기";
-    public override string LabelInstallTarget => "대상";
-    public override string RadioInstallVita3k => "에뮬레이터 (Vita3K)";
-    public override string RadioInstallDevice => "실기 (SD 카드)";
-    public override string CheckIncludeDlc => "DLC 포함";
-    public override string HintVita3kFolder => "Vita3K 폴더를 선택하세요 (ux0가 있는 폴더)";
-    public override string HintDeviceRoot => "SD 카드 루트를 선택하세요";
-    public override string HeaderRequiredUpdate => "필요 버전";
-    public override string ToolTipOpenReleasePage => "배포 페이지 열기";
-    public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"설치 경로를 찾을 수 없습니다: {arg0}";
-    public override string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"패치 목록 로드: {arg0}건 ({arg1})";
-    public override string LogPsvPatchGameNotFound(object? arg0, object? arg1) => $"건너뜀 (카탈로그에 본편 없음): {arg0} {arg1}";
-    public override string LogPsvPatchUpdateFallback(object? arg0, object? arg1, object? arg2) => $"{arg0}의 업데이트 {arg1}을(를) 찾지 못해 {arg2}을(를) 사용합니다";
-    public override string LogPsvPatchDownloadingPatch(object? arg0) => $"패치 다운로드 중: {arg0}";
-    public override string LogPsvPatchNothingPatched(object? arg0) => $"패치된 파일이 없어 설치를 건너뜁니다: {arg0}";
-    public override string LogPsvPatchInstalled(object? arg0, object? arg1) => $"설치 완료: {arg0} → {arg1}";
-    public override string LogPsvPatchItemFailed(object? arg0, object? arg1) => $"실패: {arg0} ({arg1})";
-    public override string ErrPsvPatchDriveBlocked => "구글 드라이브가 다운로드를 막았습니다 (쿼터 초과 또는 접근 불가).";
-    public override string ErrPsvPatchDriveEmptyFolder => "구글 드라이브 폴더에서 파일을 찾지 못했습니다.";
-    public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"구글 드라이브 파일 선택: {arg0} (후보 {arg1}개 중)";
-    public override string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"패치 파일 내용: {arg0}개 파일 (앞부분: {arg1})";
-    public override string LogPsvPatchVita3kPrefPath(object? arg0) => $"Vita3K 데이터 폴더: {arg0}";
-    public override string LogPsvPatchVita3kLaunch(object? arg0) => $"Vita3K 실행: {arg0}";
-    public override string LogPsvPatchVita3kExeMissing(object? arg0) => $"Vita3K.exe를 찾을 수 없습니다: {arg0}";
-    public override string LabelPatchMode => "방식";
-    public override string RadioModeInstall => "설치";
-    public override string RadioModeArchive => "아카이브";
-    public override string HintPatchOutputFolder => "아카이브(zip)를 저장할 폴더를 선택하세요";
-    public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"아카이브 생성: {arg0} → {arg1}";
-    public override string LogPsvPatchCsvNotFound(object? arg0) => $"PSV_PATCH.csv를 찾을 수 없습니다. 실행 파일 옆에 두세요: {arg0}";
-    public override string ErrPsvPatchMegaFailed(object? arg0) => $"MEGA 다운로드에 실패했습니다 (코드: {arg0}).";
-    public override string ErrPsvPatchTistoryNoAttachment(object? arg0) => $"티스토리 글에서 첨부파일을 찾지 못했습니다: {arg0}";
-    public override string LogPsvPatchTistoryAttachment(object? arg0) => $"티스토리 첨부파일: {arg0}";
-    public override string LogPsvPatchConsoleOnly(object? arg0) => $"실기전용입니다, 실기용으로 진행하세요: {arg0}";
-    public override string LogPsvPatchEmulatorOnly(object? arg0) => $"에뮬전용입니다, 에뮬용으로 진행하세요: {arg0}";
 }

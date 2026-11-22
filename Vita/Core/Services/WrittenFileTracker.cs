@@ -31,16 +31,21 @@ public sealed class WrittenFileTracker
             _files.Add(Path.GetFullPath(path));
     }
 
-    public void Rollback()
+    public int Rollback()
     {
         lock (_lock)
         {
+            int deleted = 0;
+
             foreach (string file in _files)
             {
                 try
                 {
                     if (File.Exists(file))
+                    {
                         File.Delete(file);
+                        deleted++;
+                    }
                 }
                 catch { }
             }
@@ -57,6 +62,8 @@ public sealed class WrittenFileTracker
 
             _files.Clear();
             _directories.Clear();
+
+            return deleted;
         }
     }
 }

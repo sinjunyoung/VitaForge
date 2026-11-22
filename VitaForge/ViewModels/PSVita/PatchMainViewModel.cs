@@ -286,15 +286,12 @@ public class PatchMainViewModel : ProgressToolTabViewModel
         }
     }
 
-    private string? ResolvePatchTarget(PatchTargetRequest request)
+    private IReadOnlyList<string?> ResolvePatchTarget(PatchTargetRequest request)
     {
-        string? selected = Application.Current.Dispatcher.Invoke(() => PatchTargetPickerWindow.Pick(Application.Current.MainWindow, request));
+        var selections = Application.Current.Dispatcher.Invoke(() => PatchTargetPickerWindow.Pick(Application.Current.MainWindow, request));
 
-        if (selected == null)
-            AppendLog(Loc.S.LogVitaPatchTargetSkipped(request.PatchFileName), LogLevel.Info);
-        else
-            AppendLog(Loc.S.LogVitaPatchTargetSelected(request.PatchFileName, selected), LogLevel.Ok);
+        PatchTargetLogger.Log(request, selections, AppendLog);
 
-        return selected;
+        return selections;
     }
 }

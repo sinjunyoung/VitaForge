@@ -28,27 +28,38 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string ButtonGdiBasis => "GDI 基准";
     public override string ButtonInstall => "安装";
     public override string ButtonLater => "稍后";
+    public override string ButtonLink => "关联";
     public override string ButtonLoadGameList => "加载游戏列表";
+    public override string ButtonLoadPatchCsv => "加载 CSV";
     public override string ButtonOk => "确定";
     public override string ButtonRecoverTitleDb => "恢复 title.db";
     public override string ButtonRemoveSelected => "删除选中";
     public override string ButtonRepackFolderBased => "重新打包 (基于文件夹)";
     public override string ButtonReset => "重置";
+    public override string ButtonSearch => "搜索";
     public override string ButtonSelect => "选择";
-    public override string TitlePatchTargetPicker => "选择补丁目标文件";
-    public override string ButtonSkip => "跳过";
-    public override string MsgPatchTargetNotFound(object? arg0) => $"找不到补丁 '{arg0}' 对应的目标文件。请手动选择要应用的文件。";
-    public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"手动指定补丁目标: {arg0} -> {arg1}";
-    public override string LogVitaPatchTargetSkipped(object? arg0) => $"已跳过补丁目标选择: {arg0}";
     public override string ButtonSelectFile => "选择文件";
     public override string ButtonSettings => "设置";
+    public override string ButtonSkip => "跳过";
     public override string ButtonStart => "开始";
+    public override string ButtonUnlink => "取消关联";
     public override string ButtonUnpack => "解包";
     public override string ButtonUnpackAndRepackFull => "解包 + 重新打包 (Full)";
     public override string ButtonUnpackAndRepackStreaming => "解包 + 重新打包 (基于流式处理)";
+    public override string HintPatchTargetLink => "在左侧树中选择目标文件，然后双击右侧项目或点击“关联”。";
+    public override string LabelPatchTargetCandidates => "候选目标文件";
+    public override string LabelPatchTargetNone => "未指定";
+    public override string LabelPatchTargetUnmatched => "无目标的补丁文件";
+    public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"手动指定补丁目标: {arg0} -> {arg1}";
+    public override string LogVitaPatchTargetSkipped(object? arg0) => $"已跳过补丁目标选择: {arg0}";
+    public override string LogVitaRollbackDeleted(object? arg0) => $"安装失败: 已删除 {arg0} 个已写入的文件";
+    public override string MsgPatchTargetNotFound(object? arg0) => $"找不到补丁 '{arg0}' 对应的目标文件。请手动选择要应用的文件。";
+    public override string MsgPatchTargetsNotFound(object? arg0) => $"未找到 {arg0} 个补丁文件对应的目标文件。";
+    public override string TitlePatchTargetPicker => "选择补丁目标文件";
 
     // Check
     public override string CheckExtraOption => "附加选项 (cmd 0x0B)";
+    public override string CheckIncludeDlc => "包含 DLC";
     public override string CheckVideoFreezeFix => "视频卡死修复 (cmd 0x00)";
 
     // Description
@@ -76,11 +87,11 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string DescTistoryEnterUrl => "请输入 Tistory 网址并点击分析按钮";
     public override string DescTistoryFindAttachments => "查找附件链接并添加到列表";
     public override string DescVitaAutoClassify => "App/Patch/AddCont 会自动分类";
+    public override string DescVitaDecryptAll => "解密所有文件并以模拟器结构(app/addcont/license)输出 (合并本体与更新)";
     public override string DescVitaGroupToNoNpDrm => "相同标题 ID 的 App/Patch/AddCont 会合并并转换为 NoNpDrm 格式";
     public override string DescVitaKeyRequiredShared => "需要密钥 (work.bin, *.rif/zRIF 字符串) (Patch 可共用 App 的密钥)";
     public override string DescVitaPatchMerge => "模拟器: 解密后覆盖 app/addcont / 实机: 添加 rePatch/reAddcont";
     public override string DescVitaPkgKeyRequired => "pkg 需要密钥 (work.bin, *.rif/zRIF 字符串)";
-    public override string DescVitaDecryptAll => "解密所有文件并以模拟器结构(app/addcont/license)输出 (合并本体与更新)";
     public override string DescWiiUAutoClassify => "本体/更新/DLC 会按标题 ID 自动分类";
 
     // Detail
@@ -382,6 +393,9 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string ErrNotGcOrWiiDisc => "不是 GameCube 或 Wii 光盘镜像。";
     public override string ErrNotRiivolutionXml => "不是 Riivolution XML。";
     public override string ErrNotWiiDisc => "不是 Wii 光盘。";
+    public override string ErrNpsNoDownloadable => "所选项目中没有可下载并转换的项目。";
+    public override string ErrNpsSelectItems => "请勾选要下载的项目。";
+    public override string ErrNpsTsvNotFound(object? arg0) => $"找不到 {arg0}。请将 tsv 文件放在可执行文件所在的文件夹中。";
     public override string ErrNsoSegmentLz4Failed(object? arg0, object? arg1) => $"分段 {arg0} LZ4 压缩失败 (encodedLen={arg1})";
     public override string ErrNspHasNoFiles => "NSP 中没有写入任何文件。";
     public override string ErrOnlyBinaryFileType(object? arg0, object? arg1) => $"不支持 BINARY 以外的 FILE 类型 ({arg0}): {arg1}";
@@ -426,6 +440,11 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string ErrPpfSourceTooShortBlockcheck => "源文件太短，无法执行 blockcheck。";
     public override string ErrProgramRomfsNotFound => "找不到程序 romfs。";
     public override string ErrPs1GamesOnly => "仅支持 PS1 游戏。";
+    public override string ErrPsvPatchDriveBlocked => "Google 云端硬盘阻止了下载（超出配额或无权访问）。";
+    public override string ErrPsvPatchDriveEmptyFolder => "在 Google 云端硬盘文件夹中未找到文件。";
+    public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"找不到安装路径: {arg0}";
+    public override string ErrPsvPatchMegaFailed(object? arg0) => $"MEGA 下载失败（代码: {arg0}）。";
+    public override string ErrPsvPatchTistoryNoAttachment(object? arg0) => $"在 Tistory 页面中未找到附件: {arg0}";
     public override string ErrRawContentAbnormallyLarge(object? arg0, object? arg1) => $"内容 {arg0}.app 为 raw 类型但异常庞大 ({arg1} 字节) — 哈希树类型可能判断有误。";
     public override string ErrReadFailedDetail(object? arg0, object? arg1, object? arg2, object? arg3, object? arg4, object? arg5) => $"读取 '{arg0}' 失败 (clusterIndex={arg1}, offsetField={arg2}, byteOffset={arg3}, size={arg4}): {arg5}";
     public override string ErrRecompressedExceedsTitleBlock(object? arg0, object? arg1) => $"重新压缩结果超出标题块: {arg0} > {arg1}";
@@ -654,12 +673,16 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string HeaderOutput => "输出";
     public override string HeaderPatch => "补丁";
     public override string HeaderProductCode => "产品代码";
+    public override string HeaderRegion => "地区";
+    public override string HeaderRequiredUpdate => "所需版本";
     public override string HeaderResult => "结果";
     public override string HeaderSize => "大小";
     public override string HeaderTitle => "标题";
+    public override string HeaderTitleId => "标题 ID";
     public override string HeaderVersion => "版本";
 
     // Hint
+    public override string HintDeviceRoot => "请选择 SD 卡根目录";
     public override string HintDragOrClickPatch3ds => "请拖入或点击选择补丁文件夹或 zip/7z 文件";
     public override string HintDragOrClickPatchFile => "请拖入或点击选择补丁文件";
     public override string HintDragOrClickPatchFolderIpsZip => "请拖入或点击选择补丁文件夹或 IPS/ZIP";
@@ -685,13 +708,16 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string HintDropVitaPkg => "请将 PS Vita PKG 文件/文件夹拖放到此处";
     public override string HintDropWiiUFiles => "请将 WUP/Loadiine 文件夹、wud/wux/wua 文件拖放到此处";
     public override string HintKeyFileEmptyUsesExeFolder(object? arg0) => $"留空则使用 exe 文件夹中的 {arg0}";
+    public override string HintPatchOutputFolder => "请选择保存 zip 压缩包的文件夹";
     public override string HintRepackReplaceRule => "本体/更新会自动替换，DLC 会继续添加";
     public override string HintSearchGame => "搜索游戏...";
+    public override string HintSearchTitleId => "搜索标题 ID...";
     public override string HintSelectOutput => "请选择输出文件夹";
     public override string HintSoundCancel => "取消 (请拖放 .mp3, .wav 文件)";
     public override string HintSoundComplete => "完成 (请拖放 .mp3, .wav 文件)";
     public override string HintSoundError => "错误 (请拖放 .mp3, .wav 文件)";
     public override string HintSplitExpandRule => "合并 ROM 可通过 + 按钮展开，选择本体/更新/DLC 进行拆分";
+    public override string HintVita3kFolder => "请选择 Vita3K 文件夹（包含 Vita3K.exe 和 config.yml）";
 
     // Label
     public override string LabelActual => "实际";
@@ -731,6 +757,7 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string LabelGameId => "游戏 ID";
     public override string LabelGameName => "游戏名称";
     public override string LabelGeneral => "常规";
+    public override string LabelInstallTarget => "安装位置";
     public override string LabelKeyFileFoundInExe => "在 exe 文件夹中找到";
     public override string LabelKeyFileMissingUsingExe => "指定的文件不存在，正在使用 exe 文件夹中的文件";
     public override string LabelKeyFileNone => "没有文件";
@@ -752,6 +779,7 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string LabelNoteCemuArchive => "(Cemu 归档)";
     public override string LabelNoteDiscImage => "(光盘镜像)";
     public override string LabelNoteFolder => "(文件夹)";
+    public override string LabelNpsResultSelected(object? arg0, object? arg1) => $"搜索结果 {arg0} 项 · 已选 {arg1} 项";
     public override string LabelNspTitleId => "NSP 标题 ID";
     public override string LabelOptions => "选项:";
     public override string LabelOther => "其他";
@@ -762,6 +790,7 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string LabelOutputRetail => "实机";
     public override string LabelPatch => "补丁";
     public override string LabelPatchInfo => "补丁信息";
+    public override string LabelPatchMode => "方式";
     public override string LabelPatchNumber(object? arg0) => $"补丁 {arg0}";
     public override string LabelPbpPacking => "PBP 打包";
     public override string LabelPkgCount(object? arg0) => $"{arg0} 个 PKG";
@@ -969,6 +998,10 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string LogNoTitleInfoItems => "没有包含标题信息的项目。";
     public override string LogNotFoundInHdi(object? arg0) => $"在 HDI 中找不到: {arg0}";
     public override string LogNotInDisc(object? arg0) => $"光盘中不存在: {arg0}";
+    public override string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2) => $"正在下载 ({arg0}/{arg1}): {arg2}";
+    public override string LogNpsHashMismatch(object? arg0) => $"{arg0} 的 SHA256 不匹配，文件可能已损坏。";
+    public override string LogNpsKeyMissingSkipped(object? arg0, object? arg1) => $"已跳过 (无许可证密钥): {arg0} {arg1}";
+    public override string LogNpsOlderUpdateSkipped(object? arg0, object? arg1) => $"已跳过 (每个标题仅使用最新更新): {arg0} {arg1}";
     public override string LogOutputFile(object? arg0) => $"输出: {arg0}";
     public override string LogOutputPath(object? arg0) => $"输出路径: {arg0}";
     public override string LogOutputPathAndFormat(object? arg0, object? arg1) => $"输出路径: {arg0} (格式: {arg1})";
@@ -1014,6 +1047,23 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string LogProcessStart => "开始";
     public override string LogProgramBuildDone(object? arg0, object? arg1) => $"程序构建完成: {arg0} ({arg1})";
     public override string LogProgramBuildStart(object? arg0) => $"开始构建程序 (IdOffset={arg0})";
+    public override string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"补丁压缩包包含 {arg0} 个文件: {arg1}";
+    public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"已创建归档: {arg0} → {arg1}";
+    public override string LogPsvPatchConsoleOnly(object? arg0) => $"仅限实机，已跳过: {arg0}。请使用实机选项。";
+    public override string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"已加载补丁列表: {arg0} 项 ({arg1})";
+    public override string LogPsvPatchCsvNotFound(object? arg0) => $"找不到 PSV_PATCH.csv。请将其放在可执行文件旁边: {arg0}";
+    public override string LogPsvPatchDownloadingPatch(object? arg0) => $"正在下载补丁: {arg0}";
+    public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"已选择 Google 云端硬盘文件: {arg0}（共 {arg1} 个候选）";
+    public override string LogPsvPatchEmulatorOnly(object? arg0) => $"仅限模拟器，已跳过: {arg0}。请使用模拟器选项。";
+    public override string LogPsvPatchGameNotFound(object? arg0, object? arg1) => $"已跳过（目录中未找到游戏）: {arg0} {arg1}";
+    public override string LogPsvPatchInstalled(object? arg0, object? arg1) => $"安装完成: {arg0} → {arg1}";
+    public override string LogPsvPatchItemFailed(object? arg0, object? arg1) => $"失败: {arg0} ({arg1})";
+    public override string LogPsvPatchNothingPatched(object? arg0) => $"没有文件被打补丁，已跳过安装: {arg0}";
+    public override string LogPsvPatchTistoryAttachment(object? arg0) => $"Tistory 附件: {arg0}";
+    public override string LogPsvPatchUpdateFallback(object? arg0, object? arg1, object? arg2) => $"未找到 {arg0} 的更新 {arg1}，改用 {arg2}";
+    public override string LogPsvPatchVita3kExeMissing(object? arg0) => $"找不到 Vita3K.exe: {arg0}";
+    public override string LogPsvPatchVita3kLaunch(object? arg0) => $"启动 Vita3K: {arg0}";
+    public override string LogPsvPatchVita3kPrefPath(object? arg0) => $"Vita3K 数据文件夹: {arg0}";
     public override string LogRecoveryCancelled => "恢复已取消。";
     public override string LogRecoveryRegistered(object? arg0) => $"恢复完成: 已登记 {arg0} 个";
     public override string LogRecoverySkipped(object? arg0) => $"有 {arg0} 个无法读取，已被排除。请查看上方日志。";
@@ -1310,12 +1360,16 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string RadioConsoleRepatch => "实机 (rePatch, reAddcont)";
     public override string RadioEmulatorAppAddcont => "模拟器 (app, addcont)";
     public override string RadioFolderPerTitleId => "文件夹 (按标题 ID)";
-    public override string RadioOriginalPkg => "原始 PKG";
-    public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm ZIP (按标题 ID)";
-    public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm 文件夹 (按标题 ID)";
+    public override string RadioInstallDevice => "实机 (SD 卡)";
+    public override string RadioInstallVita3k => "模拟器 (Vita3K)";
     public override string RadioLowercase => "小写";
     public override string RadioMergeAll => "全部";
     public override string RadioMergeGroupByTitleId => "按标题 ID 分组 (原有方式)";
+    public override string RadioModeArchive => "归档";
+    public override string RadioModeInstall => "安装";
+    public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm 文件夹 (按标题 ID)";
+    public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm ZIP (按标题 ID)";
+    public override string RadioOriginalPkg => "原始 PKG";
     public override string RadioOutputGameId => "实机 (标题 ID/EBOOT.PBP)";
     public override string RadioOutputNormal(object? arg0) => $"常规 (标题名.{arg0})";
     public override string RadioQuality30s => "30 秒 (132k)";
@@ -1430,8 +1484,8 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string TabConvert => "转换";
     public override string TabCreateCue => "生成 Cue";
     public override string TabDecrypt => "解密";
+    public override string TabDownload => "下载";
     public override string TabExtractCertsBin => "提取 certs.bin";
-    public override string TabNoNpDrmConvert => "NoNpDrm 转换";
     public override string TabGeneral => "常规";
     public override string TabIgnoreVersion => "忽略版本";
     public override string TabInstall => "安装";
@@ -1440,6 +1494,7 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string TabKeyFile => "密钥文件";
     public override string TabLz4Compression => "Lz4 压缩";
     public override string TabMerge => "合并";
+    public override string TabNoNpDrmConvert => "NoNpDrm 转换";
     public override string TabPatch => "补丁";
     public override string TabPbpPacking => "PBP 打包";
     public override string TabPbpUnpack => "PBP 解包";
@@ -1480,7 +1535,6 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string ToolTipChangePatchFile => "更换为其他补丁文件";
     public override string ToolTipChangePatchPackage => "更换为其他补丁包";
     public override string ToolTipClear => "清空";
-    public override string ToolTipShowCheckedOnly => "仅显示已选项目";
     public override string ToolTipCopyHash => "复制哈希值";
     public override string ToolTipDragFolderToChangeDownload => "将文件夹拖到此处即可更改下载位置。";
     public override string ToolTipExpandCollapse => "展开/折叠";
@@ -1494,6 +1548,7 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string ToolTipMovableSedGuide => "1. 运行 GodMode9 (START + POWER)\n2. 选择 SYSNAND CTRNAND → private → movable.sed\n3. 执行最下方的 Copy to 0:/gm9/out";
     public override string ToolTipOpenGithubReleases => "打开 GitHub 发布页面";
     public override string ToolTipOpenHelp => "打开帮助页面";
+    public override string ToolTipOpenReleasePage => "打开发布页面";
     public override string ToolTipOpenWorkSpace => "打开输出文件夹";
     public override string ToolTipPlayPause => "播放/暂停";
     public override string ToolTipPublisherMax63 => "发行商 (最多 63 个字符)";
@@ -1503,6 +1558,7 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string ToolTipRomFsLz4 => "RomFS Lz4 压缩 (重新打包时应用)。本体和更新会合并为一个，因此勾选其中任意一个即会压缩。";
     public override string ToolTipSelectAllToggle => "全选/取消全选";
     public override string ToolTipSelectFile => "选择文件";
+    public override string ToolTipShowCheckedOnly => "仅显示已选项目";
     public override string ToolTipTistoryUrlInput => "每行输入一个 Tistory 帖子网址 (可输入多个，按 Ctrl+Enter 开始分析)";
     public override string ToolTipTitleIdInput => "16 位十六进制数 (例如: 0100000000010000)。留空则保留原始标题 ID。";
     public override string ToolTipValidateCompress => "压缩后执行额外验证";
@@ -1528,18 +1584,4 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string WorkTypeConvert => "转换";
     public override string WorkTypeDecompress => "解压";
     public override string WorkTypeRecompress => "重新压缩";
-
-    public override string TabDownload => "下载";
-    public override string HeaderTitleId => "标题 ID";
-    public override string HeaderRegion => "地区";
-    public override string ButtonSearch => "搜索";
-    public override string HintSearchTitleId => "搜索标题 ID...";
-    public override string LabelNpsResultSelected(object? arg0, object? arg1) => $"搜索结果 {arg0} 项 · 已选 {arg1} 项";
-    public override string ErrNpsSelectItems => "请勾选要下载的项目。";
-    public override string ErrNpsTsvNotFound(object? arg0) => $"找不到 {arg0}。请将 tsv 文件放在可执行文件所在的文件夹中。";
-    public override string ErrNpsNoDownloadable => "所选项目中没有可下载并转换的项目。";
-    public override string LogNpsKeyMissingSkipped(object? arg0, object? arg1) => $"已跳过 (无许可证密钥): {arg0} {arg1}";
-    public override string LogNpsHashMismatch(object? arg0) => $"{arg0} 的 SHA256 不匹配，文件可能已损坏。";
-    public override string LogNpsDownloadingItem(object? arg0, object? arg1, object? arg2) => $"正在下载 ({arg0}/{arg1}): {arg2}";
-    public override string LogNpsOlderUpdateSkipped(object? arg0, object? arg1) => $"已跳过 (每个标题仅使用最新更新): {arg0} {arg1}";
 }
