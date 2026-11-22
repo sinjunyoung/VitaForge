@@ -7,6 +7,7 @@ using VitaForge.Core.Services;
 using VitaForge.Core.Services.PSVita;
 using VitaForge.Core.UI.Command;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Input;
@@ -204,6 +205,42 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
 
         NotifyCheckedChanged();
     }
+
+    public bool SortRows(string column, ListSortDirection direction)
+    {
+        if (Rows.Count == 0)
+            return false;
+
+        int sign = direction == ListSortDirection.Ascending ? 1 : -1;
+        var segments = new List<List<NpsRowViewModel>>();
+
+        foreach (var row in Rows)
+        {
+            if (row.IsChild && !ShowCheckedOnly && segments.Count > 0)
+                segments[^1].Add(row);
+            else
+                segments.Add([row]);
+        }
+
+        var sorted = segments.OrderBy(s => GetSortKey(s[0], column), Comparer<object?>.Create((a, b) => sign * CompareSortKeys(a, b)));
+
+        Rows = [.. sorted.SelectMany(s => s)];
+
+        return true;
+    }
+
+    private static object? GetSortKey(NpsRowViewModel row, string column) => column switch
+    {
+        "Category" => (int)row.Item.Kind,
+        "TitleId" => row.TitleId,
+        "Region" => row.Region,
+        "Name" => row.HasKoreanName ? row.KoreanName : row.Name,
+        "Version" => row.Version,
+        "Size" => row.Item.Size,
+        _ => null
+    };
+
+    private static int CompareSortKeys(object? a, object? b) => a is string sa && b is string sb ? string.Compare(sa, sb, StringComparison.CurrentCultureIgnoreCase) : Comparer<object?>.Default.Compare(a, b);
 
     public void ToggleExpand(NpsRowViewModel row)
     {

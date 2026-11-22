@@ -24,7 +24,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="40"/>
                 </Grid.ColumnDefinitions>
-                <ListView Background="Transparent" BorderThickness="0" ItemsSource="{Binding Rows}" Margin="5" ScrollViewer.CanContentScroll="True" SelectionMode="Single" VirtualizingPanel.IsVirtualizing="True">
+                <ListView Background="Transparent" BorderThickness="0" GridViewColumnHeader.Click="LvPatches_HeaderClick" ItemsSource="{Binding Rows}" Margin="5" ScrollViewer.CanContentScroll="True" SelectionMode="Single" VirtualizingPanel.IsVirtualizing="True">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Width="48">
@@ -40,10 +40,12 @@
 
                             <GridViewColumn Width="Auto">
                                 <GridViewColumn.Header>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <Image Source="/Assets/Images/VitaCartridge.png" Width="24" Height="24" Margin="0,0,4,0"/>
-                                        <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="ID" VerticalAlignment="Center"/>
-                                    </StackPanel>
+                                    <GridViewColumnHeader Tag="TitleId">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <Image Source="/Assets/Images/VitaCartridge.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                                            <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="ID" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </GridViewColumnHeader>
                                 </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
@@ -54,9 +56,11 @@
 
                             <GridViewColumn Width="56">
                                 <GridViewColumn.Header>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <Image Source="/VitaForge.Core;component/Assets/Images/world.png" Width="24" Height="24" Margin="0,0,4,0"/>
-                                    </StackPanel>
+                                    <GridViewColumnHeader Tag="Region">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <Image Source="/VitaForge.Core;component/Assets/Images/world.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                                        </StackPanel>
+                                    </GridViewColumnHeader>
                                 </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
@@ -67,10 +71,12 @@
 
                             <GridViewColumn Width="Auto">
                                 <GridViewColumn.Header>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <Image Source="/Assets/Images/VitaCartridge.png" Width="24" Height="24" Margin="0,0,4,0"/>
-                                        <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderTitle, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
-                                    </StackPanel>
+                                    <GridViewColumnHeader Tag="Name">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <Image Source="/Assets/Images/VitaCartridge.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                                            <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderTitle, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </GridViewColumnHeader>
                                 </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
@@ -81,10 +87,12 @@
 
                             <GridViewColumn Width="Auto">
                                 <GridViewColumn.Header>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <Image Source="/Assets/Images/Patch.png" Width="24" Height="24" Margin="0,0,4,0"/>
-                                        <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderVersion, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
-                                    </StackPanel>
+                                    <GridViewColumnHeader Tag="Version">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <Image Source="/Assets/Images/Patch.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                                            <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderVersion, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </GridViewColumnHeader>
                                 </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
@@ -95,10 +103,12 @@
 
                             <GridViewColumn Width="Auto">
                                 <GridViewColumn.Header>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <Image Source="/VitaForge.Core;component/Assets/Images/Version.png" Width="24" Height="24" Margin="0,0,4,0"/>
-                                        <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderRequiredUpdate, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
-                                    </StackPanel>
+                                    <GridViewColumnHeader Tag="RequiredUpdate">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <Image Source="/VitaForge.Core;component/Assets/Images/Version.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                                            <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderRequiredUpdate, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </GridViewColumnHeader>
                                 </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
@@ -109,9 +119,11 @@
 
                             <GridViewColumn Width="Auto">
                                 <GridViewColumn.Header>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <Image Source="/Assets/Images/Categories.png" Width="24" Height="24" Margin="0,0,4,0"/>
-                                    </StackPanel>
+                                    <GridViewColumnHeader Tag="PatchType">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <Image Source="/Assets/Images/Categories.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                                        </StackPanel>
+                                    </GridViewColumnHeader>
                                 </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>

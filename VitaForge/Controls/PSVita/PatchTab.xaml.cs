@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using VitaForge.Core;
 using VitaForge.Core.ViewModels.PSVita;
 using VitaForge.ViewModels.PSVita;
 
@@ -8,6 +9,8 @@ namespace VitaForge.Controls.PSVita;
 
 public partial class PatchTab : UserControl
 {
+    private readonly ListViewColumnSorter _sorter = new();
+
     private PatchMainViewModel ViewModel => (PatchMainViewModel)DataContext;
 
     public PatchTab() => InitializeComponent();
@@ -36,6 +39,12 @@ public partial class PatchTab : UserControl
             ViewModel.Cancel();
         else
             await ViewModel.StartAsync();
+    }
+
+    private void LvPatches_HeaderClick(object sender, RoutedEventArgs e)
+    {
+        if (sender is ListView listView)
+            _sorter.HandleHeaderClick(e, listView);
     }
 
     private void BtnReleaseLink_Click(object sender, RoutedEventArgs e)

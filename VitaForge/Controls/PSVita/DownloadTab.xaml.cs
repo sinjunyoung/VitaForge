@@ -5,6 +5,8 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using VitaForge.Core;
+using VitaForge.Core.UI.Helpers;
 using VitaForge.Core.ViewModels.PSVita;
 using VitaForge.ViewModels.PSVita;
 
@@ -12,9 +14,19 @@ namespace VitaForge.Controls.PSVita;
 
 public partial class DownloadTab : UserControl
 {
+    private readonly ListViewColumnSorter _sorter = new();
+
     private DownloadMainViewModel ViewModel => (DownloadMainViewModel)DataContext;
 
     public DownloadTab() => InitializeComponent();
+
+    private void LvCatalog_HeaderClick(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel == null)
+            return;
+
+        _sorter.HandleHeaderClick(e, (column, direction) => ViewModel.SortRows(column, direction));
+    }
 
     private void LvCatalog_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
