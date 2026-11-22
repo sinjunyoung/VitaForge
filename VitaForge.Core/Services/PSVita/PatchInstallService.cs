@@ -10,15 +10,13 @@ namespace VitaForge.Core.Services.PSVita;
 
 public static class PatchInstallService
 {
-    private static readonly string WorkRoot = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "temp");
-
     public static async Task<int> RunAsync(IReadOnlyList<PatchCatalogItem> items, PatchInstallOptions options, PatchTargetResolver? resolver, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct)
     {
         int succeeded = 0;
         string? destination = null;
 
         if (options.Mode == PatchOutputMode.Install)
-            destination = ResolveDestination(options, log);
+            destination = InstallDestination.Resolve(options.Target, options.TargetPath, log);
         else
             Directory.CreateDirectory(options.TargetPath);
 
@@ -37,9 +35,7 @@ public static class PatchInstallService
             if (plan == null)
                 continue;
 
-            string workDir = Path.Combine(WorkRoot, Guid.NewGuid().ToString("N"));
-
-            Directory.CreateDirectory(workDir);
+            string workDir = InstallWorkspace.Create();
 
             try
             {
@@ -52,11 +48,11 @@ public static class PatchInstallService
             }
             finally
             {
-                DeleteQuietly(workDir);
+                InstallWorkspace.Delete(workDir);
             }
         }
 
-        DeleteIfEmpty(WorkRoot);
+        InstallWorkspace.DeleteRootIfEmpty();
 
         return succeeded;
     }
@@ -166,18 +162,6 @@ public static class PatchInstallService
         return name;
     }
 
-    private static string ResolveDestination(PatchInstallOptions options, Action<string, LogLevel> log)
-    {
-        if (options.Target != OutputTarget.Emu)
-            return options.TargetPath;
-
-        var info = Vita3kLocator.Resolve(options.TargetPath);
-
-        log(Loc.S.LogPsvPatchVita3kPrefPath(info.PrefPath), LogLevel.Info);
-
-        return Path.Combine(info.PrefPath, "ux0");
-    }
-
     private static void LogPatchArchiveContents(string patchPath, Action<string, LogLevel> log)
     {
         try
@@ -200,26 +184,6 @@ public static class PatchInstallService
         {
             if (File.Exists(path))
                 File.Delete(path);
-        }
-        catch { }
-    }
-
-    private static void DeleteQuietly(string path)
-    {
-        try
-        {
-            if (Directory.Exists(path))
-                Directory.Delete(path, true);
-        }
-        catch { }
-    }
-
-    private static void DeleteIfEmpty(string path)
-    {
-        try
-        {
-            if (Directory.Exists(path) && !Directory.EnumerateFileSystemEntries(path).Any())
-                Directory.Delete(path);
         }
         catch { }
     }

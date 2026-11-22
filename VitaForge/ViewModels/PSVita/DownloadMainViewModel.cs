@@ -62,13 +62,70 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
         set
         {
             SetProperty(ref field, value);
-            OnPropertyChanged(nameof(OutputHintVisibility));
 
             AppConfig.Instance.OutputFolders.VitaDownloadOutputPath = value;
+
+            NotifyTargetChanged();
         }
     }
 
-    public System.Windows.Visibility OutputHintVisibility => string.IsNullOrWhiteSpace(OutputPath) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+    public string? TargetPath
+    {
+        get => ModeInstall ? InstallEmu ? AppConfig.Instance.OutputFolders.VitaPatchEmuRootPath : AppConfig.Instance.OutputFolders.VitaPatchDeviceRootPath : OutputPath;
+        set
+        {
+            if (!ModeInstall)
+                OutputPath = value;
+            else if (InstallEmu)
+                AppConfig.Instance.OutputFolders.VitaPatchEmuRootPath = value;
+            else
+                AppConfig.Instance.OutputFolders.VitaPatchDeviceRootPath = value;
+        }
+    }
+
+    public bool ModeInstall
+    {
+        get;
+        set
+        {
+            if (SetProperty(ref field, value))
+                NotifyTargetChanged();
+        }
+    }
+
+    public bool ModeArchive
+    {
+        get => !ModeInstall;
+        set => ModeInstall = !value;
+    }
+
+    public bool InstallEmu
+    {
+        get;
+        set
+        {
+            if (SetProperty(ref field, value))
+                NotifyTargetChanged();
+        }
+    } = true;
+
+    public bool InstallDevice
+    {
+        get => !InstallEmu;
+        set => InstallEmu = !value;
+    }
+
+    public bool IsInstall => ModeInstall;
+
+    public System.Windows.Visibility ArchiveOptionsVisibility => ModeInstall ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
+
+    public System.Windows.Visibility InstallOptionsVisibility => ModeInstall ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+
+    public System.Windows.Visibility OutputHintVisibility => !ModeInstall && string.IsNullOrWhiteSpace(TargetPath) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+
+    public System.Windows.Visibility EmuHintVisibility => ModeInstall && InstallEmu && string.IsNullOrWhiteSpace(TargetPath) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+
+    public System.Windows.Visibility DeviceHintVisibility => ModeInstall && !InstallEmu && string.IsNullOrWhiteSpace(TargetPath) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
 
     public bool OutputZip { get; set { SetProperty(ref field, value); } } = true;
 
@@ -100,6 +157,8 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
     {
         OutputPath = string.IsNullOrWhiteSpace(AppConfig.Instance.OutputFolders.VitaDownloadOutputPath) ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "output") : AppConfig.Instance.OutputFolders.VitaDownloadOutputPath;
 
+        AppConfig.Instance.OutputFolders.PropertyChanged += OnOutputFoldersChanged;
+
         SearchCommand = new RelayCommand(_ => Search(), _ => NpsCatalogService.Instance.IsLoaded);
         ClearCheckedCommand = new RelayCommand(_ => ClearChecked(), _ => _checkedItems.Count > 0);
         ToggleAllCheckedCommand = new RelayCommand(_ => ToggleAllChecked(), _ => Rows.Count > 0);
@@ -107,6 +166,25 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
         CancelCommand = new RelayCommand(_ => Cancel());
 
         _ = LoadCatalogAsync();
+    }
+
+    private void OnOutputFoldersChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is nameof(OutputFoldersConfig.VitaPatchEmuRootPath) or nameof(OutputFoldersConfig.VitaPatchDeviceRootPath))
+            NotifyTargetChanged();
+    }
+
+    private void NotifyTargetChanged()
+    {
+        OnPropertyChanged(nameof(ModeArchive));
+        OnPropertyChanged(nameof(InstallDevice));
+        OnPropertyChanged(nameof(TargetPath));
+        OnPropertyChanged(nameof(IsInstall));
+        OnPropertyChanged(nameof(ArchiveOptionsVisibility));
+        OnPropertyChanged(nameof(InstallOptionsVisibility));
+        OnPropertyChanged(nameof(OutputHintVisibility));
+        OnPropertyChanged(nameof(EmuHintVisibility));
+        OnPropertyChanged(nameof(DeviceHintVisibility));
     }
 
     private async Task LoadCatalogAsync()
@@ -278,26 +356,36 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
     {
         var dlg = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog
         {
-            Description = Loc.S.ToolTipBrowseOutput,
+            Description = !ModeInstall ? Loc.S.ToolTipBrowseOutput : InstallEmu ? Loc.S.HintVita3kFolder : Loc.S.HintDeviceRoot,
             UseDescriptionForTitle = true
         };
 
         if (dlg.ShowDialog() == true)
-            OutputPath = dlg.SelectedPath;
+            TargetPath = dlg.SelectedPath;
     }
 
     public async Task StartAsync()
     {
-        if (string.IsNullOrWhiteSpace(OutputPath))
+        if (_checkedItems.Count == 0)
+        {
+            AppendLog(Loc.S.ErrNpsSelectItems, LogLevel.Error);
+            await SoundPlayer.PlayErrorAsync();
+            return;
+        }
+
+        if (IsInstall && string.IsNullOrWhiteSpace(TargetPath))
+            BrowseOutput();
+
+        if (string.IsNullOrWhiteSpace(TargetPath))
         {
             AppendLog(Loc.S.ErrSelectOutputFolder, LogLevel.Error);
             await SoundPlayer.PlayErrorAsync();
             return;
         }
 
-        if (_checkedItems.Count == 0)
+        if (IsInstall && !Directory.Exists(TargetPath))
         {
-            AppendLog(Loc.S.ErrNpsSelectItems, LogLevel.Error);
+            AppendLog(Loc.S.ErrPsvPatchInstallPathNotFound(TargetPath), LogLevel.Error);
             await SoundPlayer.PlayErrorAsync();
             return;
         }
@@ -323,29 +411,19 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
     {
         try
         {
-            List<string> outputs;
+            int succeeded = IsInstall ? await InstallAsync(ct) : await ExportAsync(ct);
 
-            if (OutputPkg)
-            {
-                AppendLog(Loc.S.StatusDownloading, LogLevel.Highlight);
-
-                outputs = await NpsPkgDownloadService.RunAsync([.. _checkedItems], OutputPath!, AppendLog, BuildProgressReporter(), ct);
-            }
-            else
-            {
-                var output = OutputZip ? PkgConvertOutput.Zip : PkgConvertOutput.Folder;
-
-                AppendLog(Loc.S.LogVitaConvertingNoNpDrm(OutputZip ? "zip" : Loc.S.LabelFolder), LogLevel.Highlight);
-
-                outputs = await NpsDownloadConvertService.RunAsync([.. _checkedItems], OutputPath!, output, AppendLog, BuildProgressReporter(), ct);
-            }
-
-            AppendLog(Loc.S.LogVitaAllDoneTitles(outputs.Count, _totalSw.Elapsed.ToString("mm\\:ss")), LogLevel.Ok);
+            AppendLog(Loc.S.LogVitaAllDoneTitles(succeeded, _totalSw.Elapsed.ToString("mm\\:ss")), LogLevel.Ok);
 
             ClearChecked();
 
+            if (succeeded > 0 && ModeInstall && InstallEmu)
+                Vita3kLauncher.Launch(TargetPath!, AppendLog);
+
             await SoundPlayer.PlayCompleteAsync();
-            OutputPath?.OpenFolder();
+
+            if (!IsInstall)
+                OutputPath?.OpenFolder();
         }
         catch (OperationCanceledException)
         {
@@ -359,5 +437,30 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
             await SoundPlayer.PlayErrorAsync();
             MainViewModel.SetTaskbarProgress(100, System.Windows.Shell.TaskbarItemProgressState.Error);
         }
+    }
+
+    private async Task<int> InstallAsync(CancellationToken ct)
+    {
+        var target = InstallEmu ? OutputTarget.Emu : OutputTarget.Retail;
+
+        AppendLog(Loc.S.StatusDownloading, LogLevel.Highlight);
+
+        return await NpsDownloadInstallService.RunAsync([.. _checkedItems], target, TargetPath!, AppendLog, BuildProgressReporter(), ct);
+    }
+
+    private async Task<int> ExportAsync(CancellationToken ct)
+    {
+        if (OutputPkg)
+        {
+            AppendLog(Loc.S.StatusDownloading, LogLevel.Highlight);
+
+            return (await NpsPkgDownloadService.RunAsync([.. _checkedItems], OutputPath!, AppendLog, BuildProgressReporter(), ct)).Count;
+        }
+
+        var output = OutputZip ? PkgConvertOutput.Zip : PkgConvertOutput.Folder;
+
+        AppendLog(Loc.S.LogVitaConvertingNoNpDrm(OutputZip ? "zip" : Loc.S.LabelFolder), LogLevel.Highlight);
+
+        return (await NpsDownloadConvertService.RunAsync([.. _checkedItems], OutputPath!, output, OutputTarget.Retail, AppendLog, BuildProgressReporter(), ct)).Count;
     }
 }

@@ -284,13 +284,24 @@
 
         <TextBlock FontSize="11" Foreground="#A0A0A0" Grid.Row="2" HorizontalAlignment="Right" Margin="5,0,10,5" Text="{Binding ResultText}"/>
 
-        <StackPanel Grid.Row="3" Margin="5,0,5,5" Orientation="Horizontal">
-            <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="White" Margin="0,0,10,0" Text="{Binding Path=Current.LabelOutputFormat, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
-            <RadioButton Content="{Binding Path=Current.RadioNoNpDrmZipPerTitleId, Source={x:Static l:Loc.Instance}}" FontSize="12" Foreground="White" GroupName="VitaDownloadOutputGroup" IsChecked="{Binding OutputZip}" IsEnabled="{Binding IsIdle}" Margin="0,0,15,0" VerticalAlignment="Center"/>
-            <RadioButton Content="{Binding Path=Current.RadioNoNpDrmFolderPerTitleId, Source={x:Static l:Loc.Instance}}" FontSize="12" Foreground="White" GroupName="VitaDownloadOutputGroup" IsChecked="{Binding OutputFolder}" IsEnabled="{Binding IsIdle}" Margin="0,0,15,0" VerticalAlignment="Center"/>
+        <WrapPanel Grid.Row="3" Margin="5,0,5,5" Orientation="Horizontal">
+            <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="White" Margin="0,0,10,0" Text="{Binding Path=Current.LabelPatchMode, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
+            <RadioButton Content="{Binding Path=Current.RadioModeArchive, Source={x:Static l:Loc.Instance}}" FontSize="12" Foreground="White" GroupName="VitaDownloadModeGroup" IsChecked="{Binding ModeArchive}" IsEnabled="{Binding IsIdle}" Margin="0,0,15,0" VerticalAlignment="Center"/>
+            <RadioButton Content="{Binding Path=Current.RadioModeInstall, Source={x:Static l:Loc.Instance}}" FontSize="12" Foreground="White" GroupName="VitaDownloadModeGroup" IsChecked="{Binding ModeInstall}" IsEnabled="{Binding IsIdle}" Margin="0,0,15,0" VerticalAlignment="Center"/>
             <Border Background="#555555" Height="16" Margin="0,0,15,0" VerticalAlignment="Center" Width="1"/>
-            <RadioButton Content="{Binding Path=Current.RadioOriginalPkg, Source={x:Static l:Loc.Instance}}" FontSize="12" Foreground="White" GroupName="VitaDownloadOutputGroup" IsChecked="{Binding OutputPkg}" IsEnabled="{Binding IsIdle}" VerticalAlignment="Center"/>
-        </StackPanel>
+            <StackPanel Orientation="Horizontal" Visibility="{Binding ArchiveOptionsVisibility}">
+                <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="White" Margin="0,0,10,0" Text="{Binding Path=Current.LabelOutputFormat, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
+                <RadioButton Content="{Binding Path=Current.RadioNoNpDrmZipPerTitleId, Source={x:Static l:Loc.Instance}}" FontSize="12" Foreground="White" GroupName="VitaDownloadOutputGroup" IsChecked="{Binding OutputZip}" IsEnabled="{Binding IsIdle}" Margin="0,0,15,0" VerticalAlignment="Center"/>
+                <RadioButton Content="{Binding Path=Current.RadioNoNpDrmFolderPerTitleId, Source={x:Static l:Loc.Instance}}" FontSize="12" Foreground="White" GroupName="VitaDownloadOutputGroup" IsChecked="{Binding OutputFolder}" IsEnabled="{Binding IsIdle}" Margin="0,0,15,0" VerticalAlignment="Center"/>
+                <Border Background="#555555" Height="16" Margin="0,0,15,0" VerticalAlignment="Center" Width="1"/>
+                <RadioButton Content="{Binding Path=Current.RadioOriginalPkg, Source={x:Static l:Loc.Instance}}" FontSize="12" Foreground="White" GroupName="VitaDownloadOutputGroup" IsChecked="{Binding OutputPkg}" IsEnabled="{Binding IsIdle}" VerticalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Visibility="{Binding InstallOptionsVisibility}">
+                <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="White" Margin="0,0,10,0" Text="{Binding Path=Current.LabelInstallTarget, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
+                <RadioButton Content="{Binding Path=Current.RadioInstallVita3k, Source={x:Static l:Loc.Instance}}" FontSize="12" Foreground="White" GroupName="VitaDownloadInstallGroup" IsChecked="{Binding InstallEmu}" IsEnabled="{Binding IsIdle}" Margin="0,0,15,0" VerticalAlignment="Center"/>
+                <RadioButton Content="{Binding Path=Current.RadioInstallDevice, Source={x:Static l:Loc.Instance}}" FontSize="12" Foreground="White" GroupName="VitaDownloadInstallGroup" IsChecked="{Binding InstallDevice}" IsEnabled="{Binding IsIdle}" VerticalAlignment="Center"/>
+            </StackPanel>
+        </WrapPanel>
 
         <Grid Grid.Row="4" Margin="5,0,5,5">
             <Grid.ColumnDefinitions>
@@ -299,13 +310,15 @@
             </Grid.ColumnDefinitions>
             <Border Background="#12FFFFFF" BorderBrush="#30FFFFFF" BorderThickness="1" CornerRadius="6" Grid.Column="0" Height="36">
                 <Grid>
-                    <TextBox Background="Transparent" BorderThickness="0" FontSize="11" Foreground="#DCDCDC" IsEnabled="{Binding IsIdle}" Padding="10,0" Text="{Binding OutputPath, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"
+                    <TextBox Background="Transparent" BorderThickness="0" FontSize="11" Foreground="#DCDCDC" IsEnabled="{Binding IsIdle}" Padding="10,0" Text="{Binding TargetPath, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"
                              AllowDrop="True" PreviewDragOver="TxtOutputPath_PreviewDragOver" Drop="TxtOutputPath_Drop"/>
                     <TextBlock FontSize="11" Foreground="#50FFFFFF" IsHitTestVisible="False" Margin="10,0,0,0" Text="{Binding Path=Current.HintDragOrSelectOutputFolder, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center" Visibility="{Binding OutputHintVisibility}"/>
+                    <TextBlock FontSize="11" Foreground="#50FFFFFF" IsHitTestVisible="False" Margin="10,0,0,0" Text="{Binding Path=Current.HintVita3kFolder, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center" Visibility="{Binding EmuHintVisibility}"/>
+                    <TextBlock FontSize="11" Foreground="#50FFFFFF" IsHitTestVisible="False" Margin="10,0,0,0" Text="{Binding Path=Current.HintDeviceRoot, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center" Visibility="{Binding DeviceHintVisibility}"/>
                 </Grid>
             </Border>
             <Button BorderThickness="1" Command="{Binding BrowseOutputCommand}" Grid.Column="1" Height="30" IsEnabled="{Binding IsIdle}" Margin="5,0,0,0" Padding="0" Style="{StaticResource GrayButton}" Width="30">
-                <Image Height="30" RenderOptions.BitmapScalingMode="HighQuality" Source="/VitaForge.Core;component/Assets/Images/AddFolder.png" Width="30"/>
+                <Image Height="30" RenderOptions.BitmapScalingMode="HighQuality" Source="/Assets/Images/AddFolder.png" Width="30"/>
             </Button>
         </Grid>
 

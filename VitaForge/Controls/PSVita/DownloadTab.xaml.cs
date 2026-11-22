@@ -1,12 +1,10 @@
-﻿using Common.Services;
-using System.IO;
+﻿using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using VitaForge.Core;
-using VitaForge.Core.UI.Helpers;
 using VitaForge.Core.ViewModels.PSVita;
 using VitaForge.ViewModels.PSVita;
 

@@ -12,7 +12,7 @@ public static class NpsDownloadConvertService
 {
     private sealed record DownloadPlan(NpsCatalogItem Item, string? License);
 
-    public static async Task<List<string>> RunAsync(IReadOnlyList<NpsCatalogItem> items, string outputRoot, PkgConvertOutput output, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct)
+    public static async Task<List<string>> RunAsync(IReadOnlyList<NpsCatalogItem> items, string outputRoot, PkgConvertOutput output, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct)
     {
         var plans = BuildPlans(items, log);
 
@@ -57,7 +57,9 @@ public static class NpsDownloadConvertService
 
             reporter.ForceReport();
 
-            return await NoNpDrmConvertService.ConvertAsync(entries, outputRoot, output, log, progress, ct);
+            return target == OutputTarget.Emu
+                ? await DecryptService.DecryptAsync(entries, outputRoot, output, log, progress, ct)
+                : await NoNpDrmConvertService.ConvertAsync(entries, outputRoot, output, log, progress, ct);
         }
         finally
         {

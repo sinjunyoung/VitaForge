@@ -8,6 +8,7 @@ using VitaForge.Core.Services.PSVita;
 using VitaForge.Core.UI.Command;
 using VitaForge.Views;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
@@ -22,8 +23,6 @@ public class PatchMainViewModel : ProgressToolTabViewModel
     private static readonly string CsvPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PSV_PATCH.csv");
 
     private readonly Stopwatch _totalSw = new();
-    private string? _emuRoot;
-    private string? _deviceRoot;
     private string? _outputPath;
 
     public ObservableCollection<PatchRowViewModel> Rows { get; } = [];
@@ -81,29 +80,20 @@ public class PatchMainViewModel : ProgressToolTabViewModel
 
     public string? TargetPath
     {
-        get => !ModeInstall ? _outputPath : InstallEmu ? _emuRoot : _deviceRoot;
+        get => !ModeInstall ? _outputPath : InstallEmu ? AppConfig.Instance.OutputFolders.VitaPatchEmuRootPath : AppConfig.Instance.OutputFolders.VitaPatchDeviceRootPath;
         set
         {
             if (!ModeInstall)
             {
                 _outputPath = value;
                 AppConfig.Instance.OutputFolders.VitaPatchOutputPath = value;
+
+                NotifyPathChanged();
             }
             else if (InstallEmu)
-            {
-                _emuRoot = value;
                 AppConfig.Instance.OutputFolders.VitaPatchEmuRootPath = value;
-            }
             else
-            {
-                _deviceRoot = value;
                 AppConfig.Instance.OutputFolders.VitaPatchDeviceRootPath = value;
-            }
-
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(EmuHintVisibility));
-            OnPropertyChanged(nameof(DeviceHintVisibility));
-            OnPropertyChanged(nameof(OutputHintVisibility));
         }
     }
 
@@ -121,14 +111,14 @@ public class PatchMainViewModel : ProgressToolTabViewModel
 
     public PatchMainViewModel()
     {
-        _emuRoot = AppConfig.Instance.OutputFolders.VitaPatchEmuRootPath;
-        _deviceRoot = AppConfig.Instance.OutputFolders.VitaPatchDeviceRootPath;
         _outputPath = string.IsNullOrWhiteSpace(AppConfig.Instance.OutputFolders.VitaPatchOutputPath) ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "output") : AppConfig.Instance.OutputFolders.VitaPatchOutputPath;
 
         ClearCheckedCommand = new RelayCommand(_ => ClearChecked(), _ => Rows.Any(r => r.IsChecked));
         ToggleAllCheckedCommand = new RelayCommand(_ => ToggleAllChecked(), _ => Rows.Any(r => r.IsSelectable));
         BrowseTargetCommand = new RelayCommand(_ => BrowseTarget());
         CancelCommand = new RelayCommand(_ => Cancel());
+
+        AppConfig.Instance.OutputFolders.PropertyChanged += OnOutputFoldersChanged;
 
         LoadCsv();
     }
@@ -141,10 +131,22 @@ public class PatchMainViewModel : ProgressToolTabViewModel
         Process.Start(new ProcessStartInfo(uri.AbsoluteUri) { UseShellExecute = true });
     }
 
+    private void OnOutputFoldersChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is nameof(OutputFoldersConfig.VitaPatchEmuRootPath) or nameof(OutputFoldersConfig.VitaPatchDeviceRootPath))
+            NotifyPathChanged();
+    }
+
     private void NotifyTargetChanged()
     {
         OnPropertyChanged(nameof(ModeArchive));
         OnPropertyChanged(nameof(InstallDevice));
+
+        NotifyPathChanged();
+    }
+
+    private void NotifyPathChanged()
+    {
         OnPropertyChanged(nameof(TargetPath));
         OnPropertyChanged(nameof(EmuHintVisibility));
         OnPropertyChanged(nameof(DeviceHintVisibility));
