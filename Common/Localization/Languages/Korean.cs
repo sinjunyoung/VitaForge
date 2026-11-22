@@ -1576,4 +1576,6 @@ public sealed class Korean : LocalizedStrings
     public override string ErrPsvPatchMegaFailed(object? arg0) => $"MEGA 다운로드에 실패했습니다 (코드: {arg0}).";
     public override string ErrPsvPatchTistoryNoAttachment(object? arg0) => $"티스토리 글에서 첨부파일을 찾지 못했습니다: {arg0}";
     public override string LogPsvPatchTistoryAttachment(object? arg0) => $"티스토리 첨부파일: {arg0}";
+    public override string LogPsvPatchConsoleOnly(object? arg0) => $"실기전용입니다, 실기용으로 진행하세요: {arg0}";
+    public override string LogPsvPatchEmulatorOnly(object? arg0) => $"에뮬전용입니다, 에뮬용으로 진행하세요: {arg0}";
 }

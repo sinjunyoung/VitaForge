@@ -1,10 +1,18 @@
-﻿namespace VitaForge.Core.Models.PSVita;
+﻿using Vita.Core.Models;
+
+namespace VitaForge.Core.Models.PSVita;
 
 public sealed class PatchCatalogItem
 {
     public const string DirectType = "Patch";
 
     public const string InstallerType = "EXE";
+
+    public const string ConsoleInstallType = "Console";
+
+    public const string EmulatorInstallType = "Emulator";
+
+    public const string AllInstallType = "All";
 
     public string TitleId { get; init; } = string.Empty;
 
@@ -26,7 +34,17 @@ public sealed class PatchCatalogItem
 
     public string PatchType { get; init; } = DirectType;
 
-    public bool IsDirect => !PatchType.Equals(InstallerType, StringComparison.OrdinalIgnoreCase);
+    public string InstallType { get; init; } = AllInstallType;
 
-    public bool IsSelectable => IsDirect && !string.IsNullOrWhiteSpace(DirectLink);
+    public bool Enabled { get; init; } = true;
+
+    public bool IsDirect => PatchType.Equals(DirectType, StringComparison.OrdinalIgnoreCase);
+
+    public bool IsSelectable => Enabled && IsDirect && !string.IsNullOrWhiteSpace(DirectLink);
+
+    public bool IsConsoleOnly => InstallType.Equals(ConsoleInstallType, StringComparison.OrdinalIgnoreCase);
+
+    public bool IsEmulatorOnly => InstallType.Equals(EmulatorInstallType, StringComparison.OrdinalIgnoreCase);
+
+    public bool Supports(OutputTarget target) => target == OutputTarget.Emu ? !IsConsoleOnly : !IsEmulatorOnly;
 }

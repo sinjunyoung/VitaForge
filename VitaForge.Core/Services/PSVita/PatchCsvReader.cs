@@ -29,11 +29,14 @@ public static class PatchCsvReader
         int directLink = IndexOf(header, "Direct Link", "Patch Link");
         int lastModified = IndexOf(header, "Last Modification Date", "Date");
         int patchType = IndexOf(header, "PatchType", "Patch Type", "Type");
+        int installType = IndexOf(header, "InstallType", "Install Type");
+        int enabled = IndexOf(header, "Enabled");
 
         foreach (var row in rows.Skip(1))
         {
             string id = Get(row, titleId).ToUpperInvariant();
             string type = Get(row, patchType);
+            string install = Get(row, installType);
 
             if (id.Length == 0)
                 continue;
@@ -49,7 +52,9 @@ public static class PatchCsvReader
                 ReleaseLink = Get(row, releaseLink),
                 DirectLink = Get(row, directLink),
                 LastModified = Get(row, lastModified),
-                PatchType = type.Length == 0 ? PatchCatalogItem.DirectType : type
+                PatchType = type.Length == 0 ? PatchCatalogItem.DirectType : type,
+                InstallType = install.Length == 0 ? PatchCatalogItem.AllInstallType : install,
+                Enabled = ParseEnabled(Get(row, enabled))
             };
 
             items.Add(item);
@@ -57,6 +62,8 @@ public static class PatchCsvReader
 
         return items;
     }
+
+    private static bool ParseEnabled(string value) => !(value.Equals("false", StringComparison.OrdinalIgnoreCase) || value == "0" || value.Equals("no", StringComparison.OrdinalIgnoreCase) || value.Equals("n", StringComparison.OrdinalIgnoreCase));
 
     private static int IndexOf(List<string> header, params string[] names)
     {

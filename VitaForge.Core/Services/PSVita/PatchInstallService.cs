@@ -26,6 +26,12 @@ public static class PatchInstallService
         {
             ct.ThrowIfCancellationRequested();
 
+            if (!item.Supports(options.Target))
+            {
+                log(item.IsConsoleOnly ? Loc.S.LogPsvPatchConsoleOnly(item.Name) : Loc.S.LogPsvPatchEmulatorOnly(item.Name), LogLevel.Error);
+                continue;
+            }
+
             var plan = PatchInstallPlanner.Create(item, options.IncludeDlc, log);
 
             if (plan == null)

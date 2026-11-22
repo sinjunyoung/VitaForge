@@ -1594,4 +1594,6 @@ public abstract class LocalizedStrings
     public virtual string ErrPsvPatchMegaFailed(object? arg0) => $"MEGA download failed (code: {arg0}).";
     public virtual string ErrPsvPatchTistoryNoAttachment(object? arg0) => $"No attachment found on the Tistory page: {arg0}";
     public virtual string LogPsvPatchTistoryAttachment(object? arg0) => $"Tistory attachment: {arg0}";
+    public virtual string LogPsvPatchConsoleOnly(object? arg0) => $"Console only, skipped: {arg0}. Please proceed with the console option.";
+    public virtual string LogPsvPatchEmulatorOnly(object? arg0) => $"Emulator only, skipped: {arg0}. Please proceed with the emulator option.";
 }

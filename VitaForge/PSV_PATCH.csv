@@ -1,11 +1,11 @@
-Title ID,Region,Name,Ver,Update Ver,User,Release Link,Patch Link,Date,PatchType,InstallType
-PCSG00291,JP,에비코레+ 아마가미,240319,1.01,amagamie,https://sites.google.com/view/amagamiebkoretranslations/%ED%99%88/psv-%EC%97%90%EB%B9%84%EC%BD%94%EB%A0%88-%EC%95%84%EB%A7%88%EA%B0%80%EB%AF%B8,https://pixeldrain.com/api/file/WBeo13xT?download,2024-03-19,Patch,All
-PCSG00543,JP,시원찮은 그녀를 위한 육성방법,1.01,,행복한나라,https://sites.google.com/view/amagamiebkoretranslations/%ED%99%88/psv-%EC%8B%9C%EC%9B%90%EC%B0%AE%EC%9D%80-%EA%B7%B8%EB%85%80%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%9C%A1%EC%84%B1%EB%B0%A9%EB%B2%95,https://drive.google.com/drive/folders/1V4A8MVuUH18aIuA6KB0nNwfRgfIMjoHR?usp=sharing,2026-01-02,Patch,Console
-PCSE00240,US,오보로 무라마사,1.4.3,1.06,hada0127,https://github.com/hada0127/muramasa-kor,https://github.com/hada0127/muramasa-kor/releases/download/v1.4.3/muramasa-kor-v1.4.3-patcher-windows.zip,2026-07-09,EXE,All
-PCSG01100,JP,통곡 그리고…,0.8.5 beta,,lf-idonotknow,https://github.com/lf-idonotknow/Doukoku-Soshite-PS-Vita-Korean-Patch,https://github.com/lf-idonotknow/Doukoku-Soshite-PS-Vita-Korean-Patch/releases/download/r33/Doukoku_Soshite_Korean_Patch_r33_win-x64.exe,2026-08-01,EXE,All
-PCSG00684,JP,칸코레 개,,1.02,Flistz,https://gall.dcinside.com/retrogame/207074,https://mega.nz/file/gQ9UyITQ#xwPpD7tFvIiQVEJikYfbj5Qx0SHZx5BIFO4gTohDD3A,2026-08-23,Patch,Emulator
-PCSG01216,JP,블러드스테인드 커스 오브 더 문,1,,늠이당,https://view5199.tistory.com/14,https://drive.google.com/file/d/1bvwgMIRnNP1PE9CFAUwZwVeq0kS8Qeq3/view?usp=sharing,2026-08-24,Patch,All
-PCSG00135,JP,콜 오브 듀티 블랙 옵스 디클래시파이드,0.9,1.02,편향된 게이머,https://blog.naver.com/mun317/224393555828,https://naver.me/GsBMGq3V,2026-08-28,Manual,Console
-PCSG00729,JP,클래식 던전 전국,20260831,1.01,ep7oy,https://ep7oy.tistory.com/42,https://ep7oy.tistory.com/42,2026-08-31,Patch,All
-PCSG00009,JP,테일즈 오브 이노센스 R,1.0,,럼미웜미,https://cafe.naver.com/hansicgu/35854,https://drive.google.com/file/d/16Ggn6l7VeMnb6fVXKtRzMq99xz90W9qR/view,2026-09-25,Patch,All
-PCSB01375,EU,셰이크다운 하와이,0.1,1.04,7Coud,https://7cloud.tistory.com/23,https://drive.google.com/file/d/1jzlBMhf3FaAiDlB9NLNEuz57dkMxseGg/view?usp=sharing,2026-09-26,Patch,All
+Title ID,Region,Name,Ver,Update Ver,User,Release Link,Patch Link,Date,PatchType,InstallType,Enabled
+PCSG00291,JP,에비코레+ 아마가미,240319,1.01,amagamie,https://sites.google.com/view/amagamiebkoretranslations/%ED%99%88/psv-%EC%97%90%EB%B9%84%EC%BD%94%EB%A0%88-%EC%95%84%EB%A7%88%EA%B0%80%EB%AF%B8,https://pixeldrain.com/api/file/WBeo13xT?download,2024-03-19,Patch,All,TRUE
+PCSG00543,JP,시원찮은 그녀를 위한 육성방법,1.01,,행복한나라,https://sites.google.com/view/amagamiebkoretranslations/%ED%99%88/psv-%EC%8B%9C%EC%9B%90%EC%B0%AE%EC%9D%80-%EA%B7%B8%EB%85%80%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%9C%A1%EC%84%B1%EB%B0%A9%EB%B2%95,https://drive.google.com/drive/folders/1V4A8MVuUH18aIuA6KB0nNwfRgfIMjoHR?usp=sharing,2026-01-02,Patch,Console,TRUE
+PCSE00240,US,오보로 무라마사,1.4.3,1.06,hada0127,https://github.com/hada0127/muramasa-kor,https://github.com/hada0127/muramasa-kor/releases/download/v1.4.3/muramasa-kor-v1.4.3-patcher-windows.zip,2026-07-09,EXE,All,TRUE
+PCSG01100,JP,통곡 그리고…,0.8.5 beta,,lf-idonotknow,https://github.com/lf-idonotknow/Doukoku-Soshite-PS-Vita-Korean-Patch,https://github.com/lf-idonotknow/Doukoku-Soshite-PS-Vita-Korean-Patch/releases/download/r33/Doukoku_Soshite_Korean_Patch_r33_win-x64.exe,2026-08-01,EXE,All,TRUE
+PCSG00684,JP,칸코레 개,,1.02,Flistz,https://gall.dcinside.com/retrogame/207074,https://mega.nz/file/gQ9UyITQ#xwPpD7tFvIiQVEJikYfbj5Qx0SHZx5BIFO4gTohDD3A,2026-08-23,Patch,Emulator,TRUE
+PCSG01216,JP,블러드스테인드 커스 오브 더 문,1,,늠이당,https://view5199.tistory.com/14,https://drive.google.com/file/d/1bvwgMIRnNP1PE9CFAUwZwVeq0kS8Qeq3/view?usp=sharing,2026-08-24,Patch,All,TRUE
+PCSG00135,JP,콜 오브 듀티 블랙 옵스 디클래시파이드,0.9,1.02,편향된 게이머,https://blog.naver.com/mun317/224393555828,https://naver.me/GsBMGq3V,2026-08-28,Manual,Console,TRUE
+PCSG00729,JP,클래식 던전 전국,20260831,1.01,ep7oy,https://ep7oy.tistory.com/42,https://ep7oy.tistory.com/42,2026-08-31,Patch,All,TRUE
+PCSG00009,JP,테일즈 오브 이노센스 R,1,,럼미웜미,https://cafe.naver.com/hansicgu/35854,https://drive.google.com/file/d/16Ggn6l7VeMnb6fVXKtRzMq99xz90W9qR/view,2026-09-25,Patch,All,TRUE
+PCSB01375,EU,셰이크다운 하와이,0.1,1.04,7Coud,https://7cloud.tistory.com/23,https://drive.google.com/file/d/1jzlBMhf3FaAiDlB9NLNEuz57dkMxseGg/view?usp=sharing,2026-09-26,Patch,All,FALSE
