@@ -98,7 +98,8 @@ public static class PatchInstallService
 
         string label = options.Target == OutputTarget.Emu ? Loc.S.LabelOutputEmu : Loc.S.LabelOutputRetail;
         bool archive = options.Mode == PatchOutputMode.Archive;
-        string outputPath = archive ? Utils.GetUniqueFilePath(Path.Combine(options.TargetPath, BuildArchiveName(plan, label))) : Path.Combine(workDir, "out");
+        var tracker = archive ? null : new WrittenFileTracker();
+        string outputPath = archive ? Utils.GetUniqueFilePath(Path.Combine(options.TargetPath, BuildArchiveName(plan, label))) : destination!;
 
         log(Loc.S.LogVitaMergingGamePatch(label), LogLevel.Highlight);
 
@@ -108,12 +109,14 @@ public static class PatchInstallService
         {
             result = archive
                 ? await Task.Run(() => PatchOutputBuilder.BuildMergedFromEntriesAsync(entries, patchPath, outputPath, options.Target, log, progress, resolver, ct), ct)
-                : await Task.Run(() => PatchOutputBuilder.BuildMergedToFolderAsync(entries, patchPath, outputPath, options.Target, log, progress, resolver, ct), ct);
+                : await Task.Run(() => PatchOutputBuilder.BuildMergedToFolderAsync(entries, patchPath, outputPath, options.Target, log, progress, resolver, tracker, ct), ct);
         }
         catch
         {
             if (archive)
                 DeleteFileQuietly(outputPath);
+            else
+                tracker!.Rollback();
 
             throw;
         }
@@ -131,6 +134,8 @@ public static class PatchInstallService
 
             if (archive)
                 DeleteFileQuietly(outputPath);
+            else
+                tracker!.Rollback();
 
             return false;
         }
@@ -141,10 +146,6 @@ public static class PatchInstallService
 
             return true;
         }
-
-        log(Loc.S.StatusInstalling, LogLevel.Highlight);
-
-        await FolderInstaller.MergeAsync(outputPath, destination!, progress, ct);
 
         log(Loc.S.LogPsvPatchInstalled(plan.Patch.Name, destination), LogLevel.Ok);
 

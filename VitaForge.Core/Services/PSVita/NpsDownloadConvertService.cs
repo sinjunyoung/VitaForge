@@ -12,7 +12,7 @@ public static class NpsDownloadConvertService
 {
     private sealed record DownloadPlan(NpsCatalogItem Item, string? License);
 
-    public static async Task<List<string>> RunAsync(IReadOnlyList<NpsCatalogItem> items, string outputRoot, PkgConvertOutput output, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct)
+    public static async Task<List<string>> RunAsync(IReadOnlyList<NpsCatalogItem> items, string outputRoot, PkgConvertOutput output, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct, WrittenFileTracker? tracker = null)
     {
         var plans = BuildPlans(items, log);
 
@@ -21,7 +21,7 @@ public static class NpsDownloadConvertService
 
         Directory.CreateDirectory(outputRoot);
 
-        string workDir = Path.Combine(outputRoot, ".download_" + Guid.NewGuid().ToString("N"));
+        string workDir = output == PkgConvertOutput.Direct ? InstallWorkspace.Create() : Path.Combine(outputRoot, ".download_" + Guid.NewGuid().ToString("N"));
 
         Directory.CreateDirectory(workDir);
 
@@ -58,8 +58,8 @@ public static class NpsDownloadConvertService
             reporter.ForceReport();
 
             return target == OutputTarget.Emu
-                ? await DecryptService.DecryptAsync(entries, outputRoot, output, log, progress, ct)
-                : await NoNpDrmConvertService.ConvertAsync(entries, outputRoot, output, log, progress, ct);
+                ? await DecryptService.DecryptAsync(entries, outputRoot, output, log, progress, tracker, ct)
+                : await NoNpDrmConvertService.ConvertAsync(entries, outputRoot, output, log, progress, tracker, ct);
         }
         finally
         {

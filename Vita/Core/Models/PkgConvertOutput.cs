@@ -4,5 +4,7 @@ public enum PkgConvertOutput
 {
     Zip,
 
-    Folder
+    Folder,
+
+    Direct
 }

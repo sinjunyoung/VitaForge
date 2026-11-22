@@ -7,11 +7,20 @@ internal static class PkgOutputPaths
 {
     public static string Resolve(string outputRoot, string? titleId, PkgConvertOutput output)
     {
+        if (output == PkgConvertOutput.Direct)
+            return outputRoot;
+
         string name = SanitizeFileName(titleId);
 
         return output == PkgConvertOutput.Zip
             ? Utils.GetUniqueFilePath(Path.Combine(outputRoot, name + ".zip"))
             : GetUniqueDirectoryPath(Path.Combine(outputRoot, name));
+    }
+
+    public static void Discard(string path, PkgConvertOutput output)
+    {
+        if (output != PkgConvertOutput.Direct)
+            DeleteQuietly(path);
     }
 
     public static void DeleteQuietly(string path)

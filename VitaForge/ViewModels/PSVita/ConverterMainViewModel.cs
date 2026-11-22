@@ -228,7 +228,7 @@ public class ConverterMainViewModel : ProgressToolTabViewModel
 
             AppendLog(Loc.S.LogVitaConvertingNoNpDrm(OutputZip ? "zip" : Loc.S.LabelFolder), LogLevel.Highlight);
 
-            var outputs = await NoNpDrmConvertService.ConvertAsync(entries, OutputPath!, output, AppendLog, BuildProgressReporter(), ct);
+            var outputs = await NoNpDrmConvertService.ConvertAsync(entries, OutputPath!, output, AppendLog, BuildProgressReporter(), null, ct);
 
             AppendLog(Loc.S.LogVitaAllDoneTitles(outputs.Count, _totalSw.Elapsed.ToString("mm\\:ss")), LogLevel.Ok);
             await SoundPlayer.PlayCompleteAsync();

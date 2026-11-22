@@ -8,16 +8,19 @@ namespace Vita.Core.Services;
 
 public static class NoNpDrmConvertService
 {
-    public static Task<List<string>> ConvertAsync(List<BatchSourceEntry> entries, string outputRoot, PkgConvertOutput output, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, CancellationToken ct = default)
-        => Task.Run(() => ConvertCore(entries, outputRoot, output, log, progress, ct), ct);
+    public static Task<List<string>> ConvertAsync(List<BatchSourceEntry> entries, string outputRoot, PkgConvertOutput output, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, WrittenFileTracker? tracker = null, CancellationToken ct = default)
+        => Task.Run(() => ConvertCore(entries, outputRoot, output, log, progress, tracker, ct), ct);
 
-    private static List<string> ConvertCore(List<BatchSourceEntry> entries, string outputRoot, PkgConvertOutput output, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct)
+    private static List<string> ConvertCore(List<BatchSourceEntry> entries, string outputRoot, PkgConvertOutput output, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, WrittenFileTracker? tracker, CancellationToken ct)
     {
         var groups = BuildGroups(entries);
 
         Validate(groups);
 
-        Directory.CreateDirectory(outputRoot);
+        if (tracker != null)
+            tracker.EnsureDirectory(outputRoot);
+        else
+            Directory.CreateDirectory(outputRoot);
 
         long totalBytes = entries.Sum(e => new FileInfo(e.Path!).Length);
         var reporter = new ProgressReporter(Loc.S.StatusConverting, string.Empty, totalBytes, progress);
@@ -31,11 +34,11 @@ public static class NoNpDrmConvertService
 
             try
             {
-                ConvertGroup(group, outputPath, output, reporter, log, ct);
+                ConvertGroup(group, outputPath, output, reporter, log, tracker, ct);
             }
             catch
             {
-                PkgOutputPaths.DeleteQuietly(outputPath);
+                PkgOutputPaths.Discard(outputPath, output);
                 throw;
             }
 
@@ -95,7 +98,7 @@ public static class NoNpDrmConvertService
         }
     }
 
-    private static void ConvertGroup(TitleGroup group, string outputPath, PkgConvertOutput output, ProgressReporter reporter, Action<string, LogLevel> log, CancellationToken ct)
+    private static void ConvertGroup(TitleGroup group, string outputPath, PkgConvertOutput output, ProgressReporter reporter, Action<string, LogLevel> log, WrittenFileTracker? tracker, CancellationToken ct)
     {
         var accessors = new List<(BatchSourceEntry Entry, PkgSourceAccessor Accessor)>();
 
@@ -125,7 +128,7 @@ public static class NoNpDrmConvertService
             if (output == PkgConvertOutput.Zip)
                 WriteZip(group, accessors, outputPath, reporter, ct);
             else
-                WriteFolder(group, accessors, outputPath, reporter, ct);
+                WriteFolder(group, accessors, outputPath, reporter, tracker, ct);
         }
         finally
         {
@@ -153,11 +156,14 @@ public static class NoNpDrmConvertService
         }
     }
 
-    private static void WriteFolder(TitleGroup group, List<(BatchSourceEntry Entry, PkgSourceAccessor Accessor)> accessors, string folderPath, ProgressReporter reporter, CancellationToken ct)
+    private static void WriteFolder(TitleGroup group, List<(BatchSourceEntry Entry, PkgSourceAccessor Accessor)> accessors, string folderPath, ProgressReporter reporter, WrittenFileTracker? tracker, CancellationToken ct)
     {
         string root = Path.GetFullPath(folderPath) + Path.DirectorySeparatorChar;
 
-        Directory.CreateDirectory(folderPath);
+        if (tracker != null)
+            tracker.EnsureDirectory(folderPath);
+        else
+            Directory.CreateDirectory(folderPath);
 
         foreach (var (entry, accessor) in accessors)
         {
@@ -170,7 +176,13 @@ public static class NoNpDrmConvertService
                 if (!fullPath.StartsWith(root, StringComparison.OrdinalIgnoreCase))
                     throw new InvalidDataException(Loc.S.ErrPathNotAllowed(rel));
 
-                Directory.CreateDirectory(Path.GetDirectoryName(fullPath)!);
+                if (tracker != null)
+                {
+                    tracker.EnsureDirectory(Path.GetDirectoryName(fullPath)!);
+                    tracker.RecordFile(fullPath);
+                }
+                else
+                    Directory.CreateDirectory(Path.GetDirectoryName(fullPath)!);
 
                 using var fileStream = new FileStream(fullPath, FileMode.Create, FileAccess.Write, FileShare.None, 81920);
 

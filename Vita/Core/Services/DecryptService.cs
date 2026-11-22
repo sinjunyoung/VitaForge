@@ -7,10 +7,10 @@ namespace Vita.Core.Services;
 
 public static class DecryptService
 {
-    public static Task<List<string>> DecryptAsync(List<BatchSourceEntry> entries, string outputRoot, PkgConvertOutput output, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, CancellationToken ct = default)
-        => Task.Run(() => PatchShared.RunWithItemsAsync(entries, log, items => DecryptCoreAsync(items, outputRoot, output, log, progress, ct)), ct);
+    public static Task<List<string>> DecryptAsync(List<BatchSourceEntry> entries, string outputRoot, PkgConvertOutput output, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, WrittenFileTracker? tracker = null, CancellationToken ct = default)
+        => Task.Run(() => PatchShared.RunWithItemsAsync(entries, log, items => DecryptCoreAsync(items, outputRoot, output, log, progress, tracker, ct)), ct);
 
-    private static async Task<List<string>> DecryptCoreAsync(List<SourceItem> items, string outputRoot, PkgConvertOutput output, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct)
+    private static async Task<List<string>> DecryptCoreAsync(List<SourceItem> items, string outputRoot, PkgConvertOutput output, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, WrittenFileTracker? tracker, CancellationToken ct)
     {
         var groups = PatchShared.BuildBaseGroups(items, log, ct);
         long totalBytes = groups.Sum(g =>
@@ -32,13 +32,13 @@ public static class DecryptService
 
             try
             {
-                using IDecryptSink sink = output == PkgConvertOutput.Zip ? new ZipDecryptSink(outputPath) : new FolderDecryptSink(outputPath);
+                using IDecryptSink sink = output == PkgConvertOutput.Zip ? new ZipDecryptSink(outputPath) : new FolderDecryptSink(outputPath, tracker);
 
                 count = await WriteTitleAsync([.. titleGroup], sink, reporter, log, ct);
             }
             catch
             {
-                PkgOutputPaths.DeleteQuietly(outputPath);
+                PkgOutputPaths.Discard(outputPath, output);
                 throw;
             }
 
