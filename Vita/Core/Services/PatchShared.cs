@@ -5,6 +5,7 @@ using Patch.Core.Enums;
 using Patch.Core.Services;
 using System.IO.Compression;
 using Vita.Core.Models;
+using Vita.Core.TitleRules;
 
 namespace Vita.Core.Services;
 
@@ -228,12 +229,13 @@ internal static class PatchShared
     private static PatchFileIndex BuildPatchIndex(PatchContext ctx, ContentCategory category, string titleId, string? contentIdSuffix, OutputTarget target)
     {
         bool isAddcont = category == ContentCategory.Addcont;
-        string? layoutRoot = FindLayoutRoot(ctx.Files, GetLayoutDirs(isAddcont, target), titleId, isAddcont ? contentIdSuffix : null);
+        var files = TitleRuleRegistry.RewritePatchFiles(titleId, category, ctx.Files);
+        string? layoutRoot = FindLayoutRoot(files, GetLayoutDirs(isAddcont, target), titleId, isAddcont ? contentIdSuffix : null);
         var rawByRelative = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
         if (layoutRoot != null)
         {
-            foreach (var file in ctx.Files)
+            foreach (var file in files)
             {
                 if (file.Path.StartsWith(layoutRoot, StringComparison.OrdinalIgnoreCase))
                     rawByRelative.TryAdd(file.Path[layoutRoot.Length..], file.Raw);
@@ -242,7 +244,7 @@ internal static class PatchShared
 
         if (!isAddcont)
         {
-            foreach (var file in ctx.Files)
+            foreach (var file in files)
             {
                 if (!IsLayoutPath(file.Path))
                     rawByRelative.TryAdd(file.Path, file.Raw);
@@ -253,7 +255,7 @@ internal static class PatchShared
 
         if (isAddcont)
         {
-            var flatFiles = ctx.Files.Where(f => !IsLayoutPath(f.Path)).ToList();
+            var flatFiles = files.Where(f => !IsLayoutPath(f.Path)).ToList();
             var rawByPath = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
             foreach (var file in flatFiles)
@@ -508,6 +510,7 @@ internal static class PatchShared
         var owner = appEntry.Owner;
         var entry = appEntry.FileEntry;
         byte[] sourceBytes = NoNpDrmDecryptor.DecryptEntry(owner.Item.Accessor!, owner.Item.SourcePath, owner.License.Klicensee, entry, owner.Table.UnicvEntries[appEntry.EntryIndex], owner.Table.FilesSalt);
+        sourceBytes = TitleRuleRegistry.RewriteSource(owner.Item.TitleId, target.RelativePath, sourceBytes, owner);
 
         return await ApplyTargetAsync(target, sourceBytes, log, ct);
     }

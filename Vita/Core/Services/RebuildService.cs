@@ -13,7 +13,7 @@ public static class RebuildService
         if (mergeIntoGame)
             return await Task.Run(() => PatchOutputBuilder.BuildMergedFromEntriesAsync(entries, patchPath, outputZipPath, target, log, progress, null, ct), ct);
 
-        var result = await Task.Run(() => PatchOnlyBuilder.BuildFromEntriesAsync(entries, patchPath, outputZipPath, target, log, progress, ct), ct);
+        var result = await Task.Run(() => PatchOnlyBuilder.BuildFromEntriesAsync(entries, patchPath, outputZipPath, target, log, progress, null, ct), ct);
 
         return new MergeResult { TotalFiles = result.PatchedSuccessfully, PatchCandidates = result.MatchedCandidates, PatchedSuccessfully = result.PatchedSuccessfully };
     }

@@ -16,6 +16,8 @@ public sealed class SourceRowCollection
 
     public ObservableCollection<SourceRowViewModel> Rows { get; } = [];
 
+    private static readonly string[] sourceArray = [".rif",".zrif", ".txt"];
+
     public event Action<string?>? PatchPathChanged;
 
     public SourceRowCollection(Action<string, LogLevel> log)
@@ -145,12 +147,12 @@ public sealed class SourceRowCollection
     {
         if (row.IsPkg && pkgPath != null)
         {
-            string? dir = System.IO.Path.GetDirectoryName(pkgPath);
+            string? dir = Path.GetDirectoryName(pkgPath);
 
             if (!string.IsNullOrEmpty(dir))
             {
-                string baseName = System.IO.Path.GetFileNameWithoutExtension(pkgPath);
-                string? licensePath = new[] { ".zrif", ".txt" }.Select(ext => System.IO.Path.Combine(dir, baseName + ext)).FirstOrDefault(File.Exists);
+                string baseName = Path.GetFileNameWithoutExtension(pkgPath);
+                string? licensePath = sourceArray.Select(ext => Path.Combine(dir, baseName + ext)).FirstOrDefault(File.Exists);
 
                 if (licensePath != null)
                 {

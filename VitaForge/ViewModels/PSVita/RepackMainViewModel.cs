@@ -204,7 +204,7 @@ public class RepackMainViewModel : ProgressToolTabViewModel
         {
             AppendLog(Loc.S.LogVitaCreatingPatch(label), LogLevel.Highlight);
 
-            var result = await Task.Run(() => PatchOnlyBuilder.BuildFromEntriesAsync(entries, patchPath, zipPath, target, AppendLog, progress, ct, ResolvePatchTarget), ct);
+            var result = await Task.Run(() => PatchOnlyBuilder.BuildFromEntriesAsync(entries, patchPath, zipPath, target, AppendLog, progress, ResolvePatchTarget, ct), ct);
 
             AppendLog(Loc.S.LogVitaPatchOnlyDone(label, result.MatchedCandidates, result.PatchedSuccessfully, zipPath), LogLevel.Ok);
         }

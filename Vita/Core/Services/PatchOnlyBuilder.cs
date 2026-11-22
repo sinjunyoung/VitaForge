@@ -1,18 +1,19 @@
-using Common.Localization;
 using Common;
+using Common.Localization;
 using Common.Models;
 using Common.Services;
 using System.IO.Compression;
 using Vita.Core.Models;
+using Vita.Core.TitleRules;
 
 namespace Vita.Core.Services;
 
 public static class PatchOnlyBuilder
 {
-    public static Task<PatchOnlyResult> BuildFromEntriesAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, CancellationToken ct = default, PatchTargetResolver? targetResolver = null)
-        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, outputZipPath, target, log, progress, ct, targetResolver));
+    public static Task<PatchOnlyResult> BuildFromEntriesAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, PatchTargetResolver? targetResolver = null, CancellationToken ct = default)
+        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, outputZipPath, target, log, progress, targetResolver, ct));
 
-    private static async Task<PatchOnlyResult> BuildCoreAsync(List<SourceItem> items, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct, PatchTargetResolver? targetResolver)
+    private static async Task<PatchOnlyResult> BuildCoreAsync(List<SourceItem> items, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, PatchTargetResolver? targetResolver, CancellationToken ct)
     {
         var patchContexts = new Dictionary<string, PatchContext>(StringComparer.OrdinalIgnoreCase);
 
@@ -87,6 +88,18 @@ public static class PatchOnlyBuilder
                     var zipEntry = zip.CreateEntry(entryPath, CompressionLevel.NoCompression);
 
                     await PatchShared.WriteEntryWithProgressAsync(zipEntry, outputBytes, t.EstimatedSize, reporter, ct);
+
+                    foreach (var extra in TitleRuleRegistry.ExpandOutput(group.TitleId, t.RelativePath, outputBytes, log))
+                    {
+                        string extraPath = PatchShared.BuildEntryPath(prefix, group, extra.RelativePath);
+
+                        if (!writtenEntries.Add(extraPath))
+                            continue;
+
+                        var extraEntry = zip.CreateEntry(extraPath, CompressionLevel.NoCompression);
+
+                        await PatchShared.WriteEntryWithProgressAsync(extraEntry, extra.Data, 0, reporter, ct);
+                    }
 
                     groupSuccess++;
                 }

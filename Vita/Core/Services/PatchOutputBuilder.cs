@@ -2,6 +2,7 @@ using Common.Localization;
 using Common.Models;
 using Common.Services;
 using Vita.Core.Models;
+using Vita.Core.TitleRules;
 
 namespace Vita.Core.Services;
 
@@ -90,6 +91,7 @@ public static class PatchOutputBuilder
                         if (patchedBytes is not null)
                         {
                             await WriteEntryAsync(sink, writtenEntries, entryPath, patchedBytes, appEntry.FileEntry.Size, reporter, ct);
+                            await WriteExpandedAsync(sink, writtenEntries, PatchShared.GetBasePrefix(group.Category), group, relativePath, patchedBytes, reporter, log, ct);
                             continue;
                         }
 
@@ -120,6 +122,7 @@ public static class PatchOutputBuilder
                                 string patchedEntryPath = PatchShared.BuildEntryPath(PatchShared.GetPatchedPrefix(group.Category, target), group, relativePath);
 
                                 await WriteEntryAsync(sink, writtenEntries, patchedEntryPath, patchedBytes, patchTarget.EstimatedSize, reporter, ct);
+                                await WriteExpandedAsync(sink, writtenEntries, PatchShared.GetPatchedPrefix(group.Category, target), group, relativePath, patchedBytes, reporter, log, ct);
                             }
                         }
                     }
@@ -136,6 +139,18 @@ public static class PatchOutputBuilder
         }
 
         return new MergeResult { TotalFiles = writtenEntries.Count, PatchCandidates = patchCandidates, PatchedSuccessfully = patchedSuccess };
+    }
+
+    private static async Task WriteExpandedAsync(IDecryptSink sink, HashSet<string> writtenEntries, string prefix, MergeGroup group, string relativePath, byte[] patchedBytes, ProgressReporter reporter, Action<string, LogLevel> log, CancellationToken ct)
+    {
+        foreach (var extra in TitleRuleRegistry.ExpandOutput(group.TitleId, relativePath, patchedBytes, log))
+        {
+            ct.ThrowIfCancellationRequested();
+
+            string entryPath = PatchShared.BuildEntryPath(prefix, group, extra.RelativePath);
+
+            await WriteEntryAsync(sink, writtenEntries, entryPath, extra.Data, 0, reporter, ct);
+        }
     }
 
     private static long GetWriteTotal(MergeGroup group, OutputTarget target)

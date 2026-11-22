@@ -178,7 +178,7 @@
                 </Grid>
             </Border>
             <Button BorderThickness="1" Command="{Binding BrowseTargetCommand}" Grid.Column="1" Height="30" IsEnabled="{Binding IsIdle}" Margin="5,0,0,0" Padding="0" Style="{StaticResource GrayButton}" Width="30">
-                <Image Height="30" RenderOptions.BitmapScalingMode="HighQuality" Source="/VitaForge.Core;component/Assets/Images/AddFolder.png" Width="30"/>
+                <Image Height="30" RenderOptions.BitmapScalingMode="HighQuality" Source="/Assets/Images/AddFolder.png" Width="30"/>
             </Button>
         </Grid>
 
