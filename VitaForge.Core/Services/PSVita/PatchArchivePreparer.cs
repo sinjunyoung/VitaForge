@@ -30,7 +30,7 @@ public static class PatchArchivePreparer
             case ArchiveKind.SevenZip:
                 string folderPath = Path.Combine(workDir, "patch");
 
-                await Task.Run(() => ExtractSevenZip(rawPath, folderPath), ct);
+                await Task.Run(() => ExtractSevenZip(rawPath, folderPath, ct), ct);
                 File.Delete(rawPath);
 
                 return folderPath;
@@ -40,15 +40,43 @@ public static class PatchArchivePreparer
         }
     }
 
-    private static void ExtractSevenZip(string archivePath, string folderPath)
+    private static void ExtractSevenZip(string archivePath, string folderPath, CancellationToken ct)
     {
         NativeSevenZip.EnsureInitialized();
 
         Directory.CreateDirectory(folderPath);
 
-        using var extractor = new SevenZipExtractor(archivePath);
+        try
+        {
+            using (var extractor = new SevenZipExtractor(archivePath))
+            {
+                extractor.FileExtractionStarted += (_, e) =>
+                {
+                    if (ct.IsCancellationRequested)
+                        e.Cancel = true;
+                };
 
-        extractor.ExtractArchive(folderPath);
+                extractor.ExtractArchive(folderPath);
+            }
+
+            ct.ThrowIfCancellationRequested();
+        }
+        catch
+        {
+            DeleteFolderQuietly(folderPath);
+
+            throw;
+        }
+    }
+
+    private static void DeleteFolderQuietly(string path)
+    {
+        try
+        {
+            if (Directory.Exists(path))
+                Directory.Delete(path, true);
+        }
+        catch { }
     }
 
     private static ArchiveKind Detect(string path)

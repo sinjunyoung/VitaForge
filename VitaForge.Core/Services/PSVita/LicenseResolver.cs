@@ -5,7 +5,7 @@ namespace VitaForge.Core.Services.PSVita;
 
 public static class LicenseResolver
 {
-    private static readonly string[] SidecarExtensions = [".rif", ".zrif", ".txt"];
+    private static readonly string[] SidecarExtensions = [".zrif", ".txt"];
 
     public static string? Resolve(string? current, string pkgPath, ContentCategory category, string? titleId, string? contentIdSuffix)
     {
