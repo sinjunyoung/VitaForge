@@ -11,9 +11,9 @@ public static class NpsDownloadService
 {
     private static readonly HttpClient Client = new() { Timeout = Timeout.InfiniteTimeSpan };
 
-    public static async Task DownloadVerifiedAsync(NpsCatalogItem item, string destinationPath, Action<long> onBytes, Action<string, LogLevel> log, CancellationToken ct, bool failOnMismatch = true)
+    public static async Task DownloadVerifiedAsync(NpsCatalogItem item, string destinationPath, Action<long> onBytes, Action<string, LogLevel> log, bool failOnMismatch, CancellationToken ct)
     {
-        string hash = await DownloadAsync(item.Url, destinationPath, onBytes, ct);
+        string hash = await DownloadAsync(item.Url, destinationPath, onBytes, null, ct);
 
         if (!string.IsNullOrEmpty(item.Sha256) && !hash.Equals(item.Sha256, StringComparison.OrdinalIgnoreCase))
         {
@@ -24,11 +24,14 @@ public static class NpsDownloadService
         }
     }
 
-    public static async Task<string> DownloadAsync(string url, string destinationPath, Action<long> onBytes, CancellationToken ct)
+    public static async Task<string> DownloadAsync(string url, string destinationPath, Action<long> onBytes, Action<long>? onTotal, CancellationToken ct)
     {
         using var response = await StreamDownloader.GetAsync(Client, url, ct);
 
         response.EnsureSuccessStatusCode();
+
+        if (response.Content.Headers.ContentLength is { } total)
+            onTotal?.Invoke(total);
 
         await using var source = await response.Content.ReadAsStreamAsync(ct);
 

@@ -11,9 +11,9 @@ public static class RebuildService
         string patchPath = titles.Select(t => t.PatchPath).FirstOrDefault(p => !string.IsNullOrWhiteSpace(p)) ?? string.Empty;
 
         if (mergeIntoGame)
-            return await Task.Run(() => PatchOutputBuilder.BuildMergedFromEntriesAsync(entries, patchPath, outputZipPath, target, log, progress, null, ct), ct);
+            return await Task.Run(() => PatchOutputBuilder.BuildMergedFromEntriesAsync(entries, patchPath, outputZipPath, target, log, progress, null, null, ct), ct);
 
-        var result = await Task.Run(() => PatchOnlyBuilder.BuildFromEntriesAsync(entries, patchPath, outputZipPath, target, log, progress, null, ct), ct);
+        var result = await Task.Run(() => PatchOnlyBuilder.BuildFromEntriesAsync(entries, patchPath, outputZipPath, target, log, progress, null, null, ct), ct);
 
         return new MergeResult { TotalFiles = result.PatchedSuccessfully, PatchCandidates = result.MatchedCandidates, PatchedSuccessfully = result.PatchedSuccessfully };
     }

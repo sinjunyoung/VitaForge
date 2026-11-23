@@ -43,7 +43,7 @@ public static partial class NpsPkgDownloadService
 
             try
             {
-                await NpsDownloadService.DownloadVerifiedAsync(item, partPath, reporter.AddProgress, log, ct, false);
+                await NpsDownloadService.DownloadVerifiedAsync(item, partPath, reporter.AddProgress, log, false, ct);
 
                 File.Move(partPath, finalPath);
 

@@ -1,4 +1,5 @@
-﻿using Common.Localization;
+﻿using VitaForge.Core.Services.PSVita.PatchHosts;
+using Common.Localization;
 using Common.Models;
 using Common.Services;
 using VitaForge.Core.Models.PSVita;
@@ -65,7 +66,20 @@ public static class PatchInstallService
 
         log(Loc.S.LogPsvPatchDownloadingPatch(plan.Patch.Name), LogLevel.Highlight);
 
-        string patchPath = await PatchFileDownloader.DownloadAsync(plan.Patch.DirectLink, workDir, log, ct);
+        string patchLabel = $"{Loc.S.StatusDownloading} ({plan.Patch.Name})";
+        ProgressReporter? patchReporter = null;
+
+        var patchProgress = new PatchDownloadProgress(
+            total => patchReporter = new ProgressReporter(patchLabel, string.Empty, total, progress),
+            bytes =>
+            {
+                patchReporter ??= new ProgressReporter(patchLabel, string.Empty, 0, progress);
+                patchReporter.AddProgress(bytes);
+            });
+
+        string patchPath = await PatchFileDownloader.DownloadAsync(plan.Patch.DirectLink, workDir, patchProgress, log, ct);
+
+        patchReporter?.ForceReport();
 
         var entries = await PkgBatchDownloader.DownloadAsync(plan.Downloads, (item, _) => Utils.GetUniqueFilePath(Path.Combine(workDir, NpsPkgDownloadService.BuildFileName(item))), patchPath, reporter, log, ct);
 
@@ -81,8 +95,8 @@ public static class PatchInstallService
         try
         {
             result = archive
-                ? await Task.Run(() => PatchOutputBuilder.BuildMergedFromEntriesAsync(entries, patchPath, outputPath, options.Target, log, progress, resolver, ct, workDir), ct)
-                : await Task.Run(() => PatchOutputBuilder.BuildMergedToFolderAsync(entries, patchPath, outputPath, options.Target, log, progress, resolver, tracker, ct, workDir), ct);
+                ? await Task.Run(() => PatchOutputBuilder.BuildMergedFromEntriesAsync(entries, patchPath, outputPath, options.Target, log, progress, resolver, workDir, ct), ct)
+                : await Task.Run(() => PatchOutputBuilder.BuildMergedToFolderAsync(entries, patchPath, outputPath, options.Target, log, progress, resolver, tracker, workDir, ct), ct);
         }
         catch
         {

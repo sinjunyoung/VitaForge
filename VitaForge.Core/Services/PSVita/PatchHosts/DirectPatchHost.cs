@@ -6,6 +6,6 @@ public sealed class DirectPatchHost : IPatchHostDownloader
 {
     public bool CanHandle(string url) => true;
 
-    public async Task DownloadAsync(string url, string destinationPath, Action<string, LogLevel> log, CancellationToken ct)
-        => await NpsDownloadService.DownloadAsync(url, destinationPath, _ => { }, ct);
+    public async Task DownloadAsync(string url, string destinationPath, PatchDownloadProgress progress, Action<string, LogLevel> log, CancellationToken ct)
+        => await NpsDownloadService.DownloadAsync(url, destinationPath, progress.AddBytes, progress.SetTotal, ct);
 }

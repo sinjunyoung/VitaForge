@@ -18,7 +18,7 @@ public static class MegaDownloader
 
     private static readonly HttpClient Client = new() { Timeout = Timeout.InfiniteTimeSpan };
 
-    public static async Task DownloadAsync(MegaFileLink link, string destinationPath, Action<long> onBytes, CancellationToken ct)
+    public static async Task DownloadAsync(MegaFileLink link, string destinationPath, Action<long> onBytes, Action<long>? onTotal, CancellationToken ct)
     {
         string downloadUrl = await GetDownloadUrlAsync(link.NodeId, ct);
 
@@ -37,6 +37,9 @@ public static class MegaDownloader
 
         if (!response.IsSuccessStatusCode)
             throw new HttpRequestException(Loc.S.ErrPsvPatchMegaFailed((int)response.StatusCode));
+
+        if (response.Content.Headers.ContentLength is { } total)
+            onTotal?.Invoke(total);
 
         await using var source = await response.Content.ReadAsStreamAsync(ct);
 

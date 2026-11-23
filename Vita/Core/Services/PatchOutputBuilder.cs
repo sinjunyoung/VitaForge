@@ -10,20 +10,20 @@ public static class PatchOutputBuilder
 {
     private static readonly string DefaultTempDirectory = Path.Combine(Path.GetTempPath(), "VitaForge");
 
-    public static Task<MergeResult> BuildMergedFromEntriesAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, PatchTargetResolver? targetResolver = null, CancellationToken ct = default, string? tempDirectory = null)
-        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, () => new ZipDecryptSink(outputZipPath), target, log, progress, targetResolver, ct, tempDirectory));
+    public static Task<MergeResult> BuildMergedFromEntriesAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, PatchTargetResolver? targetResolver = null, string? tempDirectory = null, CancellationToken ct = default)
+        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, () => new ZipDecryptSink(outputZipPath), target, log, progress, targetResolver, tempDirectory, ct));
 
-    public static Task<MergeResult> BuildMergedToFolderAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputFolderPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, PatchTargetResolver? targetResolver = null, WrittenFileTracker? tracker = null, CancellationToken ct = default, string? tempDirectory = null)
-        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, () => new FolderDecryptSink(outputFolderPath, tracker), target, log, progress, targetResolver, ct, tempDirectory));
+    public static Task<MergeResult> BuildMergedToFolderAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputFolderPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, PatchTargetResolver? targetResolver = null, WrittenFileTracker? tracker = null, string? tempDirectory = null, CancellationToken ct = default)
+        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, () => new FolderDecryptSink(outputFolderPath, tracker), target, log, progress, targetResolver, tempDirectory, ct));
 
-    private static async Task<MergeResult> BuildCoreAsync(List<SourceItem> items, string defaultPatchPath, Func<IDecryptSink> createSink, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, PatchTargetResolver? targetResolver, CancellationToken ct, string? tempDirectory)
+    private static async Task<MergeResult> BuildCoreAsync(List<SourceItem> items, string defaultPatchPath, Func<IDecryptSink> createSink, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, PatchTargetResolver? targetResolver, string? tempDirectory, CancellationToken ct)
     {
         var patchContexts = new Dictionary<string, PatchContext>(StringComparer.OrdinalIgnoreCase);
 
         try
         {
             var groups = PatchShared.BuildGroups(items, defaultPatchPath, patchContexts, target, log, ct, targetResolver);
-            return await WriteAsync(groups, createSink, target, log, progress, ct, tempDirectory);
+            return await WriteAsync(groups, createSink, target, log, progress, tempDirectory, ct);
         }
         finally
         {
@@ -32,14 +32,14 @@ public static class PatchOutputBuilder
         }
     }
 
-    internal static async Task<MergeResult> WriteAsync(List<MergeGroup> groups, Func<IDecryptSink> createSink, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct, string? tempDirectory = null)
+    internal static async Task<MergeResult> WriteAsync(List<MergeGroup> groups, Func<IDecryptSink> createSink, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, string? tempDirectory, CancellationToken ct)
     {
         long totalBytes = 0;
 
         foreach (var g in groups)
             totalBytes += g.Targets.Sum(t => t.EstimatedSize) + GetWriteTotal(g, target);
 
-        var reporter = new ProgressReporter(Loc.S.StatusApplyingPatchAndCompressing, string.Empty, totalBytes, progress);
+        var reporter = new ProgressReporter(Loc.S.StatusApplyingPatch, string.Empty, totalBytes, progress);
         var writtenEntries = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         int patchCandidates = 0;
         int patchedSuccess = 0;

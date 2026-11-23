@@ -24,7 +24,7 @@ public static class PkgBatchDownloader
 
             log(Loc.S.LogNpsDownloadingItem(i + 1, downloads.Count, item.Name), LogLevel.Info);
 
-            await NpsDownloadService.DownloadVerifiedAsync(item, pkgPath, reporter.AddProgress, log, ct);
+            await NpsDownloadService.DownloadVerifiedAsync(item, pkgPath, reporter.AddProgress, log, true, ct);
 
             var probe = await Task.Run(() => PkgProbe.Probe(pkgPath), ct);
 

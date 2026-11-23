@@ -8,7 +8,7 @@ public sealed class GoogleDrivePatchHost : IPatchHostDownloader
 {
     public bool CanHandle(string url) => GoogleDriveLink.TryGetFolderId(url, out _) || GoogleDriveLink.TryGetFileId(url, out _);
 
-    public async Task DownloadAsync(string url, string destinationPath, Action<string, LogLevel> log, CancellationToken ct)
+    public async Task DownloadAsync(string url, string destinationPath, PatchDownloadProgress progress, Action<string, LogLevel> log, CancellationToken ct)
     {
         string fileId;
 
@@ -19,7 +19,7 @@ public sealed class GoogleDrivePatchHost : IPatchHostDownloader
         else
             throw new NotSupportedException(Loc.S.ErrVitaUnsupportedSourceType(url));
 
-        await GoogleDriveDownloader.DownloadAsync(fileId, destinationPath, _ => { }, ct);
+        await GoogleDriveDownloader.DownloadAsync(fileId, destinationPath, progress.AddBytes, progress.SetTotal, ct);
     }
 
     private static async Task<GoogleDriveFile> PickFromFolderAsync(string folderId, Action<string, LogLevel> log, CancellationToken ct)

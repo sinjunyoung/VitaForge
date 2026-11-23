@@ -15,7 +15,7 @@ public static partial class GoogleDriveDownloader
     [GeneratedRegex(@"<input[^>]*type=""hidden""[^>]*name=""(?<name>[^""]+)""[^>]*value=""(?<value>[^""]*)""", RegexOptions.Singleline)]
     private static partial Regex HiddenInputRegex();
 
-    public static async Task DownloadAsync(string fileId, string destinationPath, Action<long> onBytes, CancellationToken ct)
+    public static async Task DownloadAsync(string fileId, string destinationPath, Action<long> onBytes, Action<long>? onTotal, CancellationToken ct)
     {
         string url = $"https://drive.usercontent.google.com/download?id={Uri.EscapeDataString(fileId)}&export=download&confirm=t";
 
@@ -28,6 +28,9 @@ public static partial class GoogleDriveDownloader
 
             if (response.Content.Headers.ContentType?.MediaType != "text/html")
             {
+                if (response.Content.Headers.ContentLength is { } total)
+                    onTotal?.Invoke(total);
+
                 await using var source = await response.Content.ReadAsStreamAsync(ct);
 
                 await StreamDownloader.CopyAsync(source, destinationPath, null, onBytes, null, ct);

@@ -8,12 +8,12 @@ public sealed class TistoryPatchHost : IPatchHostDownloader
 {
     public bool CanHandle(string url) => Uri.TryCreate(url, UriKind.Absolute, out var uri) && uri.Host.EndsWith(".tistory.com", StringComparison.OrdinalIgnoreCase);
 
-    public async Task DownloadAsync(string url, string destinationPath, Action<string, LogLevel> log, CancellationToken ct)
+    public async Task DownloadAsync(string url, string destinationPath, PatchDownloadProgress progress, Action<string, LogLevel> log, CancellationToken ct)
     {
         string attachmentUrl = await TistoryAttachmentFinder.FindFirstAsync(url, ct) ?? throw new InvalidOperationException(Loc.S.ErrPsvPatchTistoryNoAttachment(url));
 
         log(Loc.S.LogPsvPatchTistoryAttachment(Path.GetFileName(new Uri(attachmentUrl).LocalPath)), LogLevel.Info);
 
-        await HttpFileDownloader.DownloadAsync(TistoryAttachmentFinder.Client, attachmentUrl, destinationPath, ct);
+        await HttpFileDownloader.DownloadAsync(TistoryAttachmentFinder.Client, attachmentUrl, destinationPath, progress.AddBytes, progress.SetTotal, ct);
     }
 }

@@ -195,7 +195,7 @@ public class RepackMainViewModel : ProgressToolTabViewModel
         {
             AppendLog(Loc.S.LogVitaMergingGamePatch(label), LogLevel.Highlight);
 
-            var result = await Task.Run(() => PatchOutputBuilder.BuildMergedFromEntriesAsync(entries, patchPath, zipPath, target, AppendLog, progress, ResolvePatchTarget, ct), ct);
+            var result = await Task.Run(() => PatchOutputBuilder.BuildMergedFromEntriesAsync(entries, patchPath, zipPath, target, AppendLog, progress, ResolvePatchTarget, null, ct), ct);
 
             if (result.FailedFiles > 0)
                 throw new InvalidDataException(Loc.S.LogVitaFilesFailedDiscarded(result.FailedFiles));
@@ -206,7 +206,7 @@ public class RepackMainViewModel : ProgressToolTabViewModel
         {
             AppendLog(Loc.S.LogVitaCreatingPatch(label), LogLevel.Highlight);
 
-            var result = await Task.Run(() => PatchOnlyBuilder.BuildFromEntriesAsync(entries, patchPath, zipPath, target, AppendLog, progress, ResolvePatchTarget, ct), ct);
+            var result = await Task.Run(() => PatchOnlyBuilder.BuildFromEntriesAsync(entries, patchPath, zipPath, target, AppendLog, progress, ResolvePatchTarget, null, ct), ct);
 
             AppendLog(Loc.S.LogVitaPatchOnlyDone(label, result.MatchedCandidates, result.PatchedSuccessfully, zipPath), LogLevel.Ok);
         }

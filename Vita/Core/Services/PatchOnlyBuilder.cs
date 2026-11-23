@@ -12,17 +12,17 @@ public static class PatchOnlyBuilder
 {
     private static readonly string DefaultTempDirectory = Path.Combine(Path.GetTempPath(), "VitaForge");
 
-    public static Task<PatchOnlyResult> BuildFromEntriesAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, PatchTargetResolver? targetResolver = null, CancellationToken ct = default, string? tempDirectory = null)
-        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, outputZipPath, target, log, progress, targetResolver, ct, tempDirectory));
+    public static Task<PatchOnlyResult> BuildFromEntriesAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, PatchTargetResolver? targetResolver = null, string? tempDirectory = null, CancellationToken ct = default)
+        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, outputZipPath, target, log, progress, targetResolver, tempDirectory, ct));
 
-    private static async Task<PatchOnlyResult> BuildCoreAsync(List<SourceItem> items, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, PatchTargetResolver? targetResolver, CancellationToken ct, string? tempDirectory)
+    private static async Task<PatchOnlyResult> BuildCoreAsync(List<SourceItem> items, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, PatchTargetResolver? targetResolver, string? tempDirectory, CancellationToken ct)
     {
         var patchContexts = new Dictionary<string, PatchContext>(StringComparer.OrdinalIgnoreCase);
 
         try
         {
             var groups = PatchShared.BuildGroups(items, defaultPatchPath, patchContexts, target, log, ct, targetResolver);
-            return await WriteAsync(groups, outputZipPath, target, log, progress, ct, tempDirectory);
+            return await WriteAsync(groups, outputZipPath, target, log, progress, tempDirectory, ct);
         }
         finally
         {
@@ -31,7 +31,7 @@ public static class PatchOnlyBuilder
         }
     }
 
-    internal static async Task<PatchOnlyResult> WriteAsync(List<MergeGroup> groups, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct, string? tempDirectory = null)
+    internal static async Task<PatchOnlyResult> WriteAsync(List<MergeGroup> groups, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, string? tempDirectory, CancellationToken ct)
     {
         long totalBytes = 0;
 
