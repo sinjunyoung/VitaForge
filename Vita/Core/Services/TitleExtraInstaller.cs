@@ -1,4 +1,5 @@
-﻿using Common.Models;
+﻿using Common.Localization;
+using Common.Models;
 using Vita.Core.Models;
 using Vita.Core.TitleRules;
 
@@ -26,7 +27,7 @@ public static class TitleExtraInstaller
             accessor.CopyTo(extra.Raw, stream);
         }
 
-        log($"{titleId}: {extras.Count} extra files installed to {emulatorRoot}", LogLevel.Ok);
+        log(Loc.S.LogPsvPatchExtraFilesInstalled(titleId, extras.Count, emulatorRoot), LogLevel.Ok);
 
         return extras.Count;
     }

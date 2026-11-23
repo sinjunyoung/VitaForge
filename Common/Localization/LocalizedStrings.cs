@@ -1060,6 +1060,8 @@ public abstract class LocalizedStrings
     public abstract string LogPsvPatchDownloadingPatch(object? arg0);
     public abstract string LogPsvPatchDriveFilePicked(object? arg0, object? arg1);
     public abstract string LogPsvPatchEmulatorOnly(object? arg0);
+    public abstract string LogPsvPatchExportExtraFilesUnsupported(object? arg0);
+    public abstract string LogPsvPatchExtraFilesInstalled(object? arg0, object? arg1, object? arg2);
     public abstract string LogPsvPatchGameNotFound(object? arg0, object? arg1);
     public abstract string LogPsvPatchInstalled(object? arg0, object? arg1);
     public abstract string LogPsvPatchItemFailed(object? arg0, object? arg1);

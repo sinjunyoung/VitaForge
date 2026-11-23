@@ -713,7 +713,7 @@ public sealed class Korean : LocalizedStrings
     public override string HintDropVitaPkg => "PS Vita PKG 파일/폴더를 여기에 드래그&드롭하세요";
     public override string HintDropWiiUFiles => "WUP/Loadiine 폴더, wud/wux/wua 파일을 여기에 드래그&드롭하세요";
     public override string HintKeyFileEmptyUsesExeFolder(object? arg0) => $"비워두면 exe 폴더의 {arg0}을(를) 사용합니다";
-    public override string HintPatchOutputFolder => "아카이브(zip)를 저장할 폴더를 선택하세요";
+    public override string HintPatchOutputFolder => "내보낼 zip 파일을 저장할 폴더를 선택하세요";
     public override string HintRepackReplaceRule => "본편/업데이트는 자동 교체, DLC는 계속 추가됩니다";
     public override string HintSearchGame => "게임 검색...";
     public override string HintSearchTitleId => "타이틀 ID 검색...";
@@ -1053,13 +1053,15 @@ public sealed class Korean : LocalizedStrings
     public override string LogProgramBuildDone(object? arg0, object? arg1) => $"프로그램 빌드 완료: {arg0} ({arg1})";
     public override string LogProgramBuildStart(object? arg0) => $"프로그램 빌드 시작 (IdOffset={arg0})";
     public override string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"패치 파일 내용: {arg0}개 파일 (앞부분: {arg1})";
-    public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"아카이브 생성: {arg0} → {arg1}";
+    public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"내보내기 완료: {arg0} → {arg1}";
     public override string LogPsvPatchConsoleOnly(object? arg0) => $"실기전용입니다, 실기용으로 진행하세요: {arg0}";
     public override string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"패치 목록 로드: {arg0}건 ({arg1})";
     public override string LogPsvPatchCsvNotFound(object? arg0) => $"PSV_PATCH.csv를 찾을 수 없습니다. 실행 파일 옆에 두세요: {arg0}";
     public override string LogPsvPatchDownloadingPatch(object? arg0) => $"패치 다운로드 중: {arg0}";
     public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"구글 드라이브 파일 선택: {arg0} (후보 {arg1}개 중)";
     public override string LogPsvPatchEmulatorOnly(object? arg0) => $"에뮬전용입니다, 에뮬용으로 진행하세요: {arg0}";
+    public override string LogPsvPatchExportExtraFilesUnsupported(object? arg0) => $"{arg0}: ux0 밖에 설치되는 파일(Vita3K 텍스처)이 있어 내보낼 수 없습니다. 설치 모드를 사용하세요.";
+    public override string LogPsvPatchExtraFilesInstalled(object? arg0, object? arg1, object? arg2) => $"{arg0}: 추가 파일 {arg1}개를 {arg2}에 설치했습니다";
     public override string LogPsvPatchGameNotFound(object? arg0, object? arg1) => $"건너뜀 (카탈로그에 본편 없음): {arg0} {arg1}";
     public override string LogPsvPatchInstalled(object? arg0, object? arg1) => $"설치 완료: {arg0} → {arg1}";
     public override string LogPsvPatchItemFailed(object? arg0, object? arg1) => $"실패: {arg0} ({arg1})";
@@ -1370,7 +1372,7 @@ public sealed class Korean : LocalizedStrings
     public override string RadioLowercase => "소문자";
     public override string RadioMergeAll => "전체";
     public override string RadioMergeGroupByTitleId => "타이틀 ID별 그룹핑 (기존 방식)";
-    public override string RadioModeArchive => "아카이브";
+    public override string RadioModeArchive => "내보내기";
     public override string RadioModeInstall => "설치";
     public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm 폴더 (타이틀 ID별)";
     public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm ZIP (타이틀 ID별)";

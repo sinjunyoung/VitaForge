@@ -713,7 +713,7 @@ public sealed class Japanese : LocalizedStrings
     public override string HintDropVitaPkg => "PS Vita PKGファイル/フォルダーをここにドラッグ&ドロップしてください";
     public override string HintDropWiiUFiles => "WUP/Loadiineフォルダー、wud/wux/wuaファイルをここにドラッグ&ドロップしてください";
     public override string HintKeyFileEmptyUsesExeFolder(object? arg0) => $"空の場合はexeフォルダーの{arg0}を使用します";
-    public override string HintPatchOutputFolder => "ZIPアーカイブの保存先フォルダーを選択してください";
+    public override string HintPatchOutputFolder => "エクスポートするZIPファイルの保存先フォルダーを選択してください";
     public override string HintRepackReplaceRule => "本編/アップデートは自動的に置き換えられ、DLCは追加されます";
     public override string HintSearchGame => "ゲームを検索...";
     public override string HintSearchTitleId => "タイトルIDを検索...";
@@ -1053,13 +1053,15 @@ public sealed class Japanese : LocalizedStrings
     public override string LogProgramBuildDone(object? arg0, object? arg1) => $"プログラムのビルド完了: {arg0} ({arg1})";
     public override string LogProgramBuildStart(object? arg0) => $"プログラムのビルドを開始 (IdOffset={arg0})";
     public override string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"パッチアーカイブの内容: {arg0} 個のファイル ({arg1})";
-    public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"アーカイブを作成: {arg0} → {arg1}";
+    public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"エクスポート完了: {arg0} → {arg1}";
     public override string LogPsvPatchConsoleOnly(object? arg0) => $"実機専用のためスキップしました: {arg0}。実機用で進めてください。";
     public override string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"パッチ一覧を読み込みました: {arg0} 件 ({arg1})";
     public override string LogPsvPatchCsvNotFound(object? arg0) => $"PSV_PATCH.csv が見つかりません。実行ファイルの隣に置いてください: {arg0}";
     public override string LogPsvPatchDownloadingPatch(object? arg0) => $"パッチをダウンロード中: {arg0}";
     public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"Google ドライブのファイルを選択: {arg0} (候補 {arg1} 件中)";
     public override string LogPsvPatchEmulatorOnly(object? arg0) => $"エミュレーター専用のためスキップしました: {arg0}。エミュレーター用で進めてください。";
+    public override string LogPsvPatchExportExtraFilesUnsupported(object? arg0) => $"{arg0}: ux0 の外に置くファイル(Vita3K のテクスチャ)が含まれるためエクスポートできません。インストールモードを使用してください。";
+    public override string LogPsvPatchExtraFilesInstalled(object? arg0, object? arg1, object? arg2) => $"{arg0}: 追加ファイル {arg1} 個を {arg2} にインストールしました";
     public override string LogPsvPatchGameNotFound(object? arg0, object? arg1) => $"スキップ (カタログにゲームが見つかりません): {arg0} {arg1}";
     public override string LogPsvPatchInstalled(object? arg0, object? arg1) => $"インストール完了: {arg0} → {arg1}";
     public override string LogPsvPatchItemFailed(object? arg0, object? arg1) => $"失敗: {arg0} ({arg1})";
@@ -1370,7 +1372,7 @@ public sealed class Japanese : LocalizedStrings
     public override string RadioLowercase => "小文字";
     public override string RadioMergeAll => "すべて";
     public override string RadioMergeGroupByTitleId => "タイトルID別にグループ化 (従来方式)";
-    public override string RadioModeArchive => "アーカイブ";
+    public override string RadioModeArchive => "エクスポート";
     public override string RadioModeInstall => "インストール";
     public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm フォルダー (タイトルID別)";
     public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm ZIP (タイトルID別)";

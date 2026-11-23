@@ -713,7 +713,7 @@ public sealed class Russian : LocalizedStrings
     public override string HintDropVitaPkg => "Перетащите файлы/папки PKG для PS Vita сюда";
     public override string HintDropWiiUFiles => "Перетащите папки WUP/Loadiine или файлы wud/wux/wua сюда";
     public override string HintKeyFileEmptyUsesExeFolder(object? arg0) => $"Оставьте пустым, чтобы использовать {arg0} из папки exe";
-    public override string HintPatchOutputFolder => "Выберите папку для сохранения zip-архивов";
+    public override string HintPatchOutputFolder => "Выберите папку для сохранения экспортированных zip-файлов";
     public override string HintRepackReplaceRule => "Игра и обновление заменяются автоматически, DLC добавляются";
     public override string HintSearchGame => "Поиск игр...";
     public override string HintSearchTitleId => "Поиск по ID тайтла...";
@@ -1053,13 +1053,15 @@ public sealed class Russian : LocalizedStrings
     public override string LogProgramBuildDone(object? arg0, object? arg1) => $"Сборка программы завершена: {arg0} ({arg1})";
     public override string LogProgramBuildStart(object? arg0) => $"Начало сборки программы (IdOffset={arg0})";
     public override string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"В архиве патча файлов: {arg0} ({arg1})";
-    public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"Архив создан: {arg0} → {arg1}";
+    public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"Экспортировано: {arg0} → {arg1}";
     public override string LogPsvPatchConsoleOnly(object? arg0) => $"Только для консоли, пропущено: {arg0}. Используйте вариант для консоли.";
     public override string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"Загружен список патчей: {arg0} записей ({arg1})";
     public override string LogPsvPatchCsvNotFound(object? arg0) => $"PSV_PATCH.csv не найден. Поместите его рядом с исполняемым файлом: {arg0}";
     public override string LogPsvPatchDownloadingPatch(object? arg0) => $"Загрузка патча: {arg0}";
     public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"Выбран файл Google Диска: {arg0} (из {arg1} кандидатов)";
     public override string LogPsvPatchEmulatorOnly(object? arg0) => $"Только для эмулятора, пропущено: {arg0}. Используйте вариант для эмулятора.";
+    public override string LogPsvPatchExportExtraFilesUnsupported(object? arg0) => $"{arg0}: содержит файлы вне ux0 (текстуры Vita3K), экспорт невозможен. Используйте режим установки.";
+    public override string LogPsvPatchExtraFilesInstalled(object? arg0, object? arg1, object? arg2) => $"{arg0}: установлено дополнительных файлов: {arg1} ({arg2})";
     public override string LogPsvPatchGameNotFound(object? arg0, object? arg1) => $"Пропущено (игра не найдена в каталоге): {arg0} {arg1}";
     public override string LogPsvPatchInstalled(object? arg0, object? arg1) => $"Установлено: {arg0} → {arg1}";
     public override string LogPsvPatchItemFailed(object? arg0, object? arg1) => $"Ошибка: {arg0} ({arg1})";
@@ -1370,7 +1372,7 @@ public sealed class Russian : LocalizedStrings
     public override string RadioLowercase => "Строчные";
     public override string RadioMergeAll => "Все";
     public override string RadioMergeGroupByTitleId => "Группировка по Title ID (прежний способ)";
-    public override string RadioModeArchive => "Архив";
+    public override string RadioModeArchive => "Экспорт";
     public override string RadioModeInstall => "Установка";
     public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm папка (по Title ID)";
     public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm ZIP (по Title ID)";

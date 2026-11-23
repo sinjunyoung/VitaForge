@@ -713,7 +713,7 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string HintDropVitaPkg => "请将 PS Vita PKG 文件/文件夹拖放到此处";
     public override string HintDropWiiUFiles => "请将 WUP/Loadiine 文件夹、wud/wux/wua 文件拖放到此处";
     public override string HintKeyFileEmptyUsesExeFolder(object? arg0) => $"留空则使用 exe 文件夹中的 {arg0}";
-    public override string HintPatchOutputFolder => "请选择保存 zip 压缩包的文件夹";
+    public override string HintPatchOutputFolder => "请选择保存导出的 zip 文件的文件夹";
     public override string HintRepackReplaceRule => "本体/更新会自动替换，DLC 会继续添加";
     public override string HintSearchGame => "搜索游戏...";
     public override string HintSearchTitleId => "搜索标题 ID...";
@@ -1053,13 +1053,15 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string LogProgramBuildDone(object? arg0, object? arg1) => $"程序构建完成: {arg0} ({arg1})";
     public override string LogProgramBuildStart(object? arg0) => $"开始构建程序 (IdOffset={arg0})";
     public override string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"补丁压缩包包含 {arg0} 个文件: {arg1}";
-    public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"已创建归档: {arg0} → {arg1}";
+    public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"已导出: {arg0} → {arg1}";
     public override string LogPsvPatchConsoleOnly(object? arg0) => $"仅限实机，已跳过: {arg0}。请使用实机选项。";
     public override string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"已加载补丁列表: {arg0} 项 ({arg1})";
     public override string LogPsvPatchCsvNotFound(object? arg0) => $"找不到 PSV_PATCH.csv。请将其放在可执行文件旁边: {arg0}";
     public override string LogPsvPatchDownloadingPatch(object? arg0) => $"正在下载补丁: {arg0}";
     public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"已选择 Google 云端硬盘文件: {arg0}（共 {arg1} 个候选）";
     public override string LogPsvPatchEmulatorOnly(object? arg0) => $"仅限模拟器，已跳过: {arg0}。请使用模拟器选项。";
+    public override string LogPsvPatchExportExtraFilesUnsupported(object? arg0) => $"{arg0}: 包含位于 ux0 之外的文件(Vita3K 纹理),无法导出。请使用安装模式。";
+    public override string LogPsvPatchExtraFilesInstalled(object? arg0, object? arg1, object? arg2) => $"{arg0}: 已将 {arg1} 个额外文件安装到 {arg2}";
     public override string LogPsvPatchGameNotFound(object? arg0, object? arg1) => $"已跳过（目录中未找到游戏）: {arg0} {arg1}";
     public override string LogPsvPatchInstalled(object? arg0, object? arg1) => $"安装完成: {arg0} → {arg1}";
     public override string LogPsvPatchItemFailed(object? arg0, object? arg1) => $"失败: {arg0} ({arg1})";
@@ -1370,7 +1372,7 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string RadioLowercase => "小写";
     public override string RadioMergeAll => "全部";
     public override string RadioMergeGroupByTitleId => "按标题 ID 分组 (原有方式)";
-    public override string RadioModeArchive => "归档";
+    public override string RadioModeArchive => "导出";
     public override string RadioModeInstall => "安装";
     public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm 文件夹 (按标题 ID)";
     public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm ZIP (按标题 ID)";

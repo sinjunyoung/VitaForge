@@ -713,7 +713,7 @@ public sealed class English : LocalizedStrings
     public override string HintDropVitaPkg => "Drag and drop PS Vita PKG files/folders here";
     public override string HintDropWiiUFiles => "Drag and drop WUP/Loadiine folders or wud/wux/wua files here";
     public override string HintKeyFileEmptyUsesExeFolder(object? arg0) => $"Leave empty to use {arg0} in the exe folder";
-    public override string HintPatchOutputFolder => "Select the folder to save the zip archives";
+    public override string HintPatchOutputFolder => "Select the folder to save the exported zip files";
     public override string HintRepackReplaceRule => "Base game and update are replaced automatically; DLC is added";
     public override string HintSearchGame => "Search games...";
     public override string HintSearchTitleId => "Title ID...";
@@ -1053,13 +1053,15 @@ public sealed class English : LocalizedStrings
     public override string LogProgramBuildDone(object? arg0, object? arg1) => $"Program build complete: {arg0} ({arg1})";
     public override string LogProgramBuildStart(object? arg0) => $"Starting program build (IdOffset={arg0})";
     public override string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"Patch archive contains {arg0} files: {arg1}";
-    public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"Archive created: {arg0} → {arg1}";
+    public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"Exported: {arg0} → {arg1}";
     public override string LogPsvPatchConsoleOnly(object? arg0) => $"Console only, skipped: {arg0}. Please proceed with the console option.";
     public override string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"Patch list loaded: {arg0} entries ({arg1})";
     public override string LogPsvPatchCsvNotFound(object? arg0) => $"PSV_PATCH.csv not found. Place it next to the executable: {arg0}";
     public override string LogPsvPatchDownloadingPatch(object? arg0) => $"Downloading patch: {arg0}";
     public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"Google Drive file selected: {arg0} (of {arg1} candidates)";
     public override string LogPsvPatchEmulatorOnly(object? arg0) => $"Emulator only, skipped: {arg0}. Please proceed with the emulator option.";
+    public override string LogPsvPatchExportExtraFilesUnsupported(object? arg0) => $"{arg0}: contains files outside ux0 (Vita3K textures) and cannot be exported. Please use install mode.";
+    public override string LogPsvPatchExtraFilesInstalled(object? arg0, object? arg1, object? arg2) => $"{arg0}: {arg1} extra files installed to {arg2}";
     public override string LogPsvPatchGameNotFound(object? arg0, object? arg1) => $"Skipped (game not found in catalog): {arg0} {arg1}";
     public override string LogPsvPatchInstalled(object? arg0, object? arg1) => $"Installed: {arg0} → {arg1}";
     public override string LogPsvPatchItemFailed(object? arg0, object? arg1) => $"Failed: {arg0} ({arg1})";
@@ -1370,7 +1372,7 @@ public sealed class English : LocalizedStrings
     public override string RadioLowercase => "Lowercase";
     public override string RadioMergeAll => "All";
     public override string RadioMergeGroupByTitleId => "Group by Title ID (legacy)";
-    public override string RadioModeArchive => "Archive";
+    public override string RadioModeArchive => "Export";
     public override string RadioModeInstall => "Install";
     public override string RadioNoNpDrmFolderPerTitleId => "NoNpDrm folder (per Title ID)";
     public override string RadioNoNpDrmZipPerTitleId => "NoNpDrm ZIP (per Title ID)";

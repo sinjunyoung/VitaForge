@@ -84,7 +84,7 @@ public static class PatchInstallService
 
         if (archive && options.Target == OutputTarget.Emu && TitleExtraInstaller.HasExtraFiles(patchPath, plan.Patch.TitleId))
         {
-            log($"{plan.Patch.TitleId}: files outside ux0 (Vita3K textures) cannot be archived. Use install mode.", LogLevel.Error);
+            log(Loc.S.LogPsvPatchExportExtraFilesUnsupported(plan.Patch.TitleId), LogLevel.Error);
             return false;
         }
 
