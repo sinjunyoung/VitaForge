@@ -9,7 +9,8 @@ internal static class TitleRuleRegistry
     {
         new FlattenSubfolderRule("PCSG01216", "Data", "Patch"),
         new SelfDecryptSourceRule("PCSG00009", "eboot.bin"),
-        new L7caUnpackRule("PCSG00009", "toidata_release.l7c", "_Data/")
+        new L7caUnpackRule("PCSG00009", "toidata_release.l7c", "_Data/"),
+        new PrefFolderRule("PCSG00684", "textures/import")
     }.ToLookup(r => r.TitleId, StringComparer.OrdinalIgnoreCase);
 
     public static IReadOnlyList<PatchContainerFile> RewritePatchFiles(string titleId, ContentCategory category, IReadOnlyList<PatchContainerFile> files)
@@ -19,6 +20,8 @@ internal static class TitleRuleRegistry
 
         return files;
     }
+
+    public static IReadOnlyList<ExtraPatchFile> SelectExtraFiles(string titleId, IReadOnlyList<PatchContainerFile> files) => [.. Rules[titleId].SelectMany(r => r.SelectExtraFiles(files))];
 
     public static byte[] RewriteSource(string titleId, string relativePath, byte[] sourceBytes, OwnerContext owner)
     {

@@ -12,4 +12,6 @@ internal interface ITitleRule
     byte[] RewriteSource(string relativePath, byte[] sourceBytes, OwnerContext owner) => sourceBytes;
 
     IEnumerable<ExpandedFile> ExpandOutput(string relativePath, byte[] outputBytes, Action<string, LogLevel> log) => [];
+
+    IEnumerable<ExtraPatchFile> SelectExtraFiles(IReadOnlyList<PatchContainerFile> files) => [];
 }

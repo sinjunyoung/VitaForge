@@ -62,6 +62,7 @@ public static class PatchInstallService
 
     private static async Task<bool> InstallOneAsync(PatchInstallPlan plan, PatchInstallOptions options, string workDir, string? destination, PatchTargetResolver? resolver, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct)
     {
+        bool archive = options.Mode == PatchOutputMode.Archive;
         var reporter = new ProgressReporter(Loc.S.StatusDownloading, string.Empty, Math.Max(1, plan.TotalSize), progress);
 
         log(Loc.S.LogPsvPatchDownloadingPatch(plan.Patch.Name), LogLevel.Highlight);
@@ -81,10 +82,15 @@ public static class PatchInstallService
 
         patchReporter?.ForceReport();
 
+        if (archive && options.Target == OutputTarget.Emu && TitleExtraInstaller.HasExtraFiles(patchPath, plan.Patch.TitleId))
+        {
+            log($"{plan.Patch.TitleId}: files outside ux0 (Vita3K textures) cannot be archived. Use install mode.", LogLevel.Error);
+            return false;
+        }
+
         var entries = await PkgBatchDownloader.DownloadAsync(plan.Downloads, (item, _) => Utils.GetUniqueFilePath(Path.Combine(workDir, NpsPkgDownloadService.BuildFileName(item))), patchPath, reporter, log, ct);
 
         string label = options.Target == OutputTarget.Emu ? Loc.S.LabelOutputEmu : Loc.S.LabelOutputRetail;
-        bool archive = options.Mode == PatchOutputMode.Archive;
         var tracker = archive ? null : new WrittenFileTracker();
         string outputPath = archive ? Utils.GetUniqueFilePath(Path.Combine(options.TargetPath, BuildArchiveName(plan, label))) : destination!;
 
@@ -137,6 +143,20 @@ public static class PatchInstallService
                 InstallRollback.Run(tracker!, log);
 
             return false;
+        }
+
+        if (options.Target == OutputTarget.Emu && !archive)
+        {
+            try
+            {
+                TitleExtraInstaller.InstallToEmulatorRoot(patchPath, plan.Patch.TitleId, Path.GetFullPath(options.TargetPath), tracker!, log, ct);
+            }
+            catch
+            {
+                InstallRollback.Run(tracker!, log);
+
+                throw;
+            }
         }
 
         if (archive)
