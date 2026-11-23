@@ -13,6 +13,8 @@ internal static class PatchShared
 {
     private const int ProgressChunkSize = 4 * 1024 * 1024;
 
+    private const long MaxPatchSourceSize = 0x7FFFFFC7;
+
     private static readonly string[] AppLayoutDirs = ["app", "rePatch"];
 
     private static readonly string[] AddcontLayoutDirs = ["addcont", "reAddcont"];
@@ -41,7 +43,7 @@ internal static class PatchShared
         var appSourceByTitle = new Dictionary<string, (ISourceAccessor Accessor, string SourcePath)>(StringComparer.OrdinalIgnoreCase);
         var orderedEntries = entries.OrderBy(GetEntrySortRank).ToList();
 
-        void AddItem(ContentCategory? category, string titleId, string? contentIdSuffix, string sourcePath, ISourceAccessor accessor, string? patchPath)
+        void AddItem(ContentCategory category, string titleId, string? contentIdSuffix, string sourcePath, ISourceAccessor accessor, string? patchPath)
         {
             items.Add(new SourceItem
             {
@@ -119,8 +121,8 @@ internal static class PatchShared
 
     internal static List<BaseGroup> BuildBaseGroups(List<SourceItem> items, Action<string, LogLevel> log, CancellationToken ct)
     {
-        var appByTitle = items.Where(i => i.Category == ContentCategory.App).ToDictionary(i => i.TitleId, StringComparer.OrdinalIgnoreCase);
-        var patchByTitle = items.Where(i => i.Category == ContentCategory.Patch).ToDictionary(i => i.TitleId, StringComparer.OrdinalIgnoreCase);
+        var appByTitle = IndexByTitle(items, ContentCategory.App);
+        var patchByTitle = IndexByTitle(items, ContentCategory.Patch);
         var addcontItems = items.Where(i => i.Category == ContentCategory.Addcont).ToList();
         var titleIds = appByTitle.Keys.Union(patchByTitle.Keys, StringComparer.OrdinalIgnoreCase).ToList();
         var groups = new List<BaseGroup>();
@@ -176,6 +178,19 @@ internal static class PatchShared
         }
 
         return groups;
+    }
+
+    private static Dictionary<string, SourceItem> IndexByTitle(List<SourceItem> items, ContentCategory category)
+    {
+        var map = new Dictionary<string, SourceItem>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var item in items)
+        {
+            if (item.Category == category)
+                map[item.TitleId] = item;
+        }
+
+        return map;
     }
 
     private static MergeGroup CreateGroup(ContentCategory category, string titleId, string? contentIdSuffix, string patchPackagePath, Dictionary<string, PatchAppEntry> index, List<OwnerContext> owners, Dictionary<string, PatchContext> patchContexts, OutputTarget target, PatchTargetResolver? targetResolver)
@@ -331,7 +346,7 @@ internal static class PatchShared
         return false;
     }
 
-    private static PatchFileRef CreatePatchFileRef(ISourceAccessor accessor, string rawPath) => PatchFileRef.FromStream(() => new MemoryStream(accessor.ReadAllBytes(rawPath), writable: false), accessor.GetFileSize(rawPath), Path.GetFileName(NormalizePath(rawPath)));
+    private static PatchFileRef CreatePatchFileRef(ISourceAccessor accessor, string rawPath) => PatchFileRef.FromStream(() => accessor.OpenRead(rawPath), accessor.GetFileSize(rawPath), Path.GetFileName(NormalizePath(rawPath)));
 
     public static (ISourceAccessor Accessor, string Rel)? ResolveWorkBin(ISourceAccessor source, SourceItem item, (ISourceAccessor Accessor, string Rel)? fallback)
     {
@@ -503,6 +518,111 @@ internal static class PatchShared
         return targets;
     }
 
+    public static bool RequiresStreaming(PatchTarget target)
+    {
+        if (target.Kind == PatchTargetKind.Overwrite)
+            return target.OverwriteFile is { Length: > MaxPatchSourceSize };
+
+        return target.Source is { } source && source.FileEntry.Size > MaxPatchSourceSize;
+    }
+
+    internal static async Task<StreamedPatchResult?> ResolveTargetStreamAsync(PatchTarget target, string tempDirectory, Action<long> onBytes, Action<string, LogLevel> log, CancellationToken ct)
+    {
+        if (target.Kind == PatchTargetKind.Overwrite)
+        {
+            var overwrite = target.OverwriteFile ?? throw new InvalidOperationException(Loc.S.ErrVitaOverwriteFileInfoMissing);
+
+            onBytes(overwrite.Length);
+
+            return new StreamedPatchResult(new Patch.Core.Models.PatchedContent(overwrite.Length, overwrite.OpenRead), null);
+        }
+
+        var appEntry = target.Source ?? throw new InvalidOperationException(Loc.S.ErrVitaPatchSourceInfoMissing);
+        var owner = appEntry.Owner;
+        var entry = appEntry.FileEntry;
+
+        Directory.CreateDirectory(tempDirectory);
+
+        string tempPath = Path.Combine(tempDirectory, $"vf_{Guid.NewGuid():N}.src");
+
+        try
+        {
+            await Task.Run(() =>
+            {
+                using var temp = new FileStream(tempPath, FileMode.Create, FileAccess.Write, FileShare.None, 81920);
+
+                NoNpDrmDecryptor.DecryptEntryTo(owner.Item.Accessor!, owner.Item.SourcePath, owner.License.Klicensee, entry, owner.Table.UnicvEntries[appEntry.EntryIndex], owner.Table.FilesSalt, temp, delta =>
+                {
+                    ct.ThrowIfCancellationRequested();
+
+                    onBytes(delta);
+                });
+            }, ct);
+
+            long length = new FileInfo(tempPath).Length;
+
+            foreach (var patch in target.Patches)
+            {
+                ct.ThrowIfCancellationRequested();
+
+                var content = await PatchStreamApplier.ApplyAsync(() => new FileStream(tempPath, FileMode.Open, FileAccess.Read, FileShare.Read, 1 << 20, FileOptions.SequentialScan), length, patch, target.RelativePath, null, log, ct);
+
+                if (content is not null)
+                    return new StreamedPatchResult(content, tempPath);
+
+                if (patch.Strict)
+                    throw new InvalidOperationException(patch.File.DisplayName);
+            }
+        }
+        catch
+        {
+            DeleteTempQuietly(tempPath);
+
+            throw;
+        }
+
+        DeleteTempQuietly(tempPath);
+
+        return null;
+    }
+
+    private static void DeleteTempQuietly(string path)
+    {
+        try
+        {
+            if (File.Exists(path))
+                File.Delete(path);
+        }
+        catch { }
+    }
+
+    public static async Task CopyStreamWithProgressAsync(Stream source, Stream destination, long length, long estimatedSize, ProgressReporter reporter, CancellationToken ct)
+    {
+        var buffer = new byte[ProgressChunkSize];
+        long copied = 0;
+        long reported = 0;
+        int read;
+
+        while ((read = await source.ReadAsync(buffer, ct)) > 0)
+        {
+            await destination.WriteAsync(buffer.AsMemory(0, read), ct);
+
+            copied += read;
+
+            long target = length > 0 ? (long)((double)copied / length * estimatedSize) : estimatedSize;
+
+            if (target > reported)
+            {
+                reporter.AddProgress(target - reported);
+
+                reported = target;
+            }
+        }
+
+        if (reported < estimatedSize)
+            reporter.AddProgress(estimatedSize - reported);
+    }
+
     public static async Task<byte[]?> ResolveTargetBytesAsync(PatchTarget target, Action<string, LogLevel> log, CancellationToken ct)
     {
         if (target.Kind == PatchTargetKind.Overwrite)
@@ -511,6 +631,10 @@ internal static class PatchShared
         var appEntry = target.Source ?? throw new InvalidOperationException(Loc.S.ErrVitaPatchSourceInfoMissing);
         var owner = appEntry.Owner;
         var entry = appEntry.FileEntry;
+
+        if (entry.Size > MaxPatchSourceSize)
+            throw new NotSupportedException(Loc.S.ErrVitaFileTooLargeForPatch(target.RelativePath, entry.Size));
+
         byte[] sourceBytes = NoNpDrmDecryptor.DecryptEntry(owner.Item.Accessor!, owner.Item.SourcePath, owner.License.Klicensee, entry, owner.Table.UnicvEntries[appEntry.EntryIndex], owner.Table.FilesSalt);
         sourceBytes = TitleRuleRegistry.RewriteSource(owner.Item.TitleId, target.RelativePath, sourceBytes, owner);
 

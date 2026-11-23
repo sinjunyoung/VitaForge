@@ -46,10 +46,15 @@ public sealed class Japanese : LocalizedStrings
     public override string ButtonUnpack => "アンパック";
     public override string ButtonUnpackAndRepackFull => "アンパック + リパック (Full)";
     public override string ButtonUnpackAndRepackStreaming => "アンパック + リパック (ストリーミング基準)";
+    public override string ErrDownloadIncomplete(object? arg0, object? arg1) => $"ダウンロードが途中で終了しました。({arg0} / {arg1} バイト)";
+    public override string ErrDownloadStalled => "サーバーから60秒以上応答がないため、ダウンロードを中断しました。";
+    public override string ErrFileTooLargeForMemory(object? arg0, object? arg1) => $"{arg0} はサイズが大きすぎる({arg1} バイト)ため、メモリに読み込めません。";
+    public override string ErrVitaFileTooLargeForPatch(object? arg0, object? arg1) => $"{arg0} はサイズが大きすぎる({arg1} バイト)ため、パッチを適用できません。";
     public override string HintPatchTargetLink => "左のツリーで対象ファイルを選択し、右の項目をダブルクリックするか［関連付け］を押してください。";
     public override string LabelPatchTargetCandidates => "対象ファイル候補";
     public override string LabelPatchTargetNone => "未指定";
     public override string LabelPatchTargetUnmatched => "対象のないパッチファイル";
+    public override string LogVitaFilesFailedDiscarded(object? arg0) => $"{arg0}個のファイルの処理に失敗したため、結果を破棄しました。";
     public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"パッチ対象を手動指定: {arg0} -> {arg1}";
     public override string LogVitaPatchTargetSkipped(object? arg0) => $"パッチ対象の選択をスキップ: {arg0}";
     public override string LogVitaRollbackDeleted(object? arg0) => $"インストール失敗: 書き込み済みのファイル {arg0} 個を削除しました";

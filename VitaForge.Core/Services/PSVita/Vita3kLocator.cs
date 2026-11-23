@@ -8,17 +8,37 @@ public static class Vita3kLocator
     private const string ConfigFileName = "config.yml";
     private const string ExeFileName = "Vita3K.exe";
     private const string PrefKey = "pref-path:";
+    private const string PortableFolderName = "portable";
 
     public static Vita3kInfo Resolve(string rootPath)
     {
         string root = Path.GetFullPath(rootPath);
 
-        return new Vita3kInfo(root, ReadPrefPath(root) ?? root, Path.Combine(root, ExeFileName));
+        string prefPath = ReadPrefPath(root) ?? FindExistingDataPath(root) ?? root;
+
+        return new Vita3kInfo(root, prefPath, Path.Combine(root, ExeFileName));
+    }
+
+    private static string? FindExistingDataPath(string root)
+    {
+        var candidates = new List<string> { Path.Combine(root, PortableFolderName, "fs"), root };
+        string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+        if (!string.IsNullOrEmpty(appData))
+        {
+            candidates.Add(Path.Combine(appData, "Vita3K", "Vita3K"));
+            candidates.Add(Path.Combine(appData, "Vita3K"));
+        }
+
+        return candidates.FirstOrDefault(c => Directory.Exists(Path.Combine(c, "ux0")));
     }
 
     private static string? ReadPrefPath(string root)
     {
-        string configPath = Path.Combine(root, ConfigFileName);
+        string configPath = Path.Combine(root, PortableFolderName, ConfigFileName);
+
+        if (!File.Exists(configPath))
+            configPath = Path.Combine(root, ConfigFileName);
 
         if (!File.Exists(configPath))
             return null;

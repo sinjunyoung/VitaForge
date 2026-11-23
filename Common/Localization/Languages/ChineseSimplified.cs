@@ -46,10 +46,15 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string ButtonUnpack => "解包";
     public override string ButtonUnpackAndRepackFull => "解包 + 重新打包 (Full)";
     public override string ButtonUnpackAndRepackStreaming => "解包 + 重新打包 (基于流式处理)";
+    public override string ErrDownloadIncomplete(object? arg0, object? arg1) => $"下载提前结束。({arg0} / {arg1} 字节)";
+    public override string ErrDownloadStalled => "服务器超过 60 秒无响应，已中止下载。";
+    public override string ErrFileTooLargeForMemory(object? arg0, object? arg1) => $"{arg0} 文件过大（{arg1} 字节），无法读入内存。";
+    public override string ErrVitaFileTooLargeForPatch(object? arg0, object? arg1) => $"{arg0} 文件过大（{arg1} 字节），无法应用补丁。";
     public override string HintPatchTargetLink => "在左侧树中选择目标文件，然后双击右侧项目或点击“关联”。";
     public override string LabelPatchTargetCandidates => "候选目标文件";
     public override string LabelPatchTargetNone => "未指定";
     public override string LabelPatchTargetUnmatched => "无目标的补丁文件";
+    public override string LogVitaFilesFailedDiscarded(object? arg0) => $"{arg0} 个文件处理失败，已丢弃结果。";
     public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"手动指定补丁目标: {arg0} -> {arg1}";
     public override string LogVitaPatchTargetSkipped(object? arg0) => $"已跳过补丁目标选择: {arg0}";
     public override string LogVitaRollbackDeleted(object? arg0) => $"安装失败: 已删除 {arg0} 个已写入的文件";

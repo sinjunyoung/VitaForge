@@ -3,7 +3,7 @@ using Vita.Core.Models;
 
 namespace Vita.Core.Services;
 
-internal static class PkgOutputPaths
+public static class PkgOutputPaths
 {
     public static string Resolve(string outputRoot, string? titleId, PkgConvertOutput output)
     {
@@ -23,7 +23,7 @@ internal static class PkgOutputPaths
             DeleteQuietly(path);
     }
 
-    public static void DeleteQuietly(string path)
+    public static void DeleteQuietly(string? path)
     {
         try
         {

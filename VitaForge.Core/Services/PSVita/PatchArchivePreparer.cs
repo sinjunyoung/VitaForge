@@ -10,7 +10,9 @@ public static class PatchArchivePreparer
     private enum ArchiveKind
     {
         Unknown,
+
         Zip,
+
         SevenZip
     }
 
@@ -29,7 +31,6 @@ public static class PatchArchivePreparer
                 string folderPath = Path.Combine(workDir, "patch");
 
                 await Task.Run(() => ExtractSevenZip(rawPath, folderPath), ct);
-
                 File.Delete(rawPath);
 
                 return folderPath;

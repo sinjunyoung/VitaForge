@@ -9,8 +9,6 @@ namespace VitaForge.Core.Services.PSVita;
 
 public static partial class GoogleDriveDownloader
 {
-    private const int BufferSize = 81920;
-
     [GeneratedRegex(@"<form[^>]*id=""download-form""[^>]*action=""(?<action>[^""]+)""", RegexOptions.Singleline)]
     private static partial Regex FormRegex();
 
@@ -23,14 +21,16 @@ public static partial class GoogleDriveDownloader
 
         for (int attempt = 0; attempt < 3; attempt++)
         {
-            using var response = await GoogleDriveHttp.Client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, ct);
+            using var response = await StreamDownloader.GetAsync(GoogleDriveHttp.Client, url, ct);
 
             if (!response.IsSuccessStatusCode && response.Content.Headers.ContentType?.MediaType != "text/html")
                 throw new HttpRequestException(Loc.S.ErrPsvPatchDriveBlocked);
 
             if (response.Content.Headers.ContentType?.MediaType != "text/html")
             {
-                await CopyAsync(response, destinationPath, onBytes, ct);
+                await using var source = await response.Content.ReadAsStreamAsync(ct);
+
+                await StreamDownloader.CopyAsync(source, destinationPath, null, onBytes, null, ct);
 
                 return;
             }
@@ -65,21 +65,5 @@ public static partial class GoogleDriveDownloader
         string action = WebUtility.HtmlDecode(form.Groups["action"].Value);
 
         return query.Length == 0 ? action : $"{action}{(action.Contains('?') ? '&' : '?')}{query}";
-    }
-
-    private static async Task CopyAsync(HttpResponseMessage response, string destinationPath, Action<long> onBytes, CancellationToken ct)
-    {
-        await using var source = await response.Content.ReadAsStreamAsync(ct);
-        await using var target = new FileStream(destinationPath, FileMode.Create, FileAccess.Write, FileShare.None, BufferSize, true);
-
-        var buffer = new byte[BufferSize];
-        int read;
-
-        while ((read = await source.ReadAsync(buffer, ct)) > 0)
-        {
-            await target.WriteAsync(buffer.AsMemory(0, read), ct);
-
-            onBytes(read);
-        }
     }
 }

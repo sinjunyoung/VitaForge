@@ -3,6 +3,7 @@ using Common.Models;
 using Common.Services;
 using VitaForge.Core.Models.PSVita;
 using System.IO;
+using Vita.Core.Services;
 using System.Text.RegularExpressions;
 
 namespace VitaForge.Core.Services.PSVita;
@@ -42,7 +43,7 @@ public static partial class NpsPkgDownloadService
 
             try
             {
-                await NpsDownloadService.DownloadVerifiedAsync(item, partPath, reporter.AddProgress, log, ct);
+                await NpsDownloadService.DownloadVerifiedAsync(item, partPath, reporter.AddProgress, log, ct, false);
 
                 File.Move(partPath, finalPath);
 
@@ -51,7 +52,7 @@ public static partial class NpsPkgDownloadService
             }
             catch
             {
-                DeleteQuietly(partPath);
+                PkgOutputPaths.DeleteQuietly(partPath);
                 throw;
             }
 
@@ -124,15 +125,5 @@ public static partial class NpsPkgDownloadService
         string minor = parts.Length > 1 ? new string([.. parts[1].Where(char.IsDigit)]) : string.Empty;
 
         return major.PadLeft(2, '0') + minor.PadLeft(2, '0');
-    }
-
-    private static void DeleteQuietly(string path)
-    {
-        try
-        {
-            if (File.Exists(path))
-                File.Delete(path);
-        }
-        catch { }
     }
 }

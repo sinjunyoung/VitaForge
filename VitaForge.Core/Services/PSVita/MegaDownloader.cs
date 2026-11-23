@@ -33,26 +33,19 @@ public static class MegaDownloader
 
         aes.Key = aesKey;
 
-        using var response = await Client.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead, ct);
+        using var response = await StreamDownloader.GetAsync(Client, downloadUrl, ct);
 
         if (!response.IsSuccessStatusCode)
             throw new HttpRequestException(Loc.S.ErrPsvPatchMegaFailed((int)response.StatusCode));
 
         await using var source = await response.Content.ReadAsStreamAsync(ct);
-        await using var target = new FileStream(destinationPath, FileMode.Create, FileAccess.Write, FileShare.None, BufferSize, true);
 
-        var buffer = new byte[BufferSize];
         var counterBlocks = new byte[BufferSize];
         var keystream = new byte[BufferSize];
         long blockIndex = 0;
 
-        while (true)
+        await StreamDownloader.CopyAsync(source, destinationPath, response.Content.Headers.ContentLength, onBytes, (buffer, read) =>
         {
-            int read = await ReadFullAsync(source, buffer, ct);
-
-            if (read == 0)
-                break;
-
             int blocks = (read + 15) / 16;
 
             FillCounterBlocks(counterBlocks, nonce, blockIndex, blocks);
@@ -62,12 +55,8 @@ public static class MegaDownloader
             for (int i = 0; i < read; i++)
                 buffer[i] ^= keystream[i];
 
-            await target.WriteAsync(buffer.AsMemory(0, read), ct);
-
             blockIndex += blocks;
-
-            onBytes(read);
-        }
+        }, ct);
     }
 
     private static void FillCounterBlocks(byte[] counterBlocks, byte[] nonce, long firstBlockIndex, int blocks)
@@ -80,23 +69,6 @@ public static class MegaDownloader
 
             BinaryPrimitives.WriteUInt64BigEndian(counterBlocks.AsSpan(offset + 8, 8), (ulong)(firstBlockIndex + b));
         }
-    }
-
-    private static async Task<int> ReadFullAsync(Stream source, byte[] buffer, CancellationToken ct)
-    {
-        int total = 0;
-
-        while (total < buffer.Length)
-        {
-            int read = await source.ReadAsync(buffer.AsMemory(total), ct);
-
-            if (read == 0)
-                break;
-
-            total += read;
-        }
-
-        return total;
     }
 
     private static async Task<string> GetDownloadUrlAsync(string nodeId, CancellationToken ct)

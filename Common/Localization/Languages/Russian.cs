@@ -46,10 +46,15 @@ public sealed class Russian : LocalizedStrings
     public override string ButtonUnpack => "Распаковка";
     public override string ButtonUnpackAndRepackFull => "Распаковка + перепаковка (Full)";
     public override string ButtonUnpackAndRepackStreaming => "Распаковка + перепаковка (потоковая)";
+    public override string ErrDownloadIncomplete(object? arg0, object? arg1) => $"Загрузка прервана досрочно. ({arg0} / {arg1} байт)";
+    public override string ErrDownloadStalled => "Сервер не отвечает более 60 секунд; загрузка прервана.";
+    public override string ErrFileTooLargeForMemory(object? arg0, object? arg1) => $"Файл {arg0} слишком велик ({arg1} байт), чтобы загрузить его в память.";
+    public override string ErrVitaFileTooLargeForPatch(object? arg0, object? arg1) => $"Файл {arg0} слишком велик ({arg1} байт) для применения патча.";
     public override string HintPatchTargetLink => "Выберите целевой файл в дереве слева, затем дважды щёлкните элемент справа или нажмите «Связать».";
     public override string LabelPatchTargetCandidates => "Кандидаты целевых файлов";
     public override string LabelPatchTargetNone => "Не задано";
     public override string LabelPatchTargetUnmatched => "Патч-файлы без цели";
+    public override string LogVitaFilesFailedDiscarded(object? arg0) => $"Не удалось обработать файлов: {arg0}; результат отброшен.";
     public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"Цель патча выбрана вручную: {arg0} -> {arg1}";
     public override string LogVitaPatchTargetSkipped(object? arg0) => $"Выбор цели патча пропущен: {arg0}";
     public override string LogVitaRollbackDeleted(object? arg0) => $"Установка не удалась: удалено записанных файлов: {arg0}";

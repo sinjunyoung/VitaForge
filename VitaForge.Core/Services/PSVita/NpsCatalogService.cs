@@ -24,7 +24,22 @@ public sealed class NpsCatalogService
 
     private NpsCatalogService() { }
 
-    public Task LoadAsync() => IsLoaded ? Task.CompletedTask : Task.Run(Load);
+    private readonly Lock _loadLock = new();
+    private Task? _loadTask;
+
+    public Task LoadAsync()
+    {
+        if (IsLoaded)
+            return Task.CompletedTask;
+
+        lock (_loadLock)
+        {
+            if (_loadTask is { IsFaulted: false })
+                return _loadTask;
+
+            return _loadTask = Task.Run(Load);
+        }
+    }
 
     public NpsCatalogGame? FindGame(string? titleId) => !string.IsNullOrEmpty(titleId) && _byTitleId.TryGetValue(titleId, out var game) ? game : null;
 
@@ -118,7 +133,7 @@ public sealed class NpsCatalogService
             if (item == null || !games.TryGetValue(item.TitleId, out var game))
                 continue;
 
-            if (!seen.Add($"{item.TitleId}/{item.Version}"))
+            if (!seen.Add($"{item.TitleId}/{(string.IsNullOrEmpty(item.Version) ? item.Url : item.Version)}"))
                 continue;
 
             game.Updates.Add(item);
@@ -139,7 +154,7 @@ public sealed class NpsCatalogService
             if (item == null || !games.ContainsKey(item.TitleId))
                 continue;
 
-            string key = $"{item.TitleId}/{item.ContentId}";
+            string key = $"{item.TitleId}/{(string.IsNullOrEmpty(item.ContentId) ? item.Url : item.ContentId)}";
 
             if (picked.TryGetValue(key, out var existing) && (existing.HasKey || !item.HasKey))
                 continue;

@@ -15,6 +15,8 @@ public static class NpsDownloadInstallService
         try
         {
             var outputs = await NpsDownloadConvertService.RunAsync(items, destination, PkgConvertOutput.Direct, target, log, progress, ct, tracker);
+            tracker.Commit();
+
             return outputs.Count;
         }
         catch

@@ -46,10 +46,15 @@ public sealed class German : LocalizedStrings
     public override string ButtonUnpack => "Entpacken";
     public override string ButtonUnpackAndRepackFull => "Entpacken + Repack (Full)";
     public override string ButtonUnpackAndRepackStreaming => "Entpacken + Repack (streamingbasiert)";
+    public override string ErrDownloadIncomplete(object? arg0, object? arg1) => $"Der Download wurde vorzeitig beendet. ({arg0} / {arg1} Bytes)";
+    public override string ErrDownloadStalled => "Der Server hat über 60 Sekunden nicht geantwortet; der Download wurde abgebrochen.";
+    public override string ErrFileTooLargeForMemory(object? arg0, object? arg1) => $"{arg0} ist zu groß ({arg1} Bytes), um in den Speicher geladen zu werden.";
+    public override string ErrVitaFileTooLargeForPatch(object? arg0, object? arg1) => $"{arg0} ist zu groß ({arg1} Bytes), um gepatcht zu werden.";
     public override string HintPatchTargetLink => "Wählen Sie links im Baum eine Zieldatei aus und doppelklicken Sie dann rechts auf einen Eintrag oder klicken Sie auf Verknüpfen.";
     public override string LabelPatchTargetCandidates => "Mögliche Zieldateien";
     public override string LabelPatchTargetNone => "Nicht zugewiesen";
     public override string LabelPatchTargetUnmatched => "Patch-Dateien ohne Ziel";
+    public override string LogVitaFilesFailedDiscarded(object? arg0) => $"{arg0} Datei(en) konnten nicht verarbeitet werden; das Ergebnis wurde verworfen.";
     public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"Patch-Ziel manuell festgelegt: {arg0} -> {arg1}";
     public override string LogVitaPatchTargetSkipped(object? arg0) => $"Patch-Zielauswahl übersprungen: {arg0}";
     public override string LogVitaRollbackDeleted(object? arg0) => $"Installation fehlgeschlagen: {arg0} geschriebene Datei(en) gelöscht";

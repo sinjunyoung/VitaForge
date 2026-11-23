@@ -111,7 +111,7 @@ public class PatchMainViewModel : ProgressToolTabViewModel
 
     public PatchMainViewModel()
     {
-        _outputPath = string.IsNullOrWhiteSpace(AppConfig.Instance.OutputFolders.VitaPatchOutputPath) ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "output") : AppConfig.Instance.OutputFolders.VitaPatchOutputPath;
+        _outputPath = OutputFolderDefaults.Resolve(AppConfig.Instance.OutputFolders.VitaPatchOutputPath);
 
         ClearCheckedCommand = new RelayCommand(_ => ClearChecked(), _ => Rows.Any(r => r.IsChecked));
         ToggleAllCheckedCommand = new RelayCommand(_ => ToggleAllChecked(), _ => Rows.Any(r => r.IsSelectable));
@@ -260,17 +260,22 @@ public class PatchMainViewModel : ProgressToolTabViewModel
         {
             await NpsCatalogService.Instance.LoadAsync();
 
-            int succeeded = await PatchInstallService.RunAsync(items, options, ResolvePatchTarget, AppendLog, BuildProgressReporter(), ct);
+            var succeeded = await PatchInstallService.RunAsync(items, options, ResolvePatchTarget, AppendLog, BuildProgressReporter(), ct);
 
-            AppendLog(Loc.S.LogVitaAllDoneTitles(succeeded, _totalSw.Elapsed.ToString("mm\\:ss")), LogLevel.Ok);
-            ClearChecked();
+            AppendLog(Loc.S.LogVitaAllDoneTitles(succeeded.Count, _totalSw.Elapsed.ToString("mm\\:ss")), succeeded.Count > 0 ? LogLevel.Ok : LogLevel.Error);
 
-            if (succeeded > 0 && options.Mode == PatchOutputMode.Archive)
+            foreach (var row in Rows.Where(r => succeeded.Contains(r.Item)))
+                row.IsChecked = false;
+
+            if (succeeded.Count > 0 && options.Mode == PatchOutputMode.Archive)
                 options.TargetPath.OpenFolder();
-            else if (succeeded > 0 && options.Target == OutputTarget.Emu)
+            else if (succeeded.Count > 0 && options.Target == OutputTarget.Emu)
                 Vita3kLauncher.Launch(options.TargetPath, AppendLog);
 
-            await SoundPlayer.PlayCompleteAsync();
+            if (succeeded.Count > 0)
+                await SoundPlayer.PlayCompleteAsync();
+            else
+                await SoundPlayer.PlayErrorAsync();
         }
         catch (OperationCanceledException)
         {

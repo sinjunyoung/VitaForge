@@ -29,33 +29,8 @@ public static class NpsDownloadConvertService
         {
             long totalBytes = Math.Max(1, plans.Sum(p => p.Item.Size));
             var reporter = new ProgressReporter(Loc.S.StatusDownloading, string.Empty, totalBytes, progress);
-            var entries = new List<BatchSourceEntry>();
-
-            for (int i = 0; i < plans.Count; i++)
-            {
-                ct.ThrowIfCancellationRequested();
-
-                var plan = plans[i];
-                string pkgPath = Path.Combine(workDir, $"{plan.Item.TitleId}_{plan.Item.Kind}_{i}.pkg");
-
-                reporter.Label = $"{Loc.S.StatusDownloading} ({i + 1}/{plans.Count}): {plan.Item.Name}";
-
-                log(Loc.S.LogNpsDownloadingItem(i + 1, plans.Count, plan.Item.Name), LogLevel.Info);
-
-                await NpsDownloadService.DownloadVerifiedAsync(plan.Item, pkgPath, reporter.AddProgress, log, ct);
-
-                var probe = await Task.Run(() => PkgProbe.Probe(pkgPath), ct);
-
-                entries.Add(new BatchSourceEntry
-                {
-                    Kind = SourceKind.Pkg,
-                    Path = pkgPath,
-                    License = plan.License,
-                    Probe = probe
-                });
-            }
-
-            reporter.ForceReport();
+            var downloads = plans.Select(p => (p.Item, p.License)).ToList();
+            var entries = await PkgBatchDownloader.DownloadAsync(downloads, (item, index) => Path.Combine(workDir, $"{item.TitleId}_{item.Kind}_{index}.pkg"), null, reporter, log, ct);
 
             return target == OutputTarget.Emu
                 ? await DecryptService.DecryptAsync(entries, outputRoot, output, log, progress, tracker, ct)
@@ -63,7 +38,7 @@ public static class NpsDownloadConvertService
         }
         finally
         {
-            DeleteQuietly(workDir);
+            InstallWorkspace.Delete(workDir);
         }
     }
 
@@ -102,15 +77,5 @@ public static class NpsDownloadConvertService
         }
 
         return plans;
-    }
-
-    private static void DeleteQuietly(string path)
-    {
-        try
-        {
-            if (Directory.Exists(path))
-                Directory.Delete(path, true);
-        }
-        catch { }
     }
 }

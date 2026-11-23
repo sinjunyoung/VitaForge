@@ -10,10 +10,12 @@ namespace VitaForge.Core.Services.PSVita;
 
 public static class PatchInstallService
 {
-    public static async Task<int> RunAsync(IReadOnlyList<PatchCatalogItem> items, PatchInstallOptions options, PatchTargetResolver? resolver, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct)
+    public static async Task<List<PatchCatalogItem>> RunAsync(IReadOnlyList<PatchCatalogItem> items, PatchInstallOptions options, PatchTargetResolver? resolver, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct)
     {
-        int succeeded = 0;
+        var succeeded = new List<PatchCatalogItem>();
         string? destination = null;
+
+        InstallWorkspace.CleanStale();
 
         if (options.Mode == PatchOutputMode.Install)
             destination = InstallDestination.Resolve(options.Target, options.TargetPath, log);
@@ -40,7 +42,7 @@ public static class PatchInstallService
             try
             {
                 if (await InstallOneAsync(plan, options, workDir, destination, resolver, log, progress, ct))
-                    succeeded++;
+                    succeeded.Add(item);
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
@@ -65,36 +67,7 @@ public static class PatchInstallService
 
         string patchPath = await PatchFileDownloader.DownloadAsync(plan.Patch.DirectLink, workDir, log, ct);
 
-        var downloads = plan.Downloads;
-        var entries = new List<BatchSourceEntry>();
-
-        for (int i = 0; i < downloads.Count; i++)
-        {
-            ct.ThrowIfCancellationRequested();
-
-            var (item, license) = downloads[i];
-
-            string pkgPath = Utils.GetUniqueFilePath(Path.Combine(workDir, NpsPkgDownloadService.BuildFileName(item)));
-
-            reporter.Label = $"{Loc.S.StatusDownloading} ({i + 1}/{downloads.Count}): {item.Name}";
-
-            log(Loc.S.LogNpsDownloadingItem(i + 1, downloads.Count, item.Name), LogLevel.Info);
-
-            await NpsDownloadService.DownloadVerifiedAsync(item, pkgPath, reporter.AddProgress, log, ct);
-
-            var probe = await Task.Run(() => PkgProbe.Probe(pkgPath), ct);
-
-            entries.Add(new BatchSourceEntry
-            {
-                Kind = SourceKind.Pkg,
-                Path = pkgPath,
-                License = license,
-                PatchPath = patchPath,
-                Probe = probe
-            });
-        }
-
-        reporter.ForceReport();
+        var entries = await PkgBatchDownloader.DownloadAsync(plan.Downloads, (item, _) => Utils.GetUniqueFilePath(Path.Combine(workDir, NpsPkgDownloadService.BuildFileName(item))), patchPath, reporter, log, ct);
 
         string label = options.Target == OutputTarget.Emu ? Loc.S.LabelOutputEmu : Loc.S.LabelOutputRetail;
         bool archive = options.Mode == PatchOutputMode.Archive;
@@ -108,13 +81,13 @@ public static class PatchInstallService
         try
         {
             result = archive
-                ? await Task.Run(() => PatchOutputBuilder.BuildMergedFromEntriesAsync(entries, patchPath, outputPath, options.Target, log, progress, resolver, ct), ct)
-                : await Task.Run(() => PatchOutputBuilder.BuildMergedToFolderAsync(entries, patchPath, outputPath, options.Target, log, progress, resolver, tracker, ct), ct);
+                ? await Task.Run(() => PatchOutputBuilder.BuildMergedFromEntriesAsync(entries, patchPath, outputPath, options.Target, log, progress, resolver, ct, workDir), ct)
+                : await Task.Run(() => PatchOutputBuilder.BuildMergedToFolderAsync(entries, patchPath, outputPath, options.Target, log, progress, resolver, tracker, ct, workDir), ct);
         }
         catch
         {
             if (archive)
-                DeleteFileQuietly(outputPath);
+                PkgOutputPaths.DeleteQuietly(outputPath);
             else
                 InstallRollback.Run(tracker!, log);
 
@@ -124,7 +97,19 @@ public static class PatchInstallService
         log(Loc.S.LogVitaRepackDone(label, result.TotalFiles, result.PatchedSuccessfully, result.PatchCandidates, outputPath), LogLevel.Info);
 
         foreach (var entry in entries)
-            DeleteFileQuietly(entry.Path);
+            PkgOutputPaths.DeleteQuietly(entry.Path);
+
+        if (result.FailedFiles > 0)
+        {
+            log(Loc.S.LogVitaFilesFailedDiscarded(result.FailedFiles), LogLevel.Error);
+
+            if (archive)
+                PkgOutputPaths.DeleteQuietly(outputPath);
+            else
+                InstallRollback.Run(tracker!, log);
+
+            return false;
+        }
 
         if (result.PatchedSuccessfully == 0)
         {
@@ -133,7 +118,7 @@ public static class PatchInstallService
             log(Loc.S.LogPsvPatchNothingPatched(plan.Patch.Name), LogLevel.Error);
 
             if (archive)
-                DeleteFileQuietly(outputPath);
+                PkgOutputPaths.DeleteQuietly(outputPath);
             else
                 InstallRollback.Run(tracker!, log);
 
@@ -146,6 +131,8 @@ public static class PatchInstallService
 
             return true;
         }
+
+        tracker!.Commit();
 
         log(Loc.S.LogPsvPatchInstalled(plan.Patch.Name, destination), LogLevel.Ok);
 
@@ -177,15 +164,5 @@ public static class PatchInstallService
         {
             log(Loc.S.LogError(ex.Message), LogLevel.Error);
         }
-    }
-
-    private static void DeleteFileQuietly(string? path)
-    {
-        try
-        {
-            if (File.Exists(path))
-                File.Delete(path);
-        }
-        catch { }
     }
 }

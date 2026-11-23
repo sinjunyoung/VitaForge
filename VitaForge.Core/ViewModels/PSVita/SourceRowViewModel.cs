@@ -27,7 +27,7 @@ public class SourceRowViewModel : ViewModelBase
 
     public string? ContentIdSuffix { get; set; }
 
-    public ContentCategory? Category { get; set { SetProperty(ref field, value); }
+    public ContentCategory Category { get; set { SetProperty(ref field, value); }
     }
 
     public string? License
@@ -75,7 +75,7 @@ public class SourceRowViewModel : ViewModelBase
         _ => new SolidColorBrush(Color.FromRgb(0x6B, 0x72, 0x80)),
     };
 
-    private SourceRowViewModel(string path, SourceKind kind, string? itemSourcePath, string? titleId, ContentCategory? category, string? contentIdSuffix)
+    private SourceRowViewModel(string path, SourceKind kind, string? itemSourcePath, string? titleId, ContentCategory category, string? contentIdSuffix)
     {
         Path = path;
         Kind = kind;

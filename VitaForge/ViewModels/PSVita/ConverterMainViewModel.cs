@@ -54,7 +54,7 @@ public class ConverterMainViewModel : ProgressToolTabViewModel
 
     public ConverterMainViewModel()
     {
-        OutputPath = string.IsNullOrWhiteSpace(AppConfig.Instance.OutputFolders.VitaConvertOutputPath) ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "output") : AppConfig.Instance.OutputFolders.VitaConvertOutputPath;
+        OutputPath = OutputFolderDefaults.Resolve(AppConfig.Instance.OutputFolders.VitaConvertOutputPath);
 
         RemoveSelectedCommand = new RelayCommand(_ => RemoveRow(SelectedRow), _ => SelectedRow != null);
         RemoveAllCommand = new RelayCommand(_ => SourceRows.Clear(), _ => SourceRows.Count > 0);
@@ -133,36 +133,13 @@ public class ConverterMainViewModel : ProgressToolTabViewModel
 
     private static void ApplyLicenseFile(SourceRowViewModel? row, string pkgPath)
     {
-        string? dir = Path.GetDirectoryName(pkgPath);
+        if (row == null)
+            return;
 
-        if (!string.IsNullOrEmpty(dir))
-        {
-            string txtPath = Path.Combine(dir, Path.GetFileNameWithoutExtension(pkgPath) + ".txt");
+        string? license = LicenseResolver.Resolve(row.License, pkgPath, row.Category, row.TitleId, row.ContentIdSuffix);
 
-            if (File.Exists(txtPath))
-            {
-                try
-                {
-                    string txtContent = File.ReadAllText(txtPath).Trim();
-
-                    if (!string.IsNullOrEmpty(txtContent))
-                        row?.License = txtContent;
-                }
-                catch { }
-            }
-
-            if (string.IsNullOrEmpty(row?.License))
-            {
-                var group = NPSService.Instance.GetGroup(row?.TitleId);
-
-                row?.License = row?.Category switch
-                {
-                    ContentCategory.App => group?.App?.ZRif,
-                    ContentCategory.Addcont => group?.GetDlcLicense(row.ContentIdSuffix),
-                    _ => row?.License
-                };
-            }
-        }
+        if (!string.IsNullOrEmpty(license))
+            row.License = license;
     }
 
     private void AddOrReplaceRow(SourceRowViewModel newRow)

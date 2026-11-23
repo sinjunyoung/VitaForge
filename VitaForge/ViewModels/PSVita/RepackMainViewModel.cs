@@ -60,7 +60,7 @@ public class RepackMainViewModel : ProgressToolTabViewModel
     {
         _sources = new SourceRowCollection(AppendLog);
 
-        OutputPath = string.IsNullOrWhiteSpace(AppConfig.Instance.OutputFolders.VitaOutputPath) ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "output") : AppConfig.Instance.OutputFolders.VitaOutputPath;
+        OutputPath = OutputFolderDefaults.Resolve(AppConfig.Instance.OutputFolders.VitaOutputPath);
 
         RemoveSelectedCommand = new RelayCommand(_ => _sources.Remove(SelectedRow), _ => SelectedRow != null);
         RemoveAllCommand = new RelayCommand(_ => SourceRows.Clear(), _ => SourceRows.Count > 0);
@@ -196,6 +196,9 @@ public class RepackMainViewModel : ProgressToolTabViewModel
             AppendLog(Loc.S.LogVitaMergingGamePatch(label), LogLevel.Highlight);
 
             var result = await Task.Run(() => PatchOutputBuilder.BuildMergedFromEntriesAsync(entries, patchPath, zipPath, target, AppendLog, progress, ResolvePatchTarget, ct), ct);
+
+            if (result.FailedFiles > 0)
+                throw new InvalidDataException(Loc.S.LogVitaFilesFailedDiscarded(result.FailedFiles));
 
             AppendLog(Loc.S.LogVitaRepackDone(label, result.TotalFiles, result.PatchedSuccessfully, result.PatchCandidates, zipPath), LogLevel.Ok);
         }

@@ -26,6 +26,14 @@ namespace VitaForge.Core.Services.PSVita
 
         public bool TryGetGroup(string titleId, out NPSGroup group) => _cachedData.TryGetValue(titleId, out group!);
 
+        private static string NormalizeZRif(string zRif)
+        {
+            if (zRif.Equals("MISSING", StringComparison.OrdinalIgnoreCase) || zRif.Equals("NOT REQUIRED", StringComparison.OrdinalIgnoreCase))
+                return string.Empty;
+
+            return zRif;
+        }
+
         private static void ParseTsvFile(string filePath, bool isDlc, Dictionary<string, NPSGroup> dictionary)
         {
             foreach (var row in NpsTsvReader.Read(filePath, "Title ID", "zRIF", "Content ID"))
@@ -45,7 +53,7 @@ namespace VitaForge.Core.Services.PSVita
                 var item = new NPSItem
                 {
                     TitleId = titleId,
-                    ZRif = row["zRIF"],
+                    ZRif = NormalizeZRif(row["zRIF"]),
                     ContentId = contentId,
                     IsDlc = isDlc
                 };
@@ -57,9 +65,19 @@ namespace VitaForge.Core.Services.PSVita
                 }
 
                 if (!isDlc)
-                    group.App = item;
+                {
+                    if (group.App == null || (string.IsNullOrEmpty(group.App.ZRif) && !string.IsNullOrEmpty(item.ZRif)))
+                        group.App = item;
+                }
                 else
-                    group.Dlcs.Add(item);
+                {
+                    int existing = group.Dlcs.FindIndex(d => string.Equals(d.ContentId, item.ContentId, StringComparison.OrdinalIgnoreCase));
+
+                    if (existing < 0)
+                        group.Dlcs.Add(item);
+                    else if (string.IsNullOrEmpty(group.Dlcs[existing].ZRif) && !string.IsNullOrEmpty(item.ZRif))
+                        group.Dlcs[existing] = item;
+                }
             }
         }
     }

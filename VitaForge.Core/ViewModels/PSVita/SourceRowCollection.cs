@@ -16,8 +16,6 @@ public sealed class SourceRowCollection
 
     public ObservableCollection<SourceRowViewModel> Rows { get; } = [];
 
-    private static readonly string[] sourceArray = [".rif",".zrif", ".txt"];
-
     public event Action<string?>? PatchPathChanged;
 
     public SourceRowCollection(Action<string, LogLevel> log)
@@ -147,37 +145,10 @@ public sealed class SourceRowCollection
     {
         if (row.IsPkg && pkgPath != null)
         {
-            string? dir = Path.GetDirectoryName(pkgPath);
+            string? license = LicenseResolver.Resolve(row.License, pkgPath, row.Category, row.TitleId, row.ContentIdSuffix);
 
-            if (!string.IsNullOrEmpty(dir))
-            {
-                string baseName = Path.GetFileNameWithoutExtension(pkgPath);
-                string? licensePath = sourceArray.Select(ext => Path.Combine(dir, baseName + ext)).FirstOrDefault(File.Exists);
-
-                if (licensePath != null)
-                {
-                    try
-                    {
-                        string licenseText = File.ReadAllText(licensePath).Trim();
-
-                        if (!string.IsNullOrEmpty(licenseText))
-                            row.License = licenseText;
-                    }
-                    catch { }
-                }
-            }
-
-            if (string.IsNullOrEmpty(row.License))
-            {
-                var group = NPSService.Instance.GetGroup(row.TitleId);
-
-                row.License = row.Category switch
-                {
-                    ContentCategory.App => group?.App?.ZRif,
-                    ContentCategory.Addcont => group?.GetDlcLicense(row.ContentIdSuffix),
-                    _ => row.License
-                };
-            }
+            if (!string.IsNullOrEmpty(license))
+                row.License = license;
 
             if (row.Category != ContentCategory.Addcont)
             {

@@ -10,17 +10,19 @@ namespace Vita.Core.Services;
 
 public static class PatchOnlyBuilder
 {
-    public static Task<PatchOnlyResult> BuildFromEntriesAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, PatchTargetResolver? targetResolver = null, CancellationToken ct = default)
-        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, outputZipPath, target, log, progress, targetResolver, ct));
+    private static readonly string DefaultTempDirectory = Path.Combine(Path.GetTempPath(), "VitaForge");
 
-    private static async Task<PatchOnlyResult> BuildCoreAsync(List<SourceItem> items, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, PatchTargetResolver? targetResolver, CancellationToken ct)
+    public static Task<PatchOnlyResult> BuildFromEntriesAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, PatchTargetResolver? targetResolver = null, CancellationToken ct = default, string? tempDirectory = null)
+        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, outputZipPath, target, log, progress, targetResolver, ct, tempDirectory));
+
+    private static async Task<PatchOnlyResult> BuildCoreAsync(List<SourceItem> items, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, PatchTargetResolver? targetResolver, CancellationToken ct, string? tempDirectory)
     {
         var patchContexts = new Dictionary<string, PatchContext>(StringComparer.OrdinalIgnoreCase);
 
         try
         {
             var groups = PatchShared.BuildGroups(items, defaultPatchPath, patchContexts, target, log, ct, targetResolver);
-            return await WriteAsync(groups, outputZipPath, target, log, progress, ct);
+            return await WriteAsync(groups, outputZipPath, target, log, progress, ct, tempDirectory);
         }
         finally
         {
@@ -29,7 +31,7 @@ public static class PatchOnlyBuilder
         }
     }
 
-    internal static async Task<PatchOnlyResult> WriteAsync(List<MergeGroup> groups, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct)
+    internal static async Task<PatchOnlyResult> WriteAsync(List<MergeGroup> groups, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct, string? tempDirectory = null)
     {
         long totalBytes = 0;
 
@@ -71,14 +73,20 @@ public static class PatchOnlyBuilder
                     continue;
                 }
 
+                bool streamed = PatchShared.RequiresStreaming(t);
+
                 try
                 {
-                    byte[]? outputBytes = await PatchShared.ResolveTargetBytesAsync(t, log, ct);
+                    using var streamedResult = streamed ? await PatchShared.ResolveTargetStreamAsync(t, tempDirectory ?? DefaultTempDirectory, reporter.AddProgress, log, ct) : null;
+                    byte[]? outputBytes = streamed ? null : await PatchShared.ResolveTargetBytesAsync(t, log, ct);
 
-                    if (outputBytes is null)
+                    if (outputBytes is null && streamedResult is null)
                     {
                         writtenEntries.Remove(entryPath);
-                        reporter.AddProgress(t.EstimatedSize);
+
+                        if (!streamed)
+                            reporter.AddProgress(t.EstimatedSize);
+
                         continue;
                     }
 
@@ -87,29 +95,43 @@ public static class PatchOnlyBuilder
 
                     var zipEntry = zip.CreateEntry(entryPath, CompressionLevel.NoCompression);
 
-                    await PatchShared.WriteEntryWithProgressAsync(zipEntry, outputBytes, t.EstimatedSize, reporter, ct);
-
-                    foreach (var extra in TitleRuleRegistry.ExpandOutput(group.TitleId, t.RelativePath, outputBytes, log))
+                    if (outputBytes is not null)
                     {
-                        string extraPath = PatchShared.BuildEntryPath(prefix, group, extra.RelativePath);
+                        await PatchShared.WriteEntryWithProgressAsync(zipEntry, outputBytes, t.EstimatedSize, reporter, ct);
 
-                        if (!writtenEntries.Add(extraPath))
-                            continue;
+                        foreach (var extra in TitleRuleRegistry.ExpandOutput(group.TitleId, t.RelativePath, outputBytes, log))
+                        {
+                            string extraPath = PatchShared.BuildEntryPath(prefix, group, extra.RelativePath);
 
-                        var extraEntry = zip.CreateEntry(extraPath, CompressionLevel.NoCompression);
+                            if (!writtenEntries.Add(extraPath))
+                                continue;
 
-                        await PatchShared.WriteEntryWithProgressAsync(extraEntry, extra.Data, 0, reporter, ct);
+                            var extraEntry = zip.CreateEntry(extraPath, CompressionLevel.NoCompression);
+
+                            await PatchShared.WriteEntryWithProgressAsync(extraEntry, extra.Data, 0, reporter, ct);
+                        }
+                    }
+                    else
+                    {
+                        var content = streamedResult!.Content;
+
+                        using var entryStream = zipEntry.Open();
+                        await using var source = content.Open();
+
+                        await PatchShared.CopyStreamWithProgressAsync(source, entryStream, content.Length, 0, reporter, ct);
                     }
 
                     groupSuccess++;
                 }
-                catch (Exception ex)
+                catch (Exception ex) when (ex is not OperationCanceledException)
                 {
                     if (!strict)
                         groupMatched++;
 
                     log(Loc.S.LogVitaItemProcessFailed(group.Category, t.RelativePath, ex.Message), LogLevel.Error);
-                    reporter.AddProgress(t.EstimatedSize);
+
+                    if (!streamed)
+                        reporter.AddProgress(t.EstimatedSize);
                 }
             }
 

@@ -155,7 +155,7 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
 
     public DownloadMainViewModel()
     {
-        OutputPath = string.IsNullOrWhiteSpace(AppConfig.Instance.OutputFolders.VitaDownloadOutputPath) ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "output") : AppConfig.Instance.OutputFolders.VitaDownloadOutputPath;
+        OutputPath = OutputFolderDefaults.Resolve(AppConfig.Instance.OutputFolders.VitaDownloadOutputPath);
 
         AppConfig.Instance.OutputFolders.PropertyChanged += OnOutputFoldersChanged;
 

@@ -46,10 +46,15 @@ public sealed class Korean : LocalizedStrings
     public override string ButtonUnpack => "언팩";
     public override string ButtonUnpackAndRepackFull => "언팩 + 리팩 (Full)";
     public override string ButtonUnpackAndRepackStreaming => "언팩 + 리팩 (스트리밍 기반)";
+    public override string ErrDownloadIncomplete(object? arg0, object? arg1) => $"다운로드가 중간에 끊겼습니다. ({arg0} / {arg1} 바이트)";
+    public override string ErrDownloadStalled => "서버 응답이 60초 넘게 없어 다운로드를 중단했습니다.";
+    public override string ErrFileTooLargeForMemory(object? arg0, object? arg1) => $"{arg0} 파일이 너무 커서({arg1} 바이트) 메모리에 읽어 올 수 없습니다.";
+    public override string ErrVitaFileTooLargeForPatch(object? arg0, object? arg1) => $"{arg0} 파일이 너무 커서({arg1} 바이트) 패치를 적용할 수 없습니다.";
     public override string HintPatchTargetLink => "왼쪽 트리에서 대상 파일을 선택한 뒤 오른쪽 항목을 더블클릭하거나 [연결]을 누르세요.";
     public override string LabelPatchTargetCandidates => "대상 파일 후보";
     public override string LabelPatchTargetNone => "미지정";
     public override string LabelPatchTargetUnmatched => "대상 없는 패치 파일";
+    public override string LogVitaFilesFailedDiscarded(object? arg0) => $"{arg0}개 파일 처리에 실패하여 결과를 폐기했습니다.";
     public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"패치 대상 수동 지정: {arg0} -> {arg1}";
     public override string LogVitaPatchTargetSkipped(object? arg0) => $"패치 대상 선택 건너뜀: {arg0}";
     public override string LogVitaRollbackDeleted(object? arg0) => $"설치 실패: 쓰던 파일 {arg0}개를 삭제했습니다";

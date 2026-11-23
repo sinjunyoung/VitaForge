@@ -1,3 +1,4 @@
+using VitaForge.Core.Services.PSVita;
 using Common.Localization;
 using Common.Models;
 using Common.Services;
@@ -54,7 +55,7 @@ public class DecryptMainViewModel : ProgressToolTabViewModel
     {
         _sources = new SourceRowCollection(AppendLog);
 
-        OutputPath = string.IsNullOrWhiteSpace(AppConfig.Instance.OutputFolders.VitaDecryptOutputPath) ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "output") : AppConfig.Instance.OutputFolders.VitaDecryptOutputPath;
+        OutputPath = OutputFolderDefaults.Resolve(AppConfig.Instance.OutputFolders.VitaDecryptOutputPath);
 
         RemoveSelectedCommand = new RelayCommand(_ => _sources.Remove(SelectedRow), _ => SelectedRow != null);
         RemoveAllCommand = new RelayCommand(_ => SourceRows.Clear(), _ => SourceRows.Count > 0);

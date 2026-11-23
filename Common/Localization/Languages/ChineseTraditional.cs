@@ -46,10 +46,15 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string ButtonUnpack => "解包";
     public override string ButtonUnpackAndRepackFull => "解包 + 重新打包 (Full)";
     public override string ButtonUnpackAndRepackStreaming => "解包 + 重新打包 (以串流為基礎)";
+    public override string ErrDownloadIncomplete(object? arg0, object? arg1) => $"下載提前結束。({arg0} / {arg1} 位元組)";
+    public override string ErrDownloadStalled => "伺服器超過 60 秒無回應，已中止下載。";
+    public override string ErrFileTooLargeForMemory(object? arg0, object? arg1) => $"{arg0} 檔案過大（{arg1} 位元組），無法讀入記憶體。";
+    public override string ErrVitaFileTooLargeForPatch(object? arg0, object? arg1) => $"{arg0} 檔案過大（{arg1} 位元組），無法套用修補。";
     public override string HintPatchTargetLink => "在左側樹狀圖選取目標檔案，然後按兩下右側項目或按「關聯」。";
     public override string LabelPatchTargetCandidates => "候選目標檔案";
     public override string LabelPatchTargetNone => "未指定";
     public override string LabelPatchTargetUnmatched => "無目標的修補檔";
+    public override string LogVitaFilesFailedDiscarded(object? arg0) => $"{arg0} 個檔案處理失敗，已捨棄結果。";
     public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"手動指定修補目標: {arg0} -> {arg1}";
     public override string LogVitaPatchTargetSkipped(object? arg0) => $"已略過修補目標選擇: {arg0}";
     public override string LogVitaRollbackDeleted(object? arg0) => $"安裝失敗: 已刪除 {arg0} 個已寫入的檔案";

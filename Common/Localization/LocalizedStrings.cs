@@ -46,10 +46,15 @@ public abstract class LocalizedStrings
     public abstract string ButtonUnpack { get; }
     public abstract string ButtonUnpackAndRepackFull { get; }
     public abstract string ButtonUnpackAndRepackStreaming { get; }
+    public abstract string ErrDownloadIncomplete(object? arg0, object? arg1);
+    public abstract string ErrDownloadStalled { get; }
+    public abstract string ErrFileTooLargeForMemory(object? arg0, object? arg1);
+    public abstract string ErrVitaFileTooLargeForPatch(object? arg0, object? arg1);
     public abstract string HintPatchTargetLink { get; }
     public abstract string LabelPatchTargetCandidates { get; }
     public abstract string LabelPatchTargetNone { get; }
     public abstract string LabelPatchTargetUnmatched { get; }
+    public abstract string LogVitaFilesFailedDiscarded(object? arg0);
     public abstract string LogVitaPatchTargetSelected(object? arg0, object? arg1);
     public abstract string LogVitaPatchTargetSkipped(object? arg0);
     public abstract string LogVitaRollbackDeleted(object? arg0);

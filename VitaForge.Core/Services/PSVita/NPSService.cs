@@ -9,21 +9,30 @@ namespace VitaForge.Core.Services.PSVita
 
         public static NPSService Instance => _instance.Value;
 
+        private readonly Lock _gate = new();
+
         private bool _isInitialized = false;
 
         private NPSService() { }
 
         public void Initialize()
         {
-            if (_isInitialized) 
-                return;
+            lock (_gate)
+            {
+                if (_isInitialized)
+                    return;
 
-            string appPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PSV_GAMES.tsv");
-            string addContPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PSV_DLCS.tsv");
+                string appPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PSV_GAMES.tsv");
+                string addContPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PSV_DLCS.tsv");
 
-            NPSTsvParser.Instance.LoadData(appPath, addContPath);
+                try
+                {
+                    NPSTsvParser.Instance.LoadData(appPath, addContPath);
+                }
+                catch { }
 
-            _isInitialized = true;
+                _isInitialized = true;
+            }
         }
 
         public NPSGroup? GetGroup(string? titleId)

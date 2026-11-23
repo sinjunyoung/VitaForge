@@ -18,6 +18,9 @@ public static class Vita3kLauncher
             return false;
         }
 
+        if (IsRunning(info.ExePath))
+            return true;
+
         try
         {
             Process.Start(new ProcessStartInfo(info.ExePath)
@@ -36,5 +39,33 @@ public static class Vita3kLauncher
 
             return false;
         }
+    }
+
+    private static bool IsRunning(string exePath)
+    {
+        Process[] processes = [];
+
+        try
+        {
+            processes = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(exePath));
+
+            foreach (var process in processes)
+            {
+                try
+                {
+                    if (string.Equals(process.MainModule?.FileName, exePath, StringComparison.OrdinalIgnoreCase))
+                        return true;
+                }
+                catch { }
+            }
+        }
+        catch { }
+        finally
+        {
+            foreach (var process in processes)
+                process.Dispose();
+        }
+
+        return false;
     }
 }

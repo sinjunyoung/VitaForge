@@ -46,10 +46,15 @@ public sealed class Spanish : LocalizedStrings
     public override string ButtonUnpack => "Desempaquetar";
     public override string ButtonUnpackAndRepackFull => "Desempaquetar + Reempaquetar (Full)";
     public override string ButtonUnpackAndRepackStreaming => "Desempaquetar + Reempaquetar (streaming)";
+    public override string ErrDownloadIncomplete(object? arg0, object? arg1) => $"La descarga terminó antes de tiempo. ({arg0} / {arg1} bytes)";
+    public override string ErrDownloadStalled => "El servidor no respondió durante más de 60 segundos; se canceló la descarga.";
+    public override string ErrFileTooLargeForMemory(object? arg0, object? arg1) => $"{arg0} es demasiado grande ({arg1} bytes) para cargarse en memoria.";
+    public override string ErrVitaFileTooLargeForPatch(object? arg0, object? arg1) => $"{arg0} es demasiado grande ({arg1} bytes) para aplicar el parche.";
     public override string HintPatchTargetLink => "Seleccione un archivo de destino en el árbol de la izquierda y haga doble clic en un elemento de la derecha o pulse Vincular.";
     public override string LabelPatchTargetCandidates => "Archivos de destino candidatos";
     public override string LabelPatchTargetNone => "Sin asignar";
     public override string LabelPatchTargetUnmatched => "Archivos de parche sin destino";
+    public override string LogVitaFilesFailedDiscarded(object? arg0) => $"Error al procesar {arg0} archivo(s); se descartó el resultado.";
     public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"Destino del parche definido manualmente: {arg0} -> {arg1}";
     public override string LogVitaPatchTargetSkipped(object? arg0) => $"Selección de destino del parche omitida: {arg0}";
     public override string LogVitaRollbackDeleted(object? arg0) => $"Error de instalación: se eliminaron {arg0} archivo(s) escrito(s)";

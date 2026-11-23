@@ -21,7 +21,8 @@ public class ProgressReporter(string gameTitle, string gameId, long totalEstimat
         {
             bool force = cur >= total;
 
-            Report(cur, total, force);
+            lock (_lock)
+                Report(cur, total, force);
         };
     }
 
@@ -29,7 +30,8 @@ public class ProgressReporter(string gameTitle, string gameId, long totalEstimat
     {
         long current = (long)(percent * totalEstimated);
 
-        Report(current, totalEstimated, current >= totalEstimated);
+        lock (_lock)
+            Report(current, totalEstimated, current >= totalEstimated);
     }
 
     public void AddProgress(long bytesRead)
@@ -69,7 +71,7 @@ public class ProgressReporter(string gameTitle, string gameId, long totalEstimat
             var (ts, written) = _window.Peek();
             double secSpan = (now - ts) / freq;
             long bytesSpan = currentWritten - written;
-            double avgSpeed = currentWritten / ((now - _startTime) / freq);
+            double avgSpeed = now > _startTime ? currentWritten / ((now - _startTime) / freq) : 0;
             double windowSpeed = secSpan > 0 ? bytesSpan / secSpan : 0;
             double progressRatio = totalSize > 0 ? (double)currentWritten / totalSize : 0;
             double blendedSpeed = avgSpeed * (1 - progressRatio) + windowSpeed * progressRatio;

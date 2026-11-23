@@ -7,4 +7,6 @@ public sealed class MergeResult
     public required int PatchCandidates { get; init; }
 
     public required int PatchedSuccessfully { get; init; }
+
+    public int FailedFiles { get; init; }
 }

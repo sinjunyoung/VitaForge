@@ -46,10 +46,15 @@ public sealed class French : LocalizedStrings
     public override string ButtonUnpack => "Extraire";
     public override string ButtonUnpackAndRepackFull => "Extraire + Repack (Full)";
     public override string ButtonUnpackAndRepackStreaming => "Extraire + Repack (basé sur le streaming)";
+    public override string ErrDownloadIncomplete(object? arg0, object? arg1) => $"Le téléchargement s'est arrêté prématurément. ({arg0} / {arg1} octets)";
+    public override string ErrDownloadStalled => "Le serveur n'a pas répondu depuis plus de 60 secondes ; le téléchargement a été interrompu.";
+    public override string ErrFileTooLargeForMemory(object? arg0, object? arg1) => $"{arg0} est trop volumineux ({arg1} octets) pour être chargé en mémoire.";
+    public override string ErrVitaFileTooLargeForPatch(object? arg0, object? arg1) => $"{arg0} est trop volumineux ({arg1} octets) pour être patché.";
     public override string HintPatchTargetLink => "Sélectionnez un fichier cible dans l’arborescence à gauche, puis double-cliquez sur un élément à droite ou cliquez sur Lier.";
     public override string LabelPatchTargetCandidates => "Fichiers cibles possibles";
     public override string LabelPatchTargetNone => "Non défini";
     public override string LabelPatchTargetUnmatched => "Fichiers de patch sans cible";
+    public override string LogVitaFilesFailedDiscarded(object? arg0) => $"Échec du traitement de {arg0} fichier(s) ; le résultat a été supprimé.";
     public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"Cible du patch définie manuellement : {arg0} -> {arg1}";
     public override string LogVitaPatchTargetSkipped(object? arg0) => $"Sélection de la cible du patch ignorée : {arg0}";
     public override string LogVitaRollbackDeleted(object? arg0) => $"Échec de l’installation : {arg0} fichier(s) écrit(s) supprimé(s)";

@@ -46,10 +46,15 @@ public sealed class English : LocalizedStrings
     public override string ButtonUnpack => "Unpack";
     public override string ButtonUnpackAndRepackFull => "Unpack + Repack (Full)";
     public override string ButtonUnpackAndRepackStreaming => "Unpack + Repack (streaming-based)";
+    public override string ErrDownloadIncomplete(object? arg0, object? arg1) => $"The download ended early. ({arg0} / {arg1} bytes)";
+    public override string ErrDownloadStalled => "No response from the server for over 60 seconds; the download was aborted.";
+    public override string ErrFileTooLargeForMemory(object? arg0, object? arg1) => $"{arg0} is too large ({arg1} bytes) to be loaded into memory.";
+    public override string ErrVitaFileTooLargeForPatch(object? arg0, object? arg1) => $"{arg0} is too large ({arg1} bytes) to be patched in memory.";
     public override string HintPatchTargetLink => "Select a target file in the tree on the left, then double-click an item on the right or press Link.";
     public override string LabelPatchTargetCandidates => "Target file candidates";
     public override string LabelPatchTargetNone => "Not set";
     public override string LabelPatchTargetUnmatched => "Patch files without a target";
+    public override string LogVitaFilesFailedDiscarded(object? arg0) => $"{arg0} file(s) failed to process; the result was discarded.";
     public override string LogVitaPatchTargetSelected(object? arg0, object? arg1) => $"Patch target set manually: {arg0} -> {arg1}";
     public override string LogVitaPatchTargetSkipped(object? arg0) => $"Patch target selection skipped: {arg0}";
     public override string LogVitaRollbackDeleted(object? arg0) => $"Installation failed: deleted {arg0} written file(s)";

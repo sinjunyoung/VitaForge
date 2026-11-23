@@ -5,17 +5,14 @@ namespace VitaForge.Core.Services.PSVita;
 
 public static class HttpFileDownloader
 {
-    private const int BufferSize = 81920;
-
     public static async Task DownloadAsync(HttpClient client, string url, string destinationPath, CancellationToken ct)
     {
-        using var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, ct);
+        using var response = await StreamDownloader.GetAsync(client, url, ct);
 
         response.EnsureSuccessStatusCode();
 
         await using var source = await response.Content.ReadAsStreamAsync(ct);
-        await using var target = new FileStream(destinationPath, FileMode.Create, FileAccess.Write, FileShare.None, BufferSize, true);
 
-        await source.CopyToAsync(target, BufferSize, ct);
+        await StreamDownloader.CopyAsync(source, destinationPath, null, null, null, ct);
     }
 }

@@ -8,20 +8,22 @@ namespace Vita.Core.Services;
 
 public static class PatchOutputBuilder
 {
-    public static Task<MergeResult> BuildMergedFromEntriesAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, PatchTargetResolver? targetResolver = null, CancellationToken ct = default)
-        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, () => new ZipDecryptSink(outputZipPath), target, log, progress, targetResolver, ct));
+    private static readonly string DefaultTempDirectory = Path.Combine(Path.GetTempPath(), "VitaForge");
 
-    public static Task<MergeResult> BuildMergedToFolderAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputFolderPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, PatchTargetResolver? targetResolver = null, WrittenFileTracker? tracker = null, CancellationToken ct = default)
-        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, () => new FolderDecryptSink(outputFolderPath, tracker), target, log, progress, targetResolver, ct));
+    public static Task<MergeResult> BuildMergedFromEntriesAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, PatchTargetResolver? targetResolver = null, CancellationToken ct = default, string? tempDirectory = null)
+        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, () => new ZipDecryptSink(outputZipPath), target, log, progress, targetResolver, ct, tempDirectory));
 
-    private static async Task<MergeResult> BuildCoreAsync(List<SourceItem> items, string defaultPatchPath, Func<IDecryptSink> createSink, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, PatchTargetResolver? targetResolver, CancellationToken ct)
+    public static Task<MergeResult> BuildMergedToFolderAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputFolderPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, PatchTargetResolver? targetResolver = null, WrittenFileTracker? tracker = null, CancellationToken ct = default, string? tempDirectory = null)
+        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, () => new FolderDecryptSink(outputFolderPath, tracker), target, log, progress, targetResolver, ct, tempDirectory));
+
+    private static async Task<MergeResult> BuildCoreAsync(List<SourceItem> items, string defaultPatchPath, Func<IDecryptSink> createSink, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, PatchTargetResolver? targetResolver, CancellationToken ct, string? tempDirectory)
     {
         var patchContexts = new Dictionary<string, PatchContext>(StringComparer.OrdinalIgnoreCase);
 
         try
         {
             var groups = PatchShared.BuildGroups(items, defaultPatchPath, patchContexts, target, log, ct, targetResolver);
-            return await WriteAsync(groups, createSink, target, log, progress, ct);
+            return await WriteAsync(groups, createSink, target, log, progress, ct, tempDirectory);
         }
         finally
         {
@@ -30,7 +32,7 @@ public static class PatchOutputBuilder
         }
     }
 
-    internal static async Task<MergeResult> WriteAsync(List<MergeGroup> groups, Func<IDecryptSink> createSink, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct)
+    internal static async Task<MergeResult> WriteAsync(List<MergeGroup> groups, Func<IDecryptSink> createSink, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, CancellationToken ct, string? tempDirectory = null)
     {
         long totalBytes = 0;
 
@@ -41,20 +43,36 @@ public static class PatchOutputBuilder
         var writtenEntries = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         int patchCandidates = 0;
         int patchedSuccess = 0;
+        int failedFiles = 0;
 
-        async Task<byte[]?> PatchAsync(MergeGroup group, PatchTarget patchTarget)
+        async Task<PatchedPayload?> PatchAsync(MergeGroup group, PatchTarget patchTarget)
         {
+            bool streamed = PatchShared.RequiresStreaming(patchTarget);
+
             try
             {
-                byte[]? bytes = await PatchShared.ResolveTargetBytesAsync(patchTarget, log, ct);
+                PatchedPayload? payload;
 
-                if (bytes is not null)
+                if (streamed)
+                {
+                    var result = await PatchShared.ResolveTargetStreamAsync(patchTarget, tempDirectory ?? DefaultTempDirectory, reporter.AddProgress, log, ct);
+
+                    payload = result is null ? null : new PatchedPayload(null, result);
+                }
+                else
+                {
+                    byte[]? bytes = await PatchShared.ResolveTargetBytesAsync(patchTarget, log, ct);
+
+                    payload = bytes is null ? null : new PatchedPayload(bytes, null);
+                }
+
+                if (payload is not null)
                 {
                     patchCandidates++;
                     patchedSuccess++;
                 }
 
-                return bytes;
+                return payload;
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
@@ -66,7 +84,8 @@ public static class PatchOutputBuilder
             }
             finally
             {
-                reporter.AddProgress(patchTarget.EstimatedSize);
+                if (!streamed)
+                    reporter.AddProgress(patchTarget.EstimatedSize);
             }
         }
 
@@ -85,17 +104,18 @@ public static class PatchOutputBuilder
                     {
                         ct.ThrowIfCancellationRequested();
 
-                        byte[]? patchedBytes = targetByPath.TryGetValue(relativePath, out var patchTarget) ? await PatchAsync(group, patchTarget) : null;
+                        using var payload = targetByPath.TryGetValue(relativePath, out var patchTarget) ? await PatchAsync(group, patchTarget) : null;
                         string entryPath = PatchShared.BuildEntryPath(PatchShared.GetBasePrefix(group.Category), group, relativePath);
 
-                        if (patchedBytes is not null)
+                        if (payload is not null)
                         {
-                            await WriteEntryAsync(sink, writtenEntries, entryPath, patchedBytes, appEntry.FileEntry.Size, reporter, ct);
-                            await WriteExpandedAsync(sink, writtenEntries, PatchShared.GetBasePrefix(group.Category), group, relativePath, patchedBytes, reporter, log, ct);
+                            await WritePayloadAsync(sink, writtenEntries, entryPath, payload, appEntry.FileEntry.Size, reporter, ct);
+                            await WritePayloadExpandedAsync(sink, writtenEntries, PatchShared.GetBasePrefix(group.Category), group, relativePath, payload, reporter, log, ct);
                             continue;
                         }
 
-                        WriteDecryptedEntry(sink, writtenEntries, entryPath, group, relativePath, appEntry, reporter, log, ct);
+                        if (!WriteDecryptedEntry(sink, writtenEntries, entryPath, group, relativePath, appEntry, reporter, log, ct))
+                            failedFiles++;
                     }
                 }
                 else
@@ -107,7 +127,11 @@ public static class PatchOutputBuilder
                             ct.ThrowIfCancellationRequested();
 
                             if (!WriteOwnedFile(sink, writtenEntries, owner, group, relativePath, size, reporter, log, ct))
+                            {
+                                failedFiles++;
+
                                 continue;
+                            }
 
                             if (!targetByPath.TryGetValue(relativePath, out var patchTarget))
                                 continue;
@@ -115,14 +139,14 @@ public static class PatchOutputBuilder
                             if (!handledTargets.Add(relativePath))
                                 continue;
 
-                            byte[]? patchedBytes = await PatchAsync(group, patchTarget);
+                            using var payload = await PatchAsync(group, patchTarget);
 
-                            if (patchedBytes != null)
+                            if (payload != null)
                             {
                                 string patchedEntryPath = PatchShared.BuildEntryPath(PatchShared.GetPatchedPrefix(group.Category, target), group, relativePath);
 
-                                await WriteEntryAsync(sink, writtenEntries, patchedEntryPath, patchedBytes, patchTarget.EstimatedSize, reporter, ct);
-                                await WriteExpandedAsync(sink, writtenEntries, PatchShared.GetPatchedPrefix(group.Category, target), group, relativePath, patchedBytes, reporter, log, ct);
+                                await WritePayloadAsync(sink, writtenEntries, patchedEntryPath, payload, patchTarget.EstimatedSize, reporter, ct);
+                                await WritePayloadExpandedAsync(sink, writtenEntries, PatchShared.GetPatchedPrefix(group.Category, target), group, relativePath, payload, reporter, log, ct);
                             }
                         }
                     }
@@ -138,8 +162,40 @@ public static class PatchOutputBuilder
             reporter.ForceReport();
         }
 
-        return new MergeResult { TotalFiles = writtenEntries.Count, PatchCandidates = patchCandidates, PatchedSuccessfully = patchedSuccess };
+        return new MergeResult { TotalFiles = writtenEntries.Count, PatchCandidates = patchCandidates, PatchedSuccessfully = patchedSuccess, FailedFiles = failedFiles };
     }
+
+    private sealed class PatchedPayload(byte[]? bytes, StreamedPatchResult? streamed) : IDisposable
+    {
+        public byte[]? Bytes { get; } = bytes;
+
+        public StreamedPatchResult? Streamed { get; } = streamed;
+
+        public void Dispose() => Streamed?.Dispose();
+    }
+
+    private static async Task WritePayloadAsync(IDecryptSink sink, HashSet<string> writtenEntries, string entryPath, PatchedPayload payload, long estimatedSize, ProgressReporter reporter, CancellationToken ct)
+    {
+        if (payload.Bytes is { } bytes)
+        {
+            await WriteEntryAsync(sink, writtenEntries, entryPath, bytes, estimatedSize, reporter, ct);
+
+            return;
+        }
+
+        var content = payload.Streamed!.Content;
+
+        if (!writtenEntries.Add(entryPath))
+            return;
+
+        using var entryStream = sink.Open(entryPath);
+        await using var source = content.Open();
+
+        await PatchShared.CopyStreamWithProgressAsync(source, entryStream, content.Length, estimatedSize, reporter, ct);
+    }
+
+    private static Task WritePayloadExpandedAsync(IDecryptSink sink, HashSet<string> writtenEntries, string prefix, MergeGroup group, string relativePath, PatchedPayload payload, ProgressReporter reporter, Action<string, LogLevel> log, CancellationToken ct)
+        => payload.Bytes is { } bytes ? WriteExpandedAsync(sink, writtenEntries, prefix, group, relativePath, bytes, reporter, log, ct) : Task.CompletedTask;
 
     private static async Task WriteExpandedAsync(IDecryptSink sink, HashSet<string> writtenEntries, string prefix, MergeGroup group, string relativePath, byte[] patchedBytes, ProgressReporter reporter, Action<string, LogLevel> log, CancellationToken ct)
     {
@@ -166,10 +222,10 @@ public static class PatchOutputBuilder
         return ownedTotal + group.Targets.Sum(t => t.EstimatedSize);
     }
 
-    private static void WriteDecryptedEntry(IDecryptSink sink, HashSet<string> writtenEntries, string entryPath, MergeGroup group, string relativePath, PatchAppEntry appEntry, ProgressReporter reporter, Action<string, LogLevel> log, CancellationToken ct)
+    private static bool WriteDecryptedEntry(IDecryptSink sink, HashSet<string> writtenEntries, string entryPath, MergeGroup group, string relativePath, PatchAppEntry appEntry, ProgressReporter reporter, Action<string, LogLevel> log, CancellationToken ct)
     {
         if (!writtenEntries.Add(entryPath))
-            return;
+            return true;
 
         var owner = appEntry.Owner;
         long reported = 0;
@@ -193,7 +249,11 @@ public static class PatchOutputBuilder
 
             log(Loc.S.LogVitaDecryptFailed(group.Category, relativePath, ex.Message), LogLevel.Error);
             reporter.AddProgress(appEntry.FileEntry.Size - reported);
+
+            return false;
         }
+
+        return true;
     }
 
     private static bool WriteOwnedFile(IDecryptSink sink, HashSet<string> writtenEntries, OwnerContext owner, MergeGroup group, string relativePath, long size, ProgressReporter reporter, Action<string, LogLevel> log, CancellationToken ct)

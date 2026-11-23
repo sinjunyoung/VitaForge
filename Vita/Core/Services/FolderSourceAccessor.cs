@@ -14,6 +14,8 @@ public sealed class FolderSourceAccessor(string root) : ISourceAccessor
 
     public byte[] ReadAllBytes(string relativePath) => File.ReadAllBytes(Full(relativePath));
 
+    public Stream OpenRead(string relativePath) => new FileStream(Full(relativePath), FileMode.Open, FileAccess.Read, FileShare.Read, 81920, FileOptions.SequentialScan);
+
     public void CopyTo(string relativePath, Stream destination, Action<long>? onProgress = null)
     {
         using var source = new FileStream(Full(relativePath), FileMode.Open, FileAccess.Read, FileShare.Read);

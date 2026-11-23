@@ -28,7 +28,7 @@ public static class UnpackService
         {
             ct.ThrowIfCancellationRequested();
 
-            int groupWritten = await UnpackGroupAsync(group, unpackedRoot, writtenEntries, reporter, log, ct);
+            int groupWritten = await Task.Run(() => UnpackGroup(group, unpackedRoot, writtenEntries, reporter, log, ct), ct);
 
             written += groupWritten;
 
@@ -42,7 +42,7 @@ public static class UnpackService
         return written;
     }
 
-    private static async Task<int> UnpackGroupAsync(BaseGroup group, string unpackedRoot, HashSet<string> writtenEntries, ProgressReporter reporter, Action<string, LogLevel> log, CancellationToken ct)
+    private static int UnpackGroup(BaseGroup group, string unpackedRoot, HashSet<string> writtenEntries, ProgressReporter reporter, Action<string, LogLevel> log, CancellationToken ct)
     {
         int count = 0;
 
@@ -59,20 +59,43 @@ public static class UnpackService
                 if (!writtenEntries.Add(entryPath))
                     continue;
 
-                byte[] data;
+                string fullPath = ResolvePath(unpackedRoot, entryPath);
+                long reported = 0;
+
+                Directory.CreateDirectory(Path.GetDirectoryName(fullPath)!);
 
                 try
                 {
-                    data = owner.Item.Accessor!.ReadAllBytes($"{owner.Item.SourcePath}/{relativePath}");
+                    using var stream = new FileStream(fullPath, FileMode.Create, FileAccess.Write, FileShare.None, 81920);
+
+                    SourceStreamCopier.CopyScaled(owner.Item.Accessor!, $"{owner.Item.SourcePath}/{relativePath}", stream, size, delta =>
+                    {
+                        ct.ThrowIfCancellationRequested();
+
+                        reported += delta;
+
+                        reporter.AddProgress(delta);
+                    });
                 }
                 catch (Exception ex) when (ex is not OperationCanceledException)
                 {
+                    DeleteQuietly(fullPath);
+
+                    writtenEntries.Remove(entryPath);
+
                     log(Loc.S.LogVitaSourceReadFailed(owner.Item.Category, relativePath, ex.Message), LogLevel.Error);
-                    reporter.AddProgress(size);
+
+                    if (size > reported)
+                        reporter.AddProgress(size - reported);
+
                     continue;
                 }
+                catch
+                {
+                    DeleteQuietly(fullPath);
 
-                await WriteFileAsync(unpackedRoot, entryPath, data, size, reporter, ct);
+                    throw;
+                }
 
                 count++;
             }
@@ -81,7 +104,7 @@ public static class UnpackService
         return count;
     }
 
-    private static async Task WriteFileAsync(string unpackedRoot, string entryPath, byte[] data, long estimatedSize, ProgressReporter reporter, CancellationToken ct)
+    private static string ResolvePath(string unpackedRoot, string entryPath)
     {
         string root = Path.GetFullPath(unpackedRoot) + Path.DirectorySeparatorChar;
         string fullPath = Path.GetFullPath(Path.Combine(unpackedRoot, entryPath.Replace('/', Path.DirectorySeparatorChar)));
@@ -89,10 +112,16 @@ public static class UnpackService
         if (!fullPath.StartsWith(root, StringComparison.OrdinalIgnoreCase))
             throw new InvalidDataException(Loc.S.ErrPathNotAllowed(entryPath));
 
-        Directory.CreateDirectory(Path.GetDirectoryName(fullPath)!);
+        return fullPath;
+    }
 
-        await using var stream = new FileStream(fullPath, FileMode.Create, FileAccess.Write, FileShare.None, 81920, useAsync: true);
-
-        await PatchShared.WriteStreamWithProgressAsync(stream, data, estimatedSize, reporter, ct);
+    private static void DeleteQuietly(string path)
+    {
+        try
+        {
+            if (File.Exists(path))
+                File.Delete(path);
+        }
+        catch { }
     }
 }

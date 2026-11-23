@@ -28,13 +28,16 @@ public static class DecryptService
             ct.ThrowIfCancellationRequested();
 
             string outputPath = PkgOutputPaths.Resolve(outputRoot, titleGroup.Key, output);
-            int count;
+            (int Count, int Failed) written;
 
             try
             {
                 using IDecryptSink sink = output == PkgConvertOutput.Zip ? new ZipDecryptSink(outputPath) : new FolderDecryptSink(outputPath, tracker);
 
-                count = await WriteTitleAsync([.. titleGroup], sink, reporter, log, ct);
+                written = await WriteTitleAsync([.. titleGroup], sink, reporter, log, ct);
+
+                if (written.Failed > 0 && output == PkgConvertOutput.Direct)
+                    throw new InvalidDataException(Loc.S.LogVitaFilesFailedDiscarded(written.Failed));
             }
             catch
             {
@@ -44,7 +47,7 @@ public static class DecryptService
 
             outputs.Add(outputPath);
 
-            log(Loc.S.LogVitaDecryptGroupOutput(titleGroup.Key, count, outputPath), LogLevel.Ok);
+            log(Loc.S.LogVitaDecryptGroupOutput(titleGroup.Key, written.Count, outputPath), LogLevel.Ok);
         }
 
         reporter.ForceReport();
@@ -52,10 +55,11 @@ public static class DecryptService
         return outputs;
     }
 
-    private static async Task<int> WriteTitleAsync(List<BaseGroup> groups, IDecryptSink sink, ProgressReporter reporter, Action<string, LogLevel> log, CancellationToken ct)
+    private static async Task<(int Count, int Failed)> WriteTitleAsync(List<BaseGroup> groups, IDecryptSink sink, ProgressReporter reporter, Action<string, LogLevel> log, CancellationToken ct)
     {
         var writtenLicenses = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         int count = 0;
+        int failed = 0;
 
         foreach (var group in groups)
         {
@@ -85,6 +89,7 @@ public static class DecryptService
                 {
                     log(Loc.S.LogVitaDecryptFailed(group.Category, relativePath, ex.Message), LogLevel.Error);
                     reporter.AddProgress(fileEntry.Size - reported);
+                    failed++;
                     continue;
                 }
 
@@ -102,6 +107,6 @@ public static class DecryptService
             }
         }
 
-        return count;
+        return (count, failed);
     }
 }
