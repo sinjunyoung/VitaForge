@@ -13,5 +13,7 @@ internal interface ITitleRule
 
     IEnumerable<ExpandedFile> ExpandOutput(string relativePath, byte[] outputBytes, Action<string, LogLevel> log) => [];
 
+    long EstimateExpandedSize(string relativePath, byte[] outputBytes) => 0;
+
     IEnumerable<ExtraPatchFile> SelectExtraFiles(IReadOnlyList<PatchContainerFile> files) => [];
 }

@@ -12,7 +12,39 @@ internal static class L7caUnpacker
 
     private static readonly uint[] CrcTable = BuildCrcTable();
 
+    public static long GetTotalSize(byte[] archive, string prefix)
+    {
+        try
+        {
+            var index = ReadIndex(archive, prefix);
+
+            return index.Targets.Sum(t => (long)I32(archive, t.EntryPos + 4));
+        }
+        catch (Exception ex) when (ex is InvalidDataException or IndexOutOfRangeException or ArgumentException)
+        {
+            return 0;
+        }
+    }
+
     public static IEnumerable<(string Path, byte[] Data)> Unpack(byte[] archive, string prefix, List<string> failures)
+    {
+        var index = ReadIndex(archive, prefix);
+
+        foreach (var (name, entryPos) in index.Targets)
+        {
+            byte[]? data = TryExtract(archive, entryPos, index.ChunkTableStart, out string? error);
+
+            if (data is null)
+            {
+                failures.Add($"{name}: {error}");
+                continue;
+            }
+
+            yield return (name, data);
+        }
+    }
+
+    private static L7caIndex ReadIndex(byte[] archive, string prefix)
     {
         if (archive.Length < 48 || U32(archive, 0) != Magic)
             throw new InvalidDataException("L7CA 아카이브가 아닙니다.");
@@ -41,20 +73,13 @@ internal static class L7caUnpacker
 
         int fileEntriesStart = metadataOffset + fsEntries * FsEntrySize;
         int chunkTableStart = fileEntriesStart + files * FileEntrySize;
-        var targets = nameToId.Keys.Where(n => n.StartsWith(prefix, StringComparison.Ordinal) && !n.Contains('?')).Order(StringComparer.Ordinal).ToList();
+        var targets = nameToId.Keys
+            .Where(n => n.StartsWith(prefix, StringComparison.Ordinal) && !n.Contains('?'))
+            .Order(StringComparer.Ordinal)
+            .Select(n => (Name: n, EntryPos: fileEntriesStart + nameToId[n] * FileEntrySize))
+            .ToList();
 
-        foreach (var name in targets)
-        {
-            byte[]? data = TryExtract(archive, fileEntriesStart + nameToId[name] * FileEntrySize, chunkTableStart, out string? error);
-
-            if (data is null)
-            {
-                failures.Add($"{name}: {error}");
-                continue;
-            }
-
-            yield return (name, data);
-        }
+        return new L7caIndex(targets, chunkTableStart);
     }
 
     private static byte[]? TryExtract(byte[] archive, int entryPos, int chunkTableStart, out string? error)
@@ -224,6 +249,8 @@ internal static class L7caUnpacker
     private static int I32(byte[] d, int o) => BinaryPrimitives.ReadInt32LittleEndian(d.AsSpan(o));
 
     private static uint U32(byte[] d, int o) => BinaryPrimitives.ReadUInt32LittleEndian(d.AsSpan(o));
+
+    private sealed record L7caIndex(List<(string Name, int EntryPos)> Targets, int ChunkTableStart);
 
     private sealed class GrowBuffer
     {

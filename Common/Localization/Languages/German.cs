@@ -1462,6 +1462,7 @@ public sealed class German : LocalizedStrings
     public override string StatusTitlesLoaded(object? arg0) => $"{arg0} Titel geladen";
     public override string StatusUnmatched => "Nicht zugeordnet";
     public override string StatusUnpacking => "Wird entpackt";
+    public override string StatusUnpackingPatchedArchive => "Gepatchtes Archiv wird entpackt";
     public override string StatusUnsupported => "Nicht unterstützt";
     public override string StatusUnzipDone => "Entpackt";
     public override string StatusUnzipFailed => "Entpacken fehlgeschlagen";

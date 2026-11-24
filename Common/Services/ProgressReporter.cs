@@ -15,6 +15,8 @@ public class ProgressReporter(string gameTitle, string gameId, long totalEstimat
 
     public ProgressStage Stage { get; set; }
 
+    public ProgressReporter CreateStage(string label, long total) => new(label, gameId, total, progress) { Stage = Stage };
+
     public Action<long, long> CreateAction()
     {
         return (cur, total) =>

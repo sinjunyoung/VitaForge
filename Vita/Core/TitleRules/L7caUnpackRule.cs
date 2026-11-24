@@ -9,6 +9,9 @@ internal sealed class L7caUnpackRule(string titleId, string archiveRelativePath,
 
     public string TitleId { get; } = titleId;
 
+    public long EstimateExpandedSize(string relativePath, byte[] outputBytes)
+        => PatchShared.NormalizeZipPath(relativePath).Equals(_archivePath, StringComparison.OrdinalIgnoreCase) ? L7caUnpacker.GetTotalSize(outputBytes, prefix) : 0;
+
     public IEnumerable<ExpandedFile> ExpandOutput(string relativePath, byte[] outputBytes, Action<string, LogLevel> log)
     {
         if (!PatchShared.NormalizeZipPath(relativePath).Equals(_archivePath, StringComparison.OrdinalIgnoreCase))

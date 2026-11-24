@@ -1462,6 +1462,7 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string StatusTitlesLoaded(object? arg0) => $"已加载 {arg0} 个标题";
     public override string StatusUnmatched => "未匹配";
     public override string StatusUnpacking => "正在解包";
+    public override string StatusUnpackingPatchedArchive => "正在解压已打补丁的归档";
     public override string StatusUnsupported => "不支持";
     public override string StatusUnzipDone => "解压完成";
     public override string StatusUnzipFailed => "解压失败";

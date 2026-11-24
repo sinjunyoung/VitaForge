@@ -1462,6 +1462,7 @@ public sealed class Japanese : LocalizedStrings
     public override string StatusTitlesLoaded(object? arg0) => $"{arg0}タイトルの読み込み完了";
     public override string StatusUnmatched => "未マッチ";
     public override string StatusUnpacking => "アンパック中";
+    public override string StatusUnpackingPatchedArchive => "パッチ適用済みアーカイブを展開中";
     public override string StatusUnsupported => "非対応";
     public override string StatusUnzipDone => "解凍完了";
     public override string StatusUnzipFailed => "解凍失敗";

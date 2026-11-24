@@ -1462,6 +1462,7 @@ public sealed class Spanish : LocalizedStrings
     public override string StatusTitlesLoaded(object? arg0) => $"{arg0} títulos cargados";
     public override string StatusUnmatched => "Sin emparejar";
     public override string StatusUnpacking => "Desempaquetando";
+    public override string StatusUnpackingPatchedArchive => "Descomprimiendo el archivo parcheado";
     public override string StatusUnsupported => "No compatible";
     public override string StatusUnzipDone => "Descomprimido";
     public override string StatusUnzipFailed => "Error al descomprimir";

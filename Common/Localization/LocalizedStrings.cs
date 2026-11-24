@@ -1462,6 +1462,7 @@ public abstract class LocalizedStrings
     public abstract string StatusTitlesLoaded(object? arg0);
     public abstract string StatusUnmatched { get; }
     public abstract string StatusUnpacking { get; }
+    public abstract string StatusUnpackingPatchedArchive { get; }
     public abstract string StatusUnsupported { get; }
     public abstract string StatusUnzipDone { get; }
     public abstract string StatusUnzipFailed { get; }

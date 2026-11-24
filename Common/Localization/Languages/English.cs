@@ -1462,6 +1462,7 @@ public sealed class English : LocalizedStrings
     public override string StatusTitlesLoaded(object? arg0) => $"{arg0} titles loaded";
     public override string StatusUnmatched => "Unmatched";
     public override string StatusUnpacking => "Unpacking";
+    public override string StatusUnpackingPatchedArchive => "Unpacking patched archive";
     public override string StatusUnsupported => "Unsupported";
     public override string StatusUnzipDone => "Decompressed";
     public override string StatusUnzipFailed => "Decompress failed";

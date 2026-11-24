@@ -199,14 +199,18 @@ public static class PatchOutputBuilder
 
     private static async Task WriteExpandedAsync(IDecryptSink sink, HashSet<string> writtenEntries, string prefix, MergeGroup group, string relativePath, byte[] patchedBytes, ProgressReporter reporter, Action<string, LogLevel> log, CancellationToken ct)
     {
+        var expansion = new ExpansionProgress(reporter, group.TitleId, relativePath, patchedBytes);
+
         foreach (var extra in TitleRuleRegistry.ExpandOutput(group.TitleId, relativePath, patchedBytes, log))
         {
             ct.ThrowIfCancellationRequested();
 
             string entryPath = PatchShared.BuildEntryPath(prefix, group, extra.RelativePath);
 
-            await WriteEntryAsync(sink, writtenEntries, entryPath, extra.Data, 0, reporter, ct);
+            await WriteEntryAsync(sink, writtenEntries, entryPath, extra.Data, expansion.SizeOf(extra), expansion.Reporter, ct);
         }
+
+        expansion.Complete();
     }
 
     private static long GetWriteTotal(MergeGroup group, OutputTarget target)

@@ -1462,6 +1462,7 @@ public sealed class Korean : LocalizedStrings
     public override string StatusTitlesLoaded(object? arg0) => $"{arg0}개 타이틀 로드 완료";
     public override string StatusUnmatched => "미매칭";
     public override string StatusUnpacking => "언팩 중";
+    public override string StatusUnpackingPatchedArchive => "패치된 아카이브 해제 중";
     public override string StatusUnsupported => "미지원";
     public override string StatusUnzipDone => "압축 해제 완료";
     public override string StatusUnzipFailed => "압축 해제 실패";

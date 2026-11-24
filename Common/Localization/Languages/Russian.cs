@@ -1462,6 +1462,7 @@ public sealed class Russian : LocalizedStrings
     public override string StatusTitlesLoaded(object? arg0) => $"Загружено названий: {arg0}";
     public override string StatusUnmatched => "Не сопоставлено";
     public override string StatusUnpacking => "Распаковка";
+    public override string StatusUnpackingPatchedArchive => "Распаковка пропатченного архива";
     public override string StatusUnsupported => "Не поддерживается";
     public override string StatusUnzipDone => "Распаковано";
     public override string StatusUnzipFailed => "Ошибка распаковки";

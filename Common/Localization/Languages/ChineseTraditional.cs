@@ -1462,6 +1462,7 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string StatusTitlesLoaded(object? arg0) => $"已載入 {arg0} 個標題";
     public override string StatusUnmatched => "未配對";
     public override string StatusUnpacking => "正在解包";
+    public override string StatusUnpackingPatchedArchive => "正在解壓縮已套用修補的封存檔";
     public override string StatusUnsupported => "不支援";
     public override string StatusUnzipDone => "解壓縮完成";
     public override string StatusUnzipFailed => "解壓縮失敗";

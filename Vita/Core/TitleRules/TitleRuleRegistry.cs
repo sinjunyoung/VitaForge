@@ -31,6 +31,8 @@ internal static class TitleRuleRegistry
         return sourceBytes;
     }
 
+    public static long EstimateExpandedSize(string titleId, string relativePath, byte[] outputBytes) => Rules[titleId].Sum(r => r.EstimateExpandedSize(relativePath, outputBytes));
+
     public static IEnumerable<ExpandedFile> ExpandOutput(string titleId, string relativePath, byte[] outputBytes, Action<string, LogLevel> log)
     {
         foreach (var rule in Rules[titleId])

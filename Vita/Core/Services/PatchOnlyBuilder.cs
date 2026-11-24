@@ -99,6 +99,8 @@ public static class PatchOnlyBuilder
                     {
                         await PatchShared.WriteEntryWithProgressAsync(zipEntry, outputBytes, t.EstimatedSize, reporter, ct);
 
+                        var expansion = new ExpansionProgress(reporter, group.TitleId, t.RelativePath, outputBytes);
+
                         foreach (var extra in TitleRuleRegistry.ExpandOutput(group.TitleId, t.RelativePath, outputBytes, log))
                         {
                             string extraPath = PatchShared.BuildEntryPath(prefix, group, extra.RelativePath);
@@ -108,8 +110,10 @@ public static class PatchOnlyBuilder
 
                             var extraEntry = zip.CreateEntry(extraPath, CompressionLevel.NoCompression);
 
-                            await PatchShared.WriteEntryWithProgressAsync(extraEntry, extra.Data, 0, reporter, ct);
+                            await PatchShared.WriteEntryWithProgressAsync(extraEntry, extra.Data, expansion.SizeOf(extra), expansion.Reporter, ct);
                         }
+
+                        expansion.Complete();
                     }
                     else
                     {
