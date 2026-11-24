@@ -6,6 +6,10 @@ public sealed class PatchCatalogItem
 {
     public const string DirectType = "Patch";
 
+    public const string IndividualLinkMode = "Individual";
+
+    public const string SplitLinkMode = "Split";
+
     public const string InstallerType = "EXE";
 
     public const string ConsoleInstallType = "Console";
@@ -28,7 +32,9 @@ public sealed class PatchCatalogItem
 
     public string ReleaseLink { get; init; } = string.Empty;
 
-    public string DirectLink { get; init; } = string.Empty;
+    public IReadOnlyList<PatchLink> Links { get; init; } = [];
+
+    public string LinkMode { get; init; } = IndividualLinkMode;
 
     public string LastModified { get; init; } = string.Empty;
 
@@ -40,7 +46,9 @@ public sealed class PatchCatalogItem
 
     public bool IsDirect => PatchType.Equals(DirectType, StringComparison.OrdinalIgnoreCase);
 
-    public bool IsSelectable => Enabled && IsDirect && !string.IsNullOrWhiteSpace(DirectLink);
+    public bool IsSplit => LinkMode.Equals(SplitLinkMode, StringComparison.OrdinalIgnoreCase);
+
+    public bool IsSelectable => Enabled && IsDirect && Links.Count > 0;
 
     public bool IsConsoleOnly => InstallType.Equals(ConsoleInstallType, StringComparison.OrdinalIgnoreCase);
 

@@ -448,6 +448,7 @@ public abstract class LocalizedStrings
     public abstract string ErrPsvPatchDriveBlocked { get; }
     public abstract string ErrPsvPatchDriveEmptyFolder { get; }
     public abstract string ErrPsvPatchInstallPathNotFound(object? arg0);
+    public abstract string ErrPsvPatchLinkFileName(object? arg0);
     public abstract string ErrPsvPatchMegaFailed(object? arg0);
     public abstract string ErrPsvPatchTistoryNoAttachment(object? arg0);
     public abstract string ErrRawContentAbnormallyLarge(object? arg0, object? arg1);
@@ -1054,9 +1055,10 @@ public abstract class LocalizedStrings
     public abstract string LogProgramBuildStart(object? arg0);
     public abstract string LogPsvPatchArchiveContents(object? arg0, object? arg1);
     public abstract string LogPsvPatchArchived(object? arg0, object? arg1);
+    public abstract string LogPsvPatchCatalogLoaded(object? arg0, object? arg1);
+    public abstract string LogPsvPatchCatalogNotFound(object? arg0);
     public abstract string LogPsvPatchConsoleOnly(object? arg0);
-    public abstract string LogPsvPatchCsvLoaded(object? arg0, object? arg1);
-    public abstract string LogPsvPatchCsvNotFound(object? arg0);
+    public abstract string LogPsvPatchDownloadingPart(object? arg0, object? arg1, object? arg2);
     public abstract string LogPsvPatchDownloadingPatch(object? arg0);
     public abstract string LogPsvPatchDriveFilePicked(object? arg0, object? arg1);
     public abstract string LogPsvPatchEmulatorOnly(object? arg0);

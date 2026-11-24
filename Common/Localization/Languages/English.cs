@@ -448,6 +448,7 @@ public sealed class English : LocalizedStrings
     public override string ErrPsvPatchDriveBlocked => "Google Drive blocked the download (quota exceeded or no access).";
     public override string ErrPsvPatchDriveEmptyFolder => "No files found in the Google Drive folder.";
     public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"Install path not found: {arg0}";
+    public override string ErrPsvPatchLinkFileName(object? arg0) => $"The link's fileName is missing, invalid, or duplicated: {arg0}";
     public override string ErrPsvPatchMegaFailed(object? arg0) => $"MEGA download failed (code: {arg0}).";
     public override string ErrPsvPatchTistoryNoAttachment(object? arg0) => $"No attachment found on the Tistory page: {arg0}";
     public override string ErrRawContentAbnormallyLarge(object? arg0, object? arg1) => $"Content {arg0}.app is of raw type but abnormally large ({arg1} bytes) — the hash tree type may have been misdetected.";
@@ -1054,9 +1055,10 @@ public sealed class English : LocalizedStrings
     public override string LogProgramBuildStart(object? arg0) => $"Starting program build (IdOffset={arg0})";
     public override string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"Patch archive contains {arg0} files: {arg1}";
     public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"Exported: {arg0} → {arg1}";
+    public override string LogPsvPatchCatalogLoaded(object? arg0, object? arg1) => $"Patch list loaded: {arg0} entries ({arg1})";
+    public override string LogPsvPatchCatalogNotFound(object? arg0) => $"PSV_PATCH.json not found. Place it next to the executable: {arg0}";
     public override string LogPsvPatchConsoleOnly(object? arg0) => $"Console only, skipped: {arg0}. Please proceed with the console option.";
-    public override string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"Patch list loaded: {arg0} entries ({arg1})";
-    public override string LogPsvPatchCsvNotFound(object? arg0) => $"PSV_PATCH.csv not found. Place it next to the executable: {arg0}";
+    public override string LogPsvPatchDownloadingPart(object? arg0, object? arg1, object? arg2) => $"Downloading patch file ({arg0}/{arg1}): {arg2}";
     public override string LogPsvPatchDownloadingPatch(object? arg0) => $"Downloading patch: {arg0}";
     public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"Google Drive file selected: {arg0} (of {arg1} candidates)";
     public override string LogPsvPatchEmulatorOnly(object? arg0) => $"Emulator only, skipped: {arg0}. Please proceed with the emulator option.";

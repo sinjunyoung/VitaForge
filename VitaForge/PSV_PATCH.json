@@ -1,0 +1,345 @@
+{
+  "patches": [
+    {
+      "titleId": "PCSG00291",
+      "region": "JP",
+      "name": "에비코레+ 아마가미",
+      "version": "240319",
+      "requiredUpdateVersion": "1.01",
+      "user": "amagamie",
+      "releaseLink": "https://sites.google.com/view/amagamiebkoretranslations/%ED%99%88/psv-%EC%97%90%EB%B9%84%EC%BD%94%EB%A0%88-%EC%95%84%EB%A7%88%EA%B0%80%EB%AF%B8",
+      "date": "2024-03-19",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://pixeldrain.com/api/file/WBeo13xT?download" }
+      ]
+    },
+    {
+      "titleId": "PCSG00543",
+      "region": "JP",
+      "name": "시원찮은 그녀를 위한 육성방법",
+      "version": "1.01",
+      "requiredUpdateVersion": "",
+      "user": "행복한나라",
+      "releaseLink": "https://sites.google.com/view/amagamiebkoretranslations/%ED%99%88/psv-%EC%8B%9C%EC%9B%90%EC%B0%AE%EC%9D%80-%EA%B7%B8%EB%85%80%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%9C%A1%EC%84%B1%EB%B0%A9%EB%B2%95",
+      "date": "2026-01-02",
+      "patchType": "Patch",
+      "installType": "Console",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/drive/folders/1V4A8MVuUH18aIuA6KB0nNwfRgfIMjoHR?usp=sharing" }
+      ]
+    },
+    {
+      "titleId": "PCSE00240",
+      "region": "US",
+      "name": "오보로 무라마사",
+      "version": "1.4.3",
+      "requiredUpdateVersion": "1.06",
+      "user": "hada0127",
+      "releaseLink": "https://github.com/hada0127/muramasa-kor",
+      "date": "2026-07-09",
+      "patchType": "EXE",
+      "installType": "All",
+      "enabled": false,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/hada0127/muramasa-kor/releases/download/v1.4.3/muramasa-kor-v1.4.3-patcher-windows.zip" }
+      ]
+    },
+    {
+      "titleId": "PCSG01100",
+      "region": "JP",
+      "name": "통곡 그리고…",
+      "version": "0.8.5 beta",
+      "requiredUpdateVersion": "",
+      "user": "lf-idonotknow",
+      "releaseLink": "https://github.com/lf-idonotknow/Doukoku-Soshite-PS-Vita-Korean-Patch",
+      "date": "2026-08-01",
+      "patchType": "EXE",
+      "installType": "All",
+      "enabled": false,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/lf-idonotknow/Doukoku-Soshite-PS-Vita-Korean-Patch/releases/download/r33/Doukoku_Soshite_Korean_Patch_r33_win-x64.exe" }
+      ]
+    },
+    {
+      "titleId": "PCSG00684",
+      "region": "JP",
+      "name": "칸코레 개",
+      "version": "",
+      "requiredUpdateVersion": "1.02",
+      "user": "Flistz",
+      "releaseLink": "https://gall.dcinside.com/retrogame/207074",
+      "date": "2026-08-23",
+      "patchType": "Patch",
+      "installType": "Emulator",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://mega.nz/file/gQ9UyITQ#xwPpD7tFvIiQVEJikYfbj5Qx0SHZx5BIFO4gTohDD3A" }
+      ]
+    },
+    {
+      "titleId": "PCSG01216",
+      "region": "JP",
+      "name": "블러드스테인드 커스 오브 더 문",
+      "version": "1.0",
+      "requiredUpdateVersion": "",
+      "user": "늠이당",
+      "releaseLink": "https://view5199.tistory.com/14",
+      "date": "2026-08-24",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/file/d/1bvwgMIRnNP1PE9CFAUwZwVeq0kS8Qeq3/view?usp=sharing" }
+      ]
+    },
+    {
+      "titleId": "PCSG00135",
+      "region": "JP",
+      "name": "콜 오브 듀티 블랙 옵스 디클래시파이드",
+      "version": "0.9",
+      "requiredUpdateVersion": "1.02",
+      "user": "편향된 게이머",
+      "releaseLink": "https://blog.naver.com/mun317/224393555828",
+      "date": "2026-08-28",
+      "patchType": "Patch",
+      "installType": "Console",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://naver.me/GsBMGq3V" }
+      ]
+    },
+    {
+      "titleId": "PCSG00729",
+      "region": "JP",
+      "name": "클래식 던전 전국",
+      "version": "20260831",
+      "requiredUpdateVersion": "1.01",
+      "user": "ep7oy",
+      "releaseLink": "https://ep7oy.tistory.com/42",
+      "date": "2026-08-31",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://ep7oy.tistory.com/42" }
+      ]
+    },
+    {
+      "titleId": "PCSG00009",
+      "region": "JP",
+      "name": "테일즈 오브 이노센스 R",
+      "version": "1.0",
+      "requiredUpdateVersion": "",
+      "user": "럼미웜미",
+      "releaseLink": "https://cafe.naver.com/hansicgu/35854",
+      "date": "2026-09-25",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/file/d/16Ggn6l7VeMnb6fVXKtRzMq99xz90W9qR/view" }
+      ]
+    },
+    {
+      "titleId": "PCSB01375",
+      "region": "EU",
+      "name": "셰이크다운 하와이",
+      "version": "0.1",
+      "requiredUpdateVersion": "1.04",
+      "user": "7Coud",
+      "releaseLink": "https://7cloud.tistory.com/23",
+      "date": "2026-09-26",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": false,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/file/d/1jzlBMhf3FaAiDlB9NLNEuz57dkMxseGg/view?usp=sharing" }
+      ]
+    },
+    {
+      "titleId": "PCSG00827",
+      "region": "JP",
+      "name": "서몬나이트 6",
+      "version": "0.9",
+      "requiredUpdateVersion": "",
+      "user": "크로노폴라",
+      "releaseLink": "https://blog.naver.com/one252210qaz/224427386488",
+      "date": "2026-09-30",
+      "patchType": "EXE",
+      "installType": "All",
+      "enabled": false,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://blog.naver.com/one252210qaz/224427386488" }
+      ]
+    },
+    {
+      "titleId": "PCSG00397",
+      "region": "JP",
+      "name": "니세코이 요메이리",
+      "version": "1.0",
+      "requiredUpdateVersion": "",
+      "user": "TuNE",
+      "releaseLink": "https://mtune.pe.kr/1028/",
+      "date": "2026-10-06",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": false,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/drive/folders/1xHwUKg61kSsdd_bFbEaB5gaATRbawD0N?usp=sharing" }
+      ]
+    },
+    {
+      "titleId": "PCSG00249",
+      "region": "JP",
+      "name": "화이트 앨범 2: 행복의 저편",
+      "version": "0.94.3",
+      "requiredUpdateVersion": "1.02",
+      "user": "yoolose",
+      "releaseLink": "https://blog.naver.com/yoolose/224435396209",
+      "date": "2026-10-08",
+      "patchType": "EXE",
+      "installType": "All",
+      "enabled": false,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://blog.naver.com/yoolose/224435396209" }
+      ]
+    },
+    {
+      "titleId": "PCSE00374",
+      "region": "US",
+      "name": "벨로시티 2X",
+      "version": "0.9.0",
+      "requiredUpdateVersion": "",
+      "user": "YourFaceMonster",
+      "releaseLink": "https://github.com/YourFaceMonster/velocity-2x-psv-korean-patch",
+      "date": "2026-10-10",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://raw.githubusercontent.com/YourFaceMonster/velocity-2x-psv-korean-patch/main/Velocity2X_PCSE00374_Korean_v0.9.0_rePatch.zip" }
+      ]
+    },
+    {
+      "titleId": "PCSG00719",
+      "region": "JP",
+      "name": "갓 이터 레저렉션",
+      "version": "261011",
+      "requiredUpdateVersion": "",
+      "user": "쿠왁쿠왁왕자",
+      "releaseLink": "https://gall.dcinside.com/godeater/8528",
+      "date": "2026-10-11",
+      "patchType": "Patch",
+      "installType": "Console",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/drive/folders/1Gh1NwFa8cv2xorkeDG19eWkG5PFD20C3" }
+      ]
+    },
+    {
+      "titleId": "PCSG00214",
+      "region": "JP",
+      "name": "마법소녀 마도카 마기카: 더 배틀 펜타그램",
+      "version": "",
+      "requiredUpdateVersion": "",
+      "user": "쥐포",
+      "releaseLink": "https://gall.dcinside.com/retrogame/235520",
+      "date": "2026-10-12",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/file/d/1IyOb_I0Km01SHJhkIYsBh6sl1SX0gFRt/view?usp=drivesdk" }
+      ]
+    },
+    {
+      "titleId": "PCSG00190",
+      "region": "JP",
+      "name": "마장기신 3",
+      "version": "1.6",
+      "requiredUpdateVersion": "",
+      "user": "방랑자",
+      "releaseLink": "https://wandererb.github.io/wanderer-arbor/",
+      "date": "2026-10-13",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/wandererB/wanderer-arbor/releases/download/mk3v-v1.3/MasouKishin3_KR_Vita_v1.6.zip" }
+      ]
+    },
+    {
+      "titleId": "PCSG00908",
+      "region": "JP",
+      "name": "사키 전국편 플러스",
+      "version": "1.0",
+      "requiredUpdateVersion": "2.01",
+      "user": "TuNE",
+      "releaseLink": "https://mtune.pe.kr/1030/",
+      "date": "2026-10-14",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/drive/folders/1lwscYDRWqCisTHH_bepSutjazNP9LHGH?usp=sharing" }
+      ]
+    },
+    {
+      "titleId": "PCSG00841",
+      "region": "JP",
+      "name": "던전 트래블러즈 2-2 타락한 소녀와 시작의 서",
+      "version": "0.9.2",
+      "requiredUpdateVersion": "1.05",
+      "user": "고양이추장",
+      "releaseLink": "https://healed.tistory.com/entry/%EB%8D%98%EC%A0%84-%ED%8A%B8%EB%9E%98%EB%B8%94%EB%9F%AC%EC%A6%882-2-PS-Vita-%ED%95%9C%EA%B8%80%ED%8C%A8%EC%B9%98%EF%BD%9C%EC%8B%A4%EA%B8%B0%C2%B7Vita3K-%EC%84%A4%EC%B9%98-%EB%B0%A9%EB%B2%95-100%C2%B7105",
+      "date": "2026-10-14",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/drive/folders/17OYa0xC6xJthS9kLmQCqV_wcCGObKjq5?usp=sharing" }
+      ]
+    },
+    {
+  "titleId": "PCSG01113",
+  "region": "JP",
+  "name": "잔키제로",
+  "version": "확인한 값",
+  "requiredUpdateVersion": "확인한 값",
+  "user": "sizz1214-lang",
+  "releaseLink": "https://github.com/sizz1214-lang/VITA/releases/tag/PCSG01113",
+  "date": "2026-10-24",
+  "patchType": "Patch",
+  "installType": "All",
+  "enabled": true,
+  "linkMode": "Split",
+  "links": [
+    { "url": "https://github.com/sizz1214-lang/VITA/releases/download/PCSG01113/PCSG01113.7z.001" },
+    { "url": "https://github.com/sizz1214-lang/VITA/releases/download/PCSG01113/PCSG01113.7z.002" }
+  ]
+}
+  ]
+}

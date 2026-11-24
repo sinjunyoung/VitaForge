@@ -448,6 +448,7 @@ public sealed class Russian : LocalizedStrings
     public override string ErrPsvPatchDriveBlocked => "Google Диск заблокировал загрузку (превышена квота или нет доступа).";
     public override string ErrPsvPatchDriveEmptyFolder => "В папке Google Диска файлы не найдены.";
     public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"Путь установки не найден: {arg0}";
+    public override string ErrPsvPatchLinkFileName(object? arg0) => $"fileName ссылки отсутствует, недопустим или повторяется: {arg0}";
     public override string ErrPsvPatchMegaFailed(object? arg0) => $"Не удалось загрузить с MEGA (код: {arg0}).";
     public override string ErrPsvPatchTistoryNoAttachment(object? arg0) => $"На странице Tistory вложение не найдено: {arg0}";
     public override string ErrRawContentAbnormallyLarge(object? arg0, object? arg1) => $"Контент {arg0}.app имеет тип raw, но аномально велик ({arg1} байт) — тип хеш-дерева мог быть определён неверно.";
@@ -1054,9 +1055,10 @@ public sealed class Russian : LocalizedStrings
     public override string LogProgramBuildStart(object? arg0) => $"Начало сборки программы (IdOffset={arg0})";
     public override string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"В архиве патча файлов: {arg0} ({arg1})";
     public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"Экспортировано: {arg0} → {arg1}";
+    public override string LogPsvPatchCatalogLoaded(object? arg0, object? arg1) => $"Загружен список патчей: {arg0} записей ({arg1})";
+    public override string LogPsvPatchCatalogNotFound(object? arg0) => $"PSV_PATCH.json не найден. Поместите его рядом с исполняемым файлом: {arg0}";
     public override string LogPsvPatchConsoleOnly(object? arg0) => $"Только для консоли, пропущено: {arg0}. Используйте вариант для консоли.";
-    public override string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"Загружен список патчей: {arg0} записей ({arg1})";
-    public override string LogPsvPatchCsvNotFound(object? arg0) => $"PSV_PATCH.csv не найден. Поместите его рядом с исполняемым файлом: {arg0}";
+    public override string LogPsvPatchDownloadingPart(object? arg0, object? arg1, object? arg2) => $"Загрузка файла патча ({arg0}/{arg1}): {arg2}";
     public override string LogPsvPatchDownloadingPatch(object? arg0) => $"Загрузка патча: {arg0}";
     public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"Выбран файл Google Диска: {arg0} (из {arg1} кандидатов)";
     public override string LogPsvPatchEmulatorOnly(object? arg0) => $"Только для эмулятора, пропущено: {arg0}. Используйте вариант для эмулятора.";

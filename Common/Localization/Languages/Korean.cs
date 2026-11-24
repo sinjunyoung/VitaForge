@@ -448,6 +448,7 @@ public sealed class Korean : LocalizedStrings
     public override string ErrPsvPatchDriveBlocked => "구글 드라이브가 다운로드를 막았습니다 (쿼터 초과 또는 접근 불가).";
     public override string ErrPsvPatchDriveEmptyFolder => "구글 드라이브 폴더에서 파일을 찾지 못했습니다.";
     public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"설치 경로를 찾을 수 없습니다: {arg0}";
+    public override string ErrPsvPatchLinkFileName(object? arg0) => $"링크의 fileName이 없거나 올바르지 않거나 중복됩니다: {arg0}";
     public override string ErrPsvPatchMegaFailed(object? arg0) => $"MEGA 다운로드에 실패했습니다 (코드: {arg0}).";
     public override string ErrPsvPatchTistoryNoAttachment(object? arg0) => $"티스토리 글에서 첨부파일을 찾지 못했습니다: {arg0}";
     public override string ErrRawContentAbnormallyLarge(object? arg0, object? arg1) => $"콘텐츠 {arg0}.app가 raw 타입인데 비정상적으로 큽니다 ({arg1} bytes) — 해시트리 타입 판별이 잘못됐을 수 있습니다.";
@@ -1054,9 +1055,10 @@ public sealed class Korean : LocalizedStrings
     public override string LogProgramBuildStart(object? arg0) => $"프로그램 빌드 시작 (IdOffset={arg0})";
     public override string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"패치 파일 내용: {arg0}개 파일 (앞부분: {arg1})";
     public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"내보내기 완료: {arg0} → {arg1}";
+    public override string LogPsvPatchCatalogLoaded(object? arg0, object? arg1) => $"패치 목록 로드: {arg0}건 ({arg1})";
+    public override string LogPsvPatchCatalogNotFound(object? arg0) => $"PSV_PATCH.json을 찾을 수 없습니다. 실행 파일 옆에 두세요: {arg0}";
     public override string LogPsvPatchConsoleOnly(object? arg0) => $"실기전용입니다, 실기용으로 진행하세요: {arg0}";
-    public override string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"패치 목록 로드: {arg0}건 ({arg1})";
-    public override string LogPsvPatchCsvNotFound(object? arg0) => $"PSV_PATCH.csv를 찾을 수 없습니다. 실행 파일 옆에 두세요: {arg0}";
+    public override string LogPsvPatchDownloadingPart(object? arg0, object? arg1, object? arg2) => $"패치 파일 다운로드 ({arg0}/{arg1}): {arg2}";
     public override string LogPsvPatchDownloadingPatch(object? arg0) => $"패치 다운로드 중: {arg0}";
     public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"구글 드라이브 파일 선택: {arg0} (후보 {arg1}개 중)";
     public override string LogPsvPatchEmulatorOnly(object? arg0) => $"에뮬전용입니다, 에뮬용으로 진행하세요: {arg0}";

@@ -448,6 +448,7 @@ public sealed class Japanese : LocalizedStrings
     public override string ErrPsvPatchDriveBlocked => "Google ドライブがダウンロードをブロックしました (クォータ超過またはアクセス不可)。";
     public override string ErrPsvPatchDriveEmptyFolder => "Google ドライブのフォルダーにファイルが見つかりません。";
     public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"インストール先が見つかりません: {arg0}";
+    public override string ErrPsvPatchLinkFileName(object? arg0) => $"リンクの fileName が未指定、不正、または重複しています: {arg0}";
     public override string ErrPsvPatchMegaFailed(object? arg0) => $"MEGA のダウンロードに失敗しました (コード: {arg0})。";
     public override string ErrPsvPatchTistoryNoAttachment(object? arg0) => $"Tistory のページに添付ファイルが見つかりません: {arg0}";
     public override string ErrRawContentAbnormallyLarge(object? arg0, object? arg1) => $"コンテンツ {arg0}.app はrawタイプなのに異常に大きいです ({arg1} bytes) — ハッシュツリータイプの判定が誤っている可能性があります。";
@@ -1054,9 +1055,10 @@ public sealed class Japanese : LocalizedStrings
     public override string LogProgramBuildStart(object? arg0) => $"プログラムのビルドを開始 (IdOffset={arg0})";
     public override string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"パッチアーカイブの内容: {arg0} 個のファイル ({arg1})";
     public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"エクスポート完了: {arg0} → {arg1}";
+    public override string LogPsvPatchCatalogLoaded(object? arg0, object? arg1) => $"パッチ一覧を読み込みました: {arg0} 件 ({arg1})";
+    public override string LogPsvPatchCatalogNotFound(object? arg0) => $"PSV_PATCH.json が見つかりません。実行ファイルの隣に置いてください: {arg0}";
     public override string LogPsvPatchConsoleOnly(object? arg0) => $"実機専用のためスキップしました: {arg0}。実機用で進めてください。";
-    public override string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"パッチ一覧を読み込みました: {arg0} 件 ({arg1})";
-    public override string LogPsvPatchCsvNotFound(object? arg0) => $"PSV_PATCH.csv が見つかりません。実行ファイルの隣に置いてください: {arg0}";
+    public override string LogPsvPatchDownloadingPart(object? arg0, object? arg1, object? arg2) => $"パッチファイルをダウンロード中 ({arg0}/{arg1}): {arg2}";
     public override string LogPsvPatchDownloadingPatch(object? arg0) => $"パッチをダウンロード中: {arg0}";
     public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"Google ドライブのファイルを選択: {arg0} (候補 {arg1} 件中)";
     public override string LogPsvPatchEmulatorOnly(object? arg0) => $"エミュレーター専用のためスキップしました: {arg0}。エミュレーター用で進めてください。";

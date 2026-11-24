@@ -448,6 +448,7 @@ public sealed class French : LocalizedStrings
     public override string ErrPsvPatchDriveBlocked => "Google Drive a bloqué le téléchargement (quota dépassé ou accès refusé).";
     public override string ErrPsvPatchDriveEmptyFolder => "Aucun fichier trouvé dans le dossier Google Drive.";
     public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"Chemin d’installation introuvable : {arg0}";
+    public override string ErrPsvPatchLinkFileName(object? arg0) => $"Le fileName du lien est absent, invalide ou en double : {arg0}";
     public override string ErrPsvPatchMegaFailed(object? arg0) => $"Échec du téléchargement MEGA (code : {arg0}).";
     public override string ErrPsvPatchTistoryNoAttachment(object? arg0) => $"Aucune pièce jointe trouvée sur la page Tistory : {arg0}";
     public override string ErrRawContentAbnormallyLarge(object? arg0, object? arg1) => $"Le contenu {arg0}.app est de type raw mais anormalement volumineux ({arg1} octets) — le type d’arbre de hash a peut-être été mal détecté.";
@@ -1054,9 +1055,10 @@ public sealed class French : LocalizedStrings
     public override string LogProgramBuildStart(object? arg0) => $"Début de la construction du programme (IdOffset={arg0})";
     public override string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"L’archive du patch contient {arg0} fichiers : {arg1}";
     public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"Exporté : {arg0} → {arg1}";
+    public override string LogPsvPatchCatalogLoaded(object? arg0, object? arg1) => $"Liste des patchs chargée : {arg0} entrées ({arg1})";
+    public override string LogPsvPatchCatalogNotFound(object? arg0) => $"PSV_PATCH.json introuvable. Placez-le à côté de l’exécutable : {arg0}";
     public override string LogPsvPatchConsoleOnly(object? arg0) => $"Console uniquement, ignoré : {arg0}. Utilisez l’option console.";
-    public override string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"Liste des patchs chargée : {arg0} entrées ({arg1})";
-    public override string LogPsvPatchCsvNotFound(object? arg0) => $"PSV_PATCH.csv introuvable. Placez-le à côté de l’exécutable : {arg0}";
+    public override string LogPsvPatchDownloadingPart(object? arg0, object? arg1, object? arg2) => $"Téléchargement du fichier de patch ({arg0}/{arg1}) : {arg2}";
     public override string LogPsvPatchDownloadingPatch(object? arg0) => $"Téléchargement du patch : {arg0}";
     public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"Fichier Google Drive sélectionné : {arg0} (parmi {arg1} candidats)";
     public override string LogPsvPatchEmulatorOnly(object? arg0) => $"Émulateur uniquement, ignoré : {arg0}. Utilisez l’option émulateur.";

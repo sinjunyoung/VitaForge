@@ -2,6 +2,7 @@
 using Patch.Core.Services;
 using SevenZip;
 using System.IO;
+using VitaForge.Core.Models.PSVita;
 
 namespace VitaForge.Core.Services.PSVita;
 
@@ -16,8 +17,10 @@ public static class PatchArchivePreparer
         SevenZip
     }
 
-    public static async Task<string> PrepareAsync(string rawPath, string workDir, string sourceUrl, CancellationToken ct)
+    public static async Task<string> PrepareAsync(string rawPath, string workDir, PatchLink link, CancellationToken ct)
     {
+        string folderPath = Path.Combine(workDir, "patch");
+
         switch (Detect(rawPath))
         {
             case ArchiveKind.Zip:
@@ -28,19 +31,60 @@ public static class PatchArchivePreparer
                 return zipPath;
 
             case ArchiveKind.SevenZip:
-                string folderPath = Path.Combine(workDir, "patch");
-
-                await Task.Run(() => ExtractSevenZip(rawPath, folderPath, ct), ct);
+                await Task.Run(() => ExtractSevenZip(rawPath, folderPath, true, ct), ct);
                 File.Delete(rawPath);
 
                 return folderPath;
 
             default:
-                throw new NotSupportedException(Loc.S.ErrVitaUnsupportedSourceType(sourceUrl));
+                MoveRawFile(rawPath, folderPath, link);
+
+                return folderPath;
         }
     }
 
-    private static void ExtractSevenZip(string archivePath, string folderPath, CancellationToken ct)
+    public static async Task MergeIntoFolderAsync(string rawPath, string folderPath, PatchLink link, CancellationToken ct)
+    {
+        switch (Detect(rawPath))
+        {
+            case ArchiveKind.Zip:
+            case ArchiveKind.SevenZip:
+                await Task.Run(() => ExtractSevenZip(rawPath, folderPath, false, ct), ct);
+                File.Delete(rawPath);
+                break;
+
+            default:
+                MoveRawFile(rawPath, folderPath, link);
+                break;
+        }
+    }
+
+    public static async Task ExtractSplitAsync(IReadOnlyList<string> volumePaths, string folderPath, CancellationToken ct)
+    {
+        string mainVolumePath = PickMainVolume(volumePaths);
+
+        await Task.Run(() => ExtractSevenZip(mainVolumePath, folderPath, true, ct), ct);
+
+        foreach (string volumePath in volumePaths)
+            DeleteFileQuietly(volumePath);
+    }
+
+    private static string PickMainVolume(IReadOnlyList<string> volumePaths)
+        => volumePaths.FirstOrDefault(p => p.EndsWith(".001", StringComparison.OrdinalIgnoreCase))
+            ?? volumePaths.FirstOrDefault(p => p.EndsWith(".zip", StringComparison.OrdinalIgnoreCase) || p.EndsWith(".7z", StringComparison.OrdinalIgnoreCase))
+            ?? volumePaths[0];
+
+    private static void MoveRawFile(string rawPath, string folderPath, PatchLink link)
+    {
+        if (!link.HasValidFileName)
+            throw new NotSupportedException(Loc.S.ErrVitaUnsupportedSourceType(link.Url));
+
+        Directory.CreateDirectory(folderPath);
+
+        File.Move(rawPath, Path.Combine(folderPath, link.FileName), true);
+    }
+
+    private static void ExtractSevenZip(string archivePath, string folderPath, bool deleteOnFailure, CancellationToken ct)
     {
         NativeSevenZip.EnsureInitialized();
 
@@ -63,10 +107,20 @@ public static class PatchArchivePreparer
         }
         catch
         {
-            DeleteFolderQuietly(folderPath);
+            if (deleteOnFailure)
+                DeleteFolderQuietly(folderPath);
 
             throw;
         }
+    }
+
+    private static void DeleteFileQuietly(string path)
+    {
+        try
+        {
+            File.Delete(path);
+        }
+        catch { }
     }
 
     private static void DeleteFolderQuietly(string path)

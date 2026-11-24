@@ -20,7 +20,7 @@ namespace VitaForge.ViewModels.PSVita;
 
 public class PatchMainViewModel : ProgressToolTabViewModel
 {
-    private static readonly string CsvPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PSV_PATCH.csv");
+    private static readonly string CatalogPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PSV_PATCH.json");
 
     private readonly Stopwatch _totalSw = new();
     private string? _outputPath;
@@ -120,7 +120,7 @@ public class PatchMainViewModel : ProgressToolTabViewModel
 
         AppConfig.Instance.OutputFolders.PropertyChanged += OnOutputFoldersChanged;
 
-        LoadCsv();
+        LoadCatalog();
     }
 
     public static void OpenReleaseLink(PatchRowViewModel row)
@@ -160,22 +160,22 @@ public class PatchMainViewModel : ProgressToolTabViewModel
         CommandManager.InvalidateRequerySuggested();
     }
 
-    private void LoadCsv()
+    private void LoadCatalog()
     {
-        if (!File.Exists(CsvPath))
+        if (!File.Exists(CatalogPath))
         {
-            AppendLog(Loc.S.LogPsvPatchCsvNotFound(CsvPath), LogLevel.Error);
+            AppendLog(Loc.S.LogPsvPatchCatalogNotFound(CatalogPath), LogLevel.Error);
             return;
         }
 
         try
         {
-            var items = PatchCsvReader.Read(CsvPath);
+            var items = PatchCatalogReader.Read(CatalogPath);
 
             foreach (var item in items)
                 Rows.Add(new PatchRowViewModel(item, NotifyCheckedChanged));
 
-            AppendLog(Loc.S.LogPsvPatchCsvLoaded(items.Count, CsvPath), LogLevel.Info);
+            AppendLog(Loc.S.LogPsvPatchCatalogLoaded(items.Count, CatalogPath), LogLevel.Info);
 
             NotifyCheckedChanged();
         }

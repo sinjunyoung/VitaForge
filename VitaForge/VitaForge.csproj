@@ -36,7 +36,7 @@
     <None Update="PSV_NAMES_KO.tsv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="PSV_PATCH.csv">
+    <None Update="PSV_PATCH.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -448,6 +448,7 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string ErrPsvPatchDriveBlocked => "Google 雲端硬碟封鎖了下載（超出配額或無法存取）。";
     public override string ErrPsvPatchDriveEmptyFolder => "在 Google 雲端硬碟資料夾中找不到檔案。";
     public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"找不到安裝路徑: {arg0}";
+    public override string ErrPsvPatchLinkFileName(object? arg0) => $"連結的 fileName 缺少、無效或重複: {arg0}";
     public override string ErrPsvPatchMegaFailed(object? arg0) => $"MEGA 下載失敗（代碼: {arg0}）。";
     public override string ErrPsvPatchTistoryNoAttachment(object? arg0) => $"在 Tistory 頁面中找不到附件: {arg0}";
     public override string ErrRawContentAbnormallyLarge(object? arg0, object? arg1) => $"內容 {arg0}.app 為 raw 類型但異常龐大 ({arg1} 位元組) — 雜湊樹類型可能判斷有誤。";
@@ -1054,9 +1055,10 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string LogProgramBuildStart(object? arg0) => $"開始建置程式 (IdOffset={arg0})";
     public override string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"修補壓縮檔包含 {arg0} 個檔案: {arg1}";
     public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"已匯出: {arg0} → {arg1}";
+    public override string LogPsvPatchCatalogLoaded(object? arg0, object? arg1) => $"已載入修補檔清單: {arg0} 項 ({arg1})";
+    public override string LogPsvPatchCatalogNotFound(object? arg0) => $"找不到 PSV_PATCH.json。請將其放在執行檔旁邊: {arg0}";
     public override string LogPsvPatchConsoleOnly(object? arg0) => $"僅限實機，已略過: {arg0}。請使用實機選項。";
-    public override string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"已載入修補檔清單: {arg0} 項 ({arg1})";
-    public override string LogPsvPatchCsvNotFound(object? arg0) => $"找不到 PSV_PATCH.csv。請將其放在執行檔旁邊: {arg0}";
+    public override string LogPsvPatchDownloadingPart(object? arg0, object? arg1, object? arg2) => $"正在下載修補檔 ({arg0}/{arg1}): {arg2}";
     public override string LogPsvPatchDownloadingPatch(object? arg0) => $"正在下載修補檔: {arg0}";
     public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"已選擇 Google 雲端硬碟檔案: {arg0}（共 {arg1} 個候選）";
     public override string LogPsvPatchEmulatorOnly(object? arg0) => $"僅限模擬器，已略過: {arg0}。請使用模擬器選項。";

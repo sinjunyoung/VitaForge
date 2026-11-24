@@ -78,7 +78,7 @@ public static class PatchInstallService
                 patchReporter.AddProgress(bytes);
             });
 
-        string patchPath = await PatchFileDownloader.DownloadAsync(plan.Patch.DirectLink, workDir, patchProgress, log, ct);
+        string patchPath = await PatchFileDownloader.DownloadAsync(plan.Patch, workDir, patchProgress, log, ct);
 
         patchReporter?.ForceReport();
 

@@ -448,6 +448,7 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string ErrPsvPatchDriveBlocked => "Google 云端硬盘阻止了下载（超出配额或无权访问）。";
     public override string ErrPsvPatchDriveEmptyFolder => "在 Google 云端硬盘文件夹中未找到文件。";
     public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"找不到安装路径: {arg0}";
+    public override string ErrPsvPatchLinkFileName(object? arg0) => $"链接的 fileName 缺失、无效或重复: {arg0}";
     public override string ErrPsvPatchMegaFailed(object? arg0) => $"MEGA 下载失败（代码: {arg0}）。";
     public override string ErrPsvPatchTistoryNoAttachment(object? arg0) => $"在 Tistory 页面中未找到附件: {arg0}";
     public override string ErrRawContentAbnormallyLarge(object? arg0, object? arg1) => $"内容 {arg0}.app 为 raw 类型但异常庞大 ({arg1} 字节) — 哈希树类型可能判断有误。";
@@ -1054,9 +1055,10 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string LogProgramBuildStart(object? arg0) => $"开始构建程序 (IdOffset={arg0})";
     public override string LogPsvPatchArchiveContents(object? arg0, object? arg1) => $"补丁压缩包包含 {arg0} 个文件: {arg1}";
     public override string LogPsvPatchArchived(object? arg0, object? arg1) => $"已导出: {arg0} → {arg1}";
+    public override string LogPsvPatchCatalogLoaded(object? arg0, object? arg1) => $"已加载补丁列表: {arg0} 项 ({arg1})";
+    public override string LogPsvPatchCatalogNotFound(object? arg0) => $"找不到 PSV_PATCH.json。请将其放在可执行文件旁边: {arg0}";
     public override string LogPsvPatchConsoleOnly(object? arg0) => $"仅限实机，已跳过: {arg0}。请使用实机选项。";
-    public override string LogPsvPatchCsvLoaded(object? arg0, object? arg1) => $"已加载补丁列表: {arg0} 项 ({arg1})";
-    public override string LogPsvPatchCsvNotFound(object? arg0) => $"找不到 PSV_PATCH.csv。请将其放在可执行文件旁边: {arg0}";
+    public override string LogPsvPatchDownloadingPart(object? arg0, object? arg1, object? arg2) => $"正在下载补丁文件 ({arg0}/{arg1}): {arg2}";
     public override string LogPsvPatchDownloadingPatch(object? arg0) => $"正在下载补丁: {arg0}";
     public override string LogPsvPatchDriveFilePicked(object? arg0, object? arg1) => $"已选择 Google 云端硬盘文件: {arg0}（共 {arg1} 个候选）";
     public override string LogPsvPatchEmulatorOnly(object? arg0) => $"仅限模拟器，已跳过: {arg0}。请使用模拟器选项。";
