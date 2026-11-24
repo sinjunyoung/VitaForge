@@ -146,6 +146,10 @@
       "releaseLink": "https://cafe.naver.com/hansicgu/35854",
       "date": "2026-09-25",
       "patchType": "Patch",
+"patchTargets": [
+  { "patch": "eboot_ko.xdelta", "target": "eboot.bin" },
+  { "patch": "toidata_release_ko.xdelta", "target": "toidata_release.l7c" }
+],
       "installType": "All",
       "enabled": true,
       "linkMode": "Individual",
@@ -321,6 +325,60 @@
       "linkMode": "Individual",
       "links": [
         { "url": "https://drive.google.com/drive/folders/17OYa0xC6xJthS9kLmQCqV_wcCGObKjq5?usp=sharing", "fileName": "02_비타실기_게임1.05_통합한글패치_20261025.zip" }
+      ]
+    },
+    {
+      "titleId": "PCSG00358",
+      "region": "JP",
+      "name": "원피스 언리미티드 월드 레드",
+      "version": "1.0",
+      "user": "쿠도신이치",
+      "releaseLink": "https://kudosin1992.com/patches/patch-fb06bb14",
+      "date": "2026-10-15",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": false,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://kudosin1992.com/patches/patch-fb06bb14" }
+      ]
+    },
+    {
+      "titleId": "PCSG00505",
+      "region": "JP",
+      "name": "대도서관의 양치기 라이브러리 파티",
+      "version": "1.0",
+      "requiredUpdateVersion": "1.0",
+      "user": "TuNE",
+      "releaseLink": "https://kudosin1992.com/patches/patch-fb06bb14",
+      "date": "2026-10-15",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/drive/folders/1x9kGdyKMCY2PtoyiqbSYna2P_roNacii?usp=sharing" }
+      ]
+    },
+    {
+      "titleId": "PCSG00125",
+      "region": "JP",
+      "name": "테일즈 오브 하츠 R",
+      "version": "1.1",
+      "requiredUpdateVersion": "1.01",
+      "user": "산트하임",
+      "releaseLink": "https://blog.naver.com/santhaim/224444048035",
+      "date": "2026-10-17",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Split",
+      "links": [
+        { "url": "https://download.blog.naver.com/open/ea7ff64d546160d4f11d7c497492e99630609a17/EFsQa7ZKxbjO9txRLuoSggWaFwbSq7U2JwAGJG8x_gMvEIi8UX4l7_a9DoIOjSR51kOUbgevub2KJ6abL9sjDd9liz4TGAg/%ED%85%8C%EC%9D%BC%EC%A6%88%20%EC%98%A4%EB%B8%8C%20%ED%95%98%EC%B8%A0%20R%20%ED%95%9C%EA%B8%80%ED%8C%A8%EC%B9%98%20v1.1.zip.001" },
+{ "url": "https://download.blog.naver.com/open/25b0398a9cc7c11d30deb382bb5d275ff9ad51b768/EFsQa7ZKxbjO9tNaLuoSggWaFwbSq7U2JwAGJG8x_gMvEIi8UX4l6Pe8DoYO4l4j6Av2bgevurb-fTvWnwFGeJx9gSEsZ_s/%ED%85%8C%EC%9D%BC%EC%A6%88%20%EC%98%A4%EB%B8%8C%20%ED%95%98%EC%B8%A0%20R%20%ED%95%9C%EA%B8%80%ED%8C%A8%EC%B9%98%20v1.1.zip.002" },
+{ "url": "https://download.blog.naver.com/open/c752db687b2123ffd23c516059bfc5bd1b4fb355e5/EFsQa7ZKxbjO9dxcLuoSggWaFwbSq7U2JwAGJG8x_gMvEIi8UX4l6fq5CYQOhiRPoiKybgevu74B4q2EkdQMpTD8FuDxPaA/%ED%85%8C%EC%9D%BC%EC%A6%88%20%EC%98%A4%EB%B8%8C%20%ED%95%98%EC%B8%A0%20R%20%ED%95%9C%EA%B8%80%ED%8C%A8%EC%B9%98%20v1.1.zip.003" },
+{ "url": "https://download.blog.naver.com/open/cd58d162722b29f5d8365b6a53b5cfb71145b95ee1/EFsQa7ZKxbjO9dteLuoSggWaFwbSq7U2JwAGJG8x_gMvEIi8UX4l6v2-DIUOxiheqkK3bgevvFYTltgIxcNef7eSWOLlq40/%ED%85%8C%EC%9D%BC%EC%A6%88%20%EC%98%A4%EB%B8%8C%20%ED%95%98%EC%B8%A0%20R%20%ED%95%9C%EA%B8%80%ED%8C%A8%EC%B9%98%20v1.1.zip.004" },
+{ "url": "https://download.blog.naver.com/open/61f47dcddd818559749af7c6ff19631bbde915f2e9/EFsQa7ZKxbjO9dhcLuoSggWaFwbSq7U2JwAGJG8x_gMvEIi8UX4l6vm7AoMO4FBgqB61bgevvcIFc09RVQhCWdINwQWjg-o/%ED%85%8C%EC%9D%BC%EC%A6%88%20%EC%98%A4%EB%B8%8C%20%ED%95%98%EC%B8%A0%20R%20%ED%95%9C%EA%B8%80%ED%8C%A8%EC%B9%98%20v1.1.zip.005" }
       ]
     },
     {

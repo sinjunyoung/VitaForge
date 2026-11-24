@@ -1046,6 +1046,7 @@ public sealed class English : LocalizedStrings
     public override string LogPatchingTmdHash => "Patching TMD hashes...";
     public override string LogPc98MissingFilesSkipped(object? arg0) => $"Skipped {arg0} files that were not found in the HDI.";
     public override string LogPc98PatchDone(object? arg0, object? arg1) => $"Patching complete: {arg0} files applied → {arg1}";
+    public override string LogPlanExplicitTarget(object? arg0, object? arg1) => $"Using specified target: {arg0} → {arg1}";
     public override string LogPlanLooseCandidates(object? arg0, object? arg1) => $"Loose-match patch candidates: {arg0} files, applied only to files with a matching source{arg1}";
     public override string LogPlanPatchDone(object? arg0, object? arg1) => $"Patching complete: {arg0} files{arg1}";
     public override string LogPlanReplaceDone(object? arg0, object? arg1) => $"Replacement complete: {arg0} files{arg1}";

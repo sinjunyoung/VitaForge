@@ -1046,6 +1046,7 @@ public sealed class Japanese : LocalizedStrings
     public override string LogPatchingTmdHash => "TMDハッシュをパッチ中...";
     public override string LogPc98MissingFilesSkipped(object? arg0) => $"HDI内で見つからなかった{arg0}個のファイルはスキップしました。";
     public override string LogPc98PatchDone(object? arg0, object? arg1) => $"パッチ完了: {arg0}個のファイルを適用 → {arg1}";
+    public override string LogPlanExplicitTarget(object? arg0, object? arg1) => $"指定された対象を適用: {arg0} → {arg1}";
     public override string LogPlanLooseCandidates(object? arg0, object? arg1) => $"包含マッチのパッチ候補: {arg0}個のファイル、元ファイルが一致するファイルにのみ適用{arg1}";
     public override string LogPlanPatchDone(object? arg0, object? arg1) => $"パッチ適用完了: {arg0}個のファイル{arg1}";
     public override string LogPlanReplaceDone(object? arg0, object? arg1) => $"置換完了: {arg0}個のファイル{arg1}";

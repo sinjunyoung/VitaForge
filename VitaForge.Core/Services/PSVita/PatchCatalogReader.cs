@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Text.Json;
 using VitaForge.Core.Models.PSVita;
+using Patch.Core.Models;
 
 namespace VitaForge.Core.Services.PSVita;
 
@@ -44,7 +45,8 @@ public static class PatchCatalogReader
                 InstallType = Or(entry.InstallType, PatchCatalogItem.AllInstallType),
                 LinkMode = Or(entry.LinkMode, PatchCatalogItem.IndividualLinkMode),
                 Enabled = entry.Enabled ?? true,
-                Links = [.. (entry.Links ?? []).Select(ToLink).Where(l => l.Url.Length > 0)]
+                Links = [.. (entry.Links ?? []).Select(ToLink).Where(l => l.Url.Length > 0)],
+                TargetRules = [.. (entry.PatchTargets ?? []).Select(t => new PatchTargetRule(Clean(t.Patch), Clean(t.Target))).Where(r => r.Patch.Length > 0 && r.Target.Length > 0)]
             });
         }
 
@@ -89,6 +91,15 @@ public static class PatchCatalogReader
         public bool? Enabled { get; set; }
 
         public List<CatalogLink>? Links { get; set; }
+
+        public List<CatalogPatchTarget>? PatchTargets { get; set; }
+    }
+
+    private sealed class CatalogPatchTarget
+    {
+        public string? Patch { get; set; }
+
+        public string? Target { get; set; }
     }
 
     private sealed class CatalogLink

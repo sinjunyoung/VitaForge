@@ -1046,6 +1046,7 @@ public sealed class Russian : LocalizedStrings
     public override string LogPatchingTmdHash => "Патчинг хешей TMD...";
     public override string LogPc98MissingFilesSkipped(object? arg0) => $"Пропущено файлов, не найденных в HDI: {arg0}.";
     public override string LogPc98PatchDone(object? arg0, object? arg1) => $"Патчинг завершён: применено файлов — {arg0} → {arg1}";
+    public override string LogPlanExplicitTarget(object? arg0, object? arg1) => $"Применена указанная цель: {arg0} → {arg1}";
     public override string LogPlanLooseCandidates(object? arg0, object? arg1) => $"Кандидаты патча с частичным совпадением: файлов — {arg0}, применяются только к файлам с подходящим оригиналом{arg1}";
     public override string LogPlanPatchDone(object? arg0, object? arg1) => $"Патчинг завершён: файлов — {arg0}{arg1}";
     public override string LogPlanReplaceDone(object? arg0, object? arg1) => $"Замена завершена: файлов — {arg0}{arg1}";

@@ -1,4 +1,5 @@
 ﻿using Vita.Core.Models;
+using Patch.Core.Models;
 
 namespace VitaForge.Core.Models.PSVita;
 
@@ -33,6 +34,8 @@ public sealed class PatchCatalogItem
     public string ReleaseLink { get; init; } = string.Empty;
 
     public IReadOnlyList<PatchLink> Links { get; init; } = [];
+
+    public IReadOnlyList<PatchTargetRule> TargetRules { get; init; } = [];
 
     public string LinkMode { get; init; } = IndividualLinkMode;
 

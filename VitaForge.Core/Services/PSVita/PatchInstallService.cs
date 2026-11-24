@@ -101,8 +101,8 @@ public static class PatchInstallService
         try
         {
             result = archive
-                ? await Task.Run(() => PatchOutputBuilder.BuildMergedFromEntriesAsync(entries, patchPath, outputPath, options.Target, log, progress, resolver, workDir, ct), ct)
-                : await Task.Run(() => PatchOutputBuilder.BuildMergedToFolderAsync(entries, patchPath, outputPath, options.Target, log, progress, resolver, tracker, workDir, ct), ct);
+                ? await Task.Run(() => PatchOutputBuilder.BuildMergedFromEntriesAsync(entries, patchPath, outputPath, options.Target, log, progress, resolver, plan.Patch.TargetRules, workDir, ct), ct)
+                : await Task.Run(() => PatchOutputBuilder.BuildMergedToFolderAsync(entries, patchPath, outputPath, options.Target, log, progress, resolver, plan.Patch.TargetRules, tracker, workDir, ct), ct);
         }
         catch
         {

@@ -3,6 +3,7 @@ using Common.Models;
 using Common.Services;
 using Vita.Core.Models;
 using Vita.Core.TitleRules;
+using Patch.Core.Models;
 
 namespace Vita.Core.Services;
 
@@ -10,19 +11,19 @@ public static class PatchOutputBuilder
 {
     private static readonly string DefaultTempDirectory = Path.Combine(Path.GetTempPath(), "VitaForge");
 
-    public static Task<MergeResult> BuildMergedFromEntriesAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, PatchTargetResolver? targetResolver = null, string? tempDirectory = null, CancellationToken ct = default)
-        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, () => new ZipDecryptSink(outputZipPath), target, log, progress, targetResolver, tempDirectory, ct));
+    public static Task<MergeResult> BuildMergedFromEntriesAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, PatchTargetResolver? targetResolver = null, IReadOnlyList<PatchTargetRule>? targetRules = null, string? tempDirectory = null, CancellationToken ct = default)
+        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, () => new ZipDecryptSink(outputZipPath), target, log, progress, targetResolver, targetRules, tempDirectory, ct));
 
-    public static Task<MergeResult> BuildMergedToFolderAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputFolderPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, PatchTargetResolver? targetResolver = null, WrittenFileTracker? tracker = null, string? tempDirectory = null, CancellationToken ct = default)
-        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, () => new FolderDecryptSink(outputFolderPath, tracker), target, log, progress, targetResolver, tempDirectory, ct));
+    public static Task<MergeResult> BuildMergedToFolderAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputFolderPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, PatchTargetResolver? targetResolver = null, IReadOnlyList<PatchTargetRule>? targetRules = null, WrittenFileTracker? tracker = null, string? tempDirectory = null, CancellationToken ct = default)
+        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, () => new FolderDecryptSink(outputFolderPath, tracker), target, log, progress, targetResolver, targetRules, tempDirectory, ct));
 
-    private static async Task<MergeResult> BuildCoreAsync(List<SourceItem> items, string defaultPatchPath, Func<IDecryptSink> createSink, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, PatchTargetResolver? targetResolver, string? tempDirectory, CancellationToken ct)
+    private static async Task<MergeResult> BuildCoreAsync(List<SourceItem> items, string defaultPatchPath, Func<IDecryptSink> createSink, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, PatchTargetResolver? targetResolver, IReadOnlyList<PatchTargetRule>? targetRules, string? tempDirectory, CancellationToken ct)
     {
         var patchContexts = new Dictionary<string, PatchContext>(StringComparer.OrdinalIgnoreCase);
 
         try
         {
-            var groups = PatchShared.BuildGroups(items, defaultPatchPath, patchContexts, target, log, ct, targetResolver);
+            var groups = PatchShared.BuildGroups(items, defaultPatchPath, patchContexts, target, log, targetResolver, targetRules, ct);
             return await WriteAsync(groups, createSink, target, log, progress, tempDirectory, ct);
         }
         finally

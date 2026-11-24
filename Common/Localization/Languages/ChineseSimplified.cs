@@ -1046,6 +1046,7 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string LogPatchingTmdHash => "正在修补 TMD 哈希...";
     public override string LogPc98MissingFilesSkipped(object? arg0) => $"已跳过在 HDI 中找不到的 {arg0} 个文件。";
     public override string LogPc98PatchDone(object? arg0, object? arg1) => $"补丁完成: 已应用 {arg0} 个文件 → {arg1}";
+    public override string LogPlanExplicitTarget(object? arg0, object? arg1) => $"应用指定目标: {arg0} → {arg1}";
     public override string LogPlanLooseCandidates(object? arg0, object? arg1) => $"包含匹配的补丁候选: {arg0} 个文件，仅应用于原始文件匹配的文件{arg1}";
     public override string LogPlanPatchDone(object? arg0, object? arg1) => $"补丁应用完成: {arg0} 个文件{arg1}";
     public override string LogPlanReplaceDone(object? arg0, object? arg1) => $"替换完成: {arg0} 个文件{arg1}";

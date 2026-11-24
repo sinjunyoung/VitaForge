@@ -1046,6 +1046,7 @@ public abstract class LocalizedStrings
     public abstract string LogPatchingTmdHash { get; }
     public abstract string LogPc98MissingFilesSkipped(object? arg0);
     public abstract string LogPc98PatchDone(object? arg0, object? arg1);
+    public abstract string LogPlanExplicitTarget(object? arg0, object? arg1);
     public abstract string LogPlanLooseCandidates(object? arg0, object? arg1);
     public abstract string LogPlanPatchDone(object? arg0, object? arg1);
     public abstract string LogPlanReplaceDone(object? arg0, object? arg1);

@@ -1046,6 +1046,7 @@ public sealed class Korean : LocalizedStrings
     public override string LogPatchingTmdHash => "TMD 해시 패치 중...";
     public override string LogPc98MissingFilesSkipped(object? arg0) => $"HDI에서 찾지 못한 파일 {arg0}개는 건너뛰었습니다.";
     public override string LogPc98PatchDone(object? arg0, object? arg1) => $"패치 완료: {arg0}개 파일 적용 → {arg1}";
+    public override string LogPlanExplicitTarget(object? arg0, object? arg1) => $"지정 대상 적용: {arg0} → {arg1}";
     public override string LogPlanLooseCandidates(object? arg0, object? arg1) => $"포함 매칭 패치 후보: {arg0}개 파일, 원본이 맞는 파일에만 적용{arg1}";
     public override string LogPlanPatchDone(object? arg0, object? arg1) => $"패치 적용 완료: {arg0}개 파일{arg1}";
     public override string LogPlanReplaceDone(object? arg0, object? arg1) => $"교체 완료: {arg0}개 파일{arg1}";

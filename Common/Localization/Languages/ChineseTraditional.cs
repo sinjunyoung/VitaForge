@@ -1046,6 +1046,7 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string LogPatchingTmdHash => "正在修補 TMD 雜湊...";
     public override string LogPc98MissingFilesSkipped(object? arg0) => $"已略過在 HDI 中找不到的 {arg0} 個檔案。";
     public override string LogPc98PatchDone(object? arg0, object? arg1) => $"修補完成: 已套用 {arg0} 個檔案 → {arg1}";
+    public override string LogPlanExplicitTarget(object? arg0, object? arg1) => $"套用指定目標: {arg0} → {arg1}";
     public override string LogPlanLooseCandidates(object? arg0, object? arg1) => $"包含比對的修補候選: {arg0} 個檔案，僅套用於原始檔案相符的檔案{arg1}";
     public override string LogPlanPatchDone(object? arg0, object? arg1) => $"修補套用完成: {arg0} 個檔案{arg1}";
     public override string LogPlanReplaceDone(object? arg0, object? arg1) => $"取代完成: {arg0} 個檔案{arg1}";

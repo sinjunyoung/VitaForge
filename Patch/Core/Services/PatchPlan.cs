@@ -12,6 +12,7 @@ public sealed class PatchPlan
     private readonly Dictionary<string, PatchFileRef> _unmatchedOverwrites;
     private readonly Dictionary<string, List<PlannedPatch>> _patches;
     private readonly List<UnmatchedPatch> _unmatchedPatches = [];
+    private readonly List<ExplicitPatchMatch> _explicitMatches = [];
 
     private PatchPlan(StringComparer comparer)
     {
@@ -34,6 +35,8 @@ public sealed class PatchPlan
 
     public IReadOnlyList<UnmatchedPatch> UnmatchedPatches => _unmatchedPatches;
 
+    public IReadOnlyList<ExplicitPatchMatch> ExplicitMatches => _explicitMatches;
+
     public IEnumerable<string> PatchedPaths => _patches.Keys;
 
     public bool TryGetOverwrite(string path, [NotNullWhen(true)] out PatchFileRef? file) => _overwrites.TryGetValue(path, out file);
@@ -42,7 +45,7 @@ public sealed class PatchPlan
 
     public IReadOnlyList<PlannedPatch> GetPatches(string path) => _patches.TryGetValue(path, out var list) ? list : [];
 
-    public static PatchPlan Build(PatchFileIndex index, IEnumerable<string> targetPaths, StringComparer? comparer = null, IReadOnlyDictionary<string, string>? manualTargets = null)
+    public static PatchPlan Build(PatchFileIndex index, IEnumerable<string> targetPaths, StringComparer? comparer = null, IReadOnlyDictionary<string, string>? manualTargets = null, IReadOnlyList<PatchTargetRule>? explicitRules = null)
     {
         comparer ??= StringComparer.Ordinal;
 
@@ -72,9 +75,35 @@ public sealed class PatchPlan
         var exactKeys = new HashSet<string>(comparer);
         var handled = new HashSet<PatchFileEntry>();
 
+        if (explicitRules is { Count: > 0 })
+        {
+            foreach (var (entry, _) in binaryEntries)
+            {
+                foreach (var rule in explicitRules.Where(r => r.MatchesPatch(entry)))
+                {
+                    var matched = targets.Where(t => !plan._overwrites.ContainsKey(t) && rule.MatchesTarget(t)).ToList();
+
+                    if (matched.Count == 0)
+                        continue;
+
+                    foreach (string target in matched)
+                    {
+                        if (!plan._patches.TryGetValue(target, out var list))
+                            plan._patches[target] = list = [];
+
+                        list.Add(new PlannedPatch(entry.File, true));
+                        exactKeys.Add(target);
+                        plan._explicitMatches.Add(new ExplicitPatchMatch(rule.Patch, target));
+                    }
+
+                    handled.Add(entry);
+                }
+            }
+        }
+
         foreach (var (entry, key) in binaryEntries)
         {
-            if (!targetSet.Contains(key) || plan._overwrites.ContainsKey(key) || !exactKeys.Add(key))
+            if (handled.Contains(entry) || !targetSet.Contains(key) || plan._overwrites.ContainsKey(key) || !exactKeys.Add(key))
                 continue;
 
             plan._patches[key] = [new PlannedPatch(entry.File, true)];
