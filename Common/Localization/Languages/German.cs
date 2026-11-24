@@ -447,6 +447,8 @@ public sealed class German : LocalizedStrings
     public override string ErrPs1GamesOnly => "Es werden nur PS1-Spiele unterstützt.";
     public override string ErrPsvPatchDriveBlocked => "Google Drive hat den Download blockiert (Kontingent überschritten oder kein Zugriff).";
     public override string ErrPsvPatchDriveEmptyFolder => "Im Google-Drive-Ordner wurden keine Dateien gefunden.";
+    public override string ErrPsvPatchFileNotFound(object? arg0) => $"Die angegebene Datei wurde nicht gefunden: {arg0}";
+    public override string ErrPsvPatchIndexOutOfRange(object? arg0, object? arg1) => $"Der angegebene Index ({arg0}) liegt außerhalb des Bereichs. Gesamtzahl der Dateien: {arg1}";
     public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"Installationspfad nicht gefunden: {arg0}";
     public override string ErrPsvPatchLinkFileName(object? arg0) => $"Der fileName des Links fehlt, ist ungültig oder doppelt: {arg0}";
     public override string ErrPsvPatchMegaFailed(object? arg0) => $"MEGA-Download fehlgeschlagen (Code: {arg0}).";

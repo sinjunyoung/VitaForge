@@ -447,6 +447,8 @@ public sealed class Russian : LocalizedStrings
     public override string ErrPs1GamesOnly => "Поддерживаются только игры PS1.";
     public override string ErrPsvPatchDriveBlocked => "Google Диск заблокировал загрузку (превышена квота или нет доступа).";
     public override string ErrPsvPatchDriveEmptyFolder => "В папке Google Диска файлы не найдены.";
+    public override string ErrPsvPatchFileNotFound(object? arg0) => $"Указанный файл не найден: {arg0}";
+    public override string ErrPsvPatchIndexOutOfRange(object? arg0, object? arg1) => $"Указанный индекс ({arg0}) вне диапазона. Всего файлов: {arg1}";
     public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"Путь установки не найден: {arg0}";
     public override string ErrPsvPatchLinkFileName(object? arg0) => $"fileName ссылки отсутствует, недопустим или повторяется: {arg0}";
     public override string ErrPsvPatchMegaFailed(object? arg0) => $"Не удалось загрузить с MEGA (код: {arg0}).";

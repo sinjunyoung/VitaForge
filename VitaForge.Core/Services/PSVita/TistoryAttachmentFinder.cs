@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net.Http;
 using System.Xml;
+using VitaForge.Core.Models.PSVita;
 
 namespace VitaForge.Core.Services.PSVita;
 
@@ -26,7 +27,7 @@ public static class TistoryAttachmentFinder
 
     public static HttpClient Client { get; } = CreateClient();
 
-    public static async Task<string?> FindFirstAsync(string pageUrl, CancellationToken ct)
+    public static async Task<List<TistoryAttachment>> FindAllAsync(string pageUrl, CancellationToken ct)
     {
         using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
 
@@ -42,7 +43,7 @@ public static class TistoryAttachmentFinder
 
         var searchNode = doc.DocumentNode.SelectSingleNode(TargetDivXPath) ?? doc.DocumentNode;
         var baseUri = new Uri(pageUrl);
-        var urls = new List<string>();
+        var attachments = new List<TistoryAttachment>();
         var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         foreach (var node in searchNode.DescendantsAndSelf())
@@ -55,11 +56,33 @@ public static class TistoryAttachmentFinder
                     continue;
 
                 if (seen.Add(url))
-                    urls.Add(url);
+                    attachments.Add(CreateAttachment(node, url));
             }
         }
 
-        return urls.OrderByDescending(GetUrlPriority).FirstOrDefault();
+        return attachments;
+    }
+
+    private static TistoryAttachment CreateAttachment(HtmlNode node, string url)
+    {
+        string urlName = GetUrlFileName(url);
+        string displayName = HtmlEntity.DeEntitize(node.SelectSingleNode(".//span[contains(@class, 'name')]")?.InnerText ?? string.Empty).Trim();
+
+        return new TistoryAttachment(url, displayName.Length > 0 ? displayName : urlName, urlName, GetUrlPriority(url));
+    }
+
+    private static string GetUrlFileName(string url)
+    {
+        try
+        {
+            string name = Uri.UnescapeDataString(Path.GetFileName(new Uri(url).LocalPath));
+
+            return name.Contains('.') ? name : string.Empty;
+        }
+        catch (UriFormatException)
+        {
+            return string.Empty;
+        }
     }
 
     private static IEnumerable<string> GetCandidates(HtmlNode node)

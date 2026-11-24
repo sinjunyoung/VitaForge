@@ -81,7 +81,7 @@ public static class PatchArchivePreparer
 
         Directory.CreateDirectory(folderPath);
 
-        File.Move(rawPath, Path.Combine(folderPath, link.FileName), true);
+        File.Move(rawPath, Path.Combine(folderPath, link.LocalFileName), true);
     }
 
     private static void ExtractSevenZip(string archivePath, string folderPath, bool deleteOnFailure, CancellationToken ct)

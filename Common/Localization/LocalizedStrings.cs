@@ -447,6 +447,8 @@ public abstract class LocalizedStrings
     public abstract string ErrPs1GamesOnly { get; }
     public abstract string ErrPsvPatchDriveBlocked { get; }
     public abstract string ErrPsvPatchDriveEmptyFolder { get; }
+    public abstract string ErrPsvPatchFileNotFound(object? arg0);
+    public abstract string ErrPsvPatchIndexOutOfRange(object? arg0, object? arg1);
     public abstract string ErrPsvPatchInstallPathNotFound(object? arg0);
     public abstract string ErrPsvPatchLinkFileName(object? arg0);
     public abstract string ErrPsvPatchMegaFailed(object? arg0);

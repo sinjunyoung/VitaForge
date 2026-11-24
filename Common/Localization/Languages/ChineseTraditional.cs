@@ -447,6 +447,8 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string ErrPs1GamesOnly => "僅支援 PS1 遊戲。";
     public override string ErrPsvPatchDriveBlocked => "Google 雲端硬碟封鎖了下載（超出配額或無法存取）。";
     public override string ErrPsvPatchDriveEmptyFolder => "在 Google 雲端硬碟資料夾中找不到檔案。";
+    public override string ErrPsvPatchFileNotFound(object? arg0) => $"找不到指定的檔案: {arg0}";
+    public override string ErrPsvPatchIndexOutOfRange(object? arg0, object? arg1) => $"指定的序號 ({arg0}) 超出範圍。共 {arg1} 個檔案";
     public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"找不到安裝路徑: {arg0}";
     public override string ErrPsvPatchLinkFileName(object? arg0) => $"連結的 fileName 缺少、無效或重複: {arg0}";
     public override string ErrPsvPatchMegaFailed(object? arg0) => $"MEGA 下載失敗（代碼: {arg0}）。";

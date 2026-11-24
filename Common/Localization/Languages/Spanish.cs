@@ -447,6 +447,8 @@ public sealed class Spanish : LocalizedStrings
     public override string ErrPs1GamesOnly => "Solo se admiten juegos de PS1.";
     public override string ErrPsvPatchDriveBlocked => "Google Drive bloqueó la descarga (cuota excedida o sin acceso).";
     public override string ErrPsvPatchDriveEmptyFolder => "No se encontraron archivos en la carpeta de Google Drive.";
+    public override string ErrPsvPatchFileNotFound(object? arg0) => $"No se encontró el archivo indicado: {arg0}";
+    public override string ErrPsvPatchIndexOutOfRange(object? arg0, object? arg1) => $"El índice indicado ({arg0}) está fuera de rango. Total de archivos: {arg1}";
     public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"No se encontró la ruta de instalación: {arg0}";
     public override string ErrPsvPatchLinkFileName(object? arg0) => $"El fileName del enlace falta, no es válido o está duplicado: {arg0}";
     public override string ErrPsvPatchMegaFailed(object? arg0) => $"Falló la descarga de MEGA (código: {arg0}).";

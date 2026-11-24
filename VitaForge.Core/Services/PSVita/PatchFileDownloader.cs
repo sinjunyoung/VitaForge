@@ -52,7 +52,7 @@ public static class PatchFileDownloader
 
         foreach (var link in links)
         {
-            if (!link.HasValidFileName || !names.Add(link.FileName))
+            if (!link.HasValidFileName || !names.Add(link.LocalFileName))
                 throw new InvalidOperationException(Loc.S.ErrPsvPatchLinkFileName(link.Url));
         }
 
@@ -64,7 +64,7 @@ public static class PatchFileDownloader
 
         for (int i = 0; i < links.Count; i++)
         {
-            string volumePath = Path.Combine(partsPath, links[i].FileName);
+            string volumePath = Path.Combine(partsPath, links[i].LocalFileName);
 
             log(Loc.S.LogPsvPatchDownloadingPart(i + 1, links.Count, DisplayName(links[i])), LogLevel.Info);
 
@@ -81,7 +81,7 @@ public static class PatchFileDownloader
     }
 
     private static Task DownloadLinkAsync(PatchLink link, string destinationPath, PatchDownloadProgress progress, Action<string, LogLevel> log, CancellationToken ct)
-        => PatchHostDownloaderRegistry.Resolve(link.Url).DownloadAsync(link.Url, destinationPath, progress, log, ct);
+        => PatchHostDownloaderRegistry.Resolve(link.Url).DownloadAsync(link, destinationPath, progress, log, ct);
 
-    private static string DisplayName(PatchLink link) => link.FileName.Length > 0 ? link.FileName : link.Url;
+    private static string DisplayName(PatchLink link) => link.LocalFileName.Length > 0 ? link.LocalFileName : link.Url;
 }

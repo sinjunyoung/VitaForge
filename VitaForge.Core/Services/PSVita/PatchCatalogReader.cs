@@ -55,23 +55,7 @@ public static class PatchCatalogReader
 
     private static string Or(string? value, string fallback) => string.IsNullOrWhiteSpace(value) ? fallback : value.Trim();
 
-    private static PatchLink ToLink(CatalogLink link)
-    {
-        string url = Clean(link.Url);
-        string fileName = Clean(link.FileName);
-
-        return new PatchLink(url, fileName.Length > 0 ? fileName : InferFileName(url));
-    }
-
-    private static string InferFileName(string url)
-    {
-        if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
-            return string.Empty;
-
-        string name = Uri.UnescapeDataString(Path.GetFileName(uri.LocalPath));
-
-        return name.Contains('.') ? name : string.Empty;
-    }
+    private static PatchLink ToLink(CatalogLink link) => new(Clean(link.Url), Clean(link.FileName), link.Index ?? 0);
 
     private sealed class CatalogDocument
     {
@@ -112,5 +96,7 @@ public static class PatchCatalogReader
         public string? Url { get; set; }
 
         public string? FileName { get; set; }
+
+        public int? Index { get; set; }
     }
 }

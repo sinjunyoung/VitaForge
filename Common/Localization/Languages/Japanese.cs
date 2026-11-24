@@ -447,6 +447,8 @@ public sealed class Japanese : LocalizedStrings
     public override string ErrPs1GamesOnly => "PS1ゲームのみ対応しています。";
     public override string ErrPsvPatchDriveBlocked => "Google ドライブがダウンロードをブロックしました (クォータ超過またはアクセス不可)。";
     public override string ErrPsvPatchDriveEmptyFolder => "Google ドライブのフォルダーにファイルが見つかりません。";
+    public override string ErrPsvPatchFileNotFound(object? arg0) => $"指定したファイルが見つかりません: {arg0}";
+    public override string ErrPsvPatchIndexOutOfRange(object? arg0, object? arg1) => $"指定した番号 ({arg0}) が範囲外です。全 {arg1} 件";
     public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"インストール先が見つかりません: {arg0}";
     public override string ErrPsvPatchLinkFileName(object? arg0) => $"リンクの fileName が未指定、不正、または重複しています: {arg0}";
     public override string ErrPsvPatchMegaFailed(object? arg0) => $"MEGA のダウンロードに失敗しました (コード: {arg0})。";

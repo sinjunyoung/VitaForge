@@ -1,6 +1,6 @@
 ﻿using Common.Localization;
 using Common.Models;
-using System.IO;
+using VitaForge.Core.Models.PSVita;
 
 namespace VitaForge.Core.Services.PSVita.PatchHosts;
 
@@ -8,12 +8,19 @@ public sealed class TistoryPatchHost : IPatchHostDownloader
 {
     public bool CanHandle(string url) => Uri.TryCreate(url, UriKind.Absolute, out var uri) && uri.Host.EndsWith(".tistory.com", StringComparison.OrdinalIgnoreCase);
 
-    public async Task DownloadAsync(string url, string destinationPath, PatchDownloadProgress progress, Action<string, LogLevel> log, CancellationToken ct)
+    public async Task DownloadAsync(PatchLink patchLink, string destinationPath, PatchDownloadProgress progress, Action<string, LogLevel> log, CancellationToken ct)
     {
-        string attachmentUrl = await TistoryAttachmentFinder.FindFirstAsync(url, ct) ?? throw new InvalidOperationException(Loc.S.ErrPsvPatchTistoryNoAttachment(url));
+        var attachments = await TistoryAttachmentFinder.FindAllAsync(patchLink.Url, ct);
 
-        log(Loc.S.LogPsvPatchTistoryAttachment(Path.GetFileName(new Uri(attachmentUrl).LocalPath)), LogLevel.Info);
+        if (attachments.Count == 0)
+            throw new InvalidOperationException(Loc.S.ErrPsvPatchTistoryNoAttachment(patchLink.Url));
 
-        await HttpFileDownloader.DownloadAsync(TistoryAttachmentFinder.Client, attachmentUrl, destinationPath, progress.AddBytes, progress.SetTotal, ct);
+        var attachment = patchLink.HasSelector
+            ? PatchFileSelector.Select(attachments, a => [a.Name, a.UrlName], patchLink)
+            : attachments.OrderByDescending(a => a.Priority).First();
+
+        log(Loc.S.LogPsvPatchTistoryAttachment(attachment.Name.Length > 0 ? attachment.Name : attachment.Url), LogLevel.Info);
+
+        await HttpFileDownloader.DownloadAsync(TistoryAttachmentFinder.Client, attachment.Url, destinationPath, progress.AddBytes, progress.SetTotal, ct);
     }
 }

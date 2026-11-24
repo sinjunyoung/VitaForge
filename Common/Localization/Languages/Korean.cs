@@ -447,6 +447,8 @@ public sealed class Korean : LocalizedStrings
     public override string ErrPs1GamesOnly => "PS1 게임만 지원합니다.";
     public override string ErrPsvPatchDriveBlocked => "구글 드라이브가 다운로드를 막았습니다 (쿼터 초과 또는 접근 불가).";
     public override string ErrPsvPatchDriveEmptyFolder => "구글 드라이브 폴더에서 파일을 찾지 못했습니다.";
+    public override string ErrPsvPatchFileNotFound(object? arg0) => $"지정한 파일을 찾지 못했습니다: {arg0}";
+    public override string ErrPsvPatchIndexOutOfRange(object? arg0, object? arg1) => $"지정한 순번({arg0})이 범위를 벗어났습니다. 전체 {arg1}개";
     public override string ErrPsvPatchInstallPathNotFound(object? arg0) => $"설치 경로를 찾을 수 없습니다: {arg0}";
     public override string ErrPsvPatchLinkFileName(object? arg0) => $"링크의 fileName이 없거나 올바르지 않거나 중복됩니다: {arg0}";
     public override string ErrPsvPatchMegaFailed(object? arg0) => $"MEGA 다운로드에 실패했습니다 (코드: {arg0}).";
