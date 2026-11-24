@@ -13,16 +13,16 @@ public static class PatchOnlyBuilder
 {
     private static readonly string DefaultTempDirectory = Path.Combine(Path.GetTempPath(), "VitaForge");
 
-    public static Task<PatchOnlyResult> BuildFromEntriesAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, PatchTargetResolver? targetResolver = null, IReadOnlyList<PatchTargetRule>? targetRules = null, string? tempDirectory = null, CancellationToken ct = default)
-        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, outputZipPath, target, log, progress, targetResolver, targetRules, tempDirectory, ct));
+    public static Task<PatchOnlyResult> BuildFromEntriesAsync(List<BatchSourceEntry> entries, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress = null, PatchTargetResolver? targetResolver = null, PatchMatchOptions? matchOptions = null, string? tempDirectory = null, CancellationToken ct = default)
+        => PatchShared.RunWithItemsAsync(entries, log, items => BuildCoreAsync(items, defaultPatchPath, outputZipPath, target, log, progress, targetResolver, matchOptions, tempDirectory, ct));
 
-    private static async Task<PatchOnlyResult> BuildCoreAsync(List<SourceItem> items, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, PatchTargetResolver? targetResolver, IReadOnlyList<PatchTargetRule>? targetRules, string? tempDirectory, CancellationToken ct)
+    private static async Task<PatchOnlyResult> BuildCoreAsync(List<SourceItem> items, string defaultPatchPath, string outputZipPath, OutputTarget target, Action<string, LogLevel> log, IProgress<ProgressInfo>? progress, PatchTargetResolver? targetResolver, PatchMatchOptions? matchOptions, string? tempDirectory, CancellationToken ct)
     {
         var patchContexts = new Dictionary<string, PatchContext>(StringComparer.OrdinalIgnoreCase);
 
         try
         {
-            var groups = PatchShared.BuildGroups(items, defaultPatchPath, patchContexts, target, log, targetResolver, targetRules, ct);
+            var groups = PatchShared.BuildGroups(items, defaultPatchPath, patchContexts, target, log, targetResolver, matchOptions, ct);
             return await WriteAsync(groups, outputZipPath, target, log, progress, tempDirectory, ct);
         }
         finally

@@ -146,10 +146,6 @@
       "releaseLink": "https://cafe.naver.com/hansicgu/35854",
       "date": "2026-09-25",
       "patchType": "Patch",
-"patchTargets": [
-  { "patch": "eboot_ko.xdelta", "target": "eboot.bin" },
-  { "patch": "toidata_release_ko.xdelta", "target": "toidata_release.l7c" }
-],
       "installType": "All",
       "enabled": true,
       "linkMode": "Individual",

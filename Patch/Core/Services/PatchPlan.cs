@@ -45,14 +45,14 @@ public sealed class PatchPlan
 
     public IReadOnlyList<PlannedPatch> GetPatches(string path) => _patches.TryGetValue(path, out var list) ? list : [];
 
-    public static PatchPlan Build(PatchFileIndex index, IEnumerable<string> targetPaths, StringComparer? comparer = null, IReadOnlyDictionary<string, string>? manualTargets = null, IReadOnlyList<PatchTargetRule>? explicitRules = null)
+    public static PatchPlan Build(PatchFileIndex index, IEnumerable<string> targetPaths, StringComparer? comparer = null, IReadOnlyDictionary<string, string>? manualTargets = null, PatchMatchOptions? options = null)
     {
         comparer ??= StringComparer.Ordinal;
 
         var plan = new PatchPlan(comparer);
         var targets = targetPaths.ToList();
         var targetSet = new HashSet<string>(targets, comparer);
-        var binaryEntries = new List<(PatchFileEntry Entry, string Key)>();
+        var binaryEntries = new List<(PatchFileEntry Entry, string Key, string? StrippedName, string? StrippedKey)>();
 
         foreach (var entry in index.Entries)
         {
@@ -69,17 +69,21 @@ public sealed class PatchPlan
                 continue;
             }
 
-            binaryEntries.Add((entry, key));
+            string stripped = options?.StripName(entry.BaseName) ?? entry.BaseName;
+            bool hasStripped = !stripped.Equals(entry.BaseName, StringComparison.Ordinal);
+
+            binaryEntries.Add((entry, key, hasStripped ? stripped : null, hasStripped ? (relDir.Length == 0 ? stripped : $"{relDir}/{stripped}") : null));
         }
 
         var exactKeys = new HashSet<string>(comparer);
         var handled = new HashSet<PatchFileEntry>();
+        var explicitHandled = new HashSet<PatchFileEntry>();
 
-        if (explicitRules is { Count: > 0 })
+        if (options is { TargetRules.Count: > 0 })
         {
-            foreach (var (entry, _) in binaryEntries)
+            foreach (var (entry, _, _, _) in binaryEntries)
             {
-                foreach (var rule in explicitRules.Where(r => r.MatchesPatch(entry)))
+                foreach (var rule in options.TargetRules.Where(r => r.MatchesPatch(entry)))
                 {
                     var matched = targets.Where(t => !plan._overwrites.ContainsKey(t) && rule.MatchesTarget(t)).ToList();
 
@@ -97,11 +101,12 @@ public sealed class PatchPlan
                     }
 
                     handled.Add(entry);
+                    explicitHandled.Add(entry);
                 }
             }
         }
 
-        foreach (var (entry, key) in binaryEntries)
+        foreach (var (entry, key, _, _) in binaryEntries)
         {
             if (handled.Contains(entry) || !targetSet.Contains(key) || plan._overwrites.ContainsKey(key) || !exactKeys.Add(key))
                 continue;
@@ -110,9 +115,9 @@ public sealed class PatchPlan
             handled.Add(entry);
         }
 
-        foreach (var (entry, _) in binaryEntries)
+        foreach (var (entry, _, _, _) in binaryEntries)
         {
-            if (entry.BaseName.Length == 0)
+            if (entry.BaseName.Length == 0 || explicitHandled.Contains(entry))
                 continue;
 
             var candidates = targets.Where(t => !plan._overwrites.ContainsKey(t) && !exactKeys.Contains(t) && NameMatches(FileNameOf(t), entry.BaseName)).ToList();
@@ -131,7 +136,37 @@ public sealed class PatchPlan
             handled.Add(entry);
         }
 
-        foreach (var (entry, key) in binaryEntries)
+        foreach (var (entry, _, _, strippedKey) in binaryEntries)
+        {
+            if (strippedKey is null || handled.Contains(entry) || !targetSet.Contains(strippedKey) || plan._overwrites.ContainsKey(strippedKey) || !exactKeys.Add(strippedKey))
+                continue;
+
+            plan._patches[strippedKey] = [new PlannedPatch(entry.File, true)];
+            handled.Add(entry);
+        }
+
+        foreach (var (entry, _, strippedName, _) in binaryEntries)
+        {
+            if (strippedName is null || handled.Contains(entry))
+                continue;
+
+            var candidates = targets.Where(t => !plan._overwrites.ContainsKey(t) && !exactKeys.Contains(t) && NameMatches(FileNameOf(t), strippedName)).ToList();
+
+            if (candidates.Count == 0 || !PatchMatchPolicy.AllowsLooseNameMatch(DetectFormat(entry.File)))
+                continue;
+
+            foreach (string candidate in candidates)
+            {
+                if (!plan._patches.TryGetValue(candidate, out var list))
+                    plan._patches[candidate] = list = [];
+
+                list.Add(new PlannedPatch(entry.File, false));
+            }
+
+            handled.Add(entry);
+        }
+
+        foreach (var (entry, key, _, _) in binaryEntries)
         {
             if (entry.BaseName.Length == 0 || entry.RelativeDir == PatchFileIndex.LooseOnlyDir || handled.Contains(entry) || targetSet.Contains(key))
                 continue;

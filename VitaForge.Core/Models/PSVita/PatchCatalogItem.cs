@@ -35,7 +35,7 @@ public sealed class PatchCatalogItem
 
     public IReadOnlyList<PatchLink> Links { get; init; } = [];
 
-    public IReadOnlyList<PatchTargetRule> TargetRules { get; init; } = [];
+    public PatchMatchOptions MatchOptions { get; init; } = PatchMatchOptions.Empty;
 
     public string LinkMode { get; init; } = IndividualLinkMode;
 

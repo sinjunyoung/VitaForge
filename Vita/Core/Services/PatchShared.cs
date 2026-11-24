@@ -117,8 +117,8 @@ internal static class PatchShared
         return (items, ownedAccessors);
     }
 
-    public static List<MergeGroup> BuildGroups(List<SourceItem> items, string defaultPatchPath, Dictionary<string, PatchContext> patchContexts, OutputTarget target, Action<string, LogLevel> log, PatchTargetResolver? targetResolver, IReadOnlyList<PatchTargetRule>? targetRules, CancellationToken ct)
-        => [.. BuildBaseGroups(items, log, ct).Select(g => CreateGroup(g.Category, g.TitleId, g.ContentIdSuffix, g.PatchPathOverride ?? defaultPatchPath, g.Index, g.Owners, patchContexts, target, targetResolver, targetRules, log))];
+    public static List<MergeGroup> BuildGroups(List<SourceItem> items, string defaultPatchPath, Dictionary<string, PatchContext> patchContexts, OutputTarget target, Action<string, LogLevel> log, PatchTargetResolver? targetResolver, PatchMatchOptions? matchOptions, CancellationToken ct)
+        => [.. BuildBaseGroups(items, log, ct).Select(g => CreateGroup(g.Category, g.TitleId, g.ContentIdSuffix, g.PatchPathOverride ?? defaultPatchPath, g.Index, g.Owners, patchContexts, target, targetResolver, matchOptions, log))];
 
     internal static List<BaseGroup> BuildBaseGroups(List<SourceItem> items, Action<string, LogLevel> log, CancellationToken ct)
     {
@@ -194,10 +194,10 @@ internal static class PatchShared
         return map;
     }
 
-    private static MergeGroup CreateGroup(ContentCategory category, string titleId, string? contentIdSuffix, string patchPackagePath, Dictionary<string, PatchAppEntry> index, List<OwnerContext> owners, Dictionary<string, PatchContext> patchContexts, OutputTarget target, PatchTargetResolver? targetResolver, IReadOnlyList<PatchTargetRule>? targetRules, Action<string, LogLevel> log)
+    private static MergeGroup CreateGroup(ContentCategory category, string titleId, string? contentIdSuffix, string patchPackagePath, Dictionary<string, PatchAppEntry> index, List<OwnerContext> owners, Dictionary<string, PatchContext> patchContexts, OutputTarget target, PatchTargetResolver? targetResolver, PatchMatchOptions? matchOptions, Action<string, LogLevel> log)
     {
         var patchCtx = GetPatchContext(patchContexts, patchPackagePath);
-        var targets = BuildTargets(index, patchCtx, category, titleId, contentIdSuffix, target, targetResolver, targetRules, log);
+        var targets = BuildTargets(index, patchCtx, category, titleId, contentIdSuffix, target, targetResolver, matchOptions, log);
         return new MergeGroup { Category = category, TitleId = titleId, ContentIdSuffix = contentIdSuffix, PatchCtx = patchCtx, Index = index, Targets = targets, Owners = owners };
     }
 
@@ -461,10 +461,10 @@ internal static class PatchShared
         }
     }
 
-    internal static PatchPlan BuildPlan(PatchContext patchCtx, ContentCategory category, string titleId, string? contentIdSuffix, OutputTarget target, IReadOnlyCollection<string> relativePaths, PatchTargetResolver? targetResolver = null, IReadOnlyList<PatchTargetRule>? targetRules = null, Action<string, LogLevel>? log = null)
+    internal static PatchPlan BuildPlan(PatchContext patchCtx, ContentCategory category, string titleId, string? contentIdSuffix, OutputTarget target, IReadOnlyCollection<string> relativePaths, PatchTargetResolver? targetResolver = null, PatchMatchOptions? matchOptions = null, Action<string, LogLevel>? log = null)
     {
         var patchIndex = PatchWrapperStripper.Strip(BuildPatchIndex(patchCtx, category, titleId, contentIdSuffix, target), relativePaths);
-        var plan = PatchPlan.Build(patchIndex, relativePaths, StringComparer.OrdinalIgnoreCase, null, targetRules);
+        var plan = PatchPlan.Build(patchIndex, relativePaths, StringComparer.OrdinalIgnoreCase, null, matchOptions);
 
         foreach (var match in plan.ExplicitMatches)
             log?.Invoke(Loc.S.LogPlanExplicitTarget(match.Patch, match.Target), LogLevel.Info);
@@ -485,12 +485,12 @@ internal static class PatchShared
                 manualTargets[unmatchedPatches[i].Key] = selected;
         }
 
-        return manualTargets.Count == 0 ? plan : PatchPlan.Build(patchIndex, relativePaths, StringComparer.OrdinalIgnoreCase, manualTargets, targetRules);
+        return manualTargets.Count == 0 ? plan : PatchPlan.Build(patchIndex, relativePaths, StringComparer.OrdinalIgnoreCase, manualTargets, matchOptions);
     }
 
-    public static List<PatchTarget> BuildTargets(Dictionary<string, PatchAppEntry> patchAppIndex, PatchContext patchCtx, ContentCategory category, string titleId, string? contentIdSuffix, OutputTarget target, PatchTargetResolver? targetResolver = null, IReadOnlyList<PatchTargetRule>? targetRules = null, Action<string, LogLevel>? log = null)
+    public static List<PatchTarget> BuildTargets(Dictionary<string, PatchAppEntry> patchAppIndex, PatchContext patchCtx, ContentCategory category, string titleId, string? contentIdSuffix, OutputTarget target, PatchTargetResolver? targetResolver = null, PatchMatchOptions? matchOptions = null, Action<string, LogLevel>? log = null)
     {
-        var plan = BuildPlan(patchCtx, category, titleId, contentIdSuffix, target, patchAppIndex.Keys, targetResolver, targetRules, log);
+        var plan = BuildPlan(patchCtx, category, titleId, contentIdSuffix, target, patchAppIndex.Keys, targetResolver, matchOptions, log);
         var targets = new List<PatchTarget>();
 
         foreach (var (relativePath, appEntry) in patchAppIndex)
