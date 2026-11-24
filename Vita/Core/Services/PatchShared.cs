@@ -464,7 +464,8 @@ internal static class PatchShared
     internal static PatchPlan BuildPlan(PatchContext patchCtx, ContentCategory category, string titleId, string? contentIdSuffix, OutputTarget target, IReadOnlyCollection<string> relativePaths, PatchTargetResolver? targetResolver = null, PatchMatchOptions? matchOptions = null, Action<string, LogLevel>? log = null)
     {
         var patchIndex = PatchWrapperStripper.Strip(BuildPatchIndex(patchCtx, category, titleId, contentIdSuffix, target), relativePaths);
-        var plan = PatchPlan.Build(patchIndex, relativePaths, StringComparer.OrdinalIgnoreCase, null, matchOptions);
+        var options = (matchOptions ?? PatchMatchOptions.Empty).WithNameStrips(PatchNameStrips.Patterns);
+        var plan = PatchPlan.Build(patchIndex, relativePaths, StringComparer.OrdinalIgnoreCase, null, options);
 
         foreach (var match in plan.ExplicitMatches)
             log?.Invoke(Loc.S.LogPlanExplicitTarget(match.Patch, match.Target), LogLevel.Info);
@@ -485,7 +486,7 @@ internal static class PatchShared
                 manualTargets[unmatchedPatches[i].Key] = selected;
         }
 
-        return manualTargets.Count == 0 ? plan : PatchPlan.Build(patchIndex, relativePaths, StringComparer.OrdinalIgnoreCase, manualTargets, matchOptions);
+        return manualTargets.Count == 0 ? plan : PatchPlan.Build(patchIndex, relativePaths, StringComparer.OrdinalIgnoreCase, manualTargets, options);
     }
 
     public static List<PatchTarget> BuildTargets(Dictionary<string, PatchAppEntry> patchAppIndex, PatchContext patchCtx, ContentCategory category, string titleId, string? contentIdSuffix, OutputTarget target, PatchTargetResolver? targetResolver = null, PatchMatchOptions? matchOptions = null, Action<string, LogLevel>? log = null)

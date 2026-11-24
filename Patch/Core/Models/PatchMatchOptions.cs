@@ -16,6 +16,8 @@ public sealed class PatchMatchOptions
 
     public IReadOnlyList<PatchTargetRule> TargetRules { get; }
 
+    public PatchMatchOptions WithNameStrips(IReadOnlyList<string> nameStrips) => new(TargetRules, nameStrips);
+
     public string StripName(string baseName)
     {
         foreach (var strip in _nameStrips)

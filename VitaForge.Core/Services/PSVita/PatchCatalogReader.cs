@@ -46,9 +46,7 @@ public static class PatchCatalogReader
                 LinkMode = Or(entry.LinkMode, PatchCatalogItem.IndividualLinkMode),
                 Enabled = entry.Enabled ?? true,
                 Links = [.. (entry.Links ?? []).Select(ToLink).Where(l => l.Url.Length > 0)],
-                MatchOptions = new PatchMatchOptions(
-                    [.. (entry.PatchTargets ?? []).Select(t => new PatchTargetRule(Clean(t.Patch), Clean(t.Target))).Where(r => r.Patch.Length > 0 && r.Target.Length > 0)],
-                    [.. (entry.PatchNameStrip ?? []).Select(Clean).Where(s => s.Length > 0)])
+                MatchOptions = new PatchMatchOptions([.. (entry.PatchTargets ?? []).Select(t => new PatchTargetRule(Clean(t.Patch), Clean(t.Target))).Where(r => r.Patch.Length > 0 && r.Target.Length > 0)], [])
             });
         }
 
@@ -95,8 +93,6 @@ public static class PatchCatalogReader
         public List<CatalogLink>? Links { get; set; }
 
         public List<CatalogPatchTarget>? PatchTargets { get; set; }
-
-        public List<string?>? PatchNameStrip { get; set; }
     }
 
     private sealed class CatalogPatchTarget
