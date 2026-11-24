@@ -18,14 +18,15 @@ internal sealed class FolderDecryptSink : IDecryptSink
         else
             Directory.CreateDirectory(folderPath);
 
-        _root = Path.GetFullPath(folderPath) + Path.DirectorySeparatorChar;
+        _root = Path.GetFullPath(folderPath);
     }
 
     public Stream Open(string entryPath)
     {
         string fullPath = Path.GetFullPath(Path.Combine(_root, entryPath.Replace('/', Path.DirectorySeparatorChar)));
+        string relativePath = Path.GetRelativePath(_root, fullPath);
 
-        if (!fullPath.StartsWith(_root, StringComparison.OrdinalIgnoreCase))
+        if (Path.IsPathRooted(relativePath) || relativePath == ".." || relativePath.StartsWith(".." + Path.DirectorySeparatorChar, StringComparison.Ordinal))
             throw new InvalidDataException(Loc.S.ErrPathNotAllowed(entryPath));
 
         if (_tracker != null)

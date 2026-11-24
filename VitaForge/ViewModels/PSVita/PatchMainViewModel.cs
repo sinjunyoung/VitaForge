@@ -76,7 +76,7 @@ public class PatchMainViewModel : ProgressToolTabViewModel
         set => InstallEmu = !value;
     }
 
-    public bool IncludeDlc { get; set { SetProperty(ref field, value); } } = true;
+    public bool IncludeDlc { get; set { SetProperty(ref field, value); } } = false;
 
     public string? TargetPath
     {
