@@ -2,6 +2,7 @@
 using System.IO.Compression;
 using System.Security.Cryptography;
 using Vita.Core.Cryptography;
+using Vita.Core.Models;
 
 namespace Vita.Core.Services;
 
@@ -51,7 +52,7 @@ internal static class VitaSelfDecryptor
 
     public static bool IsSelf(ReadOnlySpan<byte> data) => data.Length >= 0x80 && BinaryPrimitives.ReadUInt32LittleEndian(data) == SceMagic;
 
-    public static byte[] DecryptToFself(byte[] self, byte[] klicensee)
+    public static byte[] DecryptToFself(byte[] self, byte[] klicensee, FselfLayout layout)
     {
         if (!IsSelf(self))
             throw new InvalidDataException("SELF 형식이 아닙니다.");
@@ -149,7 +150,7 @@ internal static class VitaSelfDecryptor
             }
         }
 
-        return MakeFself(elf.ToArray(), authId);
+        return MakeFself(elf.ToArray(), authId, layout);
     }
 
     private static List<SceSegment> GetSegments(byte[] self, ulong sysVersion, int keyRevision, byte[] klicensee)
@@ -197,7 +198,7 @@ internal static class VitaSelfDecryptor
         return result;
     }
 
-    private static byte[] MakeFself(byte[] elf, ulong authId)
+    private static byte[] MakeFself(byte[] elf, ulong authId, FselfLayout layout)
     {
         int fileSize = elf.Length;
         int phnum = U16(elf, 44);
@@ -209,7 +210,7 @@ internal static class VitaSelfDecryptor
         const int appInfoOffset = 0x80;
         const int elfOffset = 0x80 + 0x20;
         int phdrOffset = (elfOffset + ElfHeaderSize + 0xF) & ~0xF;
-        int sectionInfoOffset = phdrOffset + PhdrSize * phnum;
+        int sectionInfoOffset = layout == FselfLayout.Vita3K ? (phdrOffset + PhdrSize) * phnum : phdrOffset + PhdrSize * phnum;
         int versionOffset = sectionInfoOffset + SegmentInfoSize * phnum;
         int controlOffset = versionOffset + 16;
         const int control5Size = 0x110;

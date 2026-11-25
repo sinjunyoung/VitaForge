@@ -3,7 +3,7 @@ using Vita.Core.Services;
 
 namespace Vita.Core.TitleRules;
 
-internal sealed class SelfDecryptSourceRule(string titleId, params string[] relativePaths) : ITitleRule
+internal sealed class SelfDecryptSourceRule(string titleId, FselfLayout layout, params string[] relativePaths) : ITitleRule
 {
     private readonly HashSet<string> _paths = new(relativePaths.Select(PatchShared.NormalizeZipPath), StringComparer.OrdinalIgnoreCase);
 
@@ -14,6 +14,6 @@ internal sealed class SelfDecryptSourceRule(string titleId, params string[] rela
         if (!_paths.Contains(PatchShared.NormalizeZipPath(relativePath)))
             return sourceBytes;
 
-        return VitaSelfDecryptor.DecryptToFself(sourceBytes, owner.License.Klicensee);
+        return VitaSelfDecryptor.DecryptToFself(sourceBytes, owner.License.Klicensee, layout);
     }
 }

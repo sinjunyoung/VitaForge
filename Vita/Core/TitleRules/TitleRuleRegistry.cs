@@ -8,7 +8,8 @@ internal static class TitleRuleRegistry
     private static readonly ILookup<string, ITitleRule> Rules = new ITitleRule[]
     {
         new FlattenSubfolderRule("PCSG01216", "Data", "Patch"),
-        new SelfDecryptSourceRule("PCSG00009", "eboot.bin"),
+        new SelfDecryptSourceRule("PCSG00009", FselfLayout.Standard, "eboot.bin"),
+        new SelfDecryptSourceRule("PCSA00068", FselfLayout.Vita3K, "eboot.bin"),
         new L7caUnpackRule("PCSG00009", "toidata_release.l7c", "_Data/"),
         new PrefFolderRule("PCSG00684", "textures/import")
     }.ToLookup(r => r.TitleId, StringComparer.OrdinalIgnoreCase);
