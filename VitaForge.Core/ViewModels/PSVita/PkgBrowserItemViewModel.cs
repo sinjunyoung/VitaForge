@@ -1,4 +1,5 @@
 ﻿using Common.Services;
+using System.Windows;
 using Vita.Core.Models;
 
 namespace VitaForge.Core.ViewModels.PSVita;
@@ -19,7 +20,9 @@ public sealed class PkgBrowserItemViewModel(Action<PkgBrowserItemViewModel, bool
 
     public string SizeText => File is null ? string.Empty : FileSize.FormatSize(File.Size);
 
-    public string EncryptedMark => File?.IsEncrypted == true ? "🔒" : string.Empty;
+    public bool IsEncrypted => File?.IsEncrypted == true;
+
+    public Visibility LockIconVisibility => File is null ? Visibility.Collapsed : Visibility.Visible;
 
     public bool IsChecked
     {

@@ -1598,6 +1598,8 @@ public sealed class English : LocalizedStrings
     public override string ErrPsvPatchSplitVolumeMissing(object? arg0) => $"A split archive volume is missing: {arg0}";
 
     public override string ButtonSaveAll => "Save All";
+    public override string ButtonSaveChecked => "Save Checked";
+    public override string ButtonUncheckAll => "Uncheck All";
     public override string ErrPkgBrowserLicenseRequired => "A key (zRIF or work.bin) is required to decrypt";
     public override string ErrPkgBrowserSingleFileOnly => "Only one PKG file can be opened at a time";
     public override string HintDropPkgFile => "Drag & drop a PKG file here";
@@ -1607,6 +1609,8 @@ public sealed class English : LocalizedStrings
     public override string MenuSaveAllRaw => "Save All (Original)";
     public override string MenuSaveAsDecrypted => "Save As (Decrypted)";
     public override string MenuSaveAsRaw => "Save As (Original)";
+    public override string MenuSaveCheckedDecrypted => "Save Checked (Decrypted)";
+    public override string MenuSaveCheckedRaw => "Save Checked (Original)";
     public override string TabPkgBrowser => "PKG Browser";
     public override string LabelPkgBrowserChecked(object? arg0) => $"{arg0} selected";
     public override string LogPkgBrowserLicenseLinked(object? arg0) => $"Key linked automatically from TSV/key file: {arg0}";

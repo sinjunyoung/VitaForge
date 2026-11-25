@@ -1598,6 +1598,8 @@ public sealed class French : LocalizedStrings
     public override string ErrPsvPatchSplitVolumeMissing(object? arg0) => $"Volume d'archive fractionnée manquant : {arg0}";
 
     public override string ButtonSaveAll => "Tout enregistrer";
+    public override string ButtonSaveChecked => "Enregistrer les cochés";
+    public override string ButtonUncheckAll => "Tout décocher";
     public override string ErrPkgBrowserLicenseRequired => "Une clé (zRIF ou work.bin) est nécessaire pour déchiffrer";
     public override string ErrPkgBrowserSingleFileOnly => "Un seul fichier PKG peut être ouvert à la fois";
     public override string HintDropPkgFile => "Glissez-déposez un fichier PKG ici";
@@ -1607,6 +1609,8 @@ public sealed class French : LocalizedStrings
     public override string MenuSaveAllRaw => "Tout enregistrer (original)";
     public override string MenuSaveAsDecrypted => "Enregistrer sous (déchiffré)";
     public override string MenuSaveAsRaw => "Enregistrer sous (original)";
+    public override string MenuSaveCheckedDecrypted => "Enregistrer les cochés (déchiffré)";
+    public override string MenuSaveCheckedRaw => "Enregistrer les cochés (original)";
     public override string TabPkgBrowser => "Navigateur PKG";
     public override string LabelPkgBrowserChecked(object? arg0) => $"{arg0} sélectionné(s)";
     public override string LogPkgBrowserLicenseLinked(object? arg0) => $"Clé liée automatiquement depuis le TSV/fichier de clé : {arg0}";    

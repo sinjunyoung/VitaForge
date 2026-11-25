@@ -1598,6 +1598,8 @@ public sealed class German : LocalizedStrings
     public override string ErrPsvPatchSplitVolumeMissing(object? arg0) => $"Ein Teil des geteilten Archivs fehlt: {arg0}";
 
     public override string ButtonSaveAll => "Alle speichern";
+    public override string ButtonSaveChecked => "Markierte speichern";
+    public override string ButtonUncheckAll => "Alle abwählen";
     public override string ErrPkgBrowserLicenseRequired => "Zum Entschlüsseln wird ein Schlüssel (zRIF oder work.bin) benötigt";
     public override string ErrPkgBrowserSingleFileOnly => "Es kann nur eine PKG-Datei gleichzeitig geöffnet werden";
     public override string HintDropPkgFile => "PKG-Datei hierher ziehen und ablegen";
@@ -1607,6 +1609,8 @@ public sealed class German : LocalizedStrings
     public override string MenuSaveAllRaw => "Alle speichern (Original)";
     public override string MenuSaveAsDecrypted => "Speichern unter (entschlüsselt)";
     public override string MenuSaveAsRaw => "Speichern unter (Original)";
+    public override string MenuSaveCheckedDecrypted => "Markierte speichern (entschlüsselt)";
+    public override string MenuSaveCheckedRaw => "Markierte speichern (Original)";
     public override string TabPkgBrowser => "PKG-Browser";
     public override string LabelPkgBrowserChecked(object? arg0) => $"{arg0} ausgewählt";
     public override string LogPkgBrowserLicenseLinked(object? arg0) => $"Schlüssel automatisch aus TSV/Schlüsseldatei verknüpft: {arg0}";

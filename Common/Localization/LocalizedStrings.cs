@@ -1598,6 +1598,8 @@ public abstract class LocalizedStrings
     public abstract string ErrPsvPatchSplitVolumeMissing(object? arg0);
 
     public abstract string ButtonSaveAll { get; }
+    public abstract string ButtonSaveChecked { get; }
+    public abstract string ButtonUncheckAll { get; }
     public abstract string ErrPkgBrowserLicenseRequired { get; }
     public abstract string ErrPkgBrowserSingleFileOnly { get; }
     public abstract string HintDropPkgFile { get; }
@@ -1607,6 +1609,8 @@ public abstract class LocalizedStrings
     public abstract string MenuSaveAllRaw { get; }
     public abstract string MenuSaveAsDecrypted { get; }
     public abstract string MenuSaveAsRaw { get; }
+    public abstract string MenuSaveCheckedDecrypted { get; }
+    public abstract string MenuSaveCheckedRaw { get; }
     public abstract string TabPkgBrowser { get; }
     public abstract string LabelPkgBrowserChecked(object? arg0);
     public abstract string LogPkgBrowserLicenseLinked(object? arg0);

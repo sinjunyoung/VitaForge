@@ -71,8 +71,13 @@ public class PkgBrowserMainViewModel : ProgressToolTabViewModel
         {
             SetProperty(ref field, value);
             OnPropertyChanged(nameof(CheckedText));
+            OnPropertyChanged(nameof(HasChecked));
         }
     }
+
+    public bool HasChecked => CheckedCount > 0;
+
+    public bool AreCurrentChecked => Items.Count > 0 && Items.All(i => i.IsChecked);
 
     public string CheckedText => CheckedCount == 0 ? string.Empty : Loc.S.LabelPkgBrowserChecked(CheckedCount);
 
@@ -84,6 +89,8 @@ public class PkgBrowserMainViewModel : ProgressToolTabViewModel
 
     public ICommand ClearCommand { get; }
 
+    public ICommand UncheckAllCommand { get; }
+
     public ICommand BackCommand { get; }
 
     public ICommand ForwardCommand { get; }
@@ -94,6 +101,7 @@ public class PkgBrowserMainViewModel : ProgressToolTabViewModel
     {
         AddCommand = new RelayCommand(async _ => await AddAsync());
         ClearCommand = new RelayCommand(_ => Clear(), _ => PkgPath is not null);
+        UncheckAllCommand = new RelayCommand(_ => UncheckAll(), _ => HasChecked);
         BackCommand = new RelayCommand(_ => GoBack(), _ => _back.Count > 0);
         ForwardCommand = new RelayCommand(_ => GoForward(), _ => _forward.Count > 0);
         UpCommand = new RelayCommand(_ => GoUp(), _ => CurrentFolder.Length > 0);
@@ -163,28 +171,32 @@ public class PkgBrowserMainViewModel : ProgressToolTabViewModel
         RefreshChecked();
     }
 
-    public async Task SaveSelectedAsync(IReadOnlyList<PkgBrowserItemViewModel> highlighted, bool decrypted)
+    private void UncheckAll()
+    {
+        _checked.Clear();
+
+        RefreshChecked();
+    }
+
+    public async Task SaveCheckedAsync(bool decrypted)
+    {
+        if (_session is null || IsLocked || _checked.Count == 0)
+            return;
+
+        var files = _session.Files.Where(f => IsPathChecked(f.Path)).ToList();
+        bool single = _checked.Count == 1 && files.Count == 1 && !_nodes.ContainsKey(_checked.First());
+
+        await SaveFilesAsync(files, string.Empty, decrypted, single);
+    }
+
+    public async Task SaveItemAsync(PkgBrowserItemViewModel item, bool decrypted)
     {
         if (_session is null || IsLocked)
             return;
 
-        if (_checked.Count > 0)
-        {
-            var checkedFiles = _session.Files.Where(f => IsPathChecked(f.Path)).ToList();
-            bool single = _checked.Count == 1 && checkedFiles.Count == 1 && !_nodes.ContainsKey(_checked.First());
-
-            await SaveFilesAsync(checkedFiles, string.Empty, decrypted, single);
-
-            return;
-        }
-
-        if (highlighted.Count == 0)
-            return;
-
-        var files = highlighted.SelectMany(CollectFiles).Distinct().ToList();
         string basePrefix = CurrentFolder.Length == 0 ? string.Empty : CurrentFolder + "/";
 
-        await SaveFilesAsync(files, basePrefix, decrypted, highlighted.Count == 1 && !highlighted[0].IsDirectory);
+        await SaveFilesAsync([.. CollectFiles(item)], basePrefix, decrypted, !item.IsDirectory);
     }
 
     public async Task SaveAllAsync(bool decrypted)
@@ -421,6 +433,8 @@ public class PkgBrowserMainViewModel : ProgressToolTabViewModel
 
         foreach (var file in files)
             AddItem(PkgBrowserItemViewModel.ForFile(file, OnItemChecked));
+
+        OnPropertyChanged(nameof(AreCurrentChecked));
     }
 
     private void AddItem(PkgBrowserItemViewModel item)
@@ -458,6 +472,8 @@ public class PkgBrowserMainViewModel : ProgressToolTabViewModel
             ApplyCheckState(item);
 
         CheckedCount = _session is null ? 0 : _session.Files.Count(f => IsPathChecked(f.Path));
+
+        OnPropertyChanged(nameof(AreCurrentChecked));
     }
 
     private bool IsPathChecked(string path) => _checked.Contains(path) || IsAncestorChecked(path);

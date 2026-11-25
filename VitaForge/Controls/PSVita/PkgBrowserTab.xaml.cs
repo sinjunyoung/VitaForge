@@ -61,10 +61,14 @@ public partial class PkgBrowserTab : UserControl
             ViewModel.SetCurrentChecked(checkBox.IsChecked == true);
     }
 
-    private void LvItems_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+    private void Item_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
     {
-        if (ViewModel.CheckedCount == 0 && LvItems.SelectedItems.Count == 0)
-            e.Handled = true;
+        if (sender is not ListViewItem item)
+            return;
+
+        LvItems.SelectedItems.Clear();
+
+        item.IsSelected = true;
     }
 
     private void LvItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -91,25 +95,32 @@ public partial class PkgBrowserTab : UserControl
             ViewModel.OpenItem(item);
     }
 
-    private async void SaveSelected(bool decrypted)
+    private async Task SaveContextItemAsync(object sender, bool decrypted)
     {
-        var selected = LvItems.SelectedItems.Cast<PkgBrowserItemViewModel>().ToList();
-
-        await ViewModel.SaveSelectedAsync(selected, decrypted);
+        if ((sender as MenuItem)?.Parent is ContextMenu { PlacementTarget: FrameworkElement { DataContext: PkgBrowserItemViewModel item } })
+            await ViewModel.SaveItemAsync(item, decrypted);
     }
 
-    private void MenuSaveAsRaw_Click(object sender, RoutedEventArgs e) => SaveSelected(false);
+    private async void MenuSaveAsRaw_Click(object sender, RoutedEventArgs e) => await SaveContextItemAsync(sender, false);
 
-    private void MenuSaveAsDecrypted_Click(object sender, RoutedEventArgs e) => SaveSelected(true);
+    private async void MenuSaveAsDecrypted_Click(object sender, RoutedEventArgs e) => await SaveContextItemAsync(sender, true);
 
-    private void BtnSaveAll_Click(object sender, RoutedEventArgs e)
+    private void ShowMenu(string key, Button target)
     {
-        var menu = (ContextMenu)Resources["SaveAllMenu"];
+        var menu = (ContextMenu)Resources[key];
 
-        menu.PlacementTarget = BtnSaveAll;
+        menu.PlacementTarget = target;
         menu.Placement = PlacementMode.Top;
         menu.IsOpen = true;
     }
+
+    private void BtnSaveChecked_Click(object sender, RoutedEventArgs e) => ShowMenu("SaveCheckedMenu", BtnSaveChecked);
+
+    private void BtnSaveAll_Click(object sender, RoutedEventArgs e) => ShowMenu("SaveAllMenu", BtnSaveAll);
+
+    private async void MenuSaveCheckedRaw_Click(object sender, RoutedEventArgs e) => await ViewModel.SaveCheckedAsync(false);
+
+    private async void MenuSaveCheckedDecrypted_Click(object sender, RoutedEventArgs e) => await ViewModel.SaveCheckedAsync(true);
 
     private async void MenuSaveAllRaw_Click(object sender, RoutedEventArgs e) => await ViewModel.SaveAllAsync(false);
 

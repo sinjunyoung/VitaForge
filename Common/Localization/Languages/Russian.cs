@@ -1598,6 +1598,8 @@ public sealed class Russian : LocalizedStrings
     public override string ErrPsvPatchSplitVolumeMissing(object? arg0) => $"Отсутствует том многотомного архива: {arg0}";
 
     public override string ButtonSaveAll => "Сохранить всё";
+    public override string ButtonSaveChecked => "Сохранить отмеченные";
+    public override string ButtonUncheckAll => "Снять отметки";
     public override string ErrPkgBrowserLicenseRequired => "Для расшифровки нужен ключ (zRIF или work.bin)";
     public override string ErrPkgBrowserSingleFileOnly => "Можно открыть только один PKG-файл за раз";
     public override string HintDropPkgFile => "Перетащите PKG-файл сюда";
@@ -1607,6 +1609,8 @@ public sealed class Russian : LocalizedStrings
     public override string MenuSaveAllRaw => "Сохранить всё (оригинал)";
     public override string MenuSaveAsDecrypted => "Сохранить как (расшифровано)";
     public override string MenuSaveAsRaw => "Сохранить как (оригинал)";
+    public override string MenuSaveCheckedDecrypted => "Сохранить отмеченные (расшифровано)";
+    public override string MenuSaveCheckedRaw => "Сохранить отмеченные (оригинал)";
     public override string TabPkgBrowser => "Обозреватель PKG";
     public override string LabelPkgBrowserChecked(object? arg0) => $"Выбрано: {arg0}";
     public override string LogPkgBrowserLicenseLinked(object? arg0) => $"Ключ автоматически подобран из TSV/файла ключа: {arg0}";

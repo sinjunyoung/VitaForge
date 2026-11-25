@@ -4,9 +4,82 @@
              xmlns:l="clr-namespace:Common.Localization;assembly=Common"
              PreviewMouseDown="Root_PreviewMouseDown">
     <UserControl.Resources>
+        <Style x:Key="BtnIconStyle" TargetType="Image">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=Button}}" Value="False">
+                    <Setter Property="Opacity" Value="0.35"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <DrawingImage x:Key="IconBack">
+            <DrawingImage.Drawing>
+                <DrawingGroup ClipGeometry="M0,0 L24,0 L24,24 L0,24 Z">
+                    <GeometryDrawing Geometry="M19,12 L5,12 M11,6 L5,12 L11,18">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#E0E0E0" EndLineCap="Round" LineJoin="Round" StartLineCap="Round" Thickness="2"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+
+        <DrawingImage x:Key="IconForward">
+            <DrawingImage.Drawing>
+                <DrawingGroup ClipGeometry="M0,0 L24,0 L24,24 L0,24 Z">
+                    <GeometryDrawing Geometry="M5,12 L19,12 M13,6 L19,12 L13,18">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#E0E0E0" EndLineCap="Round" LineJoin="Round" StartLineCap="Round" Thickness="2"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+
+        <DrawingImage x:Key="IconUp">
+            <DrawingImage.Drawing>
+                <DrawingGroup ClipGeometry="M0,0 L24,0 L24,24 L0,24 Z">
+                    <GeometryDrawing Geometry="M12,19 L12,5 M6,11 L12,5 L18,11">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#E0E0E0" EndLineCap="Round" LineJoin="Round" StartLineCap="Round" Thickness="2"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+
+        <DrawingImage x:Key="IconSaveChecked">
+            <DrawingImage.Drawing>
+                <DrawingGroup ClipGeometry="M0,0 L24,0 L24,24 L0,24 Z">
+                    <GeometryDrawing Geometry="M4,4 L20,4 L20,20 L4,20 Z M8,12 L11,15 L16,9">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#4CAF50" EndLineCap="Round" LineJoin="Round" StartLineCap="Round" Thickness="2"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+
+        <DrawingImage x:Key="IconUncheck">
+            <DrawingImage.Drawing>
+                <DrawingGroup ClipGeometry="M0,0 L24,0 L24,24 L0,24 Z">
+                    <GeometryDrawing Geometry="M4,4 L20,4 L20,20 L4,20 Z M9,9 L15,15 M15,9 L9,15">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#E0E0E0" EndLineCap="Round" LineJoin="Round" StartLineCap="Round" Thickness="2"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+
         <ContextMenu x:Key="SaveAllMenu">
             <MenuItem Header="{Binding Path=Current.MenuSaveAllRaw, Source={x:Static l:Loc.Instance}}" Click="MenuSaveAllRaw_Click"/>
             <MenuItem Header="{Binding Path=Current.MenuSaveAllDecrypted, Source={x:Static l:Loc.Instance}}" Click="MenuSaveAllDecrypted_Click"/>
+        </ContextMenu>
+
+        <ContextMenu x:Key="ItemMenu" x:Shared="False">
+            <MenuItem Header="{Binding Path=Current.MenuSaveAsRaw, Source={x:Static l:Loc.Instance}}" Click="MenuSaveAsRaw_Click"/>
+            <MenuItem Header="{Binding Path=Current.MenuSaveAsDecrypted, Source={x:Static l:Loc.Instance}}" Click="MenuSaveAsDecrypted_Click"/>
         </ContextMenu>
     </UserControl.Resources>
     <Grid>
@@ -27,9 +100,15 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Button BorderThickness="1" Command="{Binding BackCommand}" Content="←" FontSize="16" Grid.Column="0" Height="28" Margin="4,0,0,0" Padding="0" Style="{StaticResource GrayButton}" Width="28"/>
-                <Button BorderThickness="1" Command="{Binding ForwardCommand}" Content="→" FontSize="16" Grid.Column="1" Height="28" Margin="4,0,0,0" Padding="0" Style="{StaticResource GrayButton}" Width="28"/>
-                <Button BorderThickness="1" Command="{Binding UpCommand}" Content="↑" FontSize="16" Grid.Column="2" Height="28" Margin="4,0,8,0" Padding="0" Style="{StaticResource GrayButton}" Width="28"/>
+                <Button BorderThickness="1" Command="{Binding BackCommand}" Grid.Column="0" Height="28" Margin="4,0,0,0" Padding="0" Style="{StaticResource GrayButton}" Width="28">
+                    <Image Height="16" Source="{StaticResource IconBack}" Style="{StaticResource BtnIconStyle}" Width="16"/>
+                </Button>
+                <Button BorderThickness="1" Command="{Binding ForwardCommand}" Grid.Column="1" Height="28" Margin="4,0,0,0" Padding="0" Style="{StaticResource GrayButton}" Width="28">
+                    <Image Height="16" Source="{StaticResource IconForward}" Style="{StaticResource BtnIconStyle}" Width="16"/>
+                </Button>
+                <Button BorderThickness="1" Command="{Binding UpCommand}" Grid.Column="2" Height="28" Margin="4,0,8,0" Padding="0" Style="{StaticResource GrayButton}" Width="28">
+                    <Image Height="16" Source="{StaticResource IconUp}" Style="{StaticResource BtnIconStyle}" Width="16"/>
+                </Button>
                 <TextBlock FontSize="12" Foreground="#DCDCDC" Grid.Column="3" Text="{Binding DisplayPath}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
                 <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#4CAF50" Grid.Column="4" Margin="8,0,10,0" Text="{Binding CheckedText}" VerticalAlignment="Center"/>
             </Grid>
@@ -45,7 +124,7 @@
 
                 <TreeView Background="Transparent" BorderThickness="0" Grid.Column="0" ItemsSource="{Binding TreeRoots}" Margin="5">
                     <TreeView.ItemContainerStyle>
-                        <Style TargetType="TreeViewItem">
+                        <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
                             <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
                             <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
                             <Setter Property="Foreground" Value="#E8E8F0"/>
@@ -65,18 +144,18 @@
 
                 <Grid Grid.Column="2">
                     <ListView x:Name="LvItems" AllowDrop="True" Background="Transparent" BorderThickness="0" ItemsSource="{Binding Items}" Margin="5" SelectionMode="Extended"
-                              ContextMenuOpening="LvItems_ContextMenuOpening" DragEnter="Root_DragEnter" Drop="Root_Drop" KeyUp="LvItems_KeyUp" MouseDoubleClick="LvItems_MouseDoubleClick">
-                        <ListView.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="{Binding Path=Current.MenuSaveAsRaw, Source={x:Static l:Loc.Instance}}" Click="MenuSaveAsRaw_Click"/>
-                                <MenuItem Header="{Binding Path=Current.MenuSaveAsDecrypted, Source={x:Static l:Loc.Instance}}" Click="MenuSaveAsDecrypted_Click"/>
-                            </ContextMenu>
-                        </ListView.ContextMenu>
+                              DragEnter="Root_DragEnter" Drop="Root_Drop" KeyUp="LvItems_KeyUp" MouseDoubleClick="LvItems_MouseDoubleClick">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                                <EventSetter Event="PreviewMouseRightButtonDown" Handler="Item_PreviewMouseRightButtonDown"/>
+                                <Setter Property="ContextMenu" Value="{StaticResource ItemMenu}"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="34">
                                     <GridViewColumn.Header>
-                                        <CheckBox Click="HeaderCheck_Click" HorizontalAlignment="Center"/>
+                                        <CheckBox Click="HeaderCheck_Click" HorizontalAlignment="Center" IsChecked="{Binding DataContext.AreCurrentChecked, RelativeSource={RelativeSource AncestorType=ListView}, Mode=OneWay}"/>
                                     </GridViewColumn.Header>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
@@ -108,9 +187,12 @@
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Width="40">
+                                    <GridViewColumn.Header>
+                                        <Image Height="16" Source="/VitaForge.Core;component/Assets/Images/Lock.png" Width="16"/>
+                                    </GridViewColumn.Header>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock HorizontalAlignment="Center" Text="{Binding EncryptedMark}" VerticalAlignment="Center"/>
+                                            <Image Height="16" HorizontalAlignment="Center" Source="{Binding IsEncrypted, Converter={StaticResource LockIconConverter}}" Visibility="{Binding LockIconVisibility}" Width="16"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -144,6 +226,8 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Button BorderThickness="1" Command="{Binding AddCommand}" Grid.Column="0" Height="36" Margin="0,0,5,0" Style="{StaticResource GrayButton}">
                 <StackPanel Orientation="Horizontal">
@@ -157,7 +241,19 @@
                     <TextBlock Text="{Binding Path=Current.ButtonClear, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
-            <Button x:Name="BtnSaveAll" BorderThickness="1" Click="BtnSaveAll_Click" Grid.Column="2" Height="36" Style="{StaticResource GrayButton}">
+            <Button BorderThickness="1" Command="{Binding UncheckAllCommand}" Grid.Column="2" Height="36" Margin="0,0,5,0" Style="{StaticResource GrayButton}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Height="20" Margin="0,0,6,0" Source="{StaticResource IconUncheck}" Style="{StaticResource BtnIconStyle}" Width="20"/>
+                    <TextBlock Text="{Binding Path=Current.ButtonUncheckAll, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="BtnSaveChecked" BorderThickness="1" Click="BtnSaveChecked_Click" Grid.Column="3" Height="36" IsEnabled="{Binding HasChecked}" Margin="0,0,5,0" Style="{StaticResource GrayButton}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Height="20" Margin="0,0,6,0" Source="{StaticResource IconSaveChecked}" Style="{StaticResource BtnIconStyle}" Width="20"/>
+                    <TextBlock Text="{Binding Path=Current.ButtonSaveChecked, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="BtnSaveAll" BorderThickness="1" Click="BtnSaveAll_Click" Grid.Column="4" Height="36" Style="{StaticResource GrayButton}">
                 <StackPanel Orientation="Horizontal">
                     <Image Height="20" Margin="0,0,6,0" Source="/Assets/Images/Run.png" Width="20"/>
                     <TextBlock Text="{Binding Path=Current.ButtonSaveAll, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>

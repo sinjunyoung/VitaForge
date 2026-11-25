@@ -1598,6 +1598,8 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string ErrPsvPatchSplitVolumeMissing(object? arg0) => $"缺少分割壓縮檔: {arg0}";
 
     public override string ButtonSaveAll => "全部儲存";
+    public override string ButtonSaveChecked => "儲存已勾選檔案";
+    public override string ButtonUncheckAll => "取消勾選";
     public override string ErrPkgBrowserLicenseRequired => "解密需要金鑰(zRIF 或 work.bin)";
     public override string ErrPkgBrowserSingleFileOnly => "一次只能開啟一個 PKG 檔案";
     public override string HintDropPkgFile => "請將 PKG 檔案拖放到此處";
@@ -1607,6 +1609,8 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string MenuSaveAllRaw => "以原始資料全部儲存";
     public override string MenuSaveAsDecrypted => "另存新檔 (解密)";
     public override string MenuSaveAsRaw => "另存新檔 (原始)";
+    public override string MenuSaveCheckedDecrypted => "解密後儲存已勾選檔案";
+    public override string MenuSaveCheckedRaw => "以原始資料儲存已勾選檔案";
     public override string TabPkgBrowser => "PKG 瀏覽器";
     public override string LabelPkgBrowserChecked(object? arg0) => $"已選取 {arg0} 個";
     public override string LogPkgBrowserLicenseLinked(object? arg0) => $"已從 TSV/金鑰檔案自動關聯金鑰: {arg0}";

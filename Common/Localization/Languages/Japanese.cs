@@ -1598,6 +1598,8 @@ public sealed class Japanese : LocalizedStrings
     public override string ErrPsvPatchSplitVolumeMissing(object? arg0) => $"分割圧縮ファイルのパートが見つかりません: {arg0}";
 
     public override string ButtonSaveAll => "すべて保存";
+    public override string ButtonSaveChecked => "チェックしたファイルを保存";
+    public override string ButtonUncheckAll => "チェック解除";
     public override string ErrPkgBrowserLicenseRequired => "復号にはキー(zRIFまたはwork.bin)が必要です";
     public override string ErrPkgBrowserSingleFileOnly => "PKGファイルは一度に1つしか開けません";
     public override string HintDropPkgFile => "PKGファイルをここにドラッグ&ドロップしてください";
@@ -1607,6 +1609,8 @@ public sealed class Japanese : LocalizedStrings
     public override string MenuSaveAllRaw => "オリジナルのままですべて保存";
     public override string MenuSaveAsDecrypted => "名前を付けて保存 (復号)";
     public override string MenuSaveAsRaw => "名前を付けて保存 (オリジナル)";
+    public override string MenuSaveCheckedDecrypted => "復号してチェックしたファイルを保存";
+    public override string MenuSaveCheckedRaw => "オリジナルのままチェックしたファイルを保存";
     public override string TabPkgBrowser => "PKGブラウザ";
     public override string LabelPkgBrowserChecked(object? arg0) => $"{arg0}個選択中";
     public override string LogPkgBrowserLicenseLinked(object? arg0) => $"TSV/キーファイルからキーを自動連携しました: {arg0}";
