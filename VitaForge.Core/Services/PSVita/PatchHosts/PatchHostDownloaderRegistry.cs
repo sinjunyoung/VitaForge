@@ -6,7 +6,8 @@ public static class PatchHostDownloaderRegistry
     [
         new GoogleDrivePatchHost(),
         new MegaPatchHost(),
-        new TistoryPatchHost()
+        new TistoryPatchHost(),
+        new NaverBlogPatchHost()
     ];
 
     private static readonly IPatchHostDownloader Fallback = new DirectPatchHost();

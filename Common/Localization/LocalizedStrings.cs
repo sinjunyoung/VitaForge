@@ -1593,6 +1593,9 @@ public abstract class LocalizedStrings
     public abstract string WarnPartialOverwriteUnsupported(object? arg0);
     public abstract string WarnUnsupportedElementCount(object? arg0, object? arg1);
 
+    public abstract string ErrPsvPatchNaverBlogNoAttachment(object? arg0);
+    public abstract string LogPsvPatchNaverBlogAttachment(object? arg0);
+
     // Work
     public abstract string WorkTypeConvert { get; }
     public abstract string WorkTypeDecompress { get; }

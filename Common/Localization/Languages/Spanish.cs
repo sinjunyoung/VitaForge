@@ -1592,6 +1592,9 @@ public sealed class Spanish : LocalizedStrings
     public override string WarnOptionReferencesMissingPatch(object? arg0, object? arg1) => $"La opción '{arg0}' hace referencia a un parche '{arg1}' que no existe.";
     public override string WarnPartialOverwriteUnsupported(object? arg0) => $"La sobrescritura parcial de regiones (offset/length) no es compatible y se omitió: {arg0}";
     public override string WarnUnsupportedElementCount(object? arg0, object? arg1) => $"{arg1} elementos <{arg0}> no son compatibles y no se aplicarán.";
+    
+    public override string ErrPsvPatchNaverBlogNoAttachment(object? arg0) => $"No se encontró ningún adjunto en la entrada del blog de Naver: {arg0}";
+    public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"Adjunto del blog de Naver: {arg0}";
 
     // Work
     public override string WorkTypeConvert => "Conversión";

@@ -1593,6 +1593,9 @@ public sealed class Russian : LocalizedStrings
     public override string WarnPartialOverwriteUnsupported(object? arg0) => $"Частичная перезапись области (offset/length) не поддерживается и пропущена: {arg0}";
     public override string WarnUnsupportedElementCount(object? arg0, object? arg1) => $"Элементов <{arg0}> не поддерживается, они не будут применены: {arg1}.";
 
+    public override string ErrPsvPatchNaverBlogNoAttachment(object? arg0) => $"В записи блога Naver вложение не найдено: {arg0}";
+    public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"Вложение блога Naver: {arg0}";
+
     // Work
     public override string WorkTypeConvert => "Конвертация";
     public override string WorkTypeDecompress => "Распаковка";

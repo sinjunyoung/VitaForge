@@ -1593,6 +1593,9 @@ public sealed class Korean : LocalizedStrings
     public override string WarnPartialOverwriteUnsupported(object? arg0) => $"일부 영역 덮어쓰기(offset/length)는 지원하지 않아 건너뜁니다: {arg0}";
     public override string WarnUnsupportedElementCount(object? arg0, object? arg1) => $"<{arg0}> {arg1}개는 지원하지 않아 적용되지 않습니다.";
 
+    public override string ErrPsvPatchNaverBlogNoAttachment(object? arg0) => $"네이버 블로그 글에서 첨부파일을 찾지 못했습니다: {arg0}";
+    public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"네이버 블로그 첨부파일: {arg0}";
+
     // Work
     public override string WorkTypeConvert => "변환";
     public override string WorkTypeDecompress => "해제";

@@ -1593,6 +1593,9 @@ public sealed class German : LocalizedStrings
     public override string WarnPartialOverwriteUnsupported(object? arg0) => $"Das teilweise Überschreiben von Bereichen (offset/length) wird nicht unterstützt und wurde übersprungen: {arg0}";
     public override string WarnUnsupportedElementCount(object? arg0, object? arg1) => $"{arg1} <{arg0}>-Elemente werden nicht unterstützt und nicht angewendet.";
 
+    public override string ErrPsvPatchNaverBlogNoAttachment(object? arg0) => $"Im Naver-Blogbeitrag wurde kein Anhang gefunden: {arg0}";
+    public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"Naver-Blog-Anhang: {arg0}";
+
     // Work
     public override string WorkTypeConvert => "Konvertierung";
     public override string WorkTypeDecompress => "Entpacken";

@@ -1593,6 +1593,9 @@ public sealed class French : LocalizedStrings
     public override string WarnPartialOverwriteUnsupported(object? arg0) => $"L’écrasement partiel de région (offset/length) n’est pas pris en charge et a été ignoré : {arg0}";
     public override string WarnUnsupportedElementCount(object? arg0, object? arg1) => $"{arg1} éléments <{arg0}> ne sont pas pris en charge et ne seront pas appliqués.";
 
+    public override string ErrPsvPatchNaverBlogNoAttachment(object? arg0) => $"Aucune pièce jointe trouvée sur l'article du blog Naver : {arg0}";
+    public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"Pièce jointe du blog Naver : {arg0}";
+
     // Work
     public override string WorkTypeConvert => "Conversion";
     public override string WorkTypeDecompress => "Décompression";

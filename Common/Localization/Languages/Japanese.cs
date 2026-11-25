@@ -1593,6 +1593,9 @@ public sealed class Japanese : LocalizedStrings
     public override string WarnPartialOverwriteUnsupported(object? arg0) => $"一部領域の上書き (offset/length) は対応していないためスキップします: {arg0}";
     public override string WarnUnsupportedElementCount(object? arg0, object? arg1) => $"<{arg0}> {arg1}件は対応していないため適用されません。";
 
+    public override string ErrPsvPatchNaverBlogNoAttachment(object? arg0) => $"Naver ブログの記事に添付ファイルが見つかりません: {arg0}";
+    public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"Naver ブログの添付ファイル: {arg0}";
+
     // Work
     public override string WorkTypeConvert => "変換";
     public override string WorkTypeDecompress => "解凍";

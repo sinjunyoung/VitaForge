@@ -1593,6 +1593,9 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string WarnPartialOverwriteUnsupported(object? arg0) => $"不支援部分區域覆寫 (offset/length)，已略過: {arg0}";
     public override string WarnUnsupportedElementCount(object? arg0, object? arg1) => $"不支援 {arg1} 個 <{arg0}>，將不會套用。";
 
+    public override string ErrPsvPatchNaverBlogNoAttachment(object? arg0) => $"在 Naver 部落格文章中找不到附件: {arg0}";
+    public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"Naver 部落格附件: {arg0}";
+
     // Work
     public override string WorkTypeConvert => "轉換";
     public override string WorkTypeDecompress => "解壓縮";

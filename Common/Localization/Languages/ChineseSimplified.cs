@@ -1593,6 +1593,9 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string WarnPartialOverwriteUnsupported(object? arg0) => $"不支持部分区域覆盖 (offset/length)，已跳过: {arg0}";
     public override string WarnUnsupportedElementCount(object? arg0, object? arg1) => $"不支持 {arg1} 个 <{arg0}>，将不会应用。";
 
+    public override string ErrPsvPatchNaverBlogNoAttachment(object? arg0) => $"在 Naver 博客文章中未找到附件: {arg0}";
+    public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"Naver 博客附件: {arg0}";
+
     // Work
     public override string WorkTypeConvert => "转换";
     public override string WorkTypeDecompress => "解压";
