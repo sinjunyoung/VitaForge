@@ -16,7 +16,7 @@ public sealed class PkgBrowserItemViewModel(Action<PkgBrowserItemViewModel, bool
 
     public PkgBrowserFile? File { get; init; }
 
-    public string IconSource => IsDirectory ? "/Assets/Images/AddFolder.png" : "/Assets/Images/AddFile.png";
+    public string IconSource => IsDirectory ? "/Assets/Images/Folder.png" : "/Assets/Images/AddFile.png";
 
     public string SizeText => File is null ? string.Empty : FileSize.FormatSize(File.Size);
 

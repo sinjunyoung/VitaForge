@@ -73,13 +73,42 @@
         </DrawingImage>
 
         <ContextMenu x:Key="SaveAllMenu">
-            <MenuItem Header="{Binding Path=Current.MenuSaveAllRaw, Source={x:Static l:Loc.Instance}}" Click="MenuSaveAllRaw_Click"/>
-            <MenuItem Header="{Binding Path=Current.MenuSaveAllDecrypted, Source={x:Static l:Loc.Instance}}" Click="MenuSaveAllDecrypted_Click"/>
+            <MenuItem Header="{Binding Path=Current.MenuSaveAllRaw, Source={x:Static l:Loc.Instance}}" Click="MenuSaveAllRaw_Click">
+                <MenuItem.Icon>
+                    <Image Height="20" Source="/VitaForge.Core;component/Assets/Images/Lock.png" Width="20"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="{Binding Path=Current.MenuSaveAllDecrypted, Source={x:Static l:Loc.Instance}}" Click="MenuSaveAllDecrypted_Click">
+                <MenuItem.Icon>
+                    <Image Height="20" Source="/VitaForge.Core;component/Assets/Images/Unlock.png" Width="20"/>
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+
+        <ContextMenu x:Key="SaveCheckedMenu">
+            <MenuItem Header="{Binding Path=Current.MenuSaveCheckedRaw, Source={x:Static l:Loc.Instance}}" Click="MenuSaveCheckedRaw_Click">
+                <MenuItem.Icon>
+                    <Image Height="20" Source="/VitaForge.Core;component/Assets/Images/Lock.png" Width="20"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="{Binding Path=Current.MenuSaveCheckedDecrypted, Source={x:Static l:Loc.Instance}}" Click="MenuSaveCheckedDecrypted_Click">
+                <MenuItem.Icon>
+                    <Image Height="20" Source="/VitaForge.Core;component/Assets/Images/Unlock.png" Width="20"/>
+                </MenuItem.Icon>
+            </MenuItem>
         </ContextMenu>
 
         <ContextMenu x:Key="ItemMenu" x:Shared="False">
-            <MenuItem Header="{Binding Path=Current.MenuSaveAsRaw, Source={x:Static l:Loc.Instance}}" Click="MenuSaveAsRaw_Click"/>
-            <MenuItem Header="{Binding Path=Current.MenuSaveAsDecrypted, Source={x:Static l:Loc.Instance}}" Click="MenuSaveAsDecrypted_Click"/>
+            <MenuItem Header="{Binding Path=Current.MenuSaveAsRaw, Source={x:Static l:Loc.Instance}}" Click="MenuSaveAsRaw_Click">
+                <MenuItem.Icon>
+                    <Image Height="20" Source="/VitaForge.Core;component/Assets/Images/Lock.png" Width="20"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="{Binding Path=Current.MenuSaveAsDecrypted, Source={x:Static l:Loc.Instance}}" Click="MenuSaveAsDecrypted_Click">
+                <MenuItem.Icon>
+                    <Image Height="20" Source="/VitaForge.Core;component/Assets/Images/Unlock.png" Width="20"/>
+                </MenuItem.Icon>
+            </MenuItem>
         </ContextMenu>
     </UserControl.Resources>
     <Grid>
@@ -133,7 +162,7 @@
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal">
-                                <Image Height="16" Margin="0,0,6,0" Source="/Assets/Images/AddFolder.png" Width="16"/>
+                                <Image Height="16" Margin="0,0,6,0" Source="/Assets/Images/Folder.png" Width="16"/>
                                 <TextBlock FontSize="12" Text="{Binding Name}"/>
                             </StackPanel>
                         </HierarchicalDataTemplate>
@@ -153,19 +182,24 @@
                         </ListView.ItemContainerStyle>
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Width="34">
+                                <GridViewColumn Width="Auto">
                                     <GridViewColumn.Header>
-                                        <CheckBox Click="HeaderCheck_Click" HorizontalAlignment="Center" IsChecked="{Binding DataContext.AreCurrentChecked, RelativeSource={RelativeSource AncestorType=ListView}, Mode=OneWay}"/>
+                                        <CheckBox Style="{StaticResource SplitCheckBoxStyle}" Click="HeaderCheck_Click" HorizontalAlignment="Center" IsChecked="{Binding DataContext.AreCurrentChecked, RelativeSource={RelativeSource AncestorType=ListView}, Mode=OneWay}"/>
                                     </GridViewColumn.Header>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <CheckBox HorizontalAlignment="Center" IsChecked="{Binding IsChecked, Mode=TwoWay}" IsEnabled="{Binding IsCheckEnabled}"/>
+                                            <CheckBox Style="{StaticResource SplitCheckBoxStyle}" HorizontalAlignment="Center" IsChecked="{Binding IsChecked, Mode=TwoWay}" IsEnabled="{Binding IsCheckEnabled}"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Width="400">
                                     <GridViewColumn.Header>
-                                        <TextBlock FontSize="13" FontWeight="Bold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderFileName, Source={x:Static l:Loc.Instance}}"/>
+                                        <GridViewColumnHeader Tag="TitleId">
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <Image Source="/Assets/Images/AddFile.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                                                <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderFileName, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
@@ -176,9 +210,11 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Width="110">
+                                <GridViewColumn Width="70">
                                     <GridViewColumn.Header>
-                                        <TextBlock FontSize="13" FontWeight="Bold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderSize, Source={x:Static l:Loc.Instance}}"/>
+                                        <GridViewColumnHeader Tag="Size">
+                                            <Image Source="/Assets/Images/FileSizeBytes.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                                        </GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
