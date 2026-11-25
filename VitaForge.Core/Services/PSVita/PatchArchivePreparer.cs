@@ -24,11 +24,7 @@ public static class PatchArchivePreparer
         switch (Detect(rawPath))
         {
             case ArchiveKind.Zip:
-                string zipPath = Path.Combine(workDir, "patch.zip");
-
-                File.Move(rawPath, zipPath);
-
-                return zipPath;
+                return MoveToWorkZip(rawPath, workDir);
 
             case ArchiveKind.SevenZip:
                 await Task.Run(() => ExtractSevenZip(rawPath, folderPath, true, ct), ct);
@@ -59,19 +55,48 @@ public static class PatchArchivePreparer
         }
     }
 
-    public static async Task ExtractSplitAsync(IReadOnlyList<string> volumePaths, string folderPath, CancellationToken ct)
+    public static async Task<string> PrepareSplitAsync(IReadOnlyList<string> volumePaths, string workDir, CancellationToken ct)
     {
-        string mainVolumePath = PickMainVolume(volumePaths);
+        string folderPath = Path.Combine(workDir, "patch");
 
+        if (!SplitVolumeMerger.IsNumbered(volumePaths))
+        {
+            await ExtractVolumesAsync(PickMainVolume(volumePaths), volumePaths, folderPath, ct);
+
+            return folderPath;
+        }
+
+        string mergedPath = await SplitVolumeMerger.MergeAsync(volumePaths, ct);
+
+        if (Detect(mergedPath) == ArchiveKind.Zip)
+            return MoveToWorkZip(mergedPath, workDir);
+
+        await ExtractVolumesAsync(mergedPath, volumePaths, folderPath, ct);
+
+        return folderPath;
+    }
+
+    private static async Task ExtractVolumesAsync(string mainVolumePath, IReadOnlyList<string> volumePaths, string folderPath, CancellationToken ct)
+    {
         await Task.Run(() => ExtractSevenZip(mainVolumePath, folderPath, true, ct), ct);
 
         foreach (string volumePath in volumePaths)
             DeleteFileQuietly(volumePath);
+
+        DeleteFileQuietly(mainVolumePath);
+    }
+
+    private static string MoveToWorkZip(string sourcePath, string workDir)
+    {
+        string zipPath = Path.Combine(workDir, "patch.zip");
+
+        File.Move(sourcePath, zipPath, true);
+
+        return zipPath;
     }
 
     private static string PickMainVolume(IReadOnlyList<string> volumePaths)
-        => volumePaths.FirstOrDefault(p => p.EndsWith(".001", StringComparison.OrdinalIgnoreCase))
-            ?? volumePaths.FirstOrDefault(p => p.EndsWith(".zip", StringComparison.OrdinalIgnoreCase) || p.EndsWith(".7z", StringComparison.OrdinalIgnoreCase))
+        => volumePaths.FirstOrDefault(p => p.EndsWith(".zip", StringComparison.OrdinalIgnoreCase) || p.EndsWith(".7z", StringComparison.OrdinalIgnoreCase))
             ?? volumePaths[0];
 
     private static void MoveRawFile(string rawPath, string folderPath, PatchLink link)

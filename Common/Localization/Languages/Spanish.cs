@@ -1595,6 +1595,7 @@ public sealed class Spanish : LocalizedStrings
     
     public override string ErrPsvPatchNaverBlogNoAttachment(object? arg0) => $"No se encontró ningún adjunto en la entrada del blog de Naver: {arg0}";
     public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"Adjunto del blog de Naver: {arg0}";
+    public override string ErrPsvPatchSplitVolumeMissing(object? arg0) => $"Falta un volumen del archivo dividido: {arg0}";
 
     // Work
     public override string WorkTypeConvert => "Conversión";

@@ -1595,6 +1595,7 @@ public sealed class French : LocalizedStrings
 
     public override string ErrPsvPatchNaverBlogNoAttachment(object? arg0) => $"Aucune pièce jointe trouvée sur l'article du blog Naver : {arg0}";
     public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"Pièce jointe du blog Naver : {arg0}";
+    public override string ErrPsvPatchSplitVolumeMissing(object? arg0) => $"Volume d'archive fractionnée manquant : {arg0}";
 
     // Work
     public override string WorkTypeConvert => "Conversion";

@@ -1595,7 +1595,7 @@ public sealed class German : LocalizedStrings
 
     public override string ErrPsvPatchNaverBlogNoAttachment(object? arg0) => $"Im Naver-Blogbeitrag wurde kein Anhang gefunden: {arg0}";
     public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"Naver-Blog-Anhang: {arg0}";
-
+    public override string ErrPsvPatchSplitVolumeMissing(object? arg0) => $"Ein Teil des geteilten Archivs fehlt: {arg0}";
     // Work
     public override string WorkTypeConvert => "Konvertierung";
     public override string WorkTypeDecompress => "Entpacken";

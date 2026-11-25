@@ -1595,6 +1595,7 @@ public sealed class English : LocalizedStrings
 
     public override string ErrPsvPatchNaverBlogNoAttachment(object? arg0) => $"No attachment found on the Naver blog post: {arg0}";
     public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"Naver blog attachment: {arg0}";
+    public override string ErrPsvPatchSplitVolumeMissing(object? arg0) => $"A split archive volume is missing: {arg0}";
 
     // Work
     public override string WorkTypeConvert => "Conversion";

@@ -1595,6 +1595,7 @@ public abstract class LocalizedStrings
 
     public abstract string ErrPsvPatchNaverBlogNoAttachment(object? arg0);
     public abstract string LogPsvPatchNaverBlogAttachment(object? arg0);
+    public abstract string ErrPsvPatchSplitVolumeMissing(object? arg0);
 
     // Work
     public abstract string WorkTypeConvert { get; }

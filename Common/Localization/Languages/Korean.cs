@@ -1595,6 +1595,7 @@ public sealed class Korean : LocalizedStrings
 
     public override string ErrPsvPatchNaverBlogNoAttachment(object? arg0) => $"네이버 블로그 글에서 첨부파일을 찾지 못했습니다: {arg0}";
     public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"네이버 블로그 첨부파일: {arg0}";
+    public override string ErrPsvPatchSplitVolumeMissing(object? arg0) => $"분할 압축 파일의 일부가 없습니다: {arg0}";
 
     // Work
     public override string WorkTypeConvert => "변환";

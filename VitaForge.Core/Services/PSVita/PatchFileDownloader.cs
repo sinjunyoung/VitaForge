@@ -73,15 +73,10 @@ public static class PatchFileDownloader
             volumePaths.Add(volumePath);
         }
 
-        string folderPath = Path.Combine(workDir, "patch");
-
-        await PatchArchivePreparer.ExtractSplitAsync(volumePaths, folderPath, ct);
-
-        return folderPath;
+        return await PatchArchivePreparer.PrepareSplitAsync(volumePaths, workDir, ct);
     }
 
-    private static Task DownloadLinkAsync(PatchLink link, string destinationPath, PatchDownloadProgress progress, Action<string, LogLevel> log, CancellationToken ct)
-        => PatchHostDownloaderRegistry.Resolve(link.Url).DownloadAsync(link, destinationPath, progress, log, ct);
+    private static Task DownloadLinkAsync(PatchLink link, string destinationPath, PatchDownloadProgress progress, Action<string, LogLevel> log, CancellationToken ct) => PatchHostDownloaderRegistry.Resolve(link.Url).DownloadAsync(link, destinationPath, progress, log, ct);
 
     private static string DisplayName(PatchLink link) => link.LocalFileName.Length > 0 ? link.LocalFileName : link.Url;
 }

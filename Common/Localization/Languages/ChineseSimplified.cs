@@ -1595,6 +1595,7 @@ public sealed class ChineseSimplified : LocalizedStrings
 
     public override string ErrPsvPatchNaverBlogNoAttachment(object? arg0) => $"在 Naver 博客文章中未找到附件: {arg0}";
     public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"Naver 博客附件: {arg0}";
+    public override string ErrPsvPatchSplitVolumeMissing(object? arg0) => $"缺少分卷压缩文件: {arg0}";
 
     // Work
     public override string WorkTypeConvert => "转换";

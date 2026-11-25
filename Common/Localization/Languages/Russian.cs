@@ -1595,6 +1595,7 @@ public sealed class Russian : LocalizedStrings
 
     public override string ErrPsvPatchNaverBlogNoAttachment(object? arg0) => $"В записи блога Naver вложение не найдено: {arg0}";
     public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"Вложение блога Naver: {arg0}";
+    public override string ErrPsvPatchSplitVolumeMissing(object? arg0) => $"Отсутствует том многотомного архива: {arg0}";
 
     // Work
     public override string WorkTypeConvert => "Конвертация";

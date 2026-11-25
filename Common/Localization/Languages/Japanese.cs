@@ -1595,6 +1595,7 @@ public sealed class Japanese : LocalizedStrings
 
     public override string ErrPsvPatchNaverBlogNoAttachment(object? arg0) => $"Naver ブログの記事に添付ファイルが見つかりません: {arg0}";
     public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"Naver ブログの添付ファイル: {arg0}";
+    public override string ErrPsvPatchSplitVolumeMissing(object? arg0) => $"分割圧縮ファイルのパートが見つかりません: {arg0}";
 
     // Work
     public override string WorkTypeConvert => "変換";
