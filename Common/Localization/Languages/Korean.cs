@@ -1597,6 +1597,18 @@ public sealed class Korean : LocalizedStrings
     public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"네이버 블로그 첨부파일: {arg0}";
     public override string ErrPsvPatchSplitVolumeMissing(object? arg0) => $"분할 압축 파일의 일부가 없습니다: {arg0}";
 
+    public override string ButtonSaveAll => "전체 저장";
+    public override string ErrPkgBrowserLicenseRequired => "복호화하려면 키(zRIF 또는 work.bin)가 필요합니다";
+    public override string ErrPkgBrowserSingleFileOnly => "PKG 파일은 한 번에 하나만 열 수 있습니다";
+    public override string HintDropPkgFile => "PKG 파일을 여기에 드래그&드롭하세요";
+    public override string LogPkgBrowserOpened(object? arg0, object? arg1) => $"PKG 열기: {arg0} ({arg1}개 파일)";
+    public override string LogPkgBrowserSaved(object? arg0, object? arg1) => $"{arg0}개 파일 저장 완료 -> {arg1}";
+    public override string MenuSaveAllDecrypted => "복호화하여 전체 저장";
+    public override string MenuSaveAllRaw => "원본으로 전체 저장";
+    public override string MenuSaveAsDecrypted => "다른 이름으로 저장 (복호화)";
+    public override string MenuSaveAsRaw => "다른 이름으로 저장 (원본)";
+    public override string TabPkgBrowser => "PKG 브라우저";
+
     // Work
     public override string WorkTypeConvert => "변환";
     public override string WorkTypeDecompress => "해제";

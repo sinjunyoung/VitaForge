@@ -1597,6 +1597,19 @@ public sealed class Russian : LocalizedStrings
     public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"Вложение блога Naver: {arg0}";
     public override string ErrPsvPatchSplitVolumeMissing(object? arg0) => $"Отсутствует том многотомного архива: {arg0}";
 
+    public override string ButtonSaveAll => "Сохранить всё";
+    public override string ErrPkgBrowserLicenseRequired => "Для расшифровки нужен ключ (zRIF или work.bin)";
+    public override string ErrPkgBrowserSingleFileOnly => "Можно открыть только один PKG-файл за раз";
+    public override string HintDropPkgFile => "Перетащите PKG-файл сюда";
+    public override string LogPkgBrowserOpened(object? arg0, object? arg1) => $"PKG открыт: {arg0} (файлов: {arg1})";
+    public override string LogPkgBrowserSaved(object? arg0, object? arg1) => $"Сохранено файлов: {arg0} -> {arg1}";
+    public override string MenuSaveAllDecrypted => "Сохранить всё (расшифровано)";
+    public override string MenuSaveAllRaw => "Сохранить всё (оригинал)";
+    public override string MenuSaveAsDecrypted => "Сохранить как (расшифровано)";
+    public override string MenuSaveAsRaw => "Сохранить как (оригинал)";
+    public override string TabPkgBrowser => "Обозреватель PKG";
+
+
     // Work
     public override string WorkTypeConvert => "Конвертация";
     public override string WorkTypeDecompress => "Распаковка";

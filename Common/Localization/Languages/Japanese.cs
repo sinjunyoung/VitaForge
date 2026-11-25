@@ -1597,6 +1597,19 @@ public sealed class Japanese : LocalizedStrings
     public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"Naver ブログの添付ファイル: {arg0}";
     public override string ErrPsvPatchSplitVolumeMissing(object? arg0) => $"分割圧縮ファイルのパートが見つかりません: {arg0}";
 
+    public override string ButtonSaveAll => "すべて保存";
+    public override string ErrPkgBrowserLicenseRequired => "復号にはキー(zRIFまたはwork.bin)が必要です";
+    public override string ErrPkgBrowserSingleFileOnly => "PKGファイルは一度に1つしか開けません";
+    public override string HintDropPkgFile => "PKGファイルをここにドラッグ&ドロップしてください";
+    public override string LogPkgBrowserOpened(object? arg0, object? arg1) => $"PKGを開きました: {arg0} ({arg1}個のファイル)";
+    public override string LogPkgBrowserSaved(object? arg0, object? arg1) => $"{arg0}個のファイルを保存しました -> {arg1}";
+    public override string MenuSaveAllDecrypted => "復号してすべて保存";
+    public override string MenuSaveAllRaw => "オリジナルのままですべて保存";
+    public override string MenuSaveAsDecrypted => "名前を付けて保存 (復号)";
+    public override string MenuSaveAsRaw => "名前を付けて保存 (オリジナル)";
+    public override string TabPkgBrowser => "PKGブラウザ";
+
+
     // Work
     public override string WorkTypeConvert => "変換";
     public override string WorkTypeDecompress => "解凍";

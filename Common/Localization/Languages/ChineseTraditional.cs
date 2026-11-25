@@ -1597,6 +1597,18 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"Naver 部落格附件: {arg0}";
     public override string ErrPsvPatchSplitVolumeMissing(object? arg0) => $"缺少分割壓縮檔: {arg0}";
 
+    public override string ButtonSaveAll => "全部儲存";
+    public override string ErrPkgBrowserLicenseRequired => "解密需要金鑰(zRIF 或 work.bin)";
+    public override string ErrPkgBrowserSingleFileOnly => "一次只能開啟一個 PKG 檔案";
+    public override string HintDropPkgFile => "請將 PKG 檔案拖放到此處";
+    public override string LogPkgBrowserOpened(object? arg0, object? arg1) => $"已開啟 PKG: {arg0} ({arg1} 個檔案)";
+    public override string LogPkgBrowserSaved(object? arg0, object? arg1) => $"已儲存 {arg0} 個檔案 -> {arg1}";
+    public override string MenuSaveAllDecrypted => "解密後全部儲存";
+    public override string MenuSaveAllRaw => "以原始資料全部儲存";
+    public override string MenuSaveAsDecrypted => "另存新檔 (解密)";
+    public override string MenuSaveAsRaw => "另存新檔 (原始)";
+    public override string TabPkgBrowser => "PKG 瀏覽器";
+
     // Work
     public override string WorkTypeConvert => "轉換";
     public override string WorkTypeDecompress => "解壓縮";

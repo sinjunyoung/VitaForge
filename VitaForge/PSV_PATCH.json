@@ -411,6 +411,216 @@
         { "url": "https://drive.google.com/file/d/1OcDA3AZYXdVgutcSPdz3RPA-wq8fIRwT/view?usp=drive_link" }
       ]
     },
+ {
+      "titleId": "PCSG00776",
+      "region": "JP",
+      "name": "마이러브",
+      "version": "0.8",
+      "requiredUpdateVersion": "1.01",
+      "user": "yoolose",
+      "releaseLink": "https://blog.naver.com/yoolose/224447436522",
+      "date": "2026-10-20",
+      "patchType": "Exe",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://naver.me/GkIX0PPB" }
+      ]
+    },
+ {
+      "titleId": "PCSG00421",
+      "region": "JP",
+      "name": "그리자이아의 미궁",
+      "version": "1.01",
+      "requiredUpdateVersion": "1.01",
+      "user": "sizz1214-lang",
+      "releaseLink": "https://github.com/sizz1214-lang/VITA/releases/tag/PCSG00421",
+      "date": "2026-10-20",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/sizz1214-lang/VITA/releases/download/PCSG00421/PCSG00421.zip" }
+      ]
+    },
+ {
+      "titleId": "PCSG00508",
+      "region": "JP",
+      "name": "그리자이아의 낙원",
+      "version": "1.0",
+      "user": "sizz1214-lang",
+      "releaseLink": "https://github.com/sizz1214-lang/VITA/releases/tag/PCSG00508",
+      "date": "2026-10-20",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/sizz1214-lang/VITA/releases/download/PCSG00508/PCSG00508.zip" }
+      ]
+    },
+ {
+      "titleId": "PCSG01095",
+      "region": "JP",
+      "name": "그리자이아의 과실 사이드 에피소드",
+      "version": "1.0",
+      "user": "sizz1214-lang",
+      "releaseLink": "https://github.com/sizz1214-lang/VITA/releases/tag/PCSG01095",
+      "date": "2026-10-20",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/sizz1214-lang/VITA/releases/download/PCSG01095/PCSG01095.zip" }
+      ]
+    },
+ {
+      "titleId": "PCSG01149",
+      "region": "JP",
+      "name": "그리자이아 팬텀트리거 01&02",
+      "version": "1.0",
+      "user": "sizz1214-lang",
+      "releaseLink": "https://github.com/sizz1214-lang/VITA/releases/tag/PCSG01149",
+      "date": "2026-10-20",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/sizz1214-lang/VITA/releases/download/PCSG01149/PCSG01149.zip" }
+      ]
+    },
+ {
+      "titleId": "PCSG01218",
+      "region": "JP",
+      "name": "그리자이아 팬텀트리거 03&04",
+      "version": "1.0",
+      "user": "sizz1214-lang",
+      "releaseLink": "https://github.com/sizz1214-lang/VITA/releases/tag/PCSG01218",
+      "date": "2026-10-20",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/sizz1214-lang/VITA/releases/download/PCSG01218/PCSG01218.zip" }
+      ]
+    },
+{
+      "titleId": "PCSG00434",
+      "region": "JP",
+      "name": "카오스 헤드 노아",
+      "version": "1.0",
+      "user": "sizz1214-lang",
+      "releaseLink": "https://github.com/sizz1214-lang/VITA/releases/tag/PCSG00434",
+      "date": "2026-10-20",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/sizz1214-lang/VITA/releases/download/PCSG00434/PCSG00434.zip" }
+      ]
+    },
+{
+      "titleId": "PCSG00435",
+      "region": "JP",
+      "name": "카오스 헤드 러브 츄 츄",
+      "version": "1.0",
+      "user": "sizz1214-lang",
+      "releaseLink": "https://github.com/sizz1214-lang/VITA/releases/tag/PCSG00435",
+      "date": "2026-10-20",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/sizz1214-lang/VITA/releases/download/PCSG00435/PCSG00435.zip" }
+      ]
+    },
+{
+      "titleId": "PCSG00995",
+      "region": "JP",
+      "name": "카오스 차일드 러브 츄 츄",
+      "version": "1.0",
+      "user": "sizz1214-lang",
+      "releaseLink": "https://github.com/sizz1214-lang/VITA/releases/tag/PCSG00995",
+      "date": "2026-10-20",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/sizz1214-lang/VITA/releases/download/PCSG00995/PCSG00995.zip" }
+      ]
+    },
+{
+      "titleId": "PCSG01021",
+      "region": "JP",
+      "name": "오컬틱 나인",
+      "version": "1.0",
+      "user": "sizz1214-lang",
+      "releaseLink": "https://github.com/sizz1214-lang/VITA/releases/tag/PCSG01021",
+      "date": "2026-10-20",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/sizz1214-lang/VITA/releases/download/PCSG01021/PCSG01021.zip" }
+      ]
+    },
+{
+      "titleId": "PCSG00759",
+      "region": "JP",
+      "name": "성검전설 어드벤쳐 오브 마나",
+      "version": "1.0",
+      "user": "sizz1214-lang",
+      "releaseLink": "https://github.com/sizz1214-lang/VITA/releases/tag/PCSG00759",
+      "date": "2026-10-20",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/sizz1214-lang/VITA/releases/download/PCSG00759/PCSG00759.zip" }
+      ]
+    },
+{
+      "titleId": "PCSG00933",
+      "region": "JP",
+      "name": "Re:제로부터 시작하는 이세계 생활 - DEATH OR KISS",
+      "version": "1.0",
+      "user": "TuNE",
+      "releaseLink": "https://mtune.pe.kr/1032/",
+      "date": "2026-10-20",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/drive/folders/1JIzOKqW58Qs_30fUOgquHBEdzjUrYt9f?usp=sharing" }
+      ]
+    },
+{
+      "titleId": "PCSG00759",
+      "region": "JP",
+      "name": "마브러브 얼터너티브",
+      "version": "0.8",
+      "user": "yoolose",
+      "releaseLink": "https://blog.naver.com/yoolose/224450708101",
+      "date": "2026-10-23",
+      "patchType": "Exe",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://naver.me/GGGbbT9Q" }
+      ]
+    },
     {
   "titleId": "PCSG01113",
   "region": "JP",
@@ -428,6 +638,38 @@
     { "url": "https://github.com/sizz1214-lang/VITA/releases/download/PCSG01113/PCSG01113.7z.001" },
     { "url": "https://github.com/sizz1214-lang/VITA/releases/download/PCSG01113/PCSG01113.7z.002" }
   ]
-}
+},
+ {
+      "titleId": "PCSG00206",
+      "region": "JP",
+      "name": "그리자이아의 과실",
+      "version": "1.01",
+      "requiredUpdateVersion": "1.01",
+      "user": "sizz1214-lang",
+      "releaseLink": "https://github.com/sizz1214-lang/VITA/releases/tag/PCSG00206",
+      "date": "2026-10-24",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/sizz1214-lang/VITA/releases/download/PCSG00206/PCSG00206.zip" }
+      ]
+    },
+ {
+      "titleId": "PCSG00620",
+      "region": "JP",
+      "name": "아이돌 마법소녀 치루치루 미치루",
+      "user": "sizz1214-lang",
+      "releaseLink": "https://github.com/sizz1214-lang/VITA/releases/tag/PCSG00620",
+      "date": "2026-10-24",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/sizz1214-lang/VITA/releases/download/PCSG00620/PCSG00620.zip" }
+      ]
+    }
   ]
 }

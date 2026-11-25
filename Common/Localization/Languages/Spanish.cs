@@ -1597,6 +1597,19 @@ public sealed class Spanish : LocalizedStrings
     public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"Adjunto del blog de Naver: {arg0}";
     public override string ErrPsvPatchSplitVolumeMissing(object? arg0) => $"Falta un volumen del archivo dividido: {arg0}";
 
+    public override string ButtonSaveAll => "Guardar todo";
+    public override string ErrPkgBrowserLicenseRequired => "Se necesita una clave (zRIF o work.bin) para descifrar";
+    public override string ErrPkgBrowserSingleFileOnly => "Solo se puede abrir un archivo PKG a la vez";
+    public override string HintDropPkgFile => "Arrastra y suelta un archivo PKG aquí";
+    public override string LogPkgBrowserOpened(object? arg0, object? arg1) => $"PKG abierto: {arg0} ({arg1} archivos)";
+    public override string LogPkgBrowserSaved(object? arg0, object? arg1) => $"{arg0} archivos guardados -> {arg1}";
+    public override string MenuSaveAllDecrypted => "Guardar todo (descifrado)";
+    public override string MenuSaveAllRaw => "Guardar todo (original)";
+    public override string MenuSaveAsDecrypted => "Guardar como (descifrado)";
+    public override string MenuSaveAsRaw => "Guardar como (original)";
+    public override string TabPkgBrowser => "Explorador de PKG";
+
+
     // Work
     public override string WorkTypeConvert => "Conversión";
     public override string WorkTypeDecompress => "Descompresión";

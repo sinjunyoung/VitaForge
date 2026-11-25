@@ -12,7 +12,9 @@ public class PSVitaMainViewModel : MultiToolTabViewModel
 
     public DecryptMainViewModel DecryptVM { get; } = new();
 
-    public ConverterMainViewModel ConverterVM { get; } = new();    
+    public ConverterMainViewModel ConverterVM { get; } = new();
+
+    public PkgBrowserMainViewModel PkgBrowserVM { get; } = new();
 
     public PSVitaMainViewModel()
     {
@@ -21,6 +23,7 @@ public class PSVitaMainViewModel : MultiToolTabViewModel
         Tools.Add(RepackVM);
         Tools.Add(DecryptVM);
         Tools.Add(ConverterVM);
+        Tools.Add(PkgBrowserVM);
 
         InitializeMultiTools();
     }

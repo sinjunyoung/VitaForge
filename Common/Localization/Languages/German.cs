@@ -1596,6 +1596,19 @@ public sealed class German : LocalizedStrings
     public override string ErrPsvPatchNaverBlogNoAttachment(object? arg0) => $"Im Naver-Blogbeitrag wurde kein Anhang gefunden: {arg0}";
     public override string LogPsvPatchNaverBlogAttachment(object? arg0) => $"Naver-Blog-Anhang: {arg0}";
     public override string ErrPsvPatchSplitVolumeMissing(object? arg0) => $"Ein Teil des geteilten Archivs fehlt: {arg0}";
+
+    public override string ButtonSaveAll => "Alle speichern";
+    public override string ErrPkgBrowserLicenseRequired => "Zum Entschlüsseln wird ein Schlüssel (zRIF oder work.bin) benötigt";
+    public override string ErrPkgBrowserSingleFileOnly => "Es kann nur eine PKG-Datei gleichzeitig geöffnet werden";
+    public override string HintDropPkgFile => "PKG-Datei hierher ziehen und ablegen";
+    public override string LogPkgBrowserOpened(object? arg0, object? arg1) => $"PKG geöffnet: {arg0} ({arg1} Dateien)";
+    public override string LogPkgBrowserSaved(object? arg0, object? arg1) => $"{arg0} Dateien gespeichert -> {arg1}";
+    public override string MenuSaveAllDecrypted => "Alle speichern (entschlüsselt)";
+    public override string MenuSaveAllRaw => "Alle speichern (Original)";
+    public override string MenuSaveAsDecrypted => "Speichern unter (entschlüsselt)";
+    public override string MenuSaveAsRaw => "Speichern unter (Original)";
+    public override string TabPkgBrowser => "PKG-Browser";
+
     // Work
     public override string WorkTypeConvert => "Konvertierung";
     public override string WorkTypeDecompress => "Entpacken";
