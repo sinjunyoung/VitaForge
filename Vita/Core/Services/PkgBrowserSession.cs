@@ -10,9 +10,22 @@ public sealed class PkgBrowserSession : IDisposable
 
     public IReadOnlyList<PkgBrowserFile> Files { get; }
 
+    public PkgProbeResult? Probe { get; }
+
+    public string ContentId => _accessor.Header.ContentId;
+
     private PkgBrowserSession(PkgSourceAccessor accessor)
     {
         _accessor = accessor;
+
+        try
+        {
+            Probe = PkgProbe.Probe(_accessor);
+        }
+        catch
+        {
+            Probe = null;
+        }
 
         try
         {
@@ -53,7 +66,8 @@ public sealed class PkgBrowserSession : IDisposable
         }
     }
 
-    public byte[] ResolveKlicensee(string license) => PkgLicenseResolver.ResolveKlicensee(license, _accessor.Header.ContentId);
+    public byte[] ResolveKlicensee(string license)
+        => Probe?.Category == ContentCategory.Patch ? PkgLicenseResolver.ResolveKlicenseeForPatch(license, ContentId) : PkgLicenseResolver.ResolveKlicensee(license, ContentId);
 
     public void Save(string path, Stream destination, byte[]? klicensee, Action<long>? onProgress)
     {

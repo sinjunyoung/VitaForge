@@ -1608,7 +1608,9 @@ public sealed class Japanese : LocalizedStrings
     public override string MenuSaveAsDecrypted => "名前を付けて保存 (復号)";
     public override string MenuSaveAsRaw => "名前を付けて保存 (オリジナル)";
     public override string TabPkgBrowser => "PKGブラウザ";
-
+    public override string LabelPkgBrowserChecked(object? arg0) => $"{arg0}個選択中";
+    public override string LogPkgBrowserLicenseLinked(object? arg0) => $"TSV/キーファイルからキーを自動連携しました: {arg0}";
+    
 
     // Work
     public override string WorkTypeConvert => "変換";

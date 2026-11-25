@@ -1608,6 +1608,8 @@ public abstract class LocalizedStrings
     public abstract string MenuSaveAsDecrypted { get; }
     public abstract string MenuSaveAsRaw { get; }
     public abstract string TabPkgBrowser { get; }
+    public abstract string LabelPkgBrowserChecked(object? arg0);
+    public abstract string LogPkgBrowserLicenseLinked(object? arg0);
 
     // Work
     public abstract string WorkTypeConvert { get; }

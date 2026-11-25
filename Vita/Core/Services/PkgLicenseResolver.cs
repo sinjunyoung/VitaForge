@@ -9,23 +9,22 @@ public static class PkgLicenseResolver
 {
     public static byte[] ResolveKlicensee(string license, string expectedContentId)
     {
-        if (File.Exists(license))
-        {
-            var parsed = WorkBinReader.Read(license);
+        var (contentId, klicensee, fromFile) = ReadLicense(license);
 
-            if (!parsed.ContentId.Equals(expectedContentId, StringComparison.OrdinalIgnoreCase))
-                throw new InvalidDataException(Loc.S.ErrVitaLicenseContentIdMismatch(parsed.ContentId, expectedContentId));
+        if (!contentId.Equals(expectedContentId, StringComparison.OrdinalIgnoreCase))
+            throw new InvalidDataException(MismatchMessage(fromFile, contentId, expectedContentId));
 
-            return parsed.Klicensee;
-        }
+        return klicensee;
+    }
 
-        byte[] rif = ZrifDecoder.Decode(license);
-        string rifContentId = Encoding.ASCII.GetString(rif, WorkBinLicense.ContentIdOffset, WorkBinLicense.ContentIdSize).TrimEnd('\0');
+    public static byte[] ResolveKlicenseeForPatch(string license, string patchContentId)
+    {
+        var (contentId, klicensee, fromFile) = ReadLicense(license);
 
-        if (!rifContentId.Equals(expectedContentId, StringComparison.OrdinalIgnoreCase))
-            throw new InvalidDataException(Loc.S.ErrVitaZrifContentIdMismatch(rifContentId, expectedContentId));
+        if (!HasSameTitleId(contentId, patchContentId))
+            throw new InvalidDataException(MismatchMessage(fromFile, contentId, patchContentId));
 
-        return rif.AsSpan(WorkBinLicense.KlicenseeOffset, WorkBinLicense.KlicenseeSize).ToArray();
+        return klicensee;
     }
 
     public static byte[] BuildWorkBin(string contentId, byte[] klicensee)
@@ -39,4 +38,25 @@ public static class PkgLicenseResolver
 
         return buf;
     }
+
+    private static (string ContentId, byte[] Klicensee, bool FromFile) ReadLicense(string license)
+    {
+        if (File.Exists(license))
+        {
+            var parsed = WorkBinReader.Read(license);
+
+            return (parsed.ContentId, parsed.Klicensee, true);
+        }
+
+        byte[] rif = ZrifDecoder.Decode(license);
+        string contentId = Encoding.ASCII.GetString(rif, WorkBinLicense.ContentIdOffset, WorkBinLicense.ContentIdSize).TrimEnd('\0');
+
+        return (contentId, rif.AsSpan(WorkBinLicense.KlicenseeOffset, WorkBinLicense.KlicenseeSize).ToArray(), false);
+    }
+
+    private static string MismatchMessage(bool fromFile, string licenseContentId, string expectedContentId)
+        => fromFile ? Loc.S.ErrVitaLicenseContentIdMismatch(licenseContentId, expectedContentId) : Loc.S.ErrVitaZrifContentIdMismatch(licenseContentId, expectedContentId);
+
+    private static bool HasSameTitleId(string a, string b)
+        => WorkBinReader.TryGetTitleIdFromContentId(a, out string titleA) && WorkBinReader.TryGetTitleIdFromContentId(b, out string titleB) && titleA.Equals(titleB, StringComparison.OrdinalIgnoreCase);
 }

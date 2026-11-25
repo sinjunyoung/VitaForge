@@ -1608,7 +1608,9 @@ public sealed class English : LocalizedStrings
     public override string MenuSaveAsDecrypted => "Save As (Decrypted)";
     public override string MenuSaveAsRaw => "Save As (Original)";
     public override string TabPkgBrowser => "PKG Browser";
-
+    public override string LabelPkgBrowserChecked(object? arg0) => $"{arg0} selected";
+    public override string LogPkgBrowserLicenseLinked(object? arg0) => $"Key linked automatically from TSV/key file: {arg0}";
+    
     // Work
     public override string WorkTypeConvert => "Conversion";
     public override string WorkTypeDecompress => "Decompression";

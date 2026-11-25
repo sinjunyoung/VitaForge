@@ -1608,7 +1608,9 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string MenuSaveAsDecrypted => "另存为 (解密)";
     public override string MenuSaveAsRaw => "另存为 (原始)";
     public override string TabPkgBrowser => "PKG 浏览器";
-
+    public override string LabelPkgBrowserChecked(object? arg0) => $"已选择 {arg0} 个";
+    public override string LogPkgBrowserLicenseLinked(object? arg0) => $"已从 TSV/密钥文件自动关联密钥: {arg0}";
+    
     // Work
     public override string WorkTypeConvert => "转换";
     public override string WorkTypeDecompress => "解压";

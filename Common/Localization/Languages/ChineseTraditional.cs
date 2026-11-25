@@ -1608,6 +1608,8 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string MenuSaveAsDecrypted => "另存新檔 (解密)";
     public override string MenuSaveAsRaw => "另存新檔 (原始)";
     public override string TabPkgBrowser => "PKG 瀏覽器";
+    public override string LabelPkgBrowserChecked(object? arg0) => $"已選取 {arg0} 個";
+    public override string LogPkgBrowserLicenseLinked(object? arg0) => $"已從 TSV/金鑰檔案自動關聯金鑰: {arg0}";
 
     // Work
     public override string WorkTypeConvert => "轉換";

@@ -9,8 +9,8 @@ using System.Windows;
 using System.Windows.Input;
 using Vita.Core.Models;
 using Vita.Core.Services;
-using VitaForge.Core;
 using VitaForge.Core.Services;
+using VitaForge.Core.Services.PSVita;
 using VitaForge.Core.UI.Command;
 using VitaForge.Core.ViewModels.PSVita;
 
@@ -19,9 +19,18 @@ namespace VitaForge.ViewModels.PSVita;
 public class PkgBrowserMainViewModel : ProgressToolTabViewModel
 {
     private readonly Stopwatch _sw = new();
+    private readonly HashSet<string> _checked = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, PkgBrowserTreeNode> _nodes = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Stack<string> _back = new();
+    private readonly Stack<string> _forward = new();
     private PkgBrowserSession? _session;
+    private string? _autoLicense;
+    private bool _syncingTree;
+    private bool _bulk;
 
     public ObservableCollection<PkgBrowserItemViewModel> Items { get; } = [];
+
+    public ObservableCollection<PkgBrowserTreeNode> TreeRoots { get; } = [];
 
     public string? PkgPath
     {
@@ -55,6 +64,18 @@ public class PkgBrowserMainViewModel : ProgressToolTabViewModel
         }
     }
 
+    public int CheckedCount
+    {
+        get;
+        private set
+        {
+            SetProperty(ref field, value);
+            OnPropertyChanged(nameof(CheckedText));
+        }
+    }
+
+    public string CheckedText => CheckedCount == 0 ? string.Empty : Loc.S.LabelPkgBrowserChecked(CheckedCount);
+
     public Visibility LicenseHintVisibility => string.IsNullOrWhiteSpace(License) ? Visibility.Visible : Visibility.Collapsed;
 
     public Visibility EntriesHintVisibility => PkgPath is null ? Visibility.Visible : Visibility.Collapsed;
@@ -63,12 +84,18 @@ public class PkgBrowserMainViewModel : ProgressToolTabViewModel
 
     public ICommand ClearCommand { get; }
 
+    public ICommand BackCommand { get; }
+
+    public ICommand ForwardCommand { get; }
+
     public ICommand UpCommand { get; }
 
     public PkgBrowserMainViewModel()
     {
         AddCommand = new RelayCommand(async _ => await AddAsync());
         ClearCommand = new RelayCommand(_ => Clear(), _ => PkgPath is not null);
+        BackCommand = new RelayCommand(_ => GoBack(), _ => _back.Count > 0);
+        ForwardCommand = new RelayCommand(_ => GoForward(), _ => _forward.Count > 0);
         UpCommand = new RelayCommand(_ => GoUp(), _ => CurrentFolder.Length > 0);
         CancelCommand = new RelayCommand(_ => Cancel());
     }
@@ -88,46 +115,76 @@ public class PkgBrowserMainViewModel : ProgressToolTabViewModel
     public void OpenItem(PkgBrowserItemViewModel item)
     {
         if (item.IsDirectory)
-            Navigate(item.FullPath);
+            NavigateTo(item.FullPath);
+    }
+
+    public void GoBack()
+    {
+        if (_back.Count == 0)
+            return;
+
+        _forward.Push(CurrentFolder);
+
+        Navigate(_back.Pop());
+    }
+
+    public void GoForward()
+    {
+        if (_forward.Count == 0)
+            return;
+
+        _back.Push(CurrentFolder);
+
+        Navigate(_forward.Pop());
     }
 
     public void GoUp()
     {
+        if (CurrentFolder.Length == 0)
+            return;
+
         int slash = CurrentFolder.LastIndexOf('/');
 
-        Navigate(slash < 0 ? string.Empty : CurrentFolder[..slash]);
+        NavigateTo(slash < 0 ? string.Empty : CurrentFolder[..slash]);
     }
 
-    public async Task SaveSelectedAsync(IReadOnlyList<PkgBrowserItemViewModel> selected, bool decrypted)
+    public void SetCurrentChecked(bool value)
     {
-        if (_session is null || selected.Count == 0 || IsLocked)
-            return;
+        _bulk = true;
 
-        var files = selected.SelectMany(CollectFiles).Distinct().ToList();
-
-        if (files.Count == 0)
-            return;
-
-        if (selected.Count == 1 && !selected[0].IsDirectory)
+        foreach (var item in Items.ToList())
         {
-            var dialog = new SaveFileDialog { FileName = selected[0].Name };
+            if (item.IsCheckEnabled)
+                item.IsChecked = value;
+        }
 
-            if (dialog.ShowDialog() != true)
-                return;
+        _bulk = false;
 
-            await SaveAsync([(files[0], dialog.FileName)], decrypted, Path.GetDirectoryName(dialog.FileName)!);
+        RefreshChecked();
+    }
+
+    public async Task SaveSelectedAsync(IReadOnlyList<PkgBrowserItemViewModel> highlighted, bool decrypted)
+    {
+        if (_session is null || IsLocked)
+            return;
+
+        if (_checked.Count > 0)
+        {
+            var checkedFiles = _session.Files.Where(f => IsPathChecked(f.Path)).ToList();
+            bool single = _checked.Count == 1 && checkedFiles.Count == 1 && !_nodes.ContainsKey(_checked.First());
+
+            await SaveFilesAsync(checkedFiles, string.Empty, decrypted, single);
 
             return;
         }
 
-        string? folder = BrowseFolder();
-
-        if (folder is null)
+        if (highlighted.Count == 0)
             return;
 
+        var files = highlighted.SelectMany(CollectFiles).Distinct().ToList();
         string basePrefix = CurrentFolder.Length == 0 ? string.Empty : CurrentFolder + "/";
 
-        await SaveAsync([.. files.Select(f => (f, Path.Combine(folder, ToLocalPath(f.Path[basePrefix.Length..]))))], decrypted, folder);
+        await SaveFilesAsync(files, basePrefix, decrypted, highlighted.Count == 1 && !highlighted[0].IsDirectory);
     }
 
     public async Task SaveAllAsync(bool decrypted)
@@ -135,12 +192,7 @@ public class PkgBrowserMainViewModel : ProgressToolTabViewModel
         if (_session is null || IsLocked)
             return;
 
-        string? folder = BrowseFolder();
-
-        if (folder is null)
-            return;
-
-        await SaveAsync([.. _session.Files.Select(f => (f, Path.Combine(folder, ToLocalPath(f.Path))))], decrypted, folder);
+        await SaveFilesAsync([.. _session.Files], string.Empty, decrypted, false);
     }
 
     private async Task AddAsync()
@@ -168,13 +220,21 @@ public class PkgBrowserMainViewModel : ProgressToolTabViewModel
             try
             {
                 var session = await Task.Run(() => PkgBrowserSession.Open(path));
+                string? linked = await Task.Run(() => ResolveLicense(path, session.Probe));
 
                 _session?.Dispose();
                 _session = session;
 
                 PkgPath = path;
 
+                _checked.Clear();
+                _back.Clear();
+                _forward.Clear();
+
+                BuildTree();
                 Navigate(string.Empty);
+                RefreshChecked();
+                ApplyAutoLicense(linked, session.Probe?.TitleId);
 
                 AppendLog(Loc.S.LogPkgBrowserOpened(Path.GetFileName(path), session.Files.Count), LogLevel.Ok);
             }
@@ -186,6 +246,40 @@ public class PkgBrowserMainViewModel : ProgressToolTabViewModel
         }
     }
 
+    private static string? ResolveLicense(string path, PkgProbeResult? probe)
+    {
+        if (probe is null)
+            return null;
+
+        try
+        {
+            string? license = LicenseResolver.Resolve(null, path, probe.Category, probe.TitleId, probe.ContentIdSuffix);
+
+            if (!string.IsNullOrEmpty(license))
+                return license;
+
+            return probe.Category == ContentCategory.Patch ? NPSService.Instance.GetGroup(probe.TitleId)?.App?.ZRif : null;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private void ApplyAutoLicense(string? linked, string? titleId)
+    {
+        bool replaceable = string.IsNullOrWhiteSpace(License) || License == _autoLicense;
+
+        if (!replaceable)
+            return;
+
+        License = string.IsNullOrWhiteSpace(linked) ? null : linked;
+        _autoLicense = License;
+
+        if (License is not null)
+            AppendLog(Loc.S.LogPkgBrowserLicenseLinked(titleId), LogLevel.Info);
+    }
+
     private void Clear()
     {
         _session?.Dispose();
@@ -193,19 +287,118 @@ public class PkgBrowserMainViewModel : ProgressToolTabViewModel
 
         PkgPath = null;
 
-        Navigate(string.Empty);
+        _checked.Clear();
+        _back.Clear();
+        _forward.Clear();
+        _nodes.Clear();
+        TreeRoots.Clear();
+        Items.Clear();
+
+        CurrentFolder = string.Empty;
+        CheckedCount = 0;
+
+        CommandManager.InvalidateRequerySuggested();
+    }
+
+    private void BuildTree()
+    {
+        TreeRoots.Clear();
+        _nodes.Clear();
+
+        if (_session is null)
+            return;
+
+        var root = new PkgBrowserTreeNode(Path.GetFileName(PkgPath!), string.Empty, OnTreeNodeSelected) { IsExpanded = true };
+
+        _nodes[string.Empty] = root;
+
+        foreach (var file in _session.Files)
+        {
+            string[] parts = file.Path.Split('/');
+            var parent = root;
+            string path = string.Empty;
+
+            for (int i = 0; i < parts.Length - 1; i++)
+            {
+                path = path.Length == 0 ? parts[i] : path + "/" + parts[i];
+
+                if (!_nodes.TryGetValue(path, out var node))
+                {
+                    node = new PkgBrowserTreeNode(parts[i], path, OnTreeNodeSelected);
+                    _nodes[path] = node;
+
+                    parent.Children.Add(node);
+                }
+
+                parent = node;
+            }
+        }
+
+        TreeRoots.Add(root);
+    }
+
+    private void OnTreeNodeSelected(PkgBrowserTreeNode node)
+    {
+        if (!_syncingTree)
+            NavigateTo(node.FullPath);
+    }
+
+    private void SyncTree(string folder)
+    {
+        if (!_nodes.TryGetValue(folder, out var node))
+            return;
+
+        _syncingTree = true;
+
+        try
+        {
+            string path = string.Empty;
+
+            foreach (string part in folder.Split('/', StringSplitOptions.RemoveEmptyEntries))
+            {
+                if (_nodes.TryGetValue(path, out var ancestor))
+                    ancestor.IsExpanded = true;
+
+                path = path.Length == 0 ? part : path + "/" + part;
+            }
+
+            node.IsSelected = true;
+        }
+        finally
+        {
+            _syncingTree = false;
+        }
+    }
+
+    private void NavigateTo(string folder)
+    {
+        if (_session is null || string.Equals(folder, CurrentFolder, StringComparison.OrdinalIgnoreCase))
+            return;
+
+        _back.Push(CurrentFolder);
+        _forward.Clear();
+
+        Navigate(folder);
     }
 
     private void Navigate(string folder)
     {
         CurrentFolder = folder;
 
+        RebuildItems();
+        SyncTree(folder);
+
+        CommandManager.InvalidateRequerySuggested();
+    }
+
+    private void RebuildItems()
+    {
         Items.Clear();
 
         if (_session is null)
             return;
 
-        string prefix = folder.Length == 0 ? string.Empty : folder + "/";
+        string prefix = CurrentFolder.Length == 0 ? string.Empty : CurrentFolder + "/";
         var folders = new SortedSet<string>(StringComparer.OrdinalIgnoreCase);
         var files = new List<PkgBrowserFile>();
 
@@ -224,10 +417,64 @@ public class PkgBrowserMainViewModel : ProgressToolTabViewModel
         }
 
         foreach (string name in folders)
-            Items.Add(PkgBrowserItemViewModel.ForFolder(name, prefix + name));
+            AddItem(PkgBrowserItemViewModel.ForFolder(name, prefix + name, OnItemChecked));
 
         foreach (var file in files)
-            Items.Add(PkgBrowserItemViewModel.ForFile(file));
+            AddItem(PkgBrowserItemViewModel.ForFile(file, OnItemChecked));
+    }
+
+    private void AddItem(PkgBrowserItemViewModel item)
+    {
+        ApplyCheckState(item);
+
+        Items.Add(item);
+    }
+
+    private void ApplyCheckState(PkgBrowserItemViewModel item) => item.SetCheckState(IsPathChecked(item.FullPath), !IsAncestorChecked(item.FullPath));
+
+    private void OnItemChecked(PkgBrowserItemViewModel item, bool value)
+    {
+        if (value)
+        {
+            if (item.IsDirectory)
+            {
+                string prefix = item.FullPath + "/";
+
+                _checked.RemoveWhere(p => p.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
+            }
+
+            _checked.Add(item.FullPath);
+        }
+        else
+            _checked.Remove(item.FullPath);
+
+        if (!_bulk)
+            RefreshChecked();
+    }
+
+    private void RefreshChecked()
+    {
+        foreach (var item in Items)
+            ApplyCheckState(item);
+
+        CheckedCount = _session is null ? 0 : _session.Files.Count(f => IsPathChecked(f.Path));
+    }
+
+    private bool IsPathChecked(string path) => _checked.Contains(path) || IsAncestorChecked(path);
+
+    private bool IsAncestorChecked(string path)
+    {
+        int slash;
+
+        while ((slash = path.LastIndexOf('/')) > 0)
+        {
+            path = path[..slash];
+
+            if (_checked.Contains(path))
+                return true;
+        }
+
+        return false;
     }
 
     private IEnumerable<PkgBrowserFile> CollectFiles(PkgBrowserItemViewModel item)
@@ -238,6 +485,31 @@ public class PkgBrowserMainViewModel : ProgressToolTabViewModel
         string prefix = item.FullPath + "/";
 
         return _session!.Files.Where(f => f.Path.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private async Task SaveFilesAsync(List<PkgBrowserFile> files, string basePrefix, bool decrypted, bool single)
+    {
+        if (files.Count == 0)
+            return;
+
+        if (single)
+        {
+            var dialog = new SaveFileDialog { FileName = Path.GetFileName(files[0].Path) };
+
+            if (dialog.ShowDialog() != true)
+                return;
+
+            await SaveAsync([(files[0], dialog.FileName)], decrypted, Path.GetDirectoryName(dialog.FileName)!);
+
+            return;
+        }
+
+        string? folder = BrowseFolder();
+
+        if (folder is null)
+            return;
+
+        await SaveAsync([.. files.Select(f => (f, Path.Combine(folder, ToLocalPath(f.Path[basePrefix.Length..]))))], decrypted, folder);
     }
 
     private static string? BrowseFolder()

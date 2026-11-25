@@ -1608,7 +1608,8 @@ public sealed class Russian : LocalizedStrings
     public override string MenuSaveAsDecrypted => "Сохранить как (расшифровано)";
     public override string MenuSaveAsRaw => "Сохранить как (оригинал)";
     public override string TabPkgBrowser => "Обозреватель PKG";
-
+    public override string LabelPkgBrowserChecked(object? arg0) => $"Выбрано: {arg0}";
+    public override string LogPkgBrowserLicenseLinked(object? arg0) => $"Ключ автоматически подобран из TSV/файла ключа: {arg0}";
 
     // Work
     public override string WorkTypeConvert => "Конвертация";

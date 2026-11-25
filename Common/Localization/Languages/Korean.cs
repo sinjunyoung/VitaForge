@@ -1608,6 +1608,8 @@ public sealed class Korean : LocalizedStrings
     public override string MenuSaveAsDecrypted => "다른 이름으로 저장 (복호화)";
     public override string MenuSaveAsRaw => "다른 이름으로 저장 (원본)";
     public override string TabPkgBrowser => "PKG 브라우저";
+    public override string LabelPkgBrowserChecked(object? arg0) => $"선택됨 {arg0}개";
+    public override string LogPkgBrowserLicenseLinked(object? arg0) => $"TSV/키 파일에서 키를 자동 연결했습니다: {arg0}";
 
     // Work
     public override string WorkTypeConvert => "변환";

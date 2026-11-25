@@ -13,6 +13,20 @@ public partial class PkgBrowserTab : UserControl
 
     public PkgBrowserTab() => InitializeComponent();
 
+    private void Root_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ChangedButton == MouseButton.XButton1)
+        {
+            ViewModel.GoBack();
+            e.Handled = true;
+        }
+        else if (e.ChangedButton == MouseButton.XButton2)
+        {
+            ViewModel.GoForward();
+            e.Handled = true;
+        }
+    }
+
     private void Root_DragEnter(object sender, DragEventArgs e)
     {
         e.Effects = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Copy : DragDropEffects.None;
@@ -41,24 +55,40 @@ public partial class PkgBrowserTab : UserControl
         e.Handled = true;
     }
 
+    private void HeaderCheck_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is CheckBox checkBox)
+            ViewModel.SetCurrentChecked(checkBox.IsChecked == true);
+    }
+
     private void LvItems_ContextMenuOpening(object sender, ContextMenuEventArgs e)
     {
-        if (LvItems.SelectedItems.Count == 0)
+        if (ViewModel.CheckedCount == 0 && LvItems.SelectedItems.Count == 0)
             e.Handled = true;
     }
 
     private void LvItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
+        if (e.OriginalSource is CheckBox || (e.OriginalSource as FrameworkElement)?.TemplatedParent is CheckBox)
+            return;
+
         if (LvItems.SelectedItem is PkgBrowserItemViewModel item)
             ViewModel.OpenItem(item);
     }
 
     private void LvItems_KeyUp(object sender, KeyEventArgs e)
     {
-        if (e.Key == Key.Enter && LvItems.SelectedItem is PkgBrowserItemViewModel item)
-            ViewModel.OpenItem(item);
-        else if (e.Key == Key.Back)
+        bool alt = Keyboard.Modifiers.HasFlag(ModifierKeys.Alt);
+        Key key = e.Key == Key.System ? e.SystemKey : e.Key;
+
+        if (alt && key == Key.Left || !alt && key == Key.Back)
+            ViewModel.GoBack();
+        else if (alt && key == Key.Right)
+            ViewModel.GoForward();
+        else if (alt && key == Key.Up)
             ViewModel.GoUp();
+        else if (key == Key.Enter && LvItems.SelectedItem is PkgBrowserItemViewModel item)
+            ViewModel.OpenItem(item);
     }
 
     private async void SaveSelected(bool decrypted)

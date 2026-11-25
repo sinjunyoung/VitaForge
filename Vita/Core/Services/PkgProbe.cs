@@ -1,5 +1,4 @@
-﻿
-using Common.Localization;
+﻿using Common.Localization;
 using Vita.Core.Models;
 
 namespace Vita.Core.Services;
@@ -10,6 +9,11 @@ public static class PkgProbe
     {
         using var accessor = new PkgSourceAccessor(pkgPath);
 
+        return Probe(accessor);
+    }
+
+    public static PkgProbeResult Probe(PkgSourceAccessor accessor)
+    {
         if (!WorkBinReader.TryGetTitleIdFromContentId(accessor.Header.ContentId, out string titleId))
             throw new InvalidDataException(Loc.S.ErrVitaTitleIdFromContentId(accessor.Header.ContentId));
 
@@ -31,4 +35,4 @@ public static class PkgProbe
             _ => throw new NotSupportedException(Loc.S.ErrVitaUnsupportedPkgContentType(accessor.Header.ContentType.ToString("x")))
         };
     }
-} 
+}

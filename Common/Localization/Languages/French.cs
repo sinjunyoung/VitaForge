@@ -1608,7 +1608,8 @@ public sealed class French : LocalizedStrings
     public override string MenuSaveAsDecrypted => "Enregistrer sous (déchiffré)";
     public override string MenuSaveAsRaw => "Enregistrer sous (original)";
     public override string TabPkgBrowser => "Navigateur PKG";
-
+    public override string LabelPkgBrowserChecked(object? arg0) => $"{arg0} sélectionné(s)";
+    public override string LogPkgBrowserLicenseLinked(object? arg0) => $"Clé liée automatiquement depuis le TSV/fichier de clé : {arg0}";    
 
     // Work
     public override string WorkTypeConvert => "Conversion";
