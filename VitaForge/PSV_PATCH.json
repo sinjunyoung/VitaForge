@@ -382,7 +382,7 @@
       "region": "JP",
       "name": "캐서린 풀바디",
       "version": "0.2-preview",
-      "requiredUpdateVersion": "1.0",
+      "requiredUpdateVersion": "1.03",
       "user": "7Cloud",
       "releaseLink": "https://7cloud.tistory.com/16",
       "date": "2026-10-18",
@@ -414,7 +414,7 @@
  {
       "titleId": "PCSG00776",
       "region": "JP",
-      "name": "마이러브",
+      "name": "마브러브",
       "version": "0.8",
       "requiredUpdateVersion": "1.01",
       "user": "yoolose",
@@ -606,7 +606,7 @@
       ]
     },
 {
-      "titleId": "PCSG00759",
+      "titleId": "PCSG00777",
       "region": "JP",
       "name": "마브러브 얼터너티브",
       "version": "0.8",
@@ -809,7 +809,7 @@
  {
       "titleId": "PCSG00202",
       "region": "JP",
-      "name": "단간론파 1·2 리로드.",
+      "name": "단간론파 1·2 리로드",
       "version": "0.9.0",
       "requiredUpdateVersion": "1.01",
       "user": "lf-idonotknow",
