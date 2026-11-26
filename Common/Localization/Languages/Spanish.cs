@@ -1619,4 +1619,6 @@ public sealed class Spanish : LocalizedStrings
     public override string WorkTypeConvert => "Conversión";
     public override string WorkTypeDecompress => "Descompresión";
     public override string WorkTypeRecompress => "Recompresión";
+
+    public override string HeaderDate => "Fecha";
 }

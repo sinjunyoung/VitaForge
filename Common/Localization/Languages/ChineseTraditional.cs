@@ -1619,4 +1619,6 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string WorkTypeConvert => "轉換";
     public override string WorkTypeDecompress => "解壓縮";
     public override string WorkTypeRecompress => "重新壓縮";
+    
+    public override string HeaderDate => "日期";
 }

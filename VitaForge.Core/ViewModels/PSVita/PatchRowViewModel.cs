@@ -1,4 +1,5 @@
-﻿using VitaForge.Core.Models.PSVita;
+﻿using System.Globalization;
+using VitaForge.Core.Models.PSVita;
 
 namespace VitaForge.Core.ViewModels.PSVita;
 
@@ -30,7 +31,13 @@ public class PatchRowViewModel(PatchCatalogItem item, Action onCheckedChanged) :
 
     public string PatchType => Item.PatchType;
 
+    public DateTime Date { get; } = ParseDate(item.LastModified);
+
+    public string DateText => Item.LastModified;
+
     public string PatchTypeBadgeColor => Item.IsDirect ? "#2E7D32" : "#8A5A00";
 
     public bool HasReleaseLink => !string.IsNullOrWhiteSpace(Item.ReleaseLink);
+
+    private static DateTime ParseDate(string value) => DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.None, out var date) ? date : DateTime.MinValue;
 }

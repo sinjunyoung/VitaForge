@@ -1620,6 +1620,8 @@ public abstract class LocalizedStrings
     public abstract string WorkTypeDecompress { get; }
     public abstract string WorkTypeRecompress { get; }
 
+    public abstract string HeaderDate { get; }
+
     public string GetItemStatus(ItemStatus status) => status switch
     {
         ItemStatus.Waiting => StatusWaiting,

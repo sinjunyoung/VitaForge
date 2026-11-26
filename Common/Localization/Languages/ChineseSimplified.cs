@@ -1619,4 +1619,6 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string WorkTypeConvert => "转换";
     public override string WorkTypeDecompress => "解压";
     public override string WorkTypeRecompress => "重新压缩";
+
+    public override string HeaderDate => "日期";
 }

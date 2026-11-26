@@ -1620,4 +1620,6 @@ public sealed class Japanese : LocalizedStrings
     public override string WorkTypeConvert => "変換";
     public override string WorkTypeDecompress => "解凍";
     public override string WorkTypeRecompress => "再圧縮";
+
+    public override string HeaderDate => "日付";
 }

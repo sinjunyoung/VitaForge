@@ -1619,4 +1619,6 @@ public sealed class German : LocalizedStrings
     public override string WorkTypeConvert => "Konvertierung";
     public override string WorkTypeDecompress => "Entpacken";
     public override string WorkTypeRecompress => "Neukomprimierung";
+    
+    public override string HeaderDate => "Datum";
 }

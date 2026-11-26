@@ -1619,4 +1619,6 @@ public sealed class French : LocalizedStrings
     public override string WorkTypeConvert => "Conversion";
     public override string WorkTypeDecompress => "Décompression";
     public override string WorkTypeRecompress => "Recompression";
+    
+    public override string HeaderDate => "Date";
 }

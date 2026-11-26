@@ -1619,4 +1619,6 @@ public sealed class Korean : LocalizedStrings
     public override string WorkTypeConvert => "변환";
     public override string WorkTypeDecompress => "해제";
     public override string WorkTypeRecompress => "재압축";
+
+    public override string HeaderDate => "날짜";
 }

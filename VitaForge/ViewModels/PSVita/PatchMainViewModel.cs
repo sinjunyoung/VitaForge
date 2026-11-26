@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using Vita.Core.Models;
 using VitaForge.Core.ViewModels.PSVita;
@@ -24,6 +25,8 @@ public class PatchMainViewModel : ProgressToolTabViewModel
 
     private readonly Stopwatch _totalSw = new();
     private string? _outputPath;
+    private string _appliedTitleId = string.Empty;
+    private string _appliedName = string.Empty;
 
     public ObservableCollection<PatchRowViewModel> Rows { get; } = [];
 
@@ -31,7 +34,7 @@ public class PatchMainViewModel : ProgressToolTabViewModel
     {
         get
         {
-            var selectable = Rows.Where(r => r.IsSelectable).ToList();
+            var selectable = VisibleSelectableRows.ToList();
 
             if (selectable.Count == 0)
                 return false;
@@ -103,22 +106,37 @@ public class PatchMainViewModel : ProgressToolTabViewModel
 
     public Visibility OutputHintVisibility => !ModeInstall && string.IsNullOrWhiteSpace(TargetPath) ? Visibility.Visible : Visibility.Collapsed;
 
+    public string? SearchTitleId { get; set { SetProperty(ref field, value); } }
+
+    public string? SearchName { get; set { SetProperty(ref field, value); } }
+
+    public ICommand SearchCommand { get; }
+
     public ICommand ClearCheckedCommand { get; }
 
     public ICommand ToggleAllCheckedCommand { get; }
 
     public ICommand BrowseTargetCommand { get; }
 
+    private IEnumerable<PatchRowViewModel> VisibleSelectableRows => Rows.Where(r => r.IsSelectable && Matches(r));
+
     public PatchMainViewModel()
     {
         _outputPath = OutputFolderDefaults.Resolve(AppConfig.Instance.OutputFolders.VitaPatchOutputPath);
 
+        SearchCommand = new RelayCommand(_ => Search());
         ClearCheckedCommand = new RelayCommand(_ => ClearChecked(), _ => Rows.Any(r => r.IsChecked));
         ToggleAllCheckedCommand = new RelayCommand(_ => ToggleAllChecked(), _ => Rows.Any(r => r.IsSelectable));
         BrowseTargetCommand = new RelayCommand(_ => BrowseTarget());
         CancelCommand = new RelayCommand(_ => Cancel());
 
         AppConfig.Instance.OutputFolders.PropertyChanged += OnOutputFoldersChanged;
+
+        var view = CollectionViewSource.GetDefaultView(Rows);
+
+        view.Filter = item => item is PatchRowViewModel row && Matches(row);
+        view.SortDescriptions.Add(new SortDescription(nameof(PatchRowViewModel.Date), ListSortDirection.Descending));
+        view.SortDescriptions.Add(new SortDescription(nameof(PatchRowViewModel.Name), ListSortDirection.Ascending));
 
         LoadCatalog();
     }
@@ -185,11 +203,25 @@ public class PatchMainViewModel : ProgressToolTabViewModel
         }
     }
 
+    private bool Matches(PatchRowViewModel row) =>
+        (_appliedTitleId.Length == 0 || row.TitleId.Contains(_appliedTitleId, StringComparison.OrdinalIgnoreCase)) &&
+        (_appliedName.Length == 0 || row.Name.Contains(_appliedName, StringComparison.OrdinalIgnoreCase));
+
+    private void Search()
+    {
+        _appliedTitleId = SearchTitleId?.Trim() ?? string.Empty;
+        _appliedName = SearchName?.Trim() ?? string.Empty;
+
+        CollectionViewSource.GetDefaultView(Rows).Refresh();
+
+        NotifyCheckedChanged();
+    }
+
     private void ToggleAllChecked()
     {
         bool target = AllChecked != true;
 
-        foreach (var row in Rows.Where(r => r.IsSelectable))
+        foreach (var row in VisibleSelectableRows.ToList())
             row.IsChecked = target;
     }
 

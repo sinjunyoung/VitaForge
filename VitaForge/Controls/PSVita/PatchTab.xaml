@@ -9,6 +9,7 @@
              d:DesignHeight="640" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -18,7 +19,69 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Border Background="#12FFFFFF" BorderBrush="#30FFFFFF" BorderThickness="1" CornerRadius="8" Grid.Row="0" IsEnabled="{Binding IsIdle}" Margin="5,0,5,5">
+        <Grid Grid.Row="0" IsEnabled="{Binding IsIdle}" Margin="5,0,5,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Border Background="#12FFFFFF" BorderBrush="#30FFFFFF" BorderThickness="1" CornerRadius="6" Grid.Column="0" Height="36" Margin="0,0,5,0">
+                <Grid>
+                    <TextBox Background="Transparent" BorderThickness="0" FontSize="12" Foreground="#DCDCDC" Padding="10,0" Text="{Binding SearchTitleId, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding SearchCommand}"/>
+                        </TextBox.InputBindings>
+                    </TextBox>
+                    <TextBlock FontSize="12" Foreground="#50FFFFFF" IsHitTestVisible="False" Margin="10,0,0,0" Text="{Binding Path=Current.HintSearchTitleId, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SearchTitleId}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SearchTitleId}" Value="">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+            </Border>
+            <Border Background="#12FFFFFF" BorderBrush="#30FFFFFF" BorderThickness="1" CornerRadius="6" Grid.Column="1" Height="36" Margin="0,0,5,0">
+                <Grid>
+                    <TextBox Background="Transparent" BorderThickness="0" FontSize="12" Foreground="#DCDCDC" Padding="10,0" Text="{Binding SearchName, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding SearchCommand}"/>
+                        </TextBox.InputBindings>
+                    </TextBox>
+                    <TextBlock FontSize="12" Foreground="#50FFFFFF" IsHitTestVisible="False" Margin="10,0,0,0" Text="{Binding Path=Current.HintSearchGame, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SearchName}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SearchName}" Value="">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+            </Border>
+            <Button BorderThickness="1" Command="{Binding SearchCommand}" Grid.Column="2" Height="36" Padding="14,0" Style="{StaticResource GrayButton}">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Height="18" Margin="0,0,6,0" RenderOptions.BitmapScalingMode="HighQuality" Source="/Assets/Images/Search.png" Width="18"/>
+                    <TextBlock Text="{Binding Path=Current.ButtonSearch, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+
+        <Border Background="#12FFFFFF" BorderBrush="#30FFFFFF" BorderThickness="1" CornerRadius="8" Grid.Row="1" IsEnabled="{Binding IsIdle}" Margin="5,0,5,5">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -85,13 +148,10 @@
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <GridViewColumn Width="Auto">
+                            <GridViewColumn Width="75">
                                 <GridViewColumn.Header>
                                     <GridViewColumnHeader Tag="Version">
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                            <Image Source="/Assets/Images/Patch.png" Width="24" Height="24" Margin="0,0,4,0"/>
-                                            <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderVersion, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
-                                        </StackPanel>
+                                        <Image Source="/Assets/Images/Patch.png" Width="24" Height="24" Margin="0,0,4,0"/>
                                     </GridViewColumnHeader>
                                 </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
@@ -104,15 +164,25 @@
                             <GridViewColumn Width="Auto">
                                 <GridViewColumn.Header>
                                     <GridViewColumnHeader Tag="RequiredUpdate">
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                            <Image Source="/Assets/Images/Version.png" Width="24" Height="24" Margin="0,0,4,0"/>
-                                            <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="{Binding Path=Current.HeaderRequiredUpdate, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
-                                        </StackPanel>
+                                        <Image Source="/Assets/Images/Version.png" Width="24" Height="24" Margin="0,0,4,0"/>
                                     </GridViewColumnHeader>
                                 </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock FontSize="12" Foreground="#8888A8" Text="{Binding RequiredUpdate}" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Width="75">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Tag="Date">
+                                        <Image Source="/Assets/Images/Calendar.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                                    </GridViewColumnHeader>
+                                </GridViewColumn.Header>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontSize="12" Foreground="#8888A8" Text="{Binding DateText}" VerticalAlignment="Center"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -159,15 +229,15 @@
             </Grid>
         </Border>
 
-        <TextBlock FontSize="11" Foreground="#A0A0A0" Grid.Row="1" HorizontalAlignment="Right" Margin="5,0,10,5" Text="{Binding ResultText}"/>
+        <TextBlock FontSize="11" Foreground="#A0A0A0" Grid.Row="2" HorizontalAlignment="Right" Margin="5,0,10,5" Text="{Binding ResultText}"/>
 
-        <StackPanel Grid.Row="2" Margin="5,0,5,5" Orientation="Horizontal">
+        <StackPanel Grid.Row="3" Margin="5,0,5,5" Orientation="Horizontal">
             <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="White" Margin="0,0,10,0" Text="{Binding Path=Current.LabelPatchMode, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
             <RadioButton Content="{Binding Path=Current.RadioModeInstall, Source={x:Static l:Loc.Instance}}" FontSize="12" Foreground="White" GroupName="VitaPatchModeGroup" IsChecked="{Binding ModeInstall}" IsEnabled="{Binding IsIdle}" Margin="0,0,15,0" VerticalAlignment="Center"/>
             <RadioButton Content="{Binding Path=Current.RadioModeArchive, Source={x:Static l:Loc.Instance}}" FontSize="12" Foreground="White" GroupName="VitaPatchModeGroup" IsChecked="{Binding ModeArchive}" IsEnabled="{Binding IsIdle}" Margin="0,0,15,0" VerticalAlignment="Center"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="3" Margin="5,0,5,5" Orientation="Horizontal">
+        <StackPanel Grid.Row="4" Margin="5,0,5,5" Orientation="Horizontal">
             <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="White" Margin="0,0,10,0" Text="{Binding Path=Current.LabelInstallTarget, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
             <RadioButton Content="{Binding Path=Current.RadioInstallVita3k, Source={x:Static l:Loc.Instance}}" FontSize="12" Foreground="White" GroupName="VitaPatchInstallGroup" IsChecked="{Binding InstallEmu}" IsEnabled="{Binding IsIdle}" Margin="0,0,15,0" VerticalAlignment="Center"/>
             <RadioButton Content="{Binding Path=Current.RadioInstallDevice, Source={x:Static l:Loc.Instance}}" FontSize="12" Foreground="White" GroupName="VitaPatchInstallGroup" IsChecked="{Binding InstallDevice}" IsEnabled="{Binding IsIdle}" Margin="0,0,15,0" VerticalAlignment="Center"/>
@@ -175,7 +245,7 @@
             <CheckBox Content="{Binding Path=Current.CheckIncludeDlc, Source={x:Static l:Loc.Instance}}" FontSize="12" Foreground="White" IsChecked="{Binding IncludeDlc}" IsEnabled="{Binding IsIdle}" VerticalAlignment="Center"/>
         </StackPanel>
 
-        <Grid Grid.Row="4" Margin="5,0,5,5">
+        <Grid Grid.Row="5" Margin="5,0,5,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -194,9 +264,9 @@
             </Button>
         </Grid>
 
-        <core:IconButton Grid.Row="5" Margin="5,0,5,5" DefaultText="{Binding Path=Current.ButtonStart, Source={x:Static l:Loc.Instance}}" DefaultIcon="/Assets/Images/Run.png" CancelText="{Binding Path=Current.ButtonCancel, Source={x:Static l:Loc.Instance}}" CancelIcon="/Assets/Images/Cancel.png" IsRunning="{Binding IsLocked}" Click="BtnStart_Click"/>
+        <core:IconButton Grid.Row="6" Margin="5,0,5,5" DefaultText="{Binding Path=Current.ButtonStart, Source={x:Static l:Loc.Instance}}" DefaultIcon="/Assets/Images/Run.png" CancelText="{Binding Path=Current.ButtonCancel, Source={x:Static l:Loc.Instance}}" CancelIcon="/Assets/Images/Cancel.png" IsRunning="{Binding IsLocked}" Click="BtnStart_Click"/>
 
-        <Border Background="#12FFFFFF" BorderBrush="#30FFFFFF" BorderThickness="0,1,0,0" CornerRadius="8" Grid.Row="6" Margin="5,0,5,5" Padding="8,0">
+        <Border Background="#12FFFFFF" BorderBrush="#30FFFFFF" BorderThickness="0,1,0,0" CornerRadius="8" Grid.Row="7" Margin="5,0,5,5" Padding="8,0">
             <Grid Height="28">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

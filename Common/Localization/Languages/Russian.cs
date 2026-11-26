@@ -1619,4 +1619,6 @@ public sealed class Russian : LocalizedStrings
     public override string WorkTypeConvert => "Конвертация";
     public override string WorkTypeDecompress => "Распаковка";
     public override string WorkTypeRecompress => "Пересжатие";
+
+    public override string HeaderDate => "Дата";
 }
