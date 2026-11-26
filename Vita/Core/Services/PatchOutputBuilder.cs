@@ -38,7 +38,7 @@ public static class PatchOutputBuilder
         long totalBytes = 0;
 
         foreach (var g in groups)
-            totalBytes += g.Targets.Sum(t => t.EstimatedSize) + GetWriteTotal(g, target);
+            totalBytes += g.Targets.Sum(t => t.EstimatedSize) + GetWriteTotal(g, target) + TitleRuleRegistry.EstimateGeneratedSize(g.TitleId, g);
 
         var reporter = new ProgressReporter(Loc.S.StatusApplyingPatch, string.Empty, totalBytes, progress);
         var writtenEntries = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -95,6 +95,11 @@ public static class PatchOutputBuilder
             foreach (var group in groups)
             {
                 ct.ThrowIfCancellationRequested();
+
+                var generated = await WriteGeneratedAsync(sink, writtenEntries, group, target, tempDirectory ?? DefaultTempDirectory, reporter, log, ct);
+
+                patchCandidates += generated.Candidates;
+                patchedSuccess += generated.Succeeded;
 
                 var targetByPath = group.Targets.ToDictionary(t => t.RelativePath, StringComparer.OrdinalIgnoreCase);
                 var handledTargets = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -164,6 +169,13 @@ public static class PatchOutputBuilder
         }
 
         return new MergeResult { TotalFiles = writtenEntries.Count, PatchCandidates = patchCandidates, PatchedSuccessfully = patchedSuccess, FailedFiles = failedFiles };
+    }
+
+    private static Task<GenerationResult> WriteGeneratedAsync(IDecryptSink sink, HashSet<string> writtenEntries, MergeGroup group, OutputTarget target, string tempDirectory, ProgressReporter reporter, Action<string, LogLevel> log, CancellationToken ct)
+    {
+        string prefix = PatchShared.GetPatchedPrefix(group.Category, target);
+
+        return TitleRuleRegistry.GenerateFilesAsync(group.TitleId, group, tempDirectory, file => WriteEntryAsync(sink, writtenEntries, PatchShared.BuildEntryPath(prefix, group, file.RelativePath), file.Data, file.Data.Length, reporter, ct), reporter.AddProgress, log, ct);
     }
 
     private sealed class PatchedPayload(byte[]? bytes, StreamedPatchResult? streamed) : IDisposable

@@ -37,7 +37,7 @@ public static class PatchOnlyBuilder
         long totalBytes = 0;
 
         foreach (var g in groups)
-            totalBytes += g.Targets.Sum(t => t.EstimatedSize);
+            totalBytes += g.Targets.Sum(t => t.EstimatedSize) + TitleRuleRegistry.EstimateGeneratedSize(g.TitleId, g);
 
         var reporter = new ProgressReporter(Loc.S.StatusApplyingPatch, string.Empty, totalBytes, progress);
         var writtenEntries = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -55,6 +55,11 @@ public static class PatchOnlyBuilder
 
             int groupMatched = 0;
             int groupSuccess = 0;
+
+            var generated = await WriteGeneratedAsync(zip, writtenEntries, group, target, tempDirectory ?? DefaultTempDirectory, reporter, log, ct);
+
+            groupMatched += generated.Candidates;
+            groupSuccess += generated.Succeeded;
 
             foreach (var t in group.Targets)
             {
@@ -155,6 +160,23 @@ public static class PatchOnlyBuilder
         reporter.ForceReport();
 
         return new PatchOnlyResult { MatchedCandidates = matched, PatchedSuccessfully = success };
+    }
+
+    private static Task<GenerationResult> WriteGeneratedAsync(ZipArchive zip, HashSet<string> writtenEntries, MergeGroup group, OutputTarget target, string tempDirectory, ProgressReporter reporter, Action<string, LogLevel> log, CancellationToken ct)
+    {
+        string prefix = PatchShared.GetPatchedPrefix(group.Category, target);
+
+        return TitleRuleRegistry.GenerateFilesAsync(group.TitleId, group, tempDirectory, async file =>
+        {
+            string entryPath = PatchShared.BuildEntryPath(prefix, group, file.RelativePath);
+
+            if (!writtenEntries.Add(entryPath))
+                return;
+
+            var zipEntry = zip.CreateEntry(entryPath, CompressionLevel.NoCompression);
+
+            await PatchShared.WriteEntryWithProgressAsync(zipEntry, file.Data, file.Data.Length, reporter, ct);
+        }, reporter.AddProgress, log, ct);
     }
 
     private static void LogGroupResult(Action<string, LogLevel> log, MergeGroup group, int matched, int success)

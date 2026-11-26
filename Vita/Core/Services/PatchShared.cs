@@ -245,7 +245,7 @@ internal static class PatchShared
     private static PatchFileIndex BuildPatchIndex(PatchContext ctx, ContentCategory category, string titleId, string? contentIdSuffix, OutputTarget target)
     {
         bool isAddcont = category == ContentCategory.Addcont;
-        var files = TitleRuleRegistry.RewritePatchFiles(titleId, category, ctx.Files);
+        var files = TitleRuleRegistry.RewritePatchFiles(titleId, category, ctx.Files, ctx.Accessor);
         string? layoutRoot = FindLayoutRoot(files, GetLayoutDirs(isAddcont, target), titleId, isAddcont ? contentIdSuffix : null);
         var rawByRelative = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
