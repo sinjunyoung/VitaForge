@@ -48,39 +48,15 @@
             </DrawingImage.Drawing>
         </DrawingImage>
 
-        <DrawingImage x:Key="IconSaveChecked">
-            <DrawingImage.Drawing>
-                <DrawingGroup ClipGeometry="M0,0 L24,0 L24,24 L0,24 Z">
-                    <GeometryDrawing Geometry="M4,4 L20,4 L20,20 L4,20 Z M8,12 L11,15 L16,9">
-                        <GeometryDrawing.Pen>
-                            <Pen Brush="#4CAF50" EndLineCap="Round" LineJoin="Round" StartLineCap="Round" Thickness="2"/>
-                        </GeometryDrawing.Pen>
-                    </GeometryDrawing>
-                </DrawingGroup>
-            </DrawingImage.Drawing>
-        </DrawingImage>
-
-        <DrawingImage x:Key="IconUncheck">
-            <DrawingImage.Drawing>
-                <DrawingGroup ClipGeometry="M0,0 L24,0 L24,24 L0,24 Z">
-                    <GeometryDrawing Geometry="M4,4 L20,4 L20,20 L4,20 Z M9,9 L15,15 M15,9 L9,15">
-                        <GeometryDrawing.Pen>
-                            <Pen Brush="#E0E0E0" EndLineCap="Round" LineJoin="Round" StartLineCap="Round" Thickness="2"/>
-                        </GeometryDrawing.Pen>
-                    </GeometryDrawing>
-                </DrawingGroup>
-            </DrawingImage.Drawing>
-        </DrawingImage>
-
         <ContextMenu x:Key="SaveAllMenu">
             <MenuItem Header="{Binding Path=Current.MenuSaveAllRaw, Source={x:Static l:Loc.Instance}}" Click="MenuSaveAllRaw_Click">
                 <MenuItem.Icon>
-                    <Image Height="20" Source="/VitaForge.Core;component/Assets/Images/Lock.png" Width="20"/>
+                    <Image Height="20" Source="/Assets/Images/LockSaveFile.png" Width="20"/>
                 </MenuItem.Icon>
             </MenuItem>
             <MenuItem Header="{Binding Path=Current.MenuSaveAllDecrypted, Source={x:Static l:Loc.Instance}}" Click="MenuSaveAllDecrypted_Click">
                 <MenuItem.Icon>
-                    <Image Height="20" Source="/VitaForge.Core;component/Assets/Images/Unlock.png" Width="20"/>
+                    <Image Height="20" Source="/Assets/Images/UnlockSaveFile.png" Width="20"/>
                 </MenuItem.Icon>
             </MenuItem>
         </ContextMenu>
@@ -88,12 +64,12 @@
         <ContextMenu x:Key="SaveCheckedMenu">
             <MenuItem Header="{Binding Path=Current.MenuSaveCheckedRaw, Source={x:Static l:Loc.Instance}}" Click="MenuSaveCheckedRaw_Click">
                 <MenuItem.Icon>
-                    <Image Height="20" Source="/VitaForge.Core;component/Assets/Images/Lock.png" Width="20"/>
+                    <Image Height="20" Source="/Assets/Images/LockSaveFile.png" Width="20"/>
                 </MenuItem.Icon>
             </MenuItem>
             <MenuItem Header="{Binding Path=Current.MenuSaveCheckedDecrypted, Source={x:Static l:Loc.Instance}}" Click="MenuSaveCheckedDecrypted_Click">
                 <MenuItem.Icon>
-                    <Image Height="20" Source="/VitaForge.Core;component/Assets/Images/Unlock.png" Width="20"/>
+                    <Image Height="20" Source="/Assets/Images/UnlockSaveFile.png" Width="20"/>
                 </MenuItem.Icon>
             </MenuItem>
         </ContextMenu>
@@ -101,12 +77,12 @@
         <ContextMenu x:Key="ItemMenu" x:Shared="False">
             <MenuItem Header="{Binding Path=Current.MenuSaveAsRaw, Source={x:Static l:Loc.Instance}}" Click="MenuSaveAsRaw_Click">
                 <MenuItem.Icon>
-                    <Image Height="20" Source="/VitaForge.Core;component/Assets/Images/Lock.png" Width="20"/>
+                    <Image Height="20" Source="/Assets/Images/LockSaveFile.png" Width="20"/>
                 </MenuItem.Icon>
             </MenuItem>
             <MenuItem Header="{Binding Path=Current.MenuSaveAsDecrypted, Source={x:Static l:Loc.Instance}}" Click="MenuSaveAsDecrypted_Click">
                 <MenuItem.Icon>
-                    <Image Height="20" Source="/VitaForge.Core;component/Assets/Images/Unlock.png" Width="20"/>
+                    <Image Height="20" Source="/Assets/Images/UnlockSaveFile.png" Width="20"/>
                 </MenuItem.Icon>
             </MenuItem>
         </ContextMenu>
@@ -279,19 +255,19 @@
             </Button>
             <Button BorderThickness="1" Command="{Binding UncheckAllCommand}" Grid.Column="2" Height="36" Margin="0,0,5,0" Style="{StaticResource GrayButton}">
                 <StackPanel Orientation="Horizontal">
-                    <Image Height="20" Margin="0,0,6,0" Source="{StaticResource IconUncheck}" Style="{StaticResource BtnIconStyle}" Width="20"/>
+                    <Image Height="20" Margin="0,0,6,0" Source="/Assets/Images/Unchecked.png" Style="{StaticResource BtnIconStyle}" Width="20"/>
                     <TextBlock Text="{Binding Path=Current.ButtonUncheckAll, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
             <Button x:Name="BtnSaveChecked" BorderThickness="1" Click="BtnSaveChecked_Click" Grid.Column="3" Height="36" IsEnabled="{Binding HasChecked}" Margin="0,0,5,0" Style="{StaticResource GrayButton}">
                 <StackPanel Orientation="Horizontal">
-                    <Image Height="20" Margin="0,0,6,0" Source="{StaticResource IconSaveChecked}" Style="{StaticResource BtnIconStyle}" Width="20"/>
+                    <Image Height="20" Margin="0,0,6,0" Source="/Assets/Images/CheckedSaveFile.png" Style="{StaticResource BtnIconStyle}" Width="20"/>
                     <TextBlock Text="{Binding Path=Current.ButtonSaveChecked, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
             <Button x:Name="BtnSaveAll" BorderThickness="1" Click="BtnSaveAll_Click" Grid.Column="4" Height="36" Style="{StaticResource GrayButton}">
                 <StackPanel Orientation="Horizontal">
-                    <Image Height="20" Margin="0,0,6,0" Source="/Assets/Images/Run.png" Width="20"/>
+                    <Image Height="20" Margin="0,0,6,0" Source="/Assets/Images/SaveAll.png" Width="20"/>
                     <TextBlock Text="{Binding Path=Current.ButtonSaveAll, Source={x:Static l:Loc.Instance}}" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
