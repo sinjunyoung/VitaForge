@@ -1,6 +1,5 @@
 ﻿using Common.Models;
 using Patch.Core;
-using System.Security.Cryptography;
 using Vita.Core.Models;
 using Vita.Core.Services;
 
@@ -8,8 +7,6 @@ namespace Vita.Core.TitleRules;
 
 internal sealed class PackageManifestGenerator(string titleId, MergeGroup group, PackageManifest manifest, Func<ExpandedFile, Task> emit, Action<long> onBytes, Action<string, LogLevel> log)
 {
-    private static readonly FselfLayout[] EbootLayouts = [FselfLayout.Standard, FselfLayout.Vita3K];
-
     private readonly Dictionary<string, PatchContainerFile> _patches = BuildPatchMap(group);
 
     public async Task<GenerationResult> GenerateAsync(string tempDirectory, CancellationToken ct)
@@ -23,7 +20,7 @@ internal sealed class PackageManifestGenerator(string titleId, MergeGroup group,
 
         foreach (var entry in generated.Where(e => e.SourceKind != PackageManifestSourceKinds.PackageMember))
         {
-            if (await ApplyAsync(entry, () => ResolveLocalSource(entry), ct))
+            if (await ApplyAsync(entry, () => ResolveLocalSourceAsync(entry, ct), ct))
                 succeeded++;
         }
 
@@ -59,7 +56,7 @@ internal sealed class PackageManifestGenerator(string titleId, MergeGroup group,
 
             foreach (var entry in entries.OrderBy(e => e.Source?.Offset))
             {
-                if (await ApplyAsync(entry, () => archive.ReadMember(entry.Source ?? throw new InvalidDataException("package member source is missing")), ct))
+                if (await ApplyAsync(entry, () => Task.FromResult(archive.ReadMember(entry.Source ?? throw new InvalidDataException("package member source is missing"))), ct))
                     succeeded++;
             }
 
@@ -67,11 +64,11 @@ internal sealed class PackageManifestGenerator(string titleId, MergeGroup group,
         }
     }
 
-    private async Task<bool> ApplyAsync(PackageManifestEntry entry, Func<byte[]> loadSource, CancellationToken ct)
+    private async Task<bool> ApplyAsync(PackageManifestEntry entry, Func<Task<byte[]>> loadSource, CancellationToken ct)
     {
         try
         {
-            byte[] source = loadSource();
+            byte[] source = await loadSource();
 
             Verify("source", source, entry.SourceSize, entry.SourceSha256);
 
@@ -93,39 +90,21 @@ internal sealed class PackageManifestGenerator(string titleId, MergeGroup group,
         }
     }
 
-    private byte[] ResolveLocalSource(PackageManifestEntry entry) => entry.SourceKind switch
+    private Task<byte[]> ResolveLocalSourceAsync(PackageManifestEntry entry, CancellationToken ct) => entry.SourceKind switch
     {
-        PackageManifestSourceKinds.Empty => [],
-        PackageManifestSourceKinds.DecryptedEboot => ResolveEboot(entry),
+        PackageManifestSourceKinds.Empty => Task.FromResult<byte[]>([]),
+        PackageManifestSourceKinds.DecryptedEboot => ResolveEbootAsync(entry, ct),
         _ => throw new NotSupportedException($"unsupported source kind: {entry.SourceKind}")
     };
 
-    private byte[] ResolveEboot(PackageManifestEntry entry)
+    private Task<byte[]> ResolveEbootAsync(PackageManifestEntry entry, CancellationToken ct)
     {
         string path = PatchShared.NormalizeZipPath(entry.Destination);
 
         if (!group.Index.TryGetValue(path, out var appEntry))
             throw new FileNotFoundException(path);
 
-        var owner = appEntry.Owner;
-        byte[] raw = NoNpDrmDecryptor.DecryptEntry(owner.Item.Accessor!, owner.Item.SourcePath, owner.License.Klicensee, appEntry.FileEntry, owner.Table.UnicvEntries[appEntry.EntryIndex], owner.Table.FilesSalt);
-
-        if (HashMatches(raw, entry.SourceSha256))
-            return raw;
-
-        foreach (var layout in EbootLayouts)
-        {
-            byte[] decrypted = VitaSelfDecryptor.DecryptToFself(raw, owner.License.Klicensee, layout);
-
-            if (!HashMatches(decrypted, entry.SourceSha256))
-                continue;
-
-            log($"{titleId} {path}: decrypted with {layout} layout", LogLevel.Info);
-
-            return decrypted;
-        }
-
-        throw new InvalidDataException($"no decrypted eboot layout matches source sha256 {entry.SourceSha256}");
+        return GroupSourceReader.ReadDecryptedSelfAsync(appEntry, data => Sha256Hex.Matches(data, entry.SourceSha256), entry.SourceSha256, $"{titleId} {path}", log, _ => { }, ct);
     }
 
     private byte[] ReadPatch(PackageManifestEntry entry)
@@ -135,7 +114,7 @@ internal sealed class PackageManifestGenerator(string titleId, MergeGroup group,
 
         byte[] data = group.PatchCtx.Accessor.ReadAllBytes(file.Raw);
 
-        if (!HashMatches(data, entry.PatchSha256))
+        if (!Sha256Hex.Matches(data, entry.PatchSha256))
             throw new InvalidDataException($"damaged patch: {entry.Patch}");
 
         return data;
@@ -143,8 +122,8 @@ internal sealed class PackageManifestGenerator(string titleId, MergeGroup group,
 
     private static void Verify(string role, byte[] data, long expectedSize, string expectedSha256)
     {
-        if (data.Length != expectedSize || !HashMatches(data, expectedSha256))
-            throw new InvalidDataException($"{role} mismatch (expected {expectedSize:N0} bytes sha256 {expectedSha256}, got {data.Length:N0} bytes sha256 {Hash(data)})");
+        if (data.Length != expectedSize || !Sha256Hex.Matches(data, expectedSha256))
+            throw new InvalidDataException($"{role} mismatch (expected {expectedSize:N0} bytes sha256 {expectedSha256}, got {data.Length:N0} bytes sha256 {Sha256Hex.Of(data)})");
     }
 
     private static Dictionary<string, PatchContainerFile> BuildPatchMap(MergeGroup group)
@@ -156,8 +135,4 @@ internal sealed class PackageManifestGenerator(string titleId, MergeGroup group,
 
         return map;
     }
-
-    private static string Hash(byte[] data) => Convert.ToHexString(SHA256.HashData(data));
-
-    private static bool HashMatches(byte[] data, string expectedSha256) => Hash(data).Equals(expectedSha256, StringComparison.OrdinalIgnoreCase);
 }

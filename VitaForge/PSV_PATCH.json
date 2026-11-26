@@ -62,7 +62,7 @@
       "date": "2026-08-01",
       "patchType": "EXE",
       "installType": "All",
-      "enabled": false,
+      "enabled": true,
       "linkMode": "Individual",
       "links": [
         { "url": "https://github.com/lf-idonotknow/Doukoku-Soshite-PS-Vita-Korean-Patch/releases/download/r33/Doukoku_Soshite_Korean_Patch_r33_win-x64.exe" }
@@ -386,9 +386,9 @@
       "user": "7Cloud",
       "releaseLink": "https://7cloud.tistory.com/16",
       "date": "2026-10-18",
-      "patchType": "Exe",
+      "patchType": "EXE",
       "installType": "All",
-      "enabled": true,
+      "enabled": false,
       "linkMode": "Individual",
       "links": [
         { "url": "https://drive.google.com/file/d/1RqNKBKPPZHz3X6aSR0fVT-NhgQsl-mjh/view?usp=sharing" }
@@ -420,9 +420,9 @@
       "user": "yoolose",
       "releaseLink": "https://blog.naver.com/yoolose/224447436522",
       "date": "2026-10-20",
-      "patchType": "Exe",
+      "patchType": "EXE",
       "installType": "All",
-      "enabled": true,
+      "enabled": false,
       "linkMode": "Individual",
       "links": [
         { "url": "https://naver.me/GkIX0PPB" }
@@ -613,9 +613,9 @@
       "user": "yoolose",
       "releaseLink": "https://blog.naver.com/yoolose/224450708101",
       "date": "2026-10-23",
-      "patchType": "Exe",
+      "patchType": "EXE",
       "installType": "All",
-      "enabled": true,
+      "enabled": false,
       "linkMode": "Individual",
       "links": [
         { "url": "https://naver.me/GGGbbT9Q" }
@@ -740,7 +740,7 @@
       "name": "드래곤볼 Z 배틀 오브 Z",
       "version": "1.0",
       "requiredUpdateVersion": "1.01",
-      "user": "TuNE",
+      "user": "7Cloud",
       "releaseLink": "https://7cloud.tistory.com/42",
       "date": "2026-11-03",
       "patchType": "Patch",
@@ -757,7 +757,7 @@
       "name": "왕과 마왕과 7인의 공주들 신 왕이야기",
       "version": "1.0",
       "requiredUpdateVersion": "1.02",
-      "user": "TuNE",
+      "user": "7Cloud",
       "releaseLink": "https://7cloud.tistory.com/43",
       "date": "2026-11-03",
       "patchType": "Patch",
@@ -766,122 +766,418 @@
       "linkMode": "Individual",
       "links": [
         { "url": "https://drive.google.com/file/d/1Q3rx9-uCCIBCby3cyumNACATEGqCW2uO/view?usp=sharing" }
+      ]
+    },
+ {
+      "titleId": "PCSG00474",
+      "region": "JP",
+      "name": "그랜드 킹덤",
+      "version": "0.9",
+      "requiredUpdateVersion": "1.06",
+      "user": "7Cloud",
+      "releaseLink": "https://7cloud.tistory.com/15",
+      "date": "2026-11-04",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/file/d/14-__ggo-QlzOaeVn12jPraRHGF9FcEgh/view?usp=sharing" }
       ],
-"patchTargets": [
-    {"patch":"3af8c898a2dfaf1c-eboot.bin.xdelta","target":"eboot.bin"},
-    {"patch":"9ef634287f411ac7-mes.pac.xdelta","target":"mes.pac"},
-    {"patch":"9872eaecd61592fc-font_01_01.gly.xdelta","target":"font_01_01.gly"},
-    {"patch":"4cc898a9316ad595-font_01_01.gxt.xdelta","target":"font_01_01.gxt"},
-    {"patch":"2ffbd663c6a7d8c0-font_01_02.gly.xdelta","target":"font_01_02.gly"},
-    {"patch":"894ee69b076019a7-font_01_02.gxt.xdelta","target":"font_01_02.gxt"},
-    {"patch":"fe9260ee940336d4-font_02_01.gly.xdelta","target":"font_02_01.gly"},
-    {"patch":"4060b42174d8bb14-font_02_01.gxt.xdelta","target":"font_02_01.gxt"},
-    {"patch":"3a62ecafa9ece372-font_02_02.gly.xdelta","target":"font_02_02.gly"},
-    {"patch":"f2b406f0e8e14ff1-font_02_02.gxt.xdelta","target":"font_02_02.gxt"},
-    {"patch":"ee05a8aa40368ac0-font_02_03.gly.xdelta","target":"font_02_03.gly"},
-    {"patch":"b2909ed32c8466e9-font_02_03.gxt.xdelta","target":"font_02_03.gxt"},
-    {"patch":"8ed3e959bba7bb8b-font_02_04.gly.xdelta","target":"font_02_04.gly"},
-    {"patch":"c4ffcdb64080cad9-font_02_04.gxt.xdelta","target":"font_02_04.gxt"},
-    {"patch":"aa58605f33961efd-menuDB_6_0.pac.xdelta","target":"menuDB_6_0.pac"},
-    {"patch":"39f4c0d5531d51df-filelist.csv.xdelta","target":"filelist.csv"},
-    {"patch":"0e78fba084d5089b-Chara.pac.xdelta","target":"Chara.pac"},
-    {"patch":"28161c2a1516d6a0-ui_fd300.d2b.xdelta","target":"ui_fd300.d2b"},
-    {"patch":"ddf680a6695ffff3-mes0.pac.xdelta","target":"mes0.pac"},
-    {"patch":"cece27b59558df3e-questdata4_0.bin.xdelta","target":"questdata4_0.bin"},
-    {"patch":"2984296e102f0994-d2a_text_jp.u16.xdelta","target":"d2a_text_jp.u16"},
-    {"patch":"90b96a7046395bd0-npcTalk.pac0.xdelta","target":"npcTalk.pac0"},
-    {"patch":"b59f532d43f2a64a-itemDB3_0.pac.xdelta","target":"itemDB3_0.pac"},
-    {"patch":"c3c9caa7d76f825e-movieMsg.pac.xdelta","target":"movieMsg.pac"},
-    {"patch":"bf081cf7e99ff243-StaffRoll.xml.xdelta","target":"StaffRoll.xml"},
-    {"patch":"fa7b85c0b5cf9039-param.sfo.xdelta","target":"param.sfo"},
-    {"patch":"d486d5794118f902-mes_LZ.bin.xdelta","target":"mes_LZ.bin"},
-    {"patch":"b75c4775e28b5be9-SB08_EVT_029.vmc0.xdelta","target":"SB08_EVT_029.vmc0"},
-    {"patch":"b2c6f96652fb77ad-ui_btn_007.gxt.xdelta","target":"ui_btn_007.gxt"},
-    {"patch":"aaf7bee489b2f284-ui_btn_008.gxt.xdelta","target":"ui_btn_008.gxt"},
-    {"patch":"6b10c6c8a8782b94-ui_btn_010.gxt.xdelta","target":"ui_btn_010.gxt"},
-    {"patch":"a17a38b637127eb6-ui_btn_010_jp.gxt.xdelta","target":"ui_btn_010_jp.gxt"},
-    {"patch":"47b46fb8c8eda7c4-op_hq00.mp4.xdelta","target":"op_hq00.mp4"},
-    {"patch":"6fd5daebe8fe232d-ui_nam_010.gxt.xdelta","target":"ui_nam_010.gxt"},
-    {"patch":"c14ead80c87fe3fd-ui_nam_011.gxt.xdelta","target":"ui_nam_011.gxt"},
-    {"patch":"a4fe8ba6e6aa2add-ui_btn_009.gxt.xdelta","target":"ui_btn_009.gxt"},
-    {"patch":"6e2b1ce4162fbd60-ui_btn_013.gxt.xdelta","target":"ui_btn_013.gxt"},
-    {"patch":"33157342137c3a61-ui_btl_003.gxt.xdelta","target":"ui_btl_003.gxt"},
-    {"patch":"dced94c56ed725a8-ui_btl_003_jp.gxt.xdelta","target":"ui_btl_003_jp.gxt"},
-    {"patch":"65725e3b7c86ff2d-ui_hlp_008.gxt.xdelta","target":"ui_hlp_008.gxt"},
-    {"patch":"d5977039ba38f25a-ui_hlp_007.gxt.xdelta","target":"ui_hlp_007.gxt"},
-    {"patch":"97b27a8146e764d3-ui_hlp_053.gxt.xdelta","target":"ui_hlp_053.gxt"},
-    {"patch":"8e8ee3ec06a0f43e-ui_hlp_008_us.gxt.xdelta","target":"ui_hlp_008_us.gxt"},
-    {"patch":"eaf4b26fc2208495-ui_hlp_008_fr.gxt.xdelta","target":"ui_hlp_008_fr.gxt"},
-    {"patch":"fb40e708c58b6932-ui_hlp_008_it.gxt.xdelta","target":"ui_hlp_008_it.gxt"},
-    {"patch":"a5a1dc53fd76b255-ui_hlp_008_de.gxt.xdelta","target":"ui_hlp_008_de.gxt"},
-    {"patch":"c3b4933dce8a874f-ui_hlp_008_es.gxt.xdelta","target":"ui_hlp_008_es.gxt"},
-    {"patch":"8d8c2924f3af698a-001.png.xdelta","target":"001.png"},
-    {"patch":"93bbe74b3940c6ed-002.png.xdelta","target":"002.png"},
-    {"patch":"34483ec54cd89642-003.png.xdelta","target":"003.png"},
-    {"patch":"605dc46e8e6d2520-007.png.xdelta","target":"007.png"},
-    {"patch":"4cb80dfbe157e139-008.png.xdelta","target":"008.png"},
-    {"patch":"a5061df3e07d8c68-009.png.xdelta","target":"009.png"},
-    {"patch":"e342daf1bb3cc2fc-010.png.xdelta","target":"010.png"},
-    {"patch":"da6c332063eebcec-011.png.xdelta","target":"011.png"},
-    {"patch":"c9939bbd2334b057-012.png.xdelta","target":"012.png"},
-    {"patch":"8fdf387d15223070-013.png.xdelta","target":"013.png"},
-    {"patch":"f66e49bc59753cdb-014.png.xdelta","target":"014.png"},
-    {"patch":"3683846fbebab8c8-015.png.xdelta","target":"015.png"},
-    {"patch":"50d85d92417fa674-016.png.xdelta","target":"016.png"},
-    {"patch":"c227ab86cca65b55-017.png.xdelta","target":"017.png"},
-    {"patch":"06dba5d02e3cc58b-018.png.xdelta","target":"018.png"},
-    {"patch":"4722ad3d367fb456-019.png.xdelta","target":"019.png"},
-    {"patch":"ef3d343ab0fcd1fa-022.png.xdelta","target":"022.png"},
-    {"patch":"0653ab86575ab2f2-024.png.xdelta","target":"024.png"},
-    {"patch":"07b0ab2fe78453a9-025.png.xdelta","target":"025.png"},
-    {"patch":"835cb354d8598532-005.png.xdelta","target":"005.png"},
-    {"patch":"318862a36dc4279a-006.png.xdelta","target":"006.png"},
-    {"patch":"2418cc7ac221f90a-020.png.xdelta","target":"020.png"},
-    {"patch":"1f9701df927f9e97-021.png.xdelta","target":"021.png"},
-    {"patch":"c2300cb730e81ff7-023.png.xdelta","target":"023.png"},
-    {"patch":"951dd347e35ecdff-026.png.xdelta","target":"026.png"},
-    {"patch":"371f72dec4dc5de2-027.png.xdelta","target":"027.png"},
-    {"patch":"7290f46c586a6389-028.png.xdelta","target":"028.png"},
-    {"patch":"c2e33c45537b0e2e-029.png.xdelta","target":"029.png"},
-    {"patch":"8da7319678a7231b-030.png.xdelta","target":"030.png"},
-    {"patch":"8524a1a8a7ef7eb6-031.png.xdelta","target":"031.png"},
-    {"patch":"1c00f35a719d5fa9-032.png.xdelta","target":"032.png"},
-    {"patch":"6c075398d4e1e37c-033.png.xdelta","target":"033.png"},
-    {"patch":"931f9654c8dc8a8d-034.png.xdelta","target":"034.png"},
-    {"patch":"1d5220d81e6026d6-035.png.xdelta","target":"035.png"},
-    {"patch":"5f6edf0b2150989e-036.png.xdelta","target":"036.png"},
-    {"patch":"a1e922b316140ad5-037.png.xdelta","target":"037.png"},
-    {"patch":"e1b1b9b02b499c70-038.png.xdelta","target":"038.png"},
-    {"patch":"db0a3314f8485617-039.png.xdelta","target":"039.png"},
-    {"patch":"e1ebcb66f06f1c41-040.png.xdelta","target":"040.png"},
-    {"patch":"446dbc26200fa2a0-041.png.xdelta","target":"041.png"},
-    {"patch":"40e6974bf8e62da3-042.png.xdelta","target":"042.png"},
-    {"patch":"8d8abf0a8eef61ca-043.png.xdelta","target":"043.png"},
-    {"patch":"b718c159ce7d2fc8-044.png.xdelta","target":"044.png"},
-    {"patch":"012310c47d5bc33d-045.png.xdelta","target":"045.png"},
-    {"patch":"d5e567dc5c5a3737-004.png.xdelta","target":"004.png"},
-    {"patch":"db5c3744e843a4b2-ui_ctl_000.gxt.xdelta","target":"ui_ctl_000.gxt"},
-    {"patch":"30a914ee734feef7-ui_ctl_000_jp.gxt.xdelta","target":"ui_ctl_000_jp.gxt"},
-    {"patch":"2e6bf3407dcbe572-ui_ctl_001.gxt.xdelta","target":"ui_ctl_001.gxt"},
-    {"patch":"b52adf0e51d2edbe-ui_ctl_001_jp.gxt.xdelta","target":"ui_ctl_001_jp.gxt"},
-    {"patch":"bffcdcc5524d5362-ui_ctl_002.gxt.xdelta","target":"ui_ctl_002.gxt"},
-    {"patch":"1664ab7af6451e5e-ui_ctl_002_jp.gxt.xdelta","target":"ui_ctl_002_jp.gxt"},
-    {"patch":"85a33ae608a8f79c-ui_ctl_003.gxt.xdelta","target":"ui_ctl_003.gxt"},
-    {"patch":"0a125339eaafcd35-ui_ctl_003_jp.gxt.xdelta","target":"ui_ctl_003_jp.gxt"},
-    {"patch":"255cabdf8e7360d6-ui_ctl_004.gxt.xdelta","target":"ui_ctl_004.gxt"},
-    {"patch":"ab216ea8137c130f-ui_ctl_004_jp.gxt.xdelta","target":"ui_ctl_004_jp.gxt"},
-    {"patch":"c597ccf658529a78-ui_mal_003.gxt.xdelta","target":"ui_mal_003.gxt"},
-    {"patch":"ef9cf5e023c6a106-ui_mal_004.gxt.xdelta","target":"ui_mal_004.gxt"},
-    {"patch":"e4f8500a9932a67e-ui_out_50.gxt.xdelta","target":"ui_out_50.gxt"},
-    {"patch":"6bc9b720df865d79-ui_out_51.gxt.xdelta","target":"ui_out_51.gxt"},
-    {"patch":"f5835638abf2965f-ui_out_52.gxt.xdelta","target":"ui_out_52.gxt"},
-    {"patch":"7b111e80bb6b5dde-ui_out_53.gxt.xdelta","target":"ui_out_53.gxt"},
-    {"patch":"a927b8accdb7cc14-ui_out_55.gxt.xdelta","target":"ui_out_55.gxt"},
-    {"patch":"4a5c34285875a316-ui_out_56.gxt.xdelta","target":"ui_out_56.gxt"},
-    {"patch":"eb1753ce1660cf6d-ui_pic_002.gxt.xdelta","target":"ui_pic_002.gxt"},
-    {"patch":"1e9c1a78c25d008d-ui_log_000.gxt.xdelta","target":"ui_log_000.gxt"},
-    {"patch":"c80fa7bc9c00ed89-ui_pic_000.gxt.xdelta","target":"ui_pic_000.gxt"},
-    {"patch":"ec3db4bfa080d9f6-ui_tit_004.gxt.xdelta","target":"ui_tit_004.gxt"} ]
+     "patchTargets": [
+       { "patch": "grand-kingdom-pcsg00474-ko-v0.9-data00.xdelta", "target": "DATA00.PAC" },
+       { "patch": "grand-kingdom-pcsg00474-ko-v0.9-data02.xdelta", "target": "DATA02.PAC" }
+     ]
+    },
+ {
+      "titleId": "PCSG00597",
+      "region": "JP",
+      "name": "크로스 앙쥬 천사와 용의 윤무 tr.",
+      "version": "0.9",
+      "requiredUpdateVersion": "1.01",
+      "user": "TuNE",
+      "releaseLink": "https://mtune.pe.kr/1037",
+      "date": "2026-11-05",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/drive/folders/19K0-NRbPNoIKIHiBIvFKOaluD_KWR9t_?usp=sharing" }
+      ]
+    },
+ {
+      "titleId": "PCSG00202",
+      "region": "JP",
+      "name": "단간론파 1·2 리로드.",
+      "version": "0.9.0",
+      "requiredUpdateVersion": "1.01",
+      "user": "lf-idonotknow",
+      "releaseLink": "https://github.com/lf-idonotknow/Danganronpa-12-Reload-PS-Vita-Korean-Patch",
+      "date": "2026-11-06",
+      "patchType": "EXE",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/lf-idonotknow/Danganronpa-12-Reload-PS-Vita-Korean-Patch/releases/download/v0.9.0/Danganronpa-12-Reload-PS-Vita-Korean-Patch-0.9.0-r1-win-x64.zip" }
+      ]
+    },
+ {
+      "titleId": "PCSG00494",
+      "region": "JP",
+      "name": "제3차 슈퍼로봇대전 Z 천옥편",
+      "version": "2.0.2",
+      "requiredUpdateVersion": "1.02",
+      "user": "시놀부",
+      "releaseLink": "https://cafe.naver.com/hansicgu/32088",
+      "date": "2026-11-08",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/file/d/1f9Pt8cY2YP0LNc9aQcEqEqqqc8FgdMIz/view?usp=sharing" }
+      ]
+    },
+ {
+      "titleId": "PCSG00264",
+      "region": "JP",
+      "name": "제3차 슈퍼로봇대전 Z 시옥편",
+      "version": "1.4.0",
+      "requiredUpdateVersion": "1.02",
+      "user": "시놀부",
+      "releaseLink": "https://cafe.naver.com/beeshass/44911",
+      "date": "2026-11-08",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/file/d/1aMsmt90jgAUXHPmdmdkNbBEXyeYk_Gsv/view?usp=sharing" }
+      ]
+    },
+ {
+      "titleId": "PCSG01159",
+      "region": "JP",
+      "name": "배리어블 바리케이드",
+      "user": "레트로할미",
+      "releaseLink": "https://hallmy2607.tistory.com/26",
+      "date": "2026-11-08",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/file/d/1W5Edi-e8vUiTPTXKQEs4FRG8UjKobx1a/view?usp=drive_link" }
+      ]
+    },
+ {
+      "titleId": "PCSG00389",
+      "region": "JP",
+      "name": "바이너리스타",
+      "requiredUpdateVersion": "1.01",
+      "user": "레트로할미",
+      "releaseLink": "https://hallmy2607.tistory.com/27",
+      "date": "2026-11-08",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/file/d/1xme0LRQGd03Ca-K_Qkwc2pceFNvxw6PE/view?usp=drive_link" }
+      ]
+    },
+ {
+      "titleId": "PCSG00931",
+      "region": "JP",
+      "name": "플라스틱 메모리즈",
+      "version": "1.2",
+      "user": "TuNE",
+      "releaseLink": "https://mtune.pe.kr/1022",
+      "date": "2026-11-09",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/drive/folders/1Y0pa7k6quyrJ4ki06Yk0n3VxpogQL_Cr?usp=sharing" }
+      ]
+    },
+ {
+      "titleId": "PCSG01132",
+      "region": "JP",
+      "name": "살인 청부업자와 스트로베리",
+      "user": "레트로할미",
+      "releaseLink": "https://hallmy2607.tistory.com/28",
+      "date": "2026-11-10",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/file/d/11mMQO565O6bhXf8z2b-2YKL63HwIynUz/view?usp=drive_link" }
+      ]
+    },
+ {
+      "titleId": "PCSG00215",
+      "region": "JP",
+      "name": "역시 게임이라도 내 청춘 러브코메디는 잘못됐다.",
+      "version": "1.2",
+      "requiredUpdateVersion": "1.01",
+      "user": "TuNE",
+      "releaseLink": "https://mtune.pe.kr/1023",
+      "date": "2026-11-10",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/drive/folders/15QY0wzv0ULoIAg9c4MT1EUPn_vVuIQ5E?usp=sharing" }
+      ]
+    },
+ {
+      "titleId": "PCSG00677",
+      "region": "JP",
+      "name": "아이돌마스터: 머스트 송즈 - 적반",
+      "version": "20261111",
+      "user": "아마미하루카사랑해",
+      "releaseLink": "https://gall.dcinside.com/765pro/1053620",
+      "date": "2026-11-11",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/file/d/1ZQRoU7_oKLcVA1R6F1aY26tWPo3IAKhS/view?usp=sharing" }
+      ]
+    },
+ {
+      "titleId": "PCSG00678",
+      "region": "JP",
+      "name": "아이돌마스터: 머스트 송즈 - 청반",
+      "version": "20261111",
+      "user": "아마미하루카사랑해",
+      "releaseLink": "https://gall.dcinside.com/765pro/1053620",
+      "date": "2026-11-11",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/file/d/1RMF8y5JLtazU0ty8qd5toD2f1CyEAVxU/view?usp=sharing" }
+      ]
+    },
+ {
+      "titleId": "PCSG00162",
+      "region": "JP",
+      "name": "기어와라! 냐루코 양 형언하기 어려운 게임 같은 것",
+      "version": "1.0",
+      "requiredUpdateVersion": "1.10",
+      "user": "TuNE",
+      "releaseLink": "https://mtune.pe.kr/1038",
+      "date": "2026-11-12",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": false,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/drive/folders/15QY0wzv0ULoIAg9c4MT1EUPn_vVuIQ5E?usp=sharing" }
+      ]
+    },
+ {
+      "titleId": "PCSG00895",
+      "region": "JP",
+      "name": "역시 게임에서도 내 청춘 러브코메디는 잘못됐다. -속-",
+      "version": "1.1",
+      "user": "TuNE",
+      "releaseLink": "https://mtune.pe.kr/1027",
+      "date": "2026-11-13",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/drive/folders/1RgCbR7wcefebZCfPat2JxK4JCUNE2DKn?usp=drive_link" }
+      ]
+    },
+ {
+      "titleId": "PCSG00261",
+      "region": "JP",
+      "name": "배트맨 아캄 오리진 블랙게이트",
+      "version": "1.0",
+      "user": "부끄지",
+      "releaseLink": "https://github.com/snake759494/batman-arkham-origins-blackgate-vita-korean-patch",
+      "date": "2026-11-14",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/snake759494/batman-arkham-origins-blackgate-vita-korean-patch/releases/download/v1.0/Batman_Arkham_Origins_Blackgate_Vita_KO_v1.0.xdelta" }
+      ],
+     "patchTargets": [
+       { "patch": "Batman_Arkham_Origins_Blackgate_Vita_KO_v1.0.xdelta", "target": "ozzy.psp2arc" }
+     ]
+    },
+ {
+      "titleId": "PCSG00339",
+      "region": "JP",
+      "name": "걸즈 앤 판처 전차도, 연마합니다!",
+      "version": "1.0",
+      "user": "아마미하루카사랑해",
+      "releaseLink": "https://gall.dcinside.com/retrogame/255089",
+      "date": "2026-11-14",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/file/d/1-h64dvBx-nZouBFDcfrFS6JShf0HBDQA/view?usp=sharing" }
+      ]
+    },
+ {
+      "titleId": "PCSG00495",
+      "region": "JP",
+      "name": "제3차 슈퍼로봇대전 Z 연옥편",
+      "version": "1.2.1",
+      "user": "시놀부",
+      "releaseLink": "https://cafe.naver.com/beeshass/44544",
+      "date": "2026-11-15",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": false,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://naver.me/xG0EYhru" }
+      ]
+    },
+ {
+      "titleId": "PCSE00595",
+      "region": "US",
+      "name": "J스타즈 빅토리 VS+",
+      "version": "1.0.2",
+      "user": "부끄지",
+      "releaseLink": "https://github.com/snake759494/j-stars-victory-vs-plus-vita-korean-patch",
+      "date": "2026-11-16",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/snake759494/j-stars-victory-vs-plus-vita-korean-patch/releases/download/v1.0.2/J-Stars_Victory_VS_Plus_Vita_KO_v1.0.2_battle.xdelta" },
+        { "url": "https://github.com/snake759494/j-stars-victory-vs-plus-vita-korean-patch/releases/download/v1.0.2/J-Stars_Victory_VS_Plus_Vita_KO_v1.0.2_character.xdelta" },
+        { "url": "https://github.com/snake759494/j-stars-victory-vs-plus-vita-korean-patch/releases/download/v1.0.2/J-Stars_Victory_VS_Plus_Vita_KO_v1.0.2_game.xdelta" },
+        { "url": "https://github.com/snake759494/j-stars-victory-vs-plus-vita-korean-patch/releases/download/v1.0.2/J-Stars_Victory_VS_Plus_Vita_KO_v1.0.2_progress.xdelta" }
+      ],
+     "patchTargets": [
+       { "patch": "J-Stars_Victory_VS_Plus_Vita_KO_v1.0.2_battle.xdelta", "target": "partition_op_battle_vita.cpk" },
+       { "patch": "J-Stars_Victory_VS_Plus_Vita_KO_v1.0.2_character.xdelta", "target": "partition_op_character_vita.cpk" },
+       { "patch": "J-Stars_Victory_VS_Plus_Vita_KO_v1.0.2_game.xdelta", "target": "partition_op_game_vita.cpk" },
+       { "patch": "J-Stars_Victory_VS_Plus_Vita_KO_v1.0.2_progress.xdelta", "target": "partition_op_progress_vita.cpk" }
+     ]
+    },
+ {
+      "titleId": "PCSG00688",
+      "region": "JP",
+      "name": "건어물 여동생! 우마루짱: 건어물 여동생! 육성 계획",
+      "version": "1.01",
+      "requiredUpdateVersion": "1.01",
+      "user": "TuNE",
+      "releaseLink": "https://mtune.pe.kr/1039",
+      "date": "2026-11-17",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/drive/folders/1brJJdmaAaEEar2ZMTz_KVXP25XU-GqId?usp=drive_link" }
+      ]
+    },
+ {
+      "titleId": "PCSG01028",
+      "region": "JP",
+      "name": "이 멋진 세계에 축복을! 이 욕심 많은 게임에 심판을!",
+      "version": "1.0",
+      "requiredUpdateVersion": "1.01",
+      "user": "TuNE",
+      "releaseLink": "https://mtune.pe.kr/1040",
+      "date": "2026-11-17",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/drive/folders/1YlVkpsE6XNxmDF0F3f7EXqjmVlXWsl5O?usp=sharing" }
+      ]
+    },
+ {
+      "titleId": "PCSG00351",
+      "region": "JP",
+      "name": "판타시 스타 노바",
+      "version": "1.0.1",
+      "user": "부끄지",
+      "releaseLink": "https://github.com/snake759494/phantasy-star-nova-vita-korean-patch",
+      "date": "2026-11-18",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/snake759494/phantasy-star-nova-vita-korean-patch/releases/download/v1.0.1/Phantasy_Star_Nova_Vita_KO_v1.0.1_main.xdelta" },
+        { "url": "https://github.com/snake759494/phantasy-star-nova-vita-korean-patch/releases/download/v1.0.1/Phantasy_Star_Nova_Vita_KO_v1.0.1_movie.xdelta" }
+      ],
+     "patchTargets": [
+       { "patch": "Phantasy_Star_Nova_Vita_KO_v1.0.1_main.xdelta", "target": "NOVA_FileList_Vita.cpk" },
+       { "patch": "Phantasy_Star_Nova_Vita_KO_v1.0.1_movie.xdelta", "target": "NOVA_FileList_Vita_movie.cpk" }
+     ]
+    },
+ {
+      "titleId": "PCSG00341",
+      "region": "JP",
+      "name": "전격문고 파이팅 클라이맥스",
+      "version": "1.0.3",
+      "user": "부끄지",
+      "releaseLink": "https://github.com/snake759494/dengeki-bunko-fighting-climax-vita-korean-patch",
+      "date": "2026-11-18",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/snake759494/dengeki-bunko-fighting-climax-vita-korean-patch/releases/download/v1.0.3/Dengeki_Bunko_Fighting_Climax_Vita_KO_v1.0.3_xdelta.zip" }
+      ]
+    },
+ {
+      "titleId": "PCSG00500",
+      "region": "JP",
+      "name": "카오스 링 3",
+      "version": "1.0.1",
+      "user": "부끄지",
+      "releaseLink": "https://github.com/snake759494/chaos-rings-3-vita-korean-patch",
+      "date": "2026-11-18",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/snake759494/chaos-rings-3-vita-korean-patch/releases/download/v1.0.1/Chaos_Rings_III_Vita_KO_v1.0.1_adv.xdelta" },
+        { "url": "https://github.com/snake759494/chaos-rings-3-vita-korean-patch/releases/download/v1.0.1/Chaos_Rings_III_Vita_KO_v1.0.1_boot.xdelta" },
+        { "url": "https://github.com/snake759494/chaos-rings-3-vita-korean-patch/releases/download/v1.0.1/Chaos_Rings_III_Vita_KO_v1.0.1_bundle.xdelta" },
+        { "url": "https://github.com/snake759494/chaos-rings-3-vita-korean-patch/releases/download/v1.0.1/Chaos_Rings_III_Vita_KO_v1.0.1_cardhd.xdelta" },
+        { "url": "https://github.com/snake759494/chaos-rings-3-vita-korean-patch/releases/download/v1.0.1/Chaos_Rings_III_Vita_KO_v1.0.1_font.xdelta" },
+        { "url": "https://github.com/snake759494/chaos-rings-3-vita-korean-patch/releases/download/v1.0.1/Chaos_Rings_III_Vita_KO_v1.0.1_text.xdelta" },
+        { "url": "https://github.com/snake759494/chaos-rings-3-vita-korean-patch/releases/download/v1.0.1/Chaos_Rings_III_Vita_KO_v1.0.1_ui.xdelta" }
+      ],
+     "patchTargets": [
+       { "patch": "Chaos_Rings_III_Vita_KO_v1.0.1_adv.xdelta", "target": "CRDBadv01.psp2.mvgl" },
+       { "patch": "Chaos_Rings_III_Vita_KO_v1.0.1_boot.xdelta", "target": "CRDBboot.psp2.mvgl" },
+       { "patch": "Chaos_Rings_III_Vita_KO_v1.0.1_bundle.xdelta", "target": "CRDBbundle.psp2.mvgl" },
+       { "patch": "Chaos_Rings_III_Vita_KO_v1.0.1_cardhd.xdelta", "target": "CRDBcardhd.psp2.mvgl" },
+       { "patch": "Chaos_Rings_III_Vita_KO_v1.0.1_font.xdelta", "target": "TBGB_0KP.TTC" },
+       { "patch": "Chaos_Rings_III_Vita_KO_v1.0.1_text.xdelta", "target": "CRDB.psp2.mvgl" },
+       { "patch": "Chaos_Rings_III_Vita_KO_v1.0.1_ui.xdelta", "target": "CRDBui01.psp2.mvgl" }
+     ]
     }
   ]
 }

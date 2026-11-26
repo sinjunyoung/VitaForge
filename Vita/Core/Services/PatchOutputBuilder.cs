@@ -110,8 +110,16 @@ public static class PatchOutputBuilder
                     {
                         ct.ThrowIfCancellationRequested();
 
-                        using var payload = targetByPath.TryGetValue(relativePath, out var patchTarget) ? await PatchAsync(group, patchTarget) : null;
                         string entryPath = PatchShared.BuildEntryPath(PatchShared.GetBasePrefix(group.Category), group, relativePath);
+
+                        if (writtenEntries.Contains(entryPath))
+                        {
+                            reporter.AddProgress(appEntry.FileEntry.Size);
+
+                            continue;
+                        }
+
+                        using var payload = targetByPath.TryGetValue(relativePath, out var patchTarget) ? await PatchAsync(group, patchTarget) : null;
 
                         if (payload is not null)
                         {

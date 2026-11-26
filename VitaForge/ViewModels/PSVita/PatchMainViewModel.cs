@@ -270,7 +270,7 @@ public class PatchMainViewModel : ProgressToolTabViewModel
             if (succeeded.Count > 0 && options.Mode == PatchOutputMode.Archive)
                 options.TargetPath.OpenFolder();
             else if (succeeded.Count > 0 && options.Target == OutputTarget.Emu)
-                Vita3kLauncher.Launch(options.TargetPath, AppendLog);
+                Vita3kLauncher.Launch(options.TargetPath, Vita3kLauncher.SingleTitleId(succeeded.Select(i => i.TitleId)), AppendLog);
 
             if (succeeded.Count > 0)
                 await SoundPlayer.PlayCompleteAsync();

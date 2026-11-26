@@ -51,7 +51,7 @@ public sealed class PatchCatalogItem
 
     public bool IsSplit => LinkMode.Equals(SplitLinkMode, StringComparison.OrdinalIgnoreCase);
 
-    public bool IsSelectable => Enabled && IsDirect && Links.Count > 0;
+    public bool IsSelectable => Enabled && Links.Count > 0;
 
     public bool IsConsoleOnly => InstallType.Equals(ConsoleInstallType, StringComparison.OrdinalIgnoreCase);
 

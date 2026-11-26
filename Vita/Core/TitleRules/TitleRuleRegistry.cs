@@ -15,7 +15,8 @@ internal static class TitleRuleRegistry
         new SelfDecryptSourceRule("PCSG00034", FselfLayout.Vita3K, "eboot.bin"),
         new L7caUnpackRule("PCSG00009", "toidata_release.l7c", "_Data/"),
         new PrefFolderRule("PCSG00684", "textures/import"),
-        new PackageManifestRule("PCSG00034")
+        new PackageManifestRule("PCSG00034"),
+        new EmbeddedPayloadRule("PCSG01100", DoukokuSoshiteRecipe.Value)
     }.ToLookup(r => r.TitleId, StringComparer.OrdinalIgnoreCase);
 
     public static IReadOnlyList<PatchContainerFile> RewritePatchFiles(string titleId, ContentCategory category, IReadOnlyList<PatchContainerFile> files, ISourceAccessor accessor)

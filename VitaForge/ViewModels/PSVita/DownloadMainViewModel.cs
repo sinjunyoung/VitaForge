@@ -1,18 +1,19 @@
 ﻿using Common.Localization;
 using Common.Models;
 using Common.Services;
-using VitaForge.Core;
-using VitaForge.Core.Models.PSVita;
-using VitaForge.Core.Services;
-using VitaForge.Core.Services.PSVita;
-using VitaForge.Core.UI.Command;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Input;
 using Vita.Core.Models;
+using VitaForge.Core;
+using VitaForge.Core.Models.PSVita;
+using VitaForge.Core.Services;
+using VitaForge.Core.Services.PSVita;
+using VitaForge.Core.UI.Command;
 using VitaForge.Core.ViewModels.PSVita;
+using static System.Windows.Forms.Design.AxImporter;
 
 namespace VitaForge.ViewModels.PSVita;
 
@@ -415,10 +416,12 @@ public class DownloadMainViewModel : ProgressToolTabViewModel
 
             AppendLog(Loc.S.LogVitaAllDoneTitles(succeeded, _totalSw.Elapsed.ToString("mm\\:ss")), LogLevel.Ok);
 
+            string? launchTitleId = Vita3kLauncher.SingleTitleId(_checkedItems.Select(i => i.TitleId));
+
             ClearChecked();
 
             if (succeeded > 0 && ModeInstall && InstallEmu)
-                Vita3kLauncher.Launch(TargetPath!, AppendLog);
+                Vita3kLauncher.Launch(TargetPath!, launchTitleId, AppendLog);
 
             await SoundPlayer.PlayCompleteAsync();
 
