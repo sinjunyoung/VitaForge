@@ -8,8 +8,6 @@ namespace VitaForge.Core.Services.PSVita;
 
 public static class Vita3kLauncher
 {
-    private const string SdlFrontendOption = "--frontend";
-
     public static string? SingleTitleId(IEnumerable<string> titleIds)
     {
         var distinct = titleIds
@@ -36,7 +34,7 @@ public static class Vita3kLauncher
         if (IsRunning(info.ExePath))
             return true;
 
-        string arguments = BuildArguments(info.ExePath, titleId);
+        string arguments = BuildArguments(titleId);
 
         try
         {
@@ -59,24 +57,12 @@ public static class Vita3kLauncher
         }
     }
 
-    private static string BuildArguments(string exePath, string? titleId)
+    private static string BuildArguments(string? titleId)
     {
         if (string.IsNullOrEmpty(titleId))
             return string.Empty;
 
-        return SupportsSdlFrontend(exePath) ? $"-r {titleId} {SdlFrontendOption} sdl" : $"-r {titleId}";
-    }
-
-    private static bool SupportsSdlFrontend(string exePath)
-    {
-        try
-        {
-            return File.ReadAllBytes(exePath).AsSpan().IndexOf(Encoding.ASCII.GetBytes(SdlFrontendOption)) >= 0;
-        }
-        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
-        {
-            return false;
-        }
+        return $"-r {titleId}";
     }
 
     private static bool IsRunning(string exePath)

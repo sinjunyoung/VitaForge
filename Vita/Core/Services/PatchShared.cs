@@ -251,16 +251,31 @@ internal static class PatchShared
     {
         bool isAddcont = category == ContentCategory.Addcont;
         var files = TitleRuleRegistry.RewritePatchFiles(titleId, category, ctx.Files, ctx.Accessor);
-        string? layoutRoot = FindLayoutRoot(files, GetLayoutDirs(isAddcont, target), titleId, isAddcont ? contentIdSuffix : null);
+        var layoutRoots = FindLayoutRoots(files, GetLayoutDirs(isAddcont, target), titleId, isAddcont ? contentIdSuffix : null);
         var rawByRelative = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-        if (layoutRoot != null)
+        var claimedKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (string layoutRoot in layoutRoots)
         {
+            var rootKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
             foreach (var file in files)
             {
-                if (file.Path.StartsWith(layoutRoot, StringComparison.OrdinalIgnoreCase))
-                    rawByRelative.TryAdd(file.Path[layoutRoot.Length..], file.Raw);
+                if (!file.Path.StartsWith(layoutRoot, StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                string relative = file.Path[layoutRoot.Length..];
+                string logicalKey = ToLogicalKey(relative);
+
+                if (claimedKeys.Contains(logicalKey))
+                    continue;
+
+                if (rawByRelative.TryAdd(relative, file.Raw))
+                    rootKeys.Add(logicalKey);
             }
+
+            claimedKeys.UnionWith(rootKeys);
         }
 
         if (!isAddcont)
@@ -276,7 +291,7 @@ internal static class PatchShared
 
         if (isAddcont)
         {
-            var flatFiles = files.Where(f => !IsLayoutPath(f.Path, AddcontLayoutDirs) && (layoutRoot is null || !f.Path.StartsWith(layoutRoot, StringComparison.OrdinalIgnoreCase))).ToList();
+            var flatFiles = files.Where(f => !IsLayoutPath(f.Path, AddcontLayoutDirs) && !layoutRoots.Any(root => f.Path.StartsWith(root, StringComparison.OrdinalIgnoreCase))).ToList();
             var rawByPath = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
             foreach (var file in flatFiles)
@@ -295,9 +310,14 @@ internal static class PatchShared
         return target == OutputTarget.Retail ? [dirs[1], dirs[0]] : dirs;
     }
 
-    private static string? FindLayoutRoot(IReadOnlyList<PatchContainerFile> files, string[] layoutDirs, string titleId, string? contentIdSuffix)
+    private static bool IsPatchFileName(string relativePath) => PatchFileIndex.PatchExtensions.Contains(Path.GetExtension(relativePath), StringComparer.OrdinalIgnoreCase);
+
+    private static string ToLogicalKey(string relativePath) => IsPatchFileName(relativePath) ? relativePath[..^Path.GetExtension(relativePath).Length] : relativePath;
+
+    private static List<string> FindLayoutRoots(IReadOnlyList<PatchContainerFile> files, string[] layoutDirs, string titleId, string? contentIdSuffix)
     {
         string tail = string.IsNullOrEmpty(contentIdSuffix) ? titleId : $"{titleId}/{contentIdSuffix}";
+        var roots = new List<string>();
 
         foreach (string layoutDir in layoutDirs)
         {
@@ -333,10 +353,10 @@ internal static class PatchShared
             }
 
             if (best != null)
-                return best;
+                roots.Add(best);
         }
 
-        return null;
+        return roots;
     }
 
     private static bool IsLayoutPath(string path) => IsLayoutPath(path, [.. AppLayoutDirs, .. AddcontLayoutDirs]);
