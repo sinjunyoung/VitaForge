@@ -37,7 +37,7 @@ public static class PatchOnlyBuilder
         long totalBytes = 0;
 
         foreach (var g in groups)
-            totalBytes += g.Targets.Sum(t => t.EstimatedSize) + TitleRuleRegistry.EstimateGeneratedSize(g.TitleId, g);
+            totalBytes += g.Targets.Sum(t => t.EstimatedSize) + TitleRuleRegistry.EstimateGeneratedSize(g.TitleId, g, target);
 
         var reporter = new ProgressReporter(Loc.S.StatusApplyingPatch, string.Empty, totalBytes, progress);
         var writtenEntries = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -166,7 +166,7 @@ public static class PatchOnlyBuilder
     {
         string prefix = PatchShared.GetPatchedPrefix(group.Category, target);
 
-        return TitleRuleRegistry.GenerateFilesAsync(group.TitleId, group, tempDirectory, async file =>
+        return TitleRuleRegistry.GenerateFilesAsync(group.TitleId, group, target, tempDirectory, async file =>
         {
             string entryPath = PatchShared.BuildEntryPath(prefix, group, file.RelativePath);
 

@@ -16,7 +16,7 @@ internal sealed class EmbeddedPayloadRule(string titleId, EmbeddedPayloadRecipe 
         return [];
     }
 
-    public long EstimateGeneratedSize(MergeGroup group)
+    public long EstimateGeneratedSize(MergeGroup group, OutputTarget target)
     {
         if (group.Category != ContentCategory.App || FindExecutable(group.PatchCtx.Files) is null)
             return 0;
@@ -24,7 +24,7 @@ internal sealed class EmbeddedPayloadRule(string titleId, EmbeddedPayloadRecipe 
         return recipe.Entries.Sum(e => e.EstimateSize(group));
     }
 
-    public Task<GenerationResult> GenerateFilesAsync(MergeGroup group, string tempDirectory, Func<ExpandedFile, Task> emit, Action<long> onBytes, Action<string, LogLevel> log, CancellationToken ct)
+    public Task<GenerationResult> GenerateFilesAsync(MergeGroup group, OutputTarget target, string tempDirectory, Func<ExpandedFile, Task> emit, Action<long> onBytes, Action<string, LogLevel> log, CancellationToken ct)
     {
         if (group.Category != ContentCategory.App || FindExecutable(group.PatchCtx.Files) is not { } executable)
             return Task.FromResult(default(GenerationResult));

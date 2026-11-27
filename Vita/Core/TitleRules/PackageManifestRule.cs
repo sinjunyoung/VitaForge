@@ -31,7 +31,7 @@ internal sealed class PackageManifestRule(string titleId) : ITitleRule
         return result;
     }
 
-    public long EstimateGeneratedSize(MergeGroup group)
+    public long EstimateGeneratedSize(MergeGroup group, OutputTarget target)
     {
         if (ReadManifest(group) is not { } manifest)
             return 0;
@@ -52,7 +52,7 @@ internal sealed class PackageManifestRule(string titleId) : ITitleRule
         return total;
     }
 
-    public Task<GenerationResult> GenerateFilesAsync(MergeGroup group, string tempDirectory, Func<ExpandedFile, Task> emit, Action<long> onBytes, Action<string, LogLevel> log, CancellationToken ct)
+    public Task<GenerationResult> GenerateFilesAsync(MergeGroup group, OutputTarget target, string tempDirectory, Func<ExpandedFile, Task> emit, Action<long> onBytes, Action<string, LogLevel> log, CancellationToken ct)
     {
         if (ReadManifest(group) is not { } manifest)
             return Task.FromResult(default(GenerationResult));

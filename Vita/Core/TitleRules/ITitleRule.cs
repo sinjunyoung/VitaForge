@@ -20,7 +20,7 @@ internal interface ITitleRule
 
     IEnumerable<ExtraPatchFile> SelectExtraFiles(IReadOnlyList<PatchContainerFile> files) => [];
 
-    long EstimateGeneratedSize(MergeGroup group) => 0;
+    long EstimateGeneratedSize(MergeGroup group, OutputTarget target) => 0;
 
-    Task<GenerationResult> GenerateFilesAsync(MergeGroup group, string tempDirectory, Func<ExpandedFile, Task> emit, Action<long> onBytes, Action<string, LogLevel> log, CancellationToken ct) => Task.FromResult(default(GenerationResult));
+    Task<GenerationResult> GenerateFilesAsync(MergeGroup group, OutputTarget target, string tempDirectory, Func<ExpandedFile, Task> emit, Action<long> onBytes, Action<string, LogLevel> log, CancellationToken ct) => Task.FromResult(default(GenerationResult));
 }
