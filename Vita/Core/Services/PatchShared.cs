@@ -118,7 +118,12 @@ internal static class PatchShared
     }
 
     public static List<MergeGroup> BuildGroups(List<SourceItem> items, string defaultPatchPath, Dictionary<string, PatchContext> patchContexts, OutputTarget target, Action<string, LogLevel> log, PatchTargetResolver? targetResolver, PatchMatchOptions? matchOptions, CancellationToken ct)
-        => [.. BuildBaseGroups(items, log, ct).Select(g => CreateGroup(g.Category, g.TitleId, g.ContentIdSuffix, g.PatchPathOverride ?? defaultPatchPath, g.Index, g.Owners, patchContexts, target, targetResolver, matchOptions, log))];
+    {
+        var baseGroups = BuildBaseGroups(items, log, ct);
+        var addcontPathsByTitle = baseGroups.Where(g => g.Category == ContentCategory.Addcont).ToLookup(g => g.TitleId, g => g.Index.Keys, StringComparer.OrdinalIgnoreCase);
+
+        return [.. baseGroups.Select(g => CreateGroup(g.Category, g.TitleId, g.ContentIdSuffix, g.PatchPathOverride ?? defaultPatchPath, g.Index, g.Owners, patchContexts, target, targetResolver, matchOptions, g.Category == ContentCategory.App ? [.. addcontPathsByTitle[g.TitleId].SelectMany(keys => keys)] : null, log))];
+    }
 
     internal static List<BaseGroup> BuildBaseGroups(List<SourceItem> items, Action<string, LogLevel> log, CancellationToken ct)
     {
@@ -194,10 +199,10 @@ internal static class PatchShared
         return map;
     }
 
-    private static MergeGroup CreateGroup(ContentCategory category, string titleId, string? contentIdSuffix, string patchPackagePath, Dictionary<string, PatchAppEntry> index, List<OwnerContext> owners, Dictionary<string, PatchContext> patchContexts, OutputTarget target, PatchTargetResolver? targetResolver, PatchMatchOptions? matchOptions, Action<string, LogLevel> log)
+    private static MergeGroup CreateGroup(ContentCategory category, string titleId, string? contentIdSuffix, string patchPackagePath, Dictionary<string, PatchAppEntry> index, List<OwnerContext> owners, Dictionary<string, PatchContext> patchContexts, OutputTarget target, PatchTargetResolver? targetResolver, PatchMatchOptions? matchOptions, IReadOnlyCollection<string>? siblingPaths, Action<string, LogLevel> log)
     {
         var patchCtx = GetPatchContext(patchContexts, patchPackagePath);
-        var targets = BuildTargets(index, patchCtx, category, titleId, contentIdSuffix, target, targetResolver, matchOptions, log);
+        var targets = BuildTargets(index, patchCtx, category, titleId, contentIdSuffix, target, targetResolver, matchOptions, siblingPaths, log);
         return new MergeGroup { Category = category, TitleId = titleId, ContentIdSuffix = contentIdSuffix, PatchCtx = patchCtx, Index = index, Targets = targets, Owners = owners };
     }
 
@@ -271,7 +276,7 @@ internal static class PatchShared
 
         if (isAddcont)
         {
-            var flatFiles = files.Where(f => !IsLayoutPath(f.Path)).ToList();
+            var flatFiles = files.Where(f => !IsLayoutPath(f.Path, AddcontLayoutDirs) && (layoutRoot is null || !f.Path.StartsWith(layoutRoot, StringComparison.OrdinalIgnoreCase))).ToList();
             var rawByPath = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
             foreach (var file in flatFiles)
@@ -334,13 +339,15 @@ internal static class PatchShared
         return null;
     }
 
-    private static bool IsLayoutPath(string path)
+    private static bool IsLayoutPath(string path) => IsLayoutPath(path, [.. AppLayoutDirs, .. AddcontLayoutDirs]);
+
+    private static bool IsLayoutPath(string path, string[] layoutDirs)
     {
         string[] segments = path.Split('/');
 
         for (int i = 0; i <= MaxLayoutWrapperDepth && i + 2 < segments.Length; i++)
         {
-            if (AppLayoutDirs.Concat(AddcontLayoutDirs).Contains(segments[i], StringComparer.OrdinalIgnoreCase))
+            if (layoutDirs.Contains(segments[i], StringComparer.OrdinalIgnoreCase))
                 return true;
         }
 
@@ -461,7 +468,7 @@ internal static class PatchShared
         }
     }
 
-    internal static PatchPlan BuildPlan(PatchContext patchCtx, ContentCategory category, string titleId, string? contentIdSuffix, OutputTarget target, IReadOnlyCollection<string> relativePaths, PatchTargetResolver? targetResolver = null, PatchMatchOptions? matchOptions = null, Action<string, LogLevel>? log = null)
+    internal static PatchPlan BuildPlan(PatchContext patchCtx, ContentCategory category, string titleId, string? contentIdSuffix, OutputTarget target, IReadOnlyCollection<string> relativePaths, PatchTargetResolver? targetResolver = null, PatchMatchOptions? matchOptions = null, IReadOnlyCollection<string>? siblingPaths = null, Action<string, LogLevel>? log = null)
     {
         var patchIndex = PatchWrapperStripper.Strip(BuildPatchIndex(patchCtx, category, titleId, contentIdSuffix, target), relativePaths);
         var options = (matchOptions ?? PatchMatchOptions.Empty).WithNameStrips(PatchNameStrips.Patterns);
@@ -475,7 +482,11 @@ internal static class PatchShared
 
         var manualTargets = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         var candidatePaths = relativePaths.Order(StringComparer.OrdinalIgnoreCase).ToList();
-        var unmatchedPatches = plan.UnmatchedPatches;
+        var unmatchedPatches = siblingPaths is { Count: > 0 } ? plan.UnmatchedPatches.Where(u => !PatchPlan.MatchesLoosely(u.Entry, siblingPaths, options)).ToList() : plan.UnmatchedPatches;
+
+        if (unmatchedPatches.Count == 0)
+            return plan;
+
         var selections = targetResolver(new PatchTargetRequest(titleId, category, contentIdSuffix, [.. unmatchedPatches.Select(u => u.Entry.File.DisplayName)], candidatePaths));
 
         for (int i = 0; i < unmatchedPatches.Count && i < selections.Count; i++)
@@ -489,9 +500,9 @@ internal static class PatchShared
         return manualTargets.Count == 0 ? plan : PatchPlan.Build(patchIndex, relativePaths, StringComparer.OrdinalIgnoreCase, manualTargets, options);
     }
 
-    public static List<PatchTarget> BuildTargets(Dictionary<string, PatchAppEntry> patchAppIndex, PatchContext patchCtx, ContentCategory category, string titleId, string? contentIdSuffix, OutputTarget target, PatchTargetResolver? targetResolver = null, PatchMatchOptions? matchOptions = null, Action<string, LogLevel>? log = null)
+    public static List<PatchTarget> BuildTargets(Dictionary<string, PatchAppEntry> patchAppIndex, PatchContext patchCtx, ContentCategory category, string titleId, string? contentIdSuffix, OutputTarget target, PatchTargetResolver? targetResolver = null, PatchMatchOptions? matchOptions = null, IReadOnlyCollection<string>? siblingPaths = null, Action<string, LogLevel>? log = null)
     {
-        var plan = BuildPlan(patchCtx, category, titleId, contentIdSuffix, target, patchAppIndex.Keys, targetResolver, matchOptions, log);
+        var plan = BuildPlan(patchCtx, category, titleId, contentIdSuffix, target, patchAppIndex.Keys, targetResolver, matchOptions, siblingPaths, log);
         var targets = new List<PatchTarget>();
 
         foreach (var (relativePath, appEntry) in patchAppIndex)

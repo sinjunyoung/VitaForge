@@ -209,6 +209,15 @@ public sealed class PatchPlan
             log(Loc.S.LogPlanLooseCandidates(LooseCandidateCount, suffix), LogLevel.Info);
     }
 
+    public static bool MatchesLoosely(PatchFileEntry entry, IEnumerable<string> targetPaths, PatchMatchOptions? options = null)
+    {
+        string stripped = options?.StripName(entry.BaseName) ?? entry.BaseName;
+
+        bool nameHit = targetPaths.Any(t => NameMatches(FileNameOf(t), entry.BaseName) || NameMatches(FileNameOf(t), stripped));
+
+        return nameHit && PatchMatchPolicy.AllowsLooseNameMatch(DetectFormat(entry.File));
+    }
+
     private static PatchFormat DetectFormat(PatchFileRef file)
     {
         byte[] header = new byte[8];
