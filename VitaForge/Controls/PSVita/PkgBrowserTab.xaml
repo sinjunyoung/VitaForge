@@ -168,7 +168,7 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Width="400">
+                                <GridViewColumn Width="470">
                                     <GridViewColumn.Header>
                                         <GridViewColumnHeader Tag="TitleId">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

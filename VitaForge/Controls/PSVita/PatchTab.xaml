@@ -104,10 +104,7 @@
                             <GridViewColumn Width="Auto">
                                 <GridViewColumn.Header>
                                     <GridViewColumnHeader Tag="TitleId">
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                            <Image Source="/Assets/Images/VitaCartridge.png" Width="24" Height="24" Margin="0,0,4,0"/>
-                                            <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#BBBBBB" Text="ID" VerticalAlignment="Center"/>
-                                        </StackPanel>
+                                        <Image Source="/Assets/Images/VitaCartridge.png" Width="24" Height="24" Margin="0,0,4,0"/>
                                     </GridViewColumnHeader>
                                 </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
@@ -132,7 +129,7 @@
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <GridViewColumn Width="Auto">
+                            <GridViewColumn Width="330">
                                 <GridViewColumn.Header>
                                     <GridViewColumnHeader Tag="Name">
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

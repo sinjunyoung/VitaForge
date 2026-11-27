@@ -45,7 +45,7 @@
       "date": "2026-07-09",
       "patchType": "EXE",
       "installType": "All",
-      "enabled": false,
+      "enabled": true,
       "linkMode": "Individual",
       "links": [
         { "url": "https://github.com/hada0127/muramasa-kor/releases/download/v1.4.3/muramasa-kor-v1.4.3-patcher-windows.zip" }
@@ -113,7 +113,7 @@
       "date": "2026-08-28",
       "patchType": "Patch",
       "installType": "Console",
-      "enabled": true,
+      "enabled": false,
       "linkMode": "Individual",
       "links": [
         { "url": "https://naver.me/GsBMGq3V" }
@@ -181,7 +181,7 @@
       "date": "2026-09-30",
       "patchType": "EXE",
       "installType": "All",
-      "enabled": false,
+      "enabled": true,
       "linkMode": "Individual",
       "links": [
         { "url": "https://blog.naver.com/one252210qaz/224427386488" }
@@ -207,7 +207,7 @@
     {
       "titleId": "PCSG00249",
       "region": "JP",
-      "name": "화이트 앨범 2: 행복의 저편",
+      "name": "화이트 앨범 2 행복의 저편",
       "version": "0.94.3",
       "requiredUpdateVersion": "1.02",
       "user": "yoolose",
@@ -218,7 +218,7 @@
       "enabled": false,
       "linkMode": "Individual",
       "links": [
-        { "url": "https://blog.naver.com/yoolose/224435396209" }
+        { "url": "https://naver.me/xRgBupk2" }
       ]
     },
     {
@@ -1178,6 +1178,55 @@
        { "patch": "Chaos_Rings_III_Vita_KO_v1.0.1_text.xdelta", "target": "CRDB.psp2.mvgl" },
        { "patch": "Chaos_Rings_III_Vita_KO_v1.0.1_ui.xdelta", "target": "CRDBui01.psp2.mvgl" }
      ]
+    },
+ {
+      "titleId": "PCSG00936",
+      "region": "JP",
+      "name": "뉴 단간론파 V3",
+      "version": "0.8.0",
+      "requiredUpdateVersion": "1.03",
+      "user": "lf-idonotknow",
+      "releaseLink": "https://github.com/lf-idonotknow/New-Danganronpa-V3-PS-Vita-Korean-Patch/releases/",
+      "date": "2026-11-20",
+      "patchType": "EXE",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/lf-idonotknow/New-Danganronpa-V3-PS-Vita-Korean-Patch/releases/download/v0.8.0/New-Danganronpa-V3-PS-Vita-Korean-Patch-0.8.0-win-x64.zip" }
+      ]
+    },
+ {
+      "titleId": "PCSG00451",
+      "region": "JP",
+      "name": "하나야마타 요사코이 LIVE!",
+      "version": "0.9.1",
+      "requiredUpdateVersion": "1.01",
+      "user": "TuNE",
+      "releaseLink": "https://mtune.pe.kr/1046",
+      "date": "2026-11-22",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/drive/folders/1Gks-xFA7yBchUMO-XTAzrpG3zf3k1BKl?usp=drive_link" }
+      ]
+    },
+ {
+      "titleId": "PCSG00649",
+      "region": "JP",
+      "name": "릴 피싱 잊고 있던 약속",
+      "user": "돼둥이",
+      "releaseLink": "https://blog.naver.com/ccs2121/224493318012",
+      "date": "2026-11-26",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/ccs21/OGU_Miscellaneous-things/releases/download/rf_vita_korupdate/ReelFishing-PCSG00649-KO-01.03.zip" }
+      ]
     }
   ]
 }
