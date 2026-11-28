@@ -1625,4 +1625,8 @@ public sealed class Korean : LocalizedStrings
     public override string WorkTypeRecompress => "재압축";
 
     public override string HeaderDate => "날짜";
+
+    public override string HintDefaultDownloadFolder(object? arg0) => $"다운로드 폴더 (기본값: {arg0})";
+    public override string LogPsvDownloadReused(object? arg0) => $"이미 받은 파일을 재사용합니다: {arg0}";
+    public override string ToggleDeleteDownloadsAfterInstall => "설치 후 다운로드 파일 삭제 (패치, PKG)";
 }

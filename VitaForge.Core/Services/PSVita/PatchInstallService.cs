@@ -52,6 +52,9 @@ public static class PatchInstallService
             finally
             {
                 InstallWorkspace.Delete(workDir);
+
+                if (DownloadCache.DeleteAfterInstall)
+                    DownloadCache.Delete(plan);
             }
         }
 
@@ -69,7 +72,6 @@ public static class PatchInstallService
 
         string patchLabel = $"{Loc.S.StatusDownloading} ({plan.Patch.Name})";
         ProgressReporter? patchReporter = null;
-
         var patchProgress = new PatchDownloadProgress(
             total => patchReporter = new ProgressReporter(patchLabel, string.Empty, total, progress),
             bytes =>
@@ -77,8 +79,7 @@ public static class PatchInstallService
                 patchReporter ??= new ProgressReporter(patchLabel, string.Empty, 0, progress);
                 patchReporter.AddProgress(bytes);
             });
-
-        string patchPath = await PatchFileDownloader.DownloadAsync(plan.Patch, workDir, patchProgress, log, ct);
+        string patchPath = await PatchFileDownloader.DownloadAsync(plan.Patch, workDir, DownloadCache.PatchDirectory(plan.Patch), patchProgress, log, ct);
 
         patchReporter?.ForceReport();
 
@@ -88,8 +89,7 @@ public static class PatchInstallService
             return false;
         }
 
-        var entries = await PkgBatchDownloader.DownloadAsync(plan.Downloads, (item, _) => Utils.GetUniqueFilePath(Path.Combine(workDir, NpsPkgDownloadService.BuildFileName(item))), patchPath, reporter, log, ct);
-
+        var entries = await PkgBatchDownloader.DownloadAsync(plan.Downloads, patchPath, reporter, log, ct);
         string label = options.Target == OutputTarget.Emu ? Loc.S.LabelOutputEmu : Loc.S.LabelOutputRetail;
         var tracker = archive ? null : new WrittenFileTracker();
         string outputPath = archive ? Utils.GetUniqueFilePath(Path.Combine(options.TargetPath, BuildArchiveName(plan, label))) : destination!;
@@ -115,9 +115,6 @@ public static class PatchInstallService
         }
 
         log(Loc.S.LogVitaRepackDone(label, result.TotalFiles, result.PatchedSuccessfully, result.PatchCandidates, outputPath), LogLevel.Info);
-
-        foreach (var entry in entries)
-            PkgOutputPaths.DeleteQuietly(entry.Path);
 
         if (result.FailedFiles > 0)
         {

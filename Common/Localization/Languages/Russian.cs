@@ -1625,4 +1625,8 @@ public sealed class Russian : LocalizedStrings
     public override string WorkTypeRecompress => "Пересжатие";
 
     public override string HeaderDate => "Дата";
+
+    public override string HintDefaultDownloadFolder(object? arg0) => $"Папка загрузок (по умолчанию: {arg0})";
+    public override string LogPsvDownloadReused(object? arg0) => $"Используется ранее загруженный файл: {arg0}";
+    public override string ToggleDeleteDownloadsAfterInstall => "Удалять загруженные файлы после установки (патчи, PKG)";
 }

@@ -1626,4 +1626,8 @@ public sealed class Japanese : LocalizedStrings
     public override string WorkTypeRecompress => "再圧縮";
 
     public override string HeaderDate => "日付";
+
+    public override string HintDefaultDownloadFolder(object? arg0) => $"ダウンロードフォルダ (既定: {arg0})";
+    public override string LogPsvDownloadReused(object? arg0) => $"ダウンロード済みのファイルを再利用します: {arg0}";
+    public override string ToggleDeleteDownloadsAfterInstall => "インストール後にダウンロードしたファイルを削除 (パッチ、PKG)";
 }

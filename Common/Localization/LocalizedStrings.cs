@@ -1626,6 +1626,10 @@ public abstract class LocalizedStrings
 
     public abstract string HeaderDate { get; }
 
+    public abstract string HintDefaultDownloadFolder(object? arg0);
+    public abstract string LogPsvDownloadReused(object? arg0);
+    public abstract string ToggleDeleteDownloadsAfterInstall { get; }
+
     public string GetItemStatus(ItemStatus status) => status switch
     {
         ItemStatus.Waiting => StatusWaiting,

@@ -1625,4 +1625,8 @@ public sealed class English : LocalizedStrings
     public override string WorkTypeRecompress => "Recompression";
 
     public override string HeaderDate => "Date";
+
+    public override string HintDefaultDownloadFolder(object? arg0) => $"Download folder (default: {arg0})";
+    public override string LogPsvDownloadReused(object? arg0) => $"Reusing previously downloaded file: {arg0}";
+    public override string ToggleDeleteDownloadsAfterInstall => "Delete downloaded files after install (patches, PKG)";
 }

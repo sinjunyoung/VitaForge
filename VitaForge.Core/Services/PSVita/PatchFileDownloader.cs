@@ -1,6 +1,7 @@
 ﻿using Common.Localization;
 using Common.Models;
 using System.IO;
+using Vita.Core.Services;
 using VitaForge.Core.Models.PSVita;
 using VitaForge.Core.Services.PSVita.PatchHosts;
 
@@ -8,7 +9,7 @@ namespace VitaForge.Core.Services.PSVita;
 
 public static class PatchFileDownloader
 {
-    public static async Task<string> DownloadAsync(PatchCatalogItem patch, string workDir, PatchDownloadProgress progress, Action<string, LogLevel> log, CancellationToken ct)
+    public static async Task<string> DownloadAsync(PatchCatalogItem patch, string workDir, string cacheDir, PatchDownloadProgress progress, Action<string, LogLevel> log, CancellationToken ct)
     {
         var links = patch.Links;
 
@@ -16,18 +17,18 @@ public static class PatchFileDownloader
         {
             string rawPath = Path.Combine(workDir, "patch.download");
 
-            await DownloadLinkAsync(links[0], rawPath, progress, log, ct);
+            await FetchAsync(links[0], Path.Combine(cacheDir, "patch.download"), rawPath, progress, log, ct);
 
             return await PatchArchivePreparer.PrepareAsync(rawPath, workDir, links[0], ct);
         }
 
         if (patch.IsSplit)
-            return await DownloadSplitAsync(links, workDir, progress, log, ct);
+            return await DownloadSplitAsync(links, workDir, cacheDir, progress, log, ct);
 
-        return await DownloadIndividualAsync(links, workDir, progress, log, ct);
+        return await DownloadIndividualAsync(links, workDir, cacheDir, progress, log, ct);
     }
 
-    private static async Task<string> DownloadIndividualAsync(IReadOnlyList<PatchLink> links, string workDir, PatchDownloadProgress progress, Action<string, LogLevel> log, CancellationToken ct)
+    private static async Task<string> DownloadIndividualAsync(IReadOnlyList<PatchLink> links, string workDir, string cacheDir, PatchDownloadProgress progress, Action<string, LogLevel> log, CancellationToken ct)
     {
         string folderPath = Path.Combine(workDir, "patch");
 
@@ -39,14 +40,14 @@ public static class PatchFileDownloader
 
             log(Loc.S.LogPsvPatchDownloadingPart(i + 1, links.Count, DisplayName(links[i])), LogLevel.Info);
 
-            await DownloadLinkAsync(links[i], rawPath, progress, log, ct);
+            await FetchAsync(links[i], Path.Combine(cacheDir, $"patch_{i}.download"), rawPath, progress, log, ct);
             await PatchArchivePreparer.MergeIntoFolderAsync(rawPath, folderPath, links[i], ct);
         }
 
         return folderPath;
     }
 
-    private static async Task<string> DownloadSplitAsync(IReadOnlyList<PatchLink> links, string workDir, PatchDownloadProgress progress, Action<string, LogLevel> log, CancellationToken ct)
+    private static async Task<string> DownloadSplitAsync(IReadOnlyList<PatchLink> links, string workDir, string cacheDir, PatchDownloadProgress progress, Action<string, LogLevel> log, CancellationToken ct)
     {
         var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
@@ -68,12 +69,41 @@ public static class PatchFileDownloader
 
             log(Loc.S.LogPsvPatchDownloadingPart(i + 1, links.Count, DisplayName(links[i])), LogLevel.Info);
 
-            await DownloadLinkAsync(links[i], volumePath, progress, log, ct);
+            await FetchAsync(links[i], Path.Combine(cacheDir, "patch_parts", links[i].LocalFileName), volumePath, progress, log, ct);
 
             volumePaths.Add(volumePath);
         }
 
         return await PatchArchivePreparer.PrepareSplitAsync(volumePaths, workDir, ct);
+    }
+
+    private static async Task FetchAsync(PatchLink link, string cachePath, string workPath, PatchDownloadProgress progress, Action<string, LogLevel> log, CancellationToken ct)
+    {
+        if (File.Exists(cachePath))
+            log(Loc.S.LogPsvDownloadReused(DisplayName(link)), LogLevel.Info);
+        else
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(cachePath)!);
+
+            string partPath = cachePath + ".part";
+
+            try
+            {
+                await DownloadLinkAsync(link, partPath, progress, log, ct);
+
+                File.Move(partPath, cachePath, true);
+            }
+            catch
+            {
+                PkgOutputPaths.DeleteQuietly(partPath);
+
+                throw;
+            }
+        }
+
+        Directory.CreateDirectory(Path.GetDirectoryName(workPath)!);
+
+        File.Copy(cachePath, workPath, true);
     }
 
     private static Task DownloadLinkAsync(PatchLink link, string destinationPath, PatchDownloadProgress progress, Action<string, LogLevel> log, CancellationToken ct) => PatchHostDownloaderRegistry.Resolve(link.Url).DownloadAsync(link, destinationPath, progress, log, ct);

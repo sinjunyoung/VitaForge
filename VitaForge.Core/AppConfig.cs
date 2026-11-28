@@ -63,6 +63,13 @@ public class VitaPatchConfig : ViewModelBase
     public string EnterButton { get; set { SetProperty(ref field, value); } } = "Circle";
 }
 
+public class VitaDownloadConfig : ViewModelBase
+{
+    public string? DownloadPath { get; set { SetProperty(ref field, value); } }
+
+    public bool DeleteAfterInstall { get; set { SetProperty(ref field, value); } } = true;
+}
+
 public class AppConfig : ViewModelBase
 {
     private static readonly string DefaultFilePath = Path.ChangeExtension(Environment.ProcessPath!, "config.json");
@@ -78,6 +85,8 @@ public class AppConfig : ViewModelBase
     public OutputFoldersConfig OutputFolders { get; set { SetProperty(ref field, value); } } = new();
 
     public VitaPatchConfig VitaPatch { get; set { SetProperty(ref field, value); } } = new();
+
+    public VitaDownloadConfig VitaDownload { get; set { SetProperty(ref field, value); } } = new();
 
     [JsonConstructor]
     private AppConfig() { }
@@ -102,6 +111,7 @@ public class AppConfig : ViewModelBase
                 Window = loaded.Window ?? new();
                 OutputFolders = loaded.OutputFolders ?? new();
                 VitaPatch = loaded.VitaPatch ?? new();
+                VitaDownload = loaded.VitaDownload ?? new();
             }
         }
         catch
@@ -121,6 +131,7 @@ public class AppConfig : ViewModelBase
         Window.PropertyChanged += AutoSave;
         OutputFolders.PropertyChanged += AutoSave;
         VitaPatch.PropertyChanged += AutoSave;
+        VitaDownload.PropertyChanged += AutoSave;
     }
 
     public void Save() => File.WriteAllText(DefaultFilePath, JsonSerializer.Serialize(this, JsonOptions));

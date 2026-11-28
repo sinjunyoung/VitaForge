@@ -1625,4 +1625,8 @@ public sealed class ChineseSimplified : LocalizedStrings
     public override string WorkTypeRecompress => "重新压缩";
 
     public override string HeaderDate => "日期";
+
+    public override string HintDefaultDownloadFolder(object? arg0) => $"下载文件夹 (默认: {arg0})";
+    public override string LogPsvDownloadReused(object? arg0) => $"重复使用已下载的文件: {arg0}";
+    public override string ToggleDeleteDownloadsAfterInstall => "安装后删除下载的文件 (补丁、PKG)";
 }

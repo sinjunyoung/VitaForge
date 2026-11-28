@@ -1625,4 +1625,8 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string WorkTypeRecompress => "重新壓縮";
     
     public override string HeaderDate => "日期";
+
+    public override string HintDefaultDownloadFolder(object? arg0) => $"下載資料夾 (預設: {arg0})";
+    public override string LogPsvDownloadReused(object? arg0) => $"重複使用已下載的檔案: {arg0}";
+    public override string ToggleDeleteDownloadsAfterInstall => "安裝後刪除下載的檔案 (修補檔、PKG)";
 }

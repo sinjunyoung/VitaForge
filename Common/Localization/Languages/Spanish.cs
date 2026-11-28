@@ -1625,4 +1625,8 @@ public sealed class Spanish : LocalizedStrings
     public override string WorkTypeRecompress => "Recompresión";
 
     public override string HeaderDate => "Fecha";
+
+    public override string HintDefaultDownloadFolder(object? arg0) => $"Carpeta de descargas (predeterminada: {arg0})";
+    public override string LogPsvDownloadReused(object? arg0) => $"Reutilizando el archivo ya descargado: {arg0}";
+    public override string ToggleDeleteDownloadsAfterInstall => "Eliminar los archivos descargados tras la instalación (parches, PKG)";
 }

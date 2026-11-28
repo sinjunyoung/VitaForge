@@ -21,16 +21,12 @@ public static class NpsDownloadConvertService
 
         Directory.CreateDirectory(outputRoot);
 
-        string workDir = output == PkgConvertOutput.Direct ? InstallWorkspace.Create() : Path.Combine(outputRoot, ".download_" + Guid.NewGuid().ToString("N"));
-
-        Directory.CreateDirectory(workDir);
-
         try
         {
             long totalBytes = Math.Max(1, plans.Sum(p => p.Item.Size));
             var reporter = new ProgressReporter(Loc.S.StatusDownloading, string.Empty, totalBytes, progress);
             var downloads = plans.Select(p => (p.Item, p.License)).ToList();
-            var entries = await PkgBatchDownloader.DownloadAsync(downloads, (item, index) => Path.Combine(workDir, $"{item.TitleId}_{item.Kind}_{index}.pkg"), null, reporter, log, ct);
+            var entries = await PkgBatchDownloader.DownloadAsync(downloads, null, reporter, log, ct);
 
             return target == OutputTarget.Emu
                 ? await DecryptService.DecryptAsync(entries, outputRoot, output, log, progress, tracker, ct)
@@ -38,7 +34,8 @@ public static class NpsDownloadConvertService
         }
         finally
         {
-            InstallWorkspace.Delete(workDir);
+            if (DownloadCache.DeleteAfterInstall)
+                DownloadCache.DeletePkgs(plans.Select(p => p.Item));
         }
     }
 
