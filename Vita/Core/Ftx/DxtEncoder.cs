@@ -71,8 +71,8 @@ internal static class DxtEncoder
             maxBlue = Math.Max(maxBlue, blue[i]);
         }
 
-        int color0 = Pack565(maxRed, maxGreen, maxBlue);
-        int color1 = Pack565(minRed, minGreen, minBlue);
+        int color0 = Color565.Pack(maxRed, maxGreen, maxBlue);
+        int color1 = Color565.Pack(minRed, minGreen, minBlue);
 
         if (color0 < color1)
             (color0, color1) = (color1, color0);
@@ -83,8 +83,8 @@ internal static class DxtEncoder
         {
             Span<int> palette = stackalloc int[12];
 
-            Unpack565(color0, palette[..3]);
-            Unpack565(color1, palette.Slice(3, 3));
+            Color565.Unpack(color0, palette[..3]);
+            Color565.Unpack(color1, palette.Slice(3, 3));
 
             for (int channel = 0; channel < 3; channel++)
             {
@@ -177,14 +177,5 @@ internal static class DxtEncoder
     {
         for (int b = 0; b < 8; b++)
             destination[b] = (byte)(((alpha[2 * b] >> 4) & 0x0F) | (((alpha[2 * b + 1] >> 4) & 0x0F) << 4));
-    }
-
-    private static int Pack565(int red, int green, int blue) => ((red >> 3) << 11) | ((green >> 2) << 5) | (blue >> 3);
-
-    private static void Unpack565(int value, Span<int> destination)
-    {
-        destination[0] = ((value >> 11) & 0x1F) * 255 / 31;
-        destination[1] = ((value >> 5) & 0x3F) * 255 / 63;
-        destination[2] = (value & 0x1F) * 255 / 31;
     }
 }

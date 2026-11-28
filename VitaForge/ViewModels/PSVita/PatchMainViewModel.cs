@@ -15,6 +15,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using Vita.Core.Models;
+using Vita.Core.TitleRules;
 using VitaForge.Core.ViewModels.PSVita;
 
 namespace VitaForge.ViewModels.PSVita;
@@ -267,6 +268,9 @@ public class PatchMainViewModel : ProgressToolTabViewModel
             return;
         }
 
+        if (!ConfirmEnterButton(items))
+            return;
+
         var options = new PatchInstallOptions(InstallEmu ? OutputTarget.Emu : OutputTarget.Retail, ModeInstall ? PatchOutputMode.Install : PatchOutputMode.Archive, TargetPath, IncludeDlc);
 
         _totalSw.Restart();
@@ -321,6 +325,25 @@ public class PatchMainViewModel : ProgressToolTabViewModel
             await SoundPlayer.PlayErrorAsync();
             MainViewModel.SetTaskbarProgress(100, System.Windows.Shell.TaskbarItemProgressState.Error);
         }
+    }
+
+    private static bool ConfirmEnterButton(List<PatchCatalogItem> items)
+    {
+        TitleRuleOptions.EnterButton = EnterButton.Circle;
+
+        if (!items.Any(i => TitleRuleOptions.SupportsEnterButton(i.TitleId)))
+            return true;
+
+        var saved = Enum.TryParse<EnterButton>(AppConfig.Instance.VitaPatch.EnterButton, out var parsed) ? parsed : EnterButton.Circle;
+        var picked = Application.Current.Dispatcher.Invoke(() => EnterButtonWindow.Pick(Application.Current.MainWindow, saved));
+
+        if (picked is null)
+            return false;
+
+        TitleRuleOptions.EnterButton = picked.Value;
+        AppConfig.Instance.VitaPatch.EnterButton = picked.Value.ToString();
+
+        return true;
     }
 
     private IReadOnlyList<string?> ResolvePatchTarget(PatchTargetRequest request)

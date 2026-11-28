@@ -715,6 +715,7 @@ public abstract class LocalizedStrings
     public abstract string HintDropVitaFiles { get; }
     public abstract string HintDropVitaPkg { get; }
     public abstract string HintDropWiiUFiles { get; }
+    public abstract string HintEnterButtonCross { get; }
     public abstract string HintKeyFileEmptyUsesExeFolder(object? arg0);
     public abstract string HintPatchOutputFolder { get; }
     public abstract string HintRepackReplaceRule { get; }
@@ -746,6 +747,8 @@ public abstract class LocalizedStrings
     public abstract string LabelDefaultImage { get; }
     public abstract string LabelDlcPatch(object? arg0);
     public abstract string LabelDownloadLocation { get; }
+    public abstract string LabelEnterButtonCircle { get; }
+    public abstract string LabelEnterButtonCross { get; }
     public abstract string LabelEstimated { get; }
     public abstract string LabelExpectedFileName { get; }
     public abstract string LabelExperimental { get; }
@@ -1522,6 +1525,7 @@ public abstract class LocalizedStrings
     // Title
     public abstract string TitleArchivePassword { get; }
     public abstract string TitleCompressSettings { get; }
+    public abstract string TitleEnterButton { get; }
     public abstract string TitlePspSettings { get; }
     public abstract string TitleTypeSystem { get; }
 

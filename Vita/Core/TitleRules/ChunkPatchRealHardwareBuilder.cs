@@ -1,6 +1,8 @@
 ﻿using Common.Models;
 using Vita.Core.Cpk;
+using Vita.Core.Fonts;
 using Vita.Core.Ftx;
+using Vita.Core.Typography;
 
 namespace Vita.Core.TitleRules;
 
@@ -47,7 +49,57 @@ internal sealed class ChunkPatchRealHardwareBuilder(string titleId, ChunkPatchAs
 
         log($"{titleId} {cpkName}: {baked}/{total} Korean textures baked", baked == total ? LogLevel.Ok : LogLevel.Warning);
 
+        if (cpkName.Equals("NinPri", StringComparison.OrdinalIgnoreCase))
+            BakeFonts(archive, replacements, ct);
+
         return CpkAppender.AppendWithoutEtoc(archive, replacements, ct);
+    }
+
+    private void BakeFonts(CpkArchive archive, Dictionary<string, byte[]> replacements, CancellationToken ct)
+    {
+        var rasterizer = GlyphRasterizerProvider.Current;
+
+        if (rasterizer is null)
+        {
+            log($"{titleId}: font rasterizer is not available, Korean font pages were not baked", LogLevel.Warning);
+
+            return;
+        }
+
+        if (!FontBakeResourceLoader.TryLoad(assets, rasterizer, out var resources, out string? error))
+        {
+            log($"{titleId}: {error}", LogLevel.Warning);
+
+            return;
+        }
+
+        var baker = new FontFtxBaker(resources!);
+        int pages = 0;
+
+        foreach (string path in KnownFontPages.FontFtxPaths)
+        {
+            ct.ThrowIfCancellationRequested();
+
+            var entry = archive.Find(path);
+
+            if (entry is null)
+            {
+                log($"{titleId}: {path} not found", LogLevel.Warning);
+
+                continue;
+            }
+
+            byte[] ftx = replacements.TryGetValue(path, out byte[]? existing) ? existing : archive.Extract(entry);
+            int baked = baker.Bake(ftx, message => log($"{titleId} {path}: {message}", LogLevel.Info));
+
+            if (baked == 0)
+                continue;
+
+            replacements[path] = ftx;
+            pages += baked;
+        }
+
+        log($"{titleId}: {pages} Korean font pages baked", pages > 0 ? LogLevel.Ok : LogLevel.Warning);
     }
 
     private IEnumerable<(string FtxPath, List<FtxBakeItem> Items)> GroupItems(string cpkName)

@@ -715,6 +715,7 @@ public sealed class Spanish : LocalizedStrings
     public override string HintDropVitaFiles => "Arrastra y suelta archivos (pkg, zip)/carpetas de PS Vita aquí";
     public override string HintDropVitaPkg => "Arrastra y suelta archivos/carpetas PKG de PS Vita aquí";
     public override string HintDropWiiUFiles => "Arrastra y suelta carpetas WUP/Loadiine o archivos wud/wux/wua aquí";
+    public override string HintEnterButtonCross => "En consola real, ajusta también Enter Button a Cross en los ajustes de la Vita";
     public override string HintKeyFileEmptyUsesExeFolder(object? arg0) => $"Déjalo vacío para usar {arg0} de la carpeta del exe";
     public override string HintPatchOutputFolder => "Seleccione la carpeta donde guardar los archivos zip exportados";
     public override string HintRepackReplaceRule => "El juego base y la actualización se reemplazan automáticamente; los DLC se añaden";
@@ -746,6 +747,8 @@ public sealed class Spanish : LocalizedStrings
     public override string LabelDefaultImage => "Imagen predeterminada";
     public override string LabelDlcPatch(object? arg0) => $"Parche de DLC ({arg0})";
     public override string LabelDownloadLocation => "Ubicación de descarga";
+    public override string LabelEnterButtonCircle => "Confirmar con ○ (predeterminado)";
+    public override string LabelEnterButtonCross => "Confirmar con ✕";
     public override string LabelEstimated => "Estimado";
     public override string LabelExpectedFileName => "Nombre de archivo previsto:";
     public override string LabelExperimental => "Experimental";
@@ -1522,6 +1525,7 @@ public sealed class Spanish : LocalizedStrings
     // Title
     public override string TitleArchivePassword => "Contraseña del archivo comprimido";
     public override string TitleCompressSettings => "Configuración de compresión";
+    public override string TitleEnterButton => "Seleccionar el botón de confirmación";
     public override string TitlePspSettings => "Configuración de PSP";
     public override string TitleTypeSystem => "Sistema";
 

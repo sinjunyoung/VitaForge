@@ -715,6 +715,7 @@ public sealed class German : LocalizedStrings
     public override string HintDropVitaFiles => "PS-Vita-Dateien (pkg, zip)/-Ordner hierher ziehen und ablegen";
     public override string HintDropVitaPkg => "PS-Vita-PKG-Dateien/-Ordner hierher ziehen und ablegen";
     public override string HintDropWiiUFiles => "WUP/Loadiine-Ordner oder wud/wux/wua-Dateien hierher ziehen und ablegen";
+    public override string HintEnterButtonCross => "Auf echter Hardware auch Enter Button in den Vita-Einstellungen auf Cross stellen";
     public override string HintKeyFileEmptyUsesExeFolder(object? arg0) => $"Leer lassen, um {arg0} im exe-Ordner zu verwenden";
     public override string HintPatchOutputFolder => "Ordner zum Speichern der exportierten ZIP-Dateien auswählen";
     public override string HintRepackReplaceRule => "Hauptspiel/Update werden automatisch ersetzt, DLC wird hinzugefügt";
@@ -746,6 +747,8 @@ public sealed class German : LocalizedStrings
     public override string LabelDefaultImage => "Standardbild";
     public override string LabelDlcPatch(object? arg0) => $"DLC-Patch ({arg0})";
     public override string LabelDownloadLocation => "Speicherort für Downloads";
+    public override string LabelEnterButtonCircle => "Mit ○ bestätigen (Standard)";
+    public override string LabelEnterButtonCross => "Mit ✕ bestätigen";
     public override string LabelEstimated => "Geschätzt";
     public override string LabelExpectedFileName => "Voraussichtlicher Dateiname:";
     public override string LabelExperimental => "Experimentell";
@@ -1522,6 +1525,7 @@ public sealed class German : LocalizedStrings
     // Title
     public override string TitleArchivePassword => "Archivpasswort";
     public override string TitleCompressSettings => "Komprimierungseinstellungen";
+    public override string TitleEnterButton => "Bestätigungstaste auswählen";
     public override string TitlePspSettings => "PSP-Einstellungen";
     public override string TitleTypeSystem => "System";
 

@@ -58,6 +58,11 @@ public class OutputFoldersConfig : ViewModelBase
     public string? VitaPatchOutputPath { get; set { SetProperty(ref field, value); } }
 }
 
+public class VitaPatchConfig : ViewModelBase
+{
+    public string EnterButton { get; set { SetProperty(ref field, value); } } = "Circle";
+}
+
 public class AppConfig : ViewModelBase
 {
     private static readonly string DefaultFilePath = Path.ChangeExtension(Environment.ProcessPath!, "config.json");
@@ -71,6 +76,8 @@ public class AppConfig : ViewModelBase
     public WindowConfig Window { get; set { SetProperty(ref field, value); } } = new();
 
     public OutputFoldersConfig OutputFolders { get; set { SetProperty(ref field, value); } } = new();
+
+    public VitaPatchConfig VitaPatch { get; set { SetProperty(ref field, value); } } = new();
 
     [JsonConstructor]
     private AppConfig() { }
@@ -94,6 +101,7 @@ public class AppConfig : ViewModelBase
                 Common = loaded.Common ?? new();
                 Window = loaded.Window ?? new();
                 OutputFolders = loaded.OutputFolders ?? new();
+                VitaPatch = loaded.VitaPatch ?? new();
             }
         }
         catch
@@ -112,6 +120,7 @@ public class AppConfig : ViewModelBase
         Common.PropertyChanged += AutoSave;
         Window.PropertyChanged += AutoSave;
         OutputFolders.PropertyChanged += AutoSave;
+        VitaPatch.PropertyChanged += AutoSave;
     }
 
     public void Save() => File.WriteAllText(DefaultFilePath, JsonSerializer.Serialize(this, JsonOptions));

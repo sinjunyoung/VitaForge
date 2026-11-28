@@ -715,6 +715,7 @@ public sealed class French : LocalizedStrings
     public override string HintDropVitaFiles => "Glissez-déposez des fichiers (pkg, zip)/dossiers PS Vita ici";
     public override string HintDropVitaPkg => "Glissez-déposez des fichiers/dossiers PKG PS Vita ici";
     public override string HintDropWiiUFiles => "Glissez-déposez des dossiers WUP/Loadiine ou des fichiers wud/wux/wua ici";
+    public override string HintEnterButtonCross => "Sur console, réglez aussi Enter Button sur Cross dans les paramètres de la Vita";
     public override string HintKeyFileEmptyUsesExeFolder(object? arg0) => $"Laissez vide pour utiliser {arg0} du dossier de l’exe";
     public override string HintPatchOutputFolder => "Sélectionnez le dossier d’enregistrement des fichiers zip exportés";
     public override string HintRepackReplaceRule => "Le jeu de base et la mise à jour sont remplacés automatiquement, les DLC sont ajoutés";
@@ -746,6 +747,8 @@ public sealed class French : LocalizedStrings
     public override string LabelDefaultImage => "Image par défaut";
     public override string LabelDlcPatch(object? arg0) => $"Patch DLC ({arg0})";
     public override string LabelDownloadLocation => "Emplacement de téléchargement";
+    public override string LabelEnterButtonCircle => "Valider avec ○ (par défaut)";
+    public override string LabelEnterButtonCross => "Valider avec ✕";
     public override string LabelEstimated => "Estimé";
     public override string LabelExpectedFileName => "Nom de fichier prévu :";
     public override string LabelExperimental => "Expérimental";
@@ -1522,6 +1525,7 @@ public sealed class French : LocalizedStrings
     // Title
     public override string TitleArchivePassword => "Mot de passe de l’archive";
     public override string TitleCompressSettings => "Paramètres de compression";
+    public override string TitleEnterButton => "Choisir le bouton de validation";
     public override string TitlePspSettings => "Paramètres PSP";
     public override string TitleTypeSystem => "Système";
 

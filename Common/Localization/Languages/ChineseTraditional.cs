@@ -715,6 +715,7 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string HintDropVitaFiles => "請將 PS Vita 檔案 (pkg, zip)/資料夾拖放到此處";
     public override string HintDropVitaPkg => "請將 PS Vita PKG 檔案/資料夾拖放到此處";
     public override string HintDropWiiUFiles => "請將 WUP/Loadiine 資料夾、wud/wux/wua 檔案拖放到此處";
+    public override string HintEnterButtonCross => "在實機上還需要在 Vita 設定中將 Enter Button 設為 Cross";
     public override string HintKeyFileEmptyUsesExeFolder(object? arg0) => $"留空則使用 exe 資料夾中的 {arg0}";
     public override string HintPatchOutputFolder => "請選擇儲存匯出 zip 檔案的資料夾";
     public override string HintRepackReplaceRule => "本體/更新會自動取代，DLC 會持續新增";
@@ -746,6 +747,8 @@ public sealed class ChineseTraditional : LocalizedStrings
     public override string LabelDefaultImage => "預設影像";
     public override string LabelDlcPatch(object? arg0) => $"DLC 修補檔 ({arg0})";
     public override string LabelDownloadLocation => "下載位置";
+    public override string LabelEnterButtonCircle => "使用 ○ 鍵確認（預設）";
+    public override string LabelEnterButtonCross => "使用 ✕ 鍵確認";
     public override string LabelEstimated => "預估";
     public override string LabelExpectedFileName => "預估檔名:";
     public override string LabelExperimental => "實驗性";
@@ -1522,6 +1525,7 @@ public sealed class ChineseTraditional : LocalizedStrings
     // Title
     public override string TitleArchivePassword => "壓縮檔密碼";
     public override string TitleCompressSettings => "壓縮設定";
+    public override string TitleEnterButton => "選擇確認按鈕";
     public override string TitlePspSettings => "PSP 設定";
     public override string TitleTypeSystem => "系統";
 

@@ -18,6 +18,7 @@ internal static class TitleRuleRegistry
         new PackageManifestRule("PCSG00034"),
         new EmbeddedPayloadRule("PCSG01100", DoukokuSoshiteRecipe.Value),
         new PrefFolderRule("PCSE00240", "textures/import"),
+        new EnterButtonRule("PCSE00240", "textures/import"),
         new ChunkPatchRule("PCSE00240")
     }.ToLookup(r => r.TitleId, StringComparer.OrdinalIgnoreCase);
 
@@ -29,7 +30,9 @@ internal static class TitleRuleRegistry
         return files;
     }
 
-    public static IReadOnlyList<ExtraPatchFile> SelectExtraFiles(string titleId, IReadOnlyList<PatchContainerFile> files) => [.. Rules[titleId].SelectMany(r => r.SelectExtraFiles(files))];
+    public static IReadOnlyList<ExtraPatchFile> SelectExtraFiles(string titleId, IReadOnlyList<PatchContainerFile> files) => [.. Rules[titleId].SelectMany(r => r.SelectExtraFiles(files)).GroupBy(e => e.TargetPath, StringComparer.OrdinalIgnoreCase).Select(g => g.Last())];
+
+    public static bool SupportsEnterButton(string titleId) => Rules[titleId].OfType<EnterButtonRule>().Any();
 
     public static byte[] RewriteSource(string titleId, string relativePath, byte[] sourceBytes, OwnerContext owner)
     {

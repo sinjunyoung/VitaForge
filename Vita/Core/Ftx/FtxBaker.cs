@@ -55,7 +55,7 @@ internal sealed class FtxBaker(Func<string, RgbaImage?> loadImage)
         {
             var resized = image.Width == texture.Width && image.Height == texture.Height ? image : LanczosResizer.Resize(image, texture.Width, texture.Height);
 
-            Replace(ftx, texture, baseSize, resized.Pixels);
+            FtxTextureWriter.Replace(ftx, texture, baseSize, resized.Pixels);
 
             return null;
         }
@@ -63,40 +63,5 @@ internal sealed class FtxBaker(Func<string, RgbaImage?> loadImage)
         {
             return ex.Message;
         }
-    }
-
-    private static void Replace(byte[] ftx, FtxTexture texture, int baseSize, byte[] rgba)
-    {
-        int textureSize = texture.TextureSize != 0 ? texture.TextureSize : baseSize;
-        int mipLevels = textureSize > baseSize ? CountMipLevels(texture.Width, texture.Height, textureSize) : 1;
-        byte[] payload = FtxTextureEncoder.EncodePayload(rgba, texture.Width, texture.Height, texture.Format, mipLevels);
-
-        if (texture.AbsoluteOffset + textureSize > ftx.Length)
-            throw new InvalidDataException("texture payload is out of range");
-
-        if (payload.Length > textureSize)
-        {
-            Buffer.BlockCopy(payload, 0, ftx, texture.AbsoluteOffset, textureSize);
-
-            return;
-        }
-
-        Buffer.BlockCopy(payload, 0, ftx, texture.AbsoluteOffset, payload.Length);
-    }
-
-    private static int CountMipLevels(int width, int height, int textureSize)
-    {
-        int levels = 0;
-        int accumulated = 0;
-
-        while (width >= 4 && height >= 4 && accumulated < textureSize)
-        {
-            accumulated += width / 4 * (height / 4) * 16;
-            levels++;
-            width /= 2;
-            height /= 2;
-        }
-
-        return levels;
     }
 }

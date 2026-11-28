@@ -715,6 +715,7 @@ public sealed class Japanese : LocalizedStrings
     public override string HintDropVitaFiles => "PS Vitaファイル (pkg, zip)/フォルダーをここにドラッグ&ドロップしてください";
     public override string HintDropVitaPkg => "PS Vita PKGファイル/フォルダーをここにドラッグ&ドロップしてください";
     public override string HintDropWiiUFiles => "WUP/Loadiineフォルダー、wud/wux/wuaファイルをここにドラッグ&ドロップしてください";
+    public override string HintEnterButtonCross => "実機ではVitaの設定でEnter ButtonもCrossに合わせてください";
     public override string HintKeyFileEmptyUsesExeFolder(object? arg0) => $"空の場合はexeフォルダーの{arg0}を使用します";
     public override string HintPatchOutputFolder => "エクスポートするZIPファイルの保存先フォルダーを選択してください";
     public override string HintRepackReplaceRule => "本編/アップデートは自動的に置き換えられ、DLCは追加されます";
@@ -746,6 +747,8 @@ public sealed class Japanese : LocalizedStrings
     public override string LabelDefaultImage => "既定の画像";
     public override string LabelDlcPatch(object? arg0) => $"DLCパッチ ({arg0})";
     public override string LabelDownloadLocation => "ダウンロード先";
+    public override string LabelEnterButtonCircle => "○ボタンで決定（標準）";
+    public override string LabelEnterButtonCross => "✕ボタンで決定";
     public override string LabelEstimated => "予想";
     public override string LabelExpectedFileName => "予想ファイル名:";
     public override string LabelExperimental => "実験的";
@@ -1522,6 +1525,7 @@ public sealed class Japanese : LocalizedStrings
     // Title
     public override string TitleArchivePassword => "圧縮ファイルのパスワード";
     public override string TitleCompressSettings => "圧縮設定";
+    public override string TitleEnterButton => "決定ボタンの選択";
     public override string TitlePspSettings => "PSP設定";
     public override string TitleTypeSystem => "システム";
 

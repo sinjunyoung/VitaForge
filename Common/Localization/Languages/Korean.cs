@@ -715,6 +715,7 @@ public sealed class Korean : LocalizedStrings
     public override string HintDropVitaFiles => "PS Vita 파일 (pkg, zip)/폴더를 여기에 드래그&드롭하세요";
     public override string HintDropVitaPkg => "PS Vita PKG 파일/폴더를 여기에 드래그&드롭하세요";
     public override string HintDropWiiUFiles => "WUP/Loadiine 폴더, wud/wux/wua 파일을 여기에 드래그&드롭하세요";
+    public override string HintEnterButtonCross => "실기에서는 Vita 설정의 Enter Button도 Cross로 맞춰야 합니다";
     public override string HintKeyFileEmptyUsesExeFolder(object? arg0) => $"비워두면 exe 폴더의 {arg0}을(를) 사용합니다";
     public override string HintPatchOutputFolder => "내보낼 zip 파일을 저장할 폴더를 선택하세요";
     public override string HintRepackReplaceRule => "본편/업데이트는 자동 교체, DLC는 계속 추가됩니다";
@@ -746,6 +747,8 @@ public sealed class Korean : LocalizedStrings
     public override string LabelDefaultImage => "기본 이미지";
     public override string LabelDlcPatch(object? arg0) => $"DLC 패치 ({arg0})";
     public override string LabelDownloadLocation => "다운로드 위치";
+    public override string LabelEnterButtonCircle => "○ 버튼으로 확정 (기본)";
+    public override string LabelEnterButtonCross => "✕ 버튼으로 확정";
     public override string LabelEstimated => "예상";
     public override string LabelExpectedFileName => "예상 파일명:";
     public override string LabelExperimental => "실험적";
@@ -1522,6 +1525,7 @@ public sealed class Korean : LocalizedStrings
     // Title
     public override string TitleArchivePassword => "압축파일 비밀번호";
     public override string TitleCompressSettings => "압축 설정";
+    public override string TitleEnterButton => "확정 버튼 선택";
     public override string TitlePspSettings => "PSP 설정";
     public override string TitleTypeSystem => "시스템";
 

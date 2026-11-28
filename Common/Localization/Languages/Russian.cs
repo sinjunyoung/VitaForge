@@ -715,6 +715,7 @@ public sealed class Russian : LocalizedStrings
     public override string HintDropVitaFiles => "Перетащите файлы (pkg, zip)/папки PS Vita сюда";
     public override string HintDropVitaPkg => "Перетащите файлы/папки PKG для PS Vita сюда";
     public override string HintDropWiiUFiles => "Перетащите папки WUP/Loadiine или файлы wud/wux/wua сюда";
+    public override string HintEnterButtonCross => "На консоли также установите Enter Button = Cross в настройках Vita";
     public override string HintKeyFileEmptyUsesExeFolder(object? arg0) => $"Оставьте пустым, чтобы использовать {arg0} из папки exe";
     public override string HintPatchOutputFolder => "Выберите папку для сохранения экспортированных zip-файлов";
     public override string HintRepackReplaceRule => "Игра и обновление заменяются автоматически, DLC добавляются";
@@ -746,6 +747,8 @@ public sealed class Russian : LocalizedStrings
     public override string LabelDefaultImage => "Изображение по умолчанию";
     public override string LabelDlcPatch(object? arg0) => $"Патч DLC ({arg0})";
     public override string LabelDownloadLocation => "Папка загрузки";
+    public override string LabelEnterButtonCircle => "Подтверждение кнопкой ○ (по умолчанию)";
+    public override string LabelEnterButtonCross => "Подтверждение кнопкой ✕";
     public override string LabelEstimated => "Ожидаемо";
     public override string LabelExpectedFileName => "Ожидаемое имя файла:";
     public override string LabelExperimental => "Экспериментально";
@@ -1522,6 +1525,7 @@ public sealed class Russian : LocalizedStrings
     // Title
     public override string TitleArchivePassword => "Пароль архива";
     public override string TitleCompressSettings => "Настройки сжатия";
+    public override string TitleEnterButton => "Выбор кнопки подтверждения";
     public override string TitlePspSettings => "Настройки PSP";
     public override string TitleTypeSystem => "Система";
 
