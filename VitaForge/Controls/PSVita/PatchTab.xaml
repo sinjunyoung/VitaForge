@@ -124,7 +124,7 @@
                                 </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock FontSize="12" Foreground="#E8E8F0" Text="{Binding Region}" VerticalAlignment="Center"/>
+                                        <TextBlock FontSize="12" Foreground="#E8E8F0" Text="{Binding Region}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -201,7 +201,7 @@
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <GridViewColumn Width="44">
+                            <GridViewColumn Width="Auto">
                                 <GridViewColumn.Header>
                                     <Image Source="/Assets/Images/Link.png" Width="24" Height="24"/>
                                 </GridViewColumn.Header>

@@ -1,5 +1,37 @@
 {
   "patches": [
+{
+      "titleId": "PCSG00347",
+      "region": "JP",
+      "name": "아샤의 아틀리에 Plus",
+      "requiredUpdateVersion": "1.02",
+      "user": "shrimplord89",
+      "releaseLink": "https://cafe.naver.com/hansicgu/24720",
+      "date": "2020-03-08",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/open?id=1_gXek_pEkdIhB4PRwgnQbnbA3_UPRNwS" }
+      ]
+    },
+{
+      "titleId": "PCSG00821",
+      "region": "JP",
+      "name": "샤리의 아틀리에 Plus",
+      "requiredUpdateVersion": "1.03",
+      "user": "shrimplord89",
+      "releaseLink": "https://cafe.naver.com/hansicgu/27361",
+      "date": "2021-08-04",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/file/d/1v-KwmIjyxVL9qWvrHvh3csV49bfMwjUH/view?usp=sharing" }
+      ]
+    },
     {
       "titleId": "PCSG00291",
       "region": "JP",
@@ -16,6 +48,30 @@
       "links": [
         { "url": "https://pixeldrain.com/api/file/WBeo13xT?download" }
       ]
+    },
+    {
+      "titleId": "PCSG00260",
+      "region": "JP",
+      "name": "슈퍼로봇대전 HD 리메이크",
+      "version": "250110",
+      "user": "부끄지",
+      "releaseLink": "https://arcticmouse.tistory.com/5",
+      "date": "2025-01-10",
+      "patchType": "Patch",
+      "installType": "Emulator",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://arcticmouse.tistory.com/5" }
+      ],
+     "patchTargets": [
+       { "patch": "eboot_bin.xdelta", "target": "eboot.bin" },
+       { "patch": "icon0_png.xdelta", "target": "icon0.png" },
+       { "patch": "icon1_png.xdelta", "target": "icon1.png" },
+       { "patch": "param_sfo.xdelta", "target": "param.sfo" },
+       { "patch": "pic0_png.xdelta", "target": "pic0.png" },
+       { "patch": "pic1_png.xdelta", "target": "pic1.png" }
+     ]
     },
     {
       "titleId": "PCSG00543",
@@ -49,6 +105,21 @@
       "linkMode": "Individual",
       "links": [
         { "url": "https://github.com/hada0127/muramasa-kor/releases/download/v1.4.3/muramasa-kor-v1.4.3-patcher-windows.zip" }
+      ]
+    },
+    {
+      "titleId": "PCSG00786",
+      "region": "JP",
+      "name": "주문은 토끼입니까? Wonderful Party!",
+      "user": "Sansoo",
+      "releaseLink": "https://gall.dcinside.com/psv/5318",
+      "date": "2026-07-28",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://drive.google.com/file/d/11YHFqJ1UQhx99F04MbsbvMuT0VK8i8LR/view?usp=drive_link" }
       ]
     },
     {
@@ -219,6 +290,21 @@
       "linkMode": "Individual",
       "links": [
         { "url": "https://naver.me/xRgBupk2" }
+      ]
+    },
+    {
+      "titleId": "PCSE00651",
+      "region": "US",
+      "name": "액시옴 버지",
+      "user": "YourFaceMonster",
+      "releaseLink": "https://github.com/YourFaceMonster/axiom-verge-psv-korean-patch/releases",
+      "date": "2026-10-09",
+      "patchType": "Patch",
+      "installType": "All",
+      "enabled": true,
+      "linkMode": "Individual",
+      "links": [
+        { "url": "https://github.com/YourFaceMonster/axiom-verge-psv-korean-patch/releases/download/korean-repatch/AxiomVerge_PSV_Korean_rePatch.zip" }
       ]
     },
     {

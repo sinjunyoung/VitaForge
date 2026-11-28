@@ -14,6 +14,7 @@ internal static class TitleRuleRegistry
         new SelfDecryptSourceRule("PCSG00213", FselfLayout.Vita3K, "eboot.bin"),
         new SelfDecryptSourceRule("PCSG00034", FselfLayout.Vita3K, "eboot.bin"),
         new L7caUnpackRule("PCSG00009", "toidata_release.l7c", "_Data/"),
+        new PrefFolderRule("PCSG00260", "textures/import"),
         new PrefFolderRule("PCSG00684", "textures/import"),
         new PackageManifestRule("PCSG00034"),
         new EmbeddedPayloadRule("PCSG01100", DoukokuSoshiteRecipe.Value),
