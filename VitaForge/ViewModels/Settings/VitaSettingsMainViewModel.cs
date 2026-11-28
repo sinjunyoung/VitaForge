@@ -1,4 +1,5 @@
 ﻿using Common.Localization;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using VitaForge.Core;
@@ -31,11 +32,13 @@ public class VitaSettingsMainViewModel : ToolTabViewModel
         }
     }
 
-    public string DownloadHint => Loc.S.HintDefaultDownloadFolder(DownloadFolderDefaults.Resolve(null));
+    public static string DownloadHint => Loc.S.HintDefaultDownloadFolder(DownloadFolderDefaults.Resolve(null));
 
     public Visibility DownloadHintVisibility => string.IsNullOrWhiteSpace(DownloadPath) ? Visibility.Visible : Visibility.Collapsed;
 
     public ICommand BrowseDownloadPathCommand { get; }
+    
+    public ICommand ClearCacheCommand { get; }
 
     public VitaSettingsMainViewModel()
     {
@@ -46,6 +49,7 @@ public class VitaSettingsMainViewModel : ToolTabViewModel
         };
 
         BrowseDownloadPathCommand = new RelayCommand(_ => BrowseDownloadPath());
+        ClearCacheCommand = new RelayCommand(_ => ClearCache());
     }
 
     private void BrowseDownloadPath()
@@ -58,5 +62,25 @@ public class VitaSettingsMainViewModel : ToolTabViewModel
 
         if (dlg.ShowDialog() == true)
             DownloadPath = dlg.SelectedPath;
+    }
+
+    private void ClearCache()
+    {
+        var path = DownloadFolderDefaults.Resolve(DownloadPath);
+        if (!Directory.Exists(path)) return;
+
+        if (MessageBox.Show($"Are you sure you want to delete all files and subfolders in the download folder?\n\n{path}", "Clear Cache",
+            MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+
+        try
+        {
+            foreach (var file in Directory.GetFiles(path)) File.Delete(file);
+            foreach (var dir in Directory.GetDirectories(path)) Directory.Delete(dir, true);
+            MessageBox.Show("Cache cleared successfully.", "VitaForge", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Failed to clear cache: {ex.Message}", "VitaForge", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 }
