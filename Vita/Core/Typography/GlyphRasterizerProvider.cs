@@ -2,5 +2,11 @@
 
 public static class GlyphRasterizerProvider
 {
-    public static IGlyphRasterizer? Current { get; set; }
+    private static IGlyphRasterizer? current;
+
+    public static IGlyphRasterizer Current
+    {
+        get => current ??= new OutlineGlyphRasterizer();
+        set => current = value;
+    }
 }

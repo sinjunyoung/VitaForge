@@ -57,16 +57,7 @@ internal sealed class ChunkPatchRealHardwareBuilder(string titleId, ChunkPatchAs
 
     private void BakeFonts(CpkArchive archive, Dictionary<string, byte[]> replacements, CancellationToken ct)
     {
-        var rasterizer = GlyphRasterizerProvider.Current;
-
-        if (rasterizer is null)
-        {
-            log($"{titleId}: font rasterizer is not available, Korean font pages were not baked", LogLevel.Warning);
-
-            return;
-        }
-
-        if (!FontBakeResourceLoader.TryLoad(assets, rasterizer, out var resources, out string? error))
+        if (!FontBakeResourceLoader.TryLoad(assets, GlyphRasterizerProvider.Current, out var resources, out string? error))
         {
             log($"{titleId}: {error}", LogLevel.Warning);
 
@@ -89,14 +80,21 @@ internal sealed class ChunkPatchRealHardwareBuilder(string titleId, ChunkPatchAs
                 continue;
             }
 
-            byte[] ftx = replacements.TryGetValue(path, out byte[]? existing) ? existing : archive.Extract(entry);
-            int baked = baker.Bake(ftx, message => log($"{titleId} {path}: {message}", LogLevel.Info));
+            try
+            {
+                byte[] ftx = replacements.TryGetValue(path, out byte[]? existing) ? existing : archive.Extract(entry);
+                int baked = baker.Bake(ftx, message => log($"{titleId} {path}: {message}", LogLevel.Info));
 
-            if (baked == 0)
-                continue;
+                if (baked == 0)
+                    continue;
 
-            replacements[path] = ftx;
-            pages += baked;
+                replacements[path] = ftx;
+                pages += baked;
+            }
+            catch (Exception ex) when (ex is not OperationCanceledException)
+            {
+                log($"{titleId} {path}: font bake failed: {ex}", LogLevel.Error);
+            }
         }
 
         log($"{titleId}: {pages} Korean font pages baked", pages > 0 ? LogLevel.Ok : LogLevel.Warning);
