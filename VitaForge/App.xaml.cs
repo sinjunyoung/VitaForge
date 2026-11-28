@@ -1,7 +1,5 @@
 ﻿using Common.Localization;
-using Vita.Core.Typography;
 using VitaForge.Core;
-using VitaForge.Core.Typography;
 using System.IO;
 using System.Windows;
 using System.Windows.Threading;
@@ -15,8 +13,6 @@ public partial class App : Application
     {
         if (!string.IsNullOrEmpty(AppConfig.Instance.Common.Language))
             Loc.Instance.Set(AppConfig.Instance.Common.Language);
-
-        GlyphRasterizerProvider.Current = new WpfGlyphRasterizer();
 
         base.OnStartup(e);
 
